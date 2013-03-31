@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/201.html">推荐: 国外公开课</a> <span class="date">2010-12-04 17:32:04</span></h3>
+  <p><a href="http://v.163.com/open/">网易视频-国外公开课</a>
+<a href="http://yyets.net/?mod=2&amp;ac=list_resource&amp;class=juji&amp;type=29">人人影视-国外公开课</a>
+<strong>开眼看世界,国外优秀的公开课! 思维比知识更重要!! 思想进步,才能升华人生. 扔掉马哲,扔掉政治经济学,扔掉学校给你灌的垃圾!!</strong></p>
+
+  <div class="more">
+    <a href="/201.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/197.html">Spket其实是兼容 jQuery 1.4.x的!</a> <span class="date">2010-12-04 12:02:19</span></h3>
+  <p>前几天,折腾Spket,安装好后,配置jQuery,死活不出提示!!
+翻阅Google,到处都说Spket不兼容jQuery 1.4.x .但经过我一番探索,终于发现 <a href="http://forums.spket.com/viewtopic.php?f=7&amp;t=1380&amp;start=0">官网一个论坛帖子</a> 上面附带的jar就能成功!!</p>
+
+<p>我自己打包好一个版本,放到Google Docs上了, <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hOGNjY2NkODAtNDliZC00NzkxLTllNDAtNjNlOGZkMTllNWEw&amp;hl=zh_CN&amp;authkey=CLiin-4F">Spket 1.6.18 兼容jQuery1.4.x</a>,是一个Eclipse插件版本</p>
+
+<p>如果你已经安装好原版的Spket 1.6.8 , 仅提取com.spket.js_1.6.18.jar覆盖原文件也就可以了.</p>
+
+<p>官方很久没更新了,哈哈!!</p>
+
+  <div class="more">
+    <a href="/197.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
+  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
+
+<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
+启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
+
+<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
+org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
+    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
+    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
+    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
+    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
+</code></pre>
+
+<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
+再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
+没办法，出我的绝招，看源码/反编译！
+研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
+最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
+
+<pre><code>hibernate.default_schema=ALFRESCO
+</code></pre>
+
+  <div class="more">
+    <a href="/191.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/186.html">升级到Nginx 0.9.0</a> <span class="date">2010-11-30 08:36:52</span></h3>
+  <p>今早一开邮箱,发现Nginx 0.9开发分支已经发布!!
+对于我这种喜欢尝鲜的人,怎么错过!!
+马上下载编译:</p>
+
+<pre><code>wget http://nginx.org/download/nginx-0.9.0.tar.gz
+tar xvf nginx-0.9.0.tar.gz
+cd nginx-0.9.0
+vim auto/cc/gcc #将Debug去掉,优化改为o3
+./configure --with-cpu-opt=pentium4 --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module
+make
+/usr/local/nginx/sbin/nginx -s stop #停掉旧版本
+cp objs/nginx /usr/local/nginx/sbin/
+/usr/local/nginx/sbin/nginx #启动新版本
+</code></pre>
+
+<p>这里没有用热切换.
+顺便更新了<a href="http://wiki.nginx.org/NginxChs">Nginx中文Wiki</a>主页上的版本信息.</p>
+
+<p><strong>最新更新： 已经发布 0.9.1 ，本blog也同步更新</strong></p>
+
+  <div class="more">
+    <a href="/186.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/138.html">3年,追忆,回顾</a> <span class="date">2010-11-23 07:47:05</span></h3>
+  <p>2007年9月,成功考过<strong>SCJP</strong>
+2007年10月,人生第一个职业面试,竟然不问我Java的知识,只因我过了SCJP
+2007年11月,拿到第一份offer,无比激动啊!! 因为我不是计算机专业本科毕业的
+2008年2月,开始到公司实习,号称最低工资的Billable员工
+2008年7月,正式入职,无试用期
+2008年8月,正式接管项目组的管理,几个人的小团队.
+2008年8月,获得季度&rdquo;最佳项目&rdquo;称号
+2008年9月,改革项目.废弃沿用2年Excel式的任务管理,启用组内bugzilla;改变工作方式,强调分工,对Mac的依赖降低.(新官上任3把火?)
+2008年10月,开发JLint,极大地提高项目组的工作效率,进一步降低对Mac的依赖
+2008年10月,参加GCT考试,3小时回答185条题目,好在我答题是出了名的快!
+2008年12月,顺利获得暨南大学的工程硕士入学资格,专业&ndash;软件工程
+2009年1月,私下改造公司第一个Android项目XRace,改进其启动性能90%以上,但未获公司的注意
+2009年1月,开始组内学习计划,先后学习Ruby/ror/Perl
+2009年5月,开发一个Android Dex文件反编译器,后来发现其他项目做得更好,放弃之
+2009年5月,考SCJD,差4分失败而归,这可是400分的总分啊!!
+2009年X月,在我的推荐下,启用CDC-bugzilla,推动Hudson自动构建
+2009年X月,开始参加一个内部项目的code review
+2009年7月,参与一个短期的外出培训项目,是培训学生的
+2009年10月,在Javaeye上发现Nutz,当时是1.a.15版. 提出几处修改意见后,成为commiter
+2009年12月,使用ASM重新实现Nut.Aop,后来又做了现在这一版.
+2009年12月,试水公司的Jira系统,带壳的Jira用得非常不爽!
+2010年1月,项目解散,被分配到另外一个项目组,仅仅待了几天,完成了一个小功能
+2010年2月,再次被分配,到了一个深圳的网站项目,折腾到现在
+2010年3月,驻深圳现场开发,2男2女,哈哈
+2010年4月,一期上线,奇迹!
+2010年5月,负责Alfresco的底层配置,天天对着putty敲命令
+2010年6月,实现了一个改资源URL的工具,因为实际部署时, 图片等静态资源放在另外域名/机器上.
+2010年7月,开发基于Alfresco的工作流定制,天啊,我之前还没搞过工作流
+2010年9月,二期上线,部署到全球的3个站点,客户有钱嘛
+2010年11月,获颁&rdquo;季度最佳员工&rdquo; &ndash; 经过好几次提名后
+&hellip; 人生还在继续</p>
+
+  <div class="more">
+    <a href="/138.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/135.html">一次不算太久的破解</a> <span class="date">2010-11-21 15:47:46</span></h3>
+  <p>经友人推荐,发现XMind的确很好用. 不过部分功能需要收费,忽然就感觉有点不爽,毕竟这号称开源软件啊!
+故今早动手破解,下午2点成功!
+但无意放出破解版,毕竟是优秀的商业软件,会阻碍其发展. <strong>仅本人使用!!</strong>
+这里仅简单说说我用到的工具软件:
+1. XMind 3.1.1破解版 &ndash; 这是国外破解的版本,给了我很大的启发!
+2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> &ndash; 反编译出源码,软件逻辑一目了然!
+3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> &ndash; 这软件堪称神器,直接改字节码!</p>
+
+<p>其实,我只是刚刚开始用XMind,还没使用其Pro的功能.但将近300元/year,实在是高!!
+我已经捐款给不少免费/开源项目,分别是我心目中的价位. 希望经过一段时间的使用,会发现XMind真正的价值!!</p>
+
+  <div class="more">
+    <a href="/135.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/133.html">亚运比赛,还是没看成!</a> <span class="date">2010-11-20 08:48:42</span></h3>
+  <p>6个月前买了票
+2周前取了票
+坐了两个小时公交车</p>
+
+<p>到达后发现,<strong>去错场馆了</strong>!!! 严格来说,是去了同一个场馆的不同区域.这两个区域相距9公里!</p>
+
+<p>哎,没法,去不了&hellip;</p>
+
+  <div class="more">
+    <a href="/133.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/126.html">取亚运门票,花了一个小时</a> <span class="date">2010-11-11 12:57:33</span></h3>
+  <p>很久很久以前,买了两张亚运的门票.</p>
+
+<p>比赛临近,觉得还是先取了吧,故飞奔到取票点. 在取票点待了5分钟,我意识到,只有我是来取票的,其他都是在买票的黄牛党!</p>
+
+<p>天啊,咋就那么多人,他们为啥一次性买这么多! 为什么我要等那么久?!!</p>
+
+<p>不过,我其实是支持黄牛的,本质上,这是市场经济的一种正常表现(门票也是一种普通商品,虽然票面上写着不得交易/出售).</p>
+
+<p>商品,不能强制要求购买者不得转让,这是不符合商品自由流动的规则的! 亚运门票,一种有价证劵,是应该同时也必要能够在市场上流通. 而且,亚运门票并非公益性的(除非你是从亚运大礼包中获取),故,购买者有权处理其去留.</p>
+
+<p>亚运门票,设计得还是不错的, 预定的门票是印刷的,黄牛拿到的门票,基本上都是当场打印的.</p>
+
+<p>我不满的是,这么多人在购买,工行竟然只有一个人在办理!! 我讨厌四大行!!</p>
+
+  <div class="more">
+    <a href="/126.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/124.html">折腾了2天,终于把Nutz提交给Maven库</a> <span class="date">2010-11-10 22:07:12</span></h3>
+  <p>昨天在 <a href="https://oss.sonatype.org">https://oss.sonatype.org</a> 申请将Nutz加入资源库, 相关Issue:</p>
+
+<p><a href="https://issues.sonatype.org/browse/OSSRH-983">https://issues.sonatype.org/browse/OSSRH-983</a></p>
+
+<p>原本以为要2天,想不到一天就通过了申请.</p>
+
+<p>下午折腾了一下,搞到傍晚才成功上传一版,期间遇到的问题有:</p>
+
+<ol>
+<li><p>要求asc文件,开头无头绪,后来发现是gpg工具生存的.</p></li>
+
+<li><p>提交后提示public key未登记,又折腾了一下,提交到公共服务器</p></li>
+
+<li><p>签名无效, 神奇之极, 没办法,重新签名, 并打包为bundle,一次性提交!</p></li>
+</ol>
+
+<p>哦也,成功,release! 哈哈,发布成功:</p>
+
+<p><a href="https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/">https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/</a></p>
+
+<p>不过,很奇怪,并没要在Maven中央库找到nutz,难道是同步间隔的问题??</p>
+
+  <div class="more">
+    <a href="/124.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/122.html">换上1TB的希捷硬盘,虚惊一场</a> <span class="date">2010-11-08 21:57:49</span></h3>
+  <p>狠下心,终于入手一块 1TB的希捷硬盘,在卓越买的,<a href="http://www.amazon.cn/gp/product/B003N63M8A/ref=oss_product">链接</a></p>
+
+<p>欢喜地回家装进灰尘滚滚的机箱,开机!
+BIOS打印了相关信息,顺利进入系统.
+分区后,把旧硬盘上的资料盘往新硬盘copy,开头很快, 300M后,停了!!! 我晕,干啥??!! 马上取消,what? 取消也等了1分钟才完成!!
+心想,完了,中招了!! 难道遇上固件门? 上Google搜ST31000528AS, 天啊, 之前出问题的型号!!!
+不过,自行看看固件版本,不对, 有问题的是CC24,但我的是CC38,为啥??为啥?? 到底哪里有问题??!!!
+在网上搜了一大堆原因后,还是没搞好!!
+进BIOS,发现SMART没开,32bit没开, 难道这样都有影响? 我日,我打开,回到Windows,还是不行!!</p>
+
+<p>难道&hellip;. 难道&hellip; 线的问题? 好吧,开机箱,选了一个接口,把灰尘认真清干净,插入!!开机!! 开始copy文件.</p>
+
+<p>!!!!!!!!!!! 40M/s 直至完成!!! 还真是灰尘的原因!!!!!!!!!!!!!!!!!!!!!!!!!!! 我的错!! 折腾了一个晚上!!
+接着下了DiscWizard,把旧硬盘克隆到新盘,Oh yeah!! 搞定!!</p>
+
+<p>感觉系统速度有所提高,声音也小了.
+前后对比:</p>
+
+<pre><code>希捷 SATA    120G
+希捷 SATA2   1TB
+</code></pre>
+
+  <div class="more">
+    <a href="/122.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/220.html">Nutz终于beta版了!!</a> <span class="date">2010-12-24 19:00:19</span></h3>
+  <p>前前后后33版,我参与了 19(16~34)个版本,哈哈~~
+文件已经上传到Google Code, 非常鸡冻!!</p>
+
+<p>另外, 提交到Maven现在正在进行中,缓慢地上传&hellip; 我可是1M的小水管.
+顺便Mask一下生产asc签名的方法,copy自<a href="http://www.madboa.com/geek/gpg-quickstart/">GPG快速入门</a>:</p>
+
+<pre><code>gpg --armor --detach-sign your-file.zip
+</code></pre>
+
+  <div class="more">
+    <a href="/220.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/219.html">Log4j 分级输出</a> <span class="date">2010-12-20 12:18:12</span></h3>
+  <p>一直以来,我都以为Log4j仅能配置输出日志的最低等级,不能限定只输出某一/某些特定等级,今天,无意中发现了其实是可以的.
+先上一份普通的log4j.properties</p>
+
+<pre><code>log4j.rootLogger=INFO, Console, File
+
+###### Console appender definition #######
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=%d{ABSOLUTE} %x %-5p [%c{3}] %m%n
+
+###### File appender definition #######
+log4j.appender.File=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.File.File=alfresco.log
+log4j.appender.File.Append=true
+log4j.appender.File.DatePattern='.'yyyy-MM-dd
+log4j.appender.File.layout=org.apache.log4j.PatternLayout
+log4j.appender.File.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c] %m%n
+</code></pre>
+
+<p>现在需要定义一个名为File2的appender ,仅记录INFO和ERROR,哈哈,有请Log4j的Filter</p>
+
+  <div class="more">
+    <a href="/219.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/218.html">禁用/消除 MySQL客户端的报警声</a> <span class="date">2010-12-17 14:49:58</span></h3>
+  <p>有时候需要用MySQL客户端导入sql文件,一不小心就容易出错,然后就是一段刺耳的报警声,很是烦人!
+Google一下,发现2种方法</p>
+
+<ol>
+<li><p><a href="http://hi.baidu.com/abunchofgrape/blog/item/7211bd510a83485b1138c22c.html">直接在服务器端禁用</a></p>
+
+<p>[mysql]
+no-beep
+#&hellip;. other configure</p></li>
+
+<li><p>或者仅仅在本地使用mysql客户端时禁用,执行命令时多加一个参数 -b</p>
+
+<p>mysql -p -u root -b</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/218.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
+  <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
+
+<p>一贯风格,尝鲜,马上编译之. 折腾了一段时间,发现需要用<a href="http://www.cmake.org/">cmake</a>进行配置了</p>
+
+<ol>
+<li><p>先安装cmake和ccmake</p>
+
+<p>sudo apt-get install cmake cmake-curses-gui libncurses5-dev</p></li>
+
+<li><p>下载并解压mysql-5.5.8.tar.gz到mysql-5.5.8</p>
+
+<p>wget -o mysql-5.5.8.tar.gz <a href="http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/">http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/</a>
+tar xvf mysql-5.5.8.tar.gz
+cd mysql-5.5.8</p></li>
+
+<li><p>然后执行ccmake进行配置,建议将CMAKE_BUILD_TYPE设置为Release</p>
+
+<p>sudo ccmake .
+#或者 cmake -i 对话式配置</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/217.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
+  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug &ndash; <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
+
+<p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
+
+<p>找到以下代码:</p>
+
+<pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
+</code></pre>
+
+<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 &ndash; mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
+
+<p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
+
+  <div class="more">
+    <a href="/214.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/212.html">让Nginx的SSI支持相对路径--更安全的方法</a> <span class="date">2010-12-14 14:04:24</span></h3>
+  <p>这个比较老生长谈的问题,例如 文章 <a href="http://bbs.linuxtone.org/thread-6515-1-1.html">关于nginx的ssi</a>
+但,这种改法,实在不安全.毕竟全局的函数都被改了,任意的../../../都能被访问
+故,基于我对nginx的了解,使用另外一种改法,仅仅修改SSI模块,安全性相对较高
+修改src/http/modules/ngx_http_ssi_filter_module.c
+找到以下代码(以nginx 0.9.3版为例):</p>
+
+<pre><code>    if (ngx_http_parse_unsafe_uri(r, uri, &amp;args;, &amp;flags;) != NGX_OK) {
+        return NGX_HTTP_SSI_ERROR;
+    }
+</code></pre>
+
+<p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
+测试代码:
+文件1 &mdash; index.html</p>
+
+<pre><code>测试导入
+</code></pre>
+
+<p>文件2 &ndash; subdir/index.html</p>
+
+<p>访问subdir/index.html,测试通过!</p>
+
+  <div class="more">
+    <a href="/212.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/211.html">Jxl与WPS的一点点不兼容</a> <span class="date">2010-12-10 14:18:56</span></h3>
+  <p>今天与同事探讨了一个诡异的问题,用Jxl处理一个空的excel文件,<strong>第二次</strong>运行就报错,代码如下:</p>
+
+<pre><code>Workbook workbook = Workbook.getWorkbook(new File(&quot;Book1.xls&quot;));
+WritableWorkbook w = Workbook.createWorkbook(new File(&quot;Book1.xls&quot;),workbook);
+w.write();
+w.close();
+workbook.close();
+</code></pre>
+
+<p>很平常的代码而已,第一次运行,Pass,第二次,FAIL! 然后把旧的空xls文件覆盖回去,第一依然PASS,再跑就FAIL
+折腾来折腾去,终于发现是因为这个xls文件是右键新建出来的. 如果打开WPS,然后新建一个,然后保存,就完全没有问题!!
+够诡异了吧&hellip; WPS的版本是: 6.6.0.2461</p>
+
+  <div class="more">
+    <a href="/211.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/210.html">将Dom对象变成XML并写入流</a> <span class="date">2010-12-10 12:37:21</span></h3>
+  <p>昨晚在Q群上,一位群友需要解决这样的需求:
+将一个Dom对象,变回XML文本,并写入流中,以便下载.</p>
+
+<p>我想,为啥不直接让Dom对象边转换,边写入流呢? 这样效率应该最高哦,内存占用也会低.
+故马上Google,查到<a href="http://download.oracle.com/javaee/1.4/tutorial/doc/JAXPXSLT4.html">一篇文章相关的文章(Writing Out a DOM as an XML File)</a>,感觉上是能够解决这个问题的.
+原文是英文,而且一大堆解释,我精简如下:</p>
+
+<pre><code>//先创建一个Dom
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File(&quot;faces-config-beans.xml&quot;));
+//然后应用转换器
+TransformerFactory tFactory = TransformerFactory.newInstance();
+Transformer transformer = tFactory.newTransformer();
+DOMSource source = new DOMSource(document);
+StreamResult result = new StreamResult(os);//这里的os就是OutputStream对象.
+transformer.transform(source, result);
+</code></pre>
+
+<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom&ndash;&gt;Stream的时间,约60ms. 算是可以接受了.</p>
+
+  <div class="more">
+    <a href="/210.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/208.html">一次内存泄漏的排查</a> <span class="date">2010-12-09 21:07:10</span></h3>
+  <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
+问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
+
+<pre><code>409.879: [Full GC 409.879: [Tenured: 349567K-&gt;349567K(349568K), 1.5796790 secs] 506815K-&gt;382998K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5797868 secs] [Times: user=1.55 sys=0.00, real=1.58 secs] 
+417.784: [Full GC 417.784: [Tenured: 349567K-&gt;349568K(349568K), 1.6968523 secs] 506815K-&gt;382777K(506816K), [Perm : 15880K-&gt;15878K(65536K)], 1.6969534 secs] [Times: user=1.68 sys=0.00, real=1.69 secs] 
+422.242: [Full GC 422.242: [Tenured: 349568K-&gt;349568K(349568K), 1.5697638 secs] 506815K-&gt;382844K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5698652 secs] [Times: user=1.56 sys=0.00, real=1.56 secs] 
+Heap
+ def new generation   total 157248K, used 156479K [0x029e0000, 0x0d480000, 0x0d480000)
+  eden space 139776K, 100% used [0x029e0000, 0x0b260000, 0x0b260000)
+  from space 17472K,  95% used [0x0b260000, 0x0c2afda8, 0x0c370000)
+  to   space 17472K,   0% used [0x0c370000, 0x0c370000, 0x0d480000)
+ tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
+   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
+ compacting perm gen  total 65536K, used 16259K [0x229e0000, 0x269e0000, 0x2a9e0000)
+   the space 65536K,  24% used [0x229e0000, 0x239c0e98, 0x239c1000, 0x269e0000)
+No shared spaces configured.
+</code></pre>
+
+<p>由于新生代应该会很快回收,故关注另外一块已经用完的空间tenured generation</p>
+
+  <div class="more">
+    <a href="/208.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
+  <p>今天,升级了好几样东西</p>
+
+<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        &mdash;&gt;  0.9.2           新增一个功能.修复几个bug
+<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             &mdash;&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
+<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             &mdash;&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
+<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  &mdash;&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
+
+  <div class="more">
+    <a href="/206.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

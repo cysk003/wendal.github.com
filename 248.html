@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>一个简单XML工具类,支持简单的路径求值</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>一个简单XML工具类,支持简单的路径求值 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>估计是个轮子,因为一说起XML,自然想到的是JDom/dom4j等老牌/强大的工具.</p>
+
+<p>但我的需求如此简单: &ldquo;支持简单的路径求值&rdquo; ,就加一个N多垃圾的jar包,算了,一气之下,写了这个工具类.</p>
+
+<p>原本这个工具类包含 一个接口,一个实现类,一个工厂类,一个测试类</p>
+
+<p>完成初版后,发现,为啥还分这么多东西,不就一个简单需求嘛!! 很不符合我的风格. 而且,我还特意建了一个工程叫NutzXML &hellip;.</p>
+
+<p>不行,这种需要扩展,不考虑效率的东西, 咋调用一下都这么麻烦? 改!!</p>
+
+<p>最后,整个XmlMap类,加上注释,150行, 这里展示的是无注释的版本:</p>
+
+<pre><code>package org.nutz.xml;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+public class XmlMap{
+
+    private Element element;
+
+    public XmlMap(Element element) {
+        this.element = element;
+    }
+
+    public List getList(String name) { //这里去掉了泛型,请自行加上
+        NodeList nList = element.getElementsByTagName(name);
+        List list = new ArrayList(nList.getLength());//这里去掉了泛型,请自行加上
+        for (int i = 0; i &lt; nList.getLength(); i++) {
+            list.add(new XmlMap((Element)nList.item(i)));
+        }
+        return list;
+    }
+
+    /**
+     * 获取一个属性的值
+     */
+    protected String get(String name) {
+        if (element.hasAttribute(name))
+            return element.getAttribute(name);
+        else if (&quot;value&quot;.equals(name))
+            return element.getTextContent();
+        return null;
+    }
+
+    static DocumentBuilder db;
+
+    static {
+        try {
+            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 从输入流读取XML文件,构建XmlMap对象
+     * @param is 包含Xml文件的输入流
+     * @return XmlMap对象
+     */
+    public static final XmlMap read(InputStream is) {
+        try {
+            Document doc = db.parse(is);
+            doc.normalizeDocument();
+            return new XmlMap((Element) doc.getDocumentElement());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final Object parse(XmlMap map,String path) {
+        if (path.indexOf('.') &gt; 0)
+            return parse(get2(map, path.substring(0,path.indexOf('.'))), path.substring(path.indexOf('.')+1));
+        //到这里的话,应该只剩下 abc#attr 或者abc[12]#attr 或者 abc[12] 或者abc
+        if (path.indexOf('#') &gt; -1) //需要获取具体的属性值
+            if (path.indexOf('#') &gt; 0)
+                return get2(map, path.substring(0,path.indexOf('#'))).get(path.substring(path.indexOf('#')+1));
+            else
+                return map.get(path.substring(1));
+        else
+            //如果指定了索引则返回XmlMap,否则返回List
+            return path.indexOf('[') &gt; 0 ? get3(map, path) : map.getList(path);
+    }
+
+    private static final XmlMap get2(XmlMap map, String path) {
+        return path.indexOf('[') &gt; 0 ? get3(map, path) : map.getList(path).get(0);
+    }
+
+    private static final XmlMap get3(XmlMap map, String path) {
+        return map.getList(path.substring(0,path.lastIndexOf('['))).get(Integer.parseInt(path.substring(path.lastIndexOf('[')+1,path.length()-1)));
+    }
+}
+</code></pre>
+
+<p><a href="http://code.google.com/p/nutzlab/source/browse/trunk/NutXML/src/org/nutz/xml/XmlMap.java">点击查看完整版</a> &ndash; 在<a href="http://code.google.com/p/nutzlab/">Nutz Lab</a>项目中</p>
+
+<p>使用示例:</p>
+
+<pre><code> XmlMap map = XmlMap.read(new FileInputStream(&quot;demo.xml&quot;));获取XmlMap对象
+ map.get(&quot;authBy&quot;);                       //返回值为xxxUserSeriver
+ XmlMap.parse(map, &quot;#authBy&quot;);            //返回值为xxxUserSeriver
+ XmlMap.parse(map, &quot;other#value&quot;);        //other没有value属性,则返回其文本值abc
+ XmlMap.parse(map, &quot;url[3]#pattern&quot;);     //获取第4个(索引值为3)url标签的pattern属性
+ XmlMap.parse(map, &quot;levelA.levelB.levelC[1].levelD#key&quot;);//返回值为XX2X
+ XmlMap.parse(map, &quot;levelA.levelB&quot;);      //返回值为一个包含全部levelB节点的List
+ XmlMap.parse(map, &quot;levelA.levelB[1]&quot;);   //返回值为第2个levelB节点的XmlMap
+ XmlMap.parse(map, &quot;levelA.levelB#myKey&quot;);//返回值为nutz
+</code></pre>
+
+<p>其实,我是打算做一个基于URL的权限控制, 考虑叫NutzSecurity 设想中,YY中</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/250.html" title="兼容FireFox 4的AutoProxy">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/247.html" title="一起来,为Nutz编写插件!">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-03-06 19:57:55</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#Demo-ref">Demo <span>5</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Dom-ref">Dom <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#XML-ref">XML <span>15</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E7%B4%A2%E5%BC%95-ref">索引 <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E8%B7%AF%E5%BE%84-ref">路径 <span>13</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

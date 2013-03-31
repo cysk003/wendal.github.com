@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Gor--极快的静态博客引擎</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Gor--极快的静态博客引擎 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>1秒编译200篇文章</h2>
+
+<p>Gor的速度极快哦, 编译本网站200篇文章仅需1秒!</p>
+
+<p><img src="/assets/media/2013/01/gor_1.jpg"></img></p>
+
+<h2>为什么写Gor?</h2>
+
+<p>Gor源于对ruhoh的不满</p>
+
+<ol>
+<li>依赖一大堆东西</li>
+<li>ruby编写,看不懂</li>
+<li>速度慢, 需要10秒以上</li>
+<li>gor在很多方面就是ruhoh for golang版</li>
+</ol>
+
+<p>Gor跟jekyll/octopress 有啥不同</p>
+
+<ol>
+<li>模板引擎不一样, gor/ruhoh使用mustache模板,更易懂易写</li>
+<li>gor更快,必须的</li>
+</ol>
+
+<p>Gor有啥缺陷?</p>
+
+<ol>
+<li>刚起步,还不够成熟</li>
+<li>因为基于golang,插件机制比较弱</li>
+<li>在windows下还不能很好地工作</li>
+</ol>
+
+<h2>Gor使用了些神马golang的第三库</h2>
+
+<ol>
+<li>markdown, 负责将markdown转为html</li>
+<li>mustache库,wendal自行实现,实现大部分mustache语法(官方版实在太烂)</li>
+<li>当前依赖goyaml库,负责解析配置文件和元数据,将来会实现一个纯go的版本</li>
+</ol>
+
+<h2>基本用法</h2>
+
+<p>建立新站点(无需联网)</p>
+
+<pre><code>gor new wendal.net
+cd wendal.net
+</code></pre>
+
+<p>新建一篇文章</p>
+
+<pre><code>gor post &quot;Hi,Gor&quot;
+</code></pre>
+
+<p>编译</p>
+
+<pre><code>gor compile
+</code></pre>
+
+<p>预览编译结果</p>
+
+<pre><code>gor http
+</code></pre>
+
+<p>然后,打开你浏览器,访问 <a href="http://127.0.0.1:8080">http://127.0.0.1:8080</a></p>
+
+<h2>更多用法,请访问<a href="http://github.com/wendal/gor">Gor@github</a></h2>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/2013/0113.html" title="最近买了2款软件">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/2013/0108.html" title="Nutz福利之轻功">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-01-11</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#go-ref">go <span>16</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#go-ref">go <span>9</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

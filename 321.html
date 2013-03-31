@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>本文并非教你写病毒来破解Android系统,所提及的操作,均要求用户主动参与</p>
+
+<p>本文主要针对是平板.Andoird手机由于涉及你的帐号/资金的安全,非常不建议你使用下面的方法!!</p>
+
+<p>先感谢一下硬件小二,rk28小组的协助</p>
+
+<h2>第一步,/system可写</h2>
+
+<p><a href="http://wendal.net/320.html">Rk2918现在可使用我不久前发明的方法,将/system映射在/data/sysrw</a></p>
+
+<p>Rk2818的话,自然是使用aufs这种xda发明的方法,但使用rk2918的方法会快些</p>
+
+<h2>第二步,获取root权限</h2>
+
+<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码&ndash; <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
+
+<p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
+
+<p>自行添加的话,请确保所在分区支持suid,并设置su的权限为6777</p>
+
+<h2>第三步,移除apk的签名验证机制</h2>
+
+<p>在此之前,尝试美化系统界面的童鞋都知道,系统apk千万千万不要签名,否则肯定用不了</p>
+
+<p>对此我就不信邪,偏偏要破解掉这个限制,实现任意签名的apk,都能安装,完全跳过签名验证机制!!</p>
+
+<p>方法如下:</p>
+
+<ol>
+<li>下载apktool,并安装好JRE或JDK,把apktool解压到D:\apktool</li>
+<li>在机器上拷贝/system/framework/services.jar到硬盘的D:\apktool\services.apk</li>
+<li>进入命令行,进入D:\apktool,执行 apktool.bat d services.apk ,稍等片刻,就能能看到新建的services文件夹</li>
+<li>用UE或notepad++打开D:\apktool\services\smali\com\android\server\PackageManagerService.smali</li>
+<li>查找private verifySignaturesLP,这就是校验签名的方法</li>
+<li>在verifySignaturesLP方法体中,找到:goto_0,在后面加一行 const/4 v0, 0x1        ,含义是赋值为true,以Java来表达,就是return true,这是verifySignaturesLP方法的最终return语句之前的一句,故任何调用本方法的语句,都能拿到true,即签名验证永远为真. 注意,这里的0x1中的x是小写字母X,貌似很多人直接拷贝的话,会变成全角的X.如果你没有找到goto_0,那就找return v0之类的语句.一般都只有一个return语句!!</li>
+<li>保存,重新打包: apktool.bat b services services.jar ,然后拷贝回机器,重启就可以了</li>
+</ol>
+
+<h2>完成以上步骤,你的Android设备就彻底裸奔了</h2>
+
+<ol>
+<li>System可写 &ndash; 为任意改系统文件创造条件</li>
+<li>无限制的su &ndash; 任何程序都能悄无声息地获取root权限,加上上一条的System可写,即任何程序都能修改/system</li>
+<li>不再有签名验证 &ndash; 任何apk程序都可以声明自己是系统程序,甚至可以动态生成apk程序进行安装(随便签名就行!!)</li>
+</ol>
+
+<h1>从此,你的Android设备完全不设防了!!</h1>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/324.html" title="Nutz事务模板值得注意的细节">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/320.html" title="实现Rk2918的System分区可写">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-09-11 08:51:23</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#%E5%85%B6%E4%BB%96-ref">其他 <span>40</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#Android-ref">Android <span>8</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%AE%89%E5%85%A8-ref">安全 <span>10</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E7%A0%B4%E8%A7%A3-ref">破解 <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E7%A1%AC%E7%9B%98-ref">硬盘 <span>2</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

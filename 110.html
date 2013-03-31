@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>想不到服务器一下子就被击垮了</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>想不到服务器一下子就被击垮了 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>上周末, 从同事口中得知我休假期间,Jboss服务器曾<strong>无故自己关闭</strong>了一次.</p>
+
+<p>顿时非常惊讶,咋就会自己关闭自己呢?</p>
+
+<p>第一反应是OOM了,一问,没啊,内存还剩好多,而且log没提示OOM.</p>
+
+<p>难道是程序里面写了System.exit(X)之类? 扫描了一遍代码,没有啊!! 我们还不至于写这么的代码</p>
+
+<p>奇怪的是, JBoss是按照标准的流程顺序关闭各个应用后,再shutdown完成的,并无直接被kill掉或者异常退出,也没有找到JVM报错的log.</p>
+
+<p>由于关闭的时间点在11:37AM,故,追查nginx的access.log  , 翻翻翻, 在一堆502(Jboss已经关闭,nginx无法proxy_pass,报502)前面,有一些不寻常的请求,节选如下:</p>
+
+<pre><code>/acunetix-wvs-test-for-some-inexistent-file-second-try
+
+/console/j_security_check
+
+/_vti_pvt/authors.pwd
+
+/phpmyadmin/main.php
+
+/jmx-console/HtmlAdaptor?action=inspectMBean&amp;name=jboss.system:type%3DServerInfo
+</code></pre>
+
+<p>看来是被攻击了!!</p>
+
+<p>冷静冷静,然而,攻击开始后不到5秒,Jboss就被关闭了.</p>
+
+<p>马上访问/jmx-console/, 天啊!! 竟然能够访问,Jboss的信息一览无余!! 这个默认应用竟然直接暴露给外网了!!</p>
+
+<p>还真有相关的JBoss漏洞 <a href="http://websec360.com/NewsInfo/124/6455.Html">http://websec360.com/NewsInfo/<sup>124</sup>&frasl;<sub>6455</sub>.Html</a></p>
+
+<p>但,如何才能关闭JBoss呢? <a href="http://www.shuq.org/read.asp?id=109">http://www.shuq.org/read.asp?id=109</a> 通过JMX,严重无语了!!</p>
+
+<p>看来就是这个原因了, 哎. 实在没想到啊!!!</p>
+
+<p>刚刚翻查access.log,我晕,原来还有好多针对php/phpadmin/.net漏洞的log. 看来攻击者是使用某种攻击攻击完成的,难道是他的命令集? 不知道哪里能够下载.</p>
+
+<p>解决方法:</p>
+
+<ol>
+<li><p>移除JBoss的JMX,invoker应用,因为我根本就没用到.</p></li>
+
+<li><p>在nginx添加对php文件/asp文件/cgi文件的拦截,直接返回404.</p></li>
+</ol>
+
+<p>看来网站的安全还得狠狠地加强!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/114.html" title="为Alfresco加速PDF文件索引速度">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/108.html" title="使用Nginx搭建Http代理服务器">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2010-11-01 12:11:04</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#360-ref">360 <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#JBoss-ref">JBoss <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#nginx-ref">nginx <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Web%E6%9C%8D%E5%8A%A1-ref">Web服务 <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%AE%89%E5%85%A8-ref">安全 <span>10</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E6%81%B6%E6%84%8FURL-ref">恶意URL <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%BB%91%E5%AE%A2-ref">黑客 <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

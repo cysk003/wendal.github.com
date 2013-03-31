@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>[已经确认]想不到真的遇到Lua-nginx-module的bug</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>[已经确认]想不到真的遇到Lua-nginx-module的bug </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>难以置信啊, agentzh大牛已经确认是个bug,对应的版本:
+Lua-nginx-module 0.16rc2 + Nginx 0.8.54</p>
+
+<p>期待修复,哈哈</p>
+
+<p>原本一直以为是自己代码的原因,因为实在很诡异,附上我的原文:</p>
+
+<pre><code>我得到的最小集合就是:
+1. nginx.conf
+location /test {
+    root html;
+    content_by_lua_file &quot;conf/test.lua&quot;;
+}
+server/http等配置按默认的, event module用的是 epoll
+
+2. test.lua文件仅2行:
+ngx.location.capture('/1.html')
+
+ngx.exec(&quot;/1.html&quot;)
+
+我尝试过,无论这两句话是否请求同一个文件,结果都一样.
+
+3. 1.html文件里面仅有几个字母,我已经试过不同的文件大小,结果一样
+
+我遇到的情况是这样的:
+1. 通过wget/curl/Firefox来访问 localhost/test 都能正常显示1.html中的内容
+2. 使用ab访问 localhost/1.html是正常的,能够pass
+3. 使用ab进行测试,总是timeout , 我使用的语句是 ab -v 5 localhost/test 
+Benchmarking localhost (be patient)...INFO: POST header ==
+---
+GET /down2 HTTP/1.0
+Host: localhost
+User-Agent: ApacheBench/2.3
+Accept: */*
+
+---
+LOG: header received:
+HTTP/1.1 200 OK
+Server: nginx/0.8.54
+Date: Tue, 15 Mar 2011 07:22:30 GMT
+Content-Type: text/plain
+Content-Length: 4
+
+Last-Modified: Fri, 11 Mar 2011 09:32:28 GMT
+Connection: close
+Accept-Ranges: bytes
+
+ABC
+
+LOG: Response code = 200
+apr_poll: The timeout specified has expired (70007)
+
+其中的ABC就是1.html的内容, 非常抱歉我之前写错了.
+
+对于0A0D的描述,仅仅是我的猜测,请无视之.
+
+单独写 ngx.exec(&quot;/1.html&quot;) 也是能够通过ab测试的.
+
+环境:
+Ubuntu 10.10
+Luajit-5.1-dev
+Nginx 0.8.54
+Lua-nginx-module 0.16rc2
+
+Thanks,
+Wendal Chen
+</code></pre>
+
+<p>agentzh的回应是:</p>
+
+<pre><code>I've reproduced it on my side. This is indeed a bug. When ngx.exec()
+is used after ngx.location.capture() or ngx.location.capture_multi(),
+nginx 0.8.11+ will not close the client connection due to leaked
+request reference counter (r-&gt;main-&gt;count). A hacky work-around is to
+disable nginx http keepalive and rely on the browser (and other http
+clients) to actively close the connection. And that's why wget, curl,
+firefox, and other well-written http clients worked for you.
+
+Nginx 0.7.68 (and older) is confirmed to work in this context just
+because older nginx does not use reference counting.
+
+I'll attempt fix in the next few days. Thank you for reporting this
+and sorry about this issue :)
+
+Cheers,
+-agentzh
+</code></pre>
+
+<p>大概的意思是:
+0.8.11+才会有这个问题,0.7.68以下的版本,因为没有使用相关特性而没有问题.
+解决方法: 关闭nginx的keeplive 且 客户端主动关闭连接.</p>
+
+<p>我得出几个结论:
+1. taobao不是用这种版本组合,或者不用这种写法
+<strong>2. ab不会主动释放连接, 与wget/curl的行为不一致!! 这个比较问题大</strong>
+3. 淘宝里面如果没有这种写法,那我要检讨一下是否应该这样写</p>
+
+<p>恩,继续努力,奋斗在 nginx+lua+C指针 的苦海中</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/256.html" title="想不到还有这种SSH客户端- FireSSH">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/253.html" title="累趴下了,就为了办出生证!!">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-03-17 15:32:15</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Nginx-ref">Nginx <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#lua-ref">lua <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#nginx-ref">nginx <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

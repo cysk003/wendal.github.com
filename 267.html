@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Json格式的ngx_http_stub_status_module</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Json格式的ngx_http_stub_status_module </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>原版的ngx_http_stub_status_module,查看到的状态信息是一个无格式文本,非常不好解析.</p>
+
+<p>网上有另外一些实现,例如<a href="https://github.com/drmingdrmer/nginx-json-status-module">nginx-json-status-module</a>,但实现得极其垃圾,竟然直接调用malloc. 另外为了庆贺一下Nginx 1.0.0版本的发布,我做了一些修改,使其以Json格式返回.</p>
+
+<p>上代码:</p>
+
+<pre><code>/*
+ * Copyright (C) Igor Sysoev
+ * Modify by Wendal Chen
+ */
+
+#include &lt;ngx_config.h&gt;
+#include &lt;ngx_core.h&gt;
+#include &lt;ngx_http.h&gt;
+
+static char *ngx_http_set_status(ngx_conf_t *cf, ngx_command_t *cmd,
+                                 void *conf);
+
+static ngx_command_t  ngx_http_status_commands[] = {
+
+    { ngx_string(&quot;stub_status&quot;),
+      NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_FLAG,
+      ngx_http_set_status,
+      0,
+      0,
+      NULL },
+
+      ngx_null_command
+};
+
+static ngx_http_module_t  ngx_http_stub_status_module_ctx = {
+    NULL,                                  /* preconfiguration */
+    NULL,                                  /* postconfiguration */
+
+    NULL,                                  /* create main configuration */
+    NULL,                                  /* init main configuration */
+
+    NULL,                                  /* create server configuration */
+    NULL,                                  /* merge server configuration */
+
+    NULL,                                  /* create location configuration */
+    NULL                                   /* merge location configuration */
+};
+
+ngx_module_t  ngx_http_stub_status_module = {
+    NGX_MODULE_V1,
+    &amp;ngx;_http_stub_status_module_ctx,      /* module context */
+    ngx_http_status_commands,              /* module directives */
+    NGX_HTTP_MODULE,                       /* module type */
+    NULL,                                  /* init master */
+    NULL,                                  /* init module */
+    NULL,                                  /* init process */
+    NULL,                                  /* init thread */
+    NULL,                                  /* exit thread */
+    NULL,                                  /* exit process */
+    NULL,                                  /* exit master */
+    NGX_MODULE_V1_PADDING
+};
+
+static ngx_int_t ngx_http_status_handler(ngx_http_request_t *r)
+{
+    size_t             size;
+    ngx_int_t          rc;
+    ngx_buf_t         *b;
+    ngx_chain_t        out;
+    ngx_atomic_int_t   ap, hn, ac, rq, rd, wr;
+
+    if (r-&gt;method != NGX_HTTP_GET &amp;&amp; r-&gt;method != NGX_HTTP_HEAD) {
+        return NGX_HTTP_NOT_ALLOWED;
+    }
+
+    rc = ngx_http_discard_request_body(r);
+
+    if (rc != NGX_OK) {
+        return rc;
+    }
+
+    ngx_str_set(&amp;r-;&gt;headers_out.content_type, &quot;text/plain&quot;);
+
+    if (r-&gt;method == NGX_HTTP_HEAD) {
+        r-&gt;headers_out.status = NGX_HTTP_OK;
+
+        rc = ngx_http_send_header(r);
+
+        if (rc == NGX_ERROR || rc &gt; NGX_OK || r-&gt;header_only) {
+            return rc;
+        }
+    }
+
+    size = sizeof(&quot;{accepted:,handled:,active:,requests:,reading:,writing:}&quot;) + 7 * NGX_ATOMIC_T_LEN;
+
+    b = ngx_create_temp_buf(r-&gt;pool, size);
+    if (b == NULL) {
+        return NGX_HTTP_INTERNAL_SERVER_ERROR;
+    }
+
+    out.buf = b;
+    out.next = NULL;
+
+    ap = *ngx_stat_accepted;
+    hn = *ngx_stat_handled;
+    ac = *ngx_stat_active;
+    rq = *ngx_stat_requests;
+    rd = *ngx_stat_reading;
+    wr = *ngx_stat_writing;
+
+    b-&gt;last = ngx_sprintf(b-&gt;last, &quot;{accepted:%uA,handled:%uA,active:%uA,requests:%uA,reading:%uA,writing:%uA}&quot;, 
+                                               ap,         hn,        ac,         rq,           rd,         wr);
+
+    r-&gt;headers_out.status = NGX_HTTP_OK;
+    r-&gt;headers_out.content_length_n = b-&gt;last - b-&gt;pos;
+
+    b-&gt;last_buf = 1;
+
+    rc = ngx_http_send_header(r);
+
+    if (rc == NGX_ERROR || rc &gt; NGX_OK || r-&gt;header_only) {
+        return rc;
+    }
+
+    return ngx_http_output_filter(r, &amp;out;);
+}
+
+static char *ngx_http_set_status(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+{
+    ngx_http_core_loc_conf_t  *clcf;
+
+    clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
+    clcf-&gt;handler = ngx_http_status_handler;
+
+    return NGX_CONF_OK;
+}
+</code></pre>
+
+<p>使用方法
+1. 直接替换原本的文件
+2. 修改一下ngx_string(&ldquo;stub_status&rdquo;)为ngx_string(&ldquo;json_stub_status&rdquo;),配合一下config文件一起作为额外模块进行编译:</p>
+
+<pre><code>ngx_addon_name=ngx_http_json_stub_status_module
+HTTP_AUX_FILTER_MODULES=&quot;$HTTP_AUX_FILTER_MODULES ngx_http_json_stub_status_module&quot;
+NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_json_stub_status_module.c&quot;
+</code></pre>
+
+<p><a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hMDJjYmUzNTktMTQyNi00MzdjLTk0YzYtMDcxYzY1NWU2MDA2">下载Zip包</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/268.html" title="启用新的域名 wendal.net">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/266.html" title="再一次搞定UTF-8的BOM">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-04-13 07:07:47</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Nginx-ref">Nginx <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#nginx-ref">nginx <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

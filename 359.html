@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Nutz 1.b.41 发行后记</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Nutz 1.b.41 发行后记 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>经过3个月的长跑, nutz 1.b.41终于发布了.这里所说的,与release note并不冲突.</p>
+
+<p>我个人要提一下Mvc的一个新功能, Mvcs.getReq()等方法:</p>
+
+<pre><code>    /*获取当前HttpServletRequest对象*/
+    public static final HttpServletRequest getReq() {
+        return REQ.get();
+    }
+
+    /*获取当前HttpServletResponse对象*/
+    public static final HttpServletResponse getResp() {
+        return RESP.get();
+    }
+
+    public static final String getName() {
+        return NAME.get();
+    }
+
+    /*获取当前Action上下文*/
+    public static final ActionContext getActionContext() {
+        return ACTION_CONTEXT.get();
+    }
+
+    /*获取ServletContext*/
+    public static ServletContext getServletContext() {
+        return servletContext;
+    }
+
+    public static IocContext getIocContext() {
+        return IOC_CONTEXT.get();
+    }
+</code></pre>
+
+<p>以上新增的API,既是对用户需求的响应,也代表一种妥协.
+用户可以在任意代码中直接获取当前Req和Resp,而不再需要自行写Filter.但是,从代码的美观程度说,是一大让步,我自己看着都感觉有点不爽.
+这个修改,顺带了另外一个功能,就是声明多个NutFilter并使用不同的配置. 之前的实现,最后一个Filter的设置,会覆盖之前所有配置.</p>
+
+<p>值得一提的,还有酝酿中的Nutz基金会,看看2月底之前,能否完成创建.</p>
+
+<p>Nutz的发布,少不了打包,签名,上传,release等繁琐的操作, 貌似我每次都忘记咋签名,所以呢,写了个小脚本</p>
+
+<pre><code>export VER=&quot;nutz-1.b.41&quot;
+gpg --armor --detach-sign $VER&quot;-javadoc.jar&quot;
+gpg --armor --detach-sign $VER&quot;.jar&quot;
+gpg --armor --detach-sign $VER&quot;-sources.jar&quot;
+gpg --armor --detach-sign $VER&quot;.pom&quot;
+</code></pre>
+
+<p>还有一个小事情,就是svn,为了尝试1.7.2版的svn,在Ubuntu上编译了新版,却无法使用,十分纠结!!
+然而,本地安装乌龟,然后checkout,竟然飞快!!难以置信啊,2分钟完成!! 新版的svn,的确已经改进为单个.svn文件夹,清爽了很多,但我想说一句: 晚了,svn,你改进的速度太慢了!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/360.html" title="Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/357.html" title="香港两天,离开天朝的2天!!">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-01-20 16:41:18</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#%E5%85%B6%E4%BB%96-ref">其他 <span>40</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#gpg-ref">gpg <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Javadoc-ref">Javadoc <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#MVC-ref">MVC <span>16</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

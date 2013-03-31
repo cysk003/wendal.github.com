@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/29.html">Alfresco配置 — 第二节</a> <span class="date">2010-08-03 22:49:31</span></h3>
+  <p>如何关闭/调整部分功能(通过添加选项到alfresco-global.properties):</p>
+
+<p><strong>1. 关闭OpenOffice连接 ooo.enabled=false</strong></p>
+
+<p>Alfresco默认安装OpenOffice进行文件转换,不过,大部分时间是无需的,这部分功能会占用超过100M的内存,而且是JVM之外的内容</p>
+
+<p><strong>2. 关闭CIFS和FTP cifs.enabled=false  ftp.enabled=false</strong></p>
+
+<p>当你启动Alfresco后,你也许能通过 \你的ip 访问到Alfresco的资源库,这对开发非常有用,但是一般情况下不太需要, ftp也是.</p>
+
+<p><strong>3. 关闭用户空间配额限制 system.usages.enabled=false</strong></p>
+
+<p>Alfresco允许你配置每个用户的空间占用,一般使用都是无需的,而且,要真正启用这个功能,你需要逐一配置每个用户的配额.</p>
+
+<p><strong>4. 关闭自动创建用户空间 home.folder.creation.eager=false</strong></p>
+
+<p>这个选项,是我在配置LDAP信息同步的时候遇到的,由于有好几千的用户信息同步到Alfresco,结果在User Space中对应地产生了好几千个子空间,虽然无害,但毕竟非常不雅!!</p>
+
+<p><strong>5. 将索引恢复模式设置为自动 index.recovery.mode=AUTO</strong></p>
+
+  <div class="more">
+    <a href="/29.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/24.html">Alfresco配置 — 第一节</a> <span class="date">2010-08-02 23:19:53</span></h3>
+  <p><strong>1. 有用的信息</strong></p>
+
+<p>Alfresco下载地址 <a href="http://wiki.alfresco.com/wiki/Download_Community_Edition">社区版</a> 企业版可以试用30天,区别不大.</p>
+
+<p><strong>2. 安装</strong></p>
+
+<p>如果你下载的是Windows版的超大安装包,那么,基本上就是一路的next,中途填一下管理员密码就可以了.</p>
+
+<p>启动之前,我建议你看看   安装文件夹/tomcat/shared/classes/alfresco-global.properties      ,你会看到不少有用的信息:</p>
+
+<pre><code>dir.root=./alf_data 非常非常核心的参数,务必使用绝对路径,能减少不必要的麻烦(例如移动文件夹后,启动报错)
+</code></pre>
+
+<p>db.开头的都是数据库配置, 其中db.url就是把部分参数合成jdbc url. 关于数据库,我的建议是使用数据源,Alfresco会默认查找jndi名为jdbc/dataSource的资源作为数据源.</p>
+
+<p>如果你安装的时候使用默认密码admin,就会看到一个</p>
+
+<pre><code>alfresco_user_store.adminpassword=209c6174da490caeb422f3fa5a7ae634
+</code></pre>
+
+<p>提前说一个问题&ndash;忘记管理员密码咋办? 看看这篇文章</p>
+
+  <div class="more">
+    <a href="/24.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/20.html">加班的星期天,应该是第一次</a> <span class="date">2010-08-01 22:18:18</span></h3>
+  <p>为了Alfresco的工作流,又加班了一天.</p>
+
+<p>算是突破性的进展,终于成功把两个流连接起来了,而且可以控制把其中一个流给关闭掉呢,哈哈! 问题的关键是实现自定义的ActionHandler和AssignmentHandler,通过页面获取的工作流id,获取另外一个工作流的全部信息. 我太强大了!!</p>
+
+<p>另外一个问题是发邮件, 似乎Alfresco WCM workflow的标准定义中, 串行工作流模式中, bpm_assignees的值会发生变化,争取找个时间把它简单重现!故,我有做了一个简单的ActionHandler,负责把当前Task的actorid保存在另外一个变量中. 哈哈,又解决一个难题,之前发邮件耗费了我起码一周的时间!</p>
+
+<p>应老婆建议,明天起有规律的说说Alfresco的配置. 例如如何安装,如何调整vtomcat等,还有就是一些曾经遇到的问题</p>
+
+  <div class="more">
+    <a href="/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/18.html">加班的星期六</a> <span class="date">2010-07-31 21:40:11</span></h3>
+  <p>已经忘记了上一次加班是什么时候了?是否曾经星期六加班过呢?</p>
+
+<p>忙了一天的Alfresco工作流,终于有了突破性进展,放弃内置的AlfrescoScriptAction,改为自己写ActionHandler</p>
+
+<p>在页面上让用户选需要绑定的工作流 &ndash; 通过自定义的mytasks.jsp和改造wcm的submit-config-workflow.jsp 通过jquery完成页面修改与联动,并隐藏掉原有配置界面.</p>
+
+<p>今天上Google Reader,发现Alfresco 3.2 SP2 企业版已经发布,修复了不少的Bug,其中两个bug似乎与我们已经遇到的问题相关.</p>
+
+<p>不清楚客户那边还买不买商业授权,难道真的像我猜测那样转为社区版? 刚刚下载了社区版的3.2 SP2, 发现schema是3300的,而3.2企业版是3400的, 希望不要出乱子.说起这个,Alfresco还真他妈的贵啊!! 不知道如果帮程序换成社区版,会不会又出什么难题&hellip; 悲剧啊&hellip; 肯定又是我来解决.</p>
+
+<p>Alfresco社区版是没有官方支持Oracle和WebLogic的,严重悲剧啊.</p>
+
+  <div class="more">
+    <a href="/18.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/16.html">本应该是周末,但是明天要加班</a> <span class="date">2010-07-30 22:49:01</span></h3>
+  <p>没办法,明天加班咯.</p>
+
+<p>还是工作流的问题,N多问题未解决.继续奋斗咯</p>
+
+<p>今天把部分Alfresco实例从SP搬到SC,以便加速访问,提高开发速度.</p>
+
+<p>今天发现并解决一个问题, 当Oracle数据库因为内存不足,cpu占用接近100%是, hibernate会停留在init sessionfactory, 而且没有任何错误提示.</p>
+
+<p>另外一个问题是RMI, 因为搬迁办公室,ip变更, alfresco启动时需要查找RMI,因为/etc/hosts文件里面的ip没改,结果停留在find RMI port一段时间后死掉.</p>
+
+<p>再说一个发现, 使用Alfresco vtomcat 3.3 去连接 Alfresco 3.2 时, 总是连不上. 但是3.3的部署接收器却能接收3.2的Alfresco发过来的数据.</p>
+
+  <div class="more">
+    <a href="/16.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/14.html">把自己搞得这么累</a> <span class="date">2010-07-29 23:51:57</span></h3>
+  <p>8点就已经回到家了,没休息,就对着电脑</p>
+
+<p>本可以休息一晚,喝杯茶,看看书&hellip;</p>
+
+<p>今晚基本上就是聊Q,SunFarm的用户提出来几个挺有效的改进建议,并发布了 3.33 很好玩的一个版本号</p>
+
+<p>Nutz最近比较安静,难道大家热情消退??</p>
+
+<p>今天继续磨工作流,总算有点眉目, 不过,周六日加班是必然的了</p>
+
+<p>非常认同Alfresco的强大,但同时感叹其复杂与难以琢磨&hellip; 学习曲线的确是高</p>
+
+<p>对Alfresco的基础配置,现在算是滚瓜烂熟了,可惜啊, 对其Workflow还是入门级别,继续奋斗吧,Wendal!</p>
+
+  <div class="more">
+    <a href="/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/11.html">被Alfresco的工作流搞崩溃了</a> <span class="date">2010-07-28 20:15:00</span></h3>
+  <p>我实在不行了,投降了!!</p>
+
+<p>想了一天,还是没找到什么方法来满足以下需求:</p>
+
+<p>在启动一个工作流的时候,列出当前用户尚未完成的工作流,并供其选择,而且是在WCM模块内</p>
+
+<p>难点: 1. 无法获取myTask 2. 即使获取了,无法以列表方式展示给用户以选择</p>
+
+<p>崩溃了,我交不了差了,哎&hellip;&hellip;&hellip;</p>
+
+  <div class="more">
+    <a href="/11.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/9.html">科学城的办公室有奶茶!</a> <span class="date">2010-07-27 16:19:53</span></h3>
+  <p>有奶茶,有精力!</p>
+
+<p>久违的奶茶,O(∩_∩)O哈哈~ 热乎乎的泡上一杯!</p>
+
+<p>中午还吃了烧鸭饭! 半年前的味道,爽!! 之前在SC呆了一年多,现在找回习惯的味道,(<em>^__^</em>) 嘻嘻……</p>
+
+<p>继续奋斗工作流&hellip;</p>
+
+  <div class="more">
+    <a href="/9.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/7.html">开始尝试jBpm</a> <span class="date">2010-07-27 00:37:29</span></h3>
+  <p>非常无语,本周五要完成一个jBpm流程的开发,悲剧的是我才刚刚接触!!</p>
+
+<p>下载了Eclipse 3.4.2 和jBpm installer 3.2.7 开工啦</p>
+
+<p>这次,我还是打算用Alfresco集成的jBpm,因为它提供了预设的UI,无需另外编写.</p>
+
+<p>参考地址: <a href="http://wiki.alfresco.com/wiki/WorkflowAdministration">WorkflowAdministration</a></p>
+
+<p>需要建立Model和Define,Resource</p>
+
+<p>难点在于Define的识别,和Model的设计. 按照分工, Define由PM完成,我负责UI(打算用Alfresco原本的Model来构建UI)</p>
+
+  <div class="more">
+    <a href="/7.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/4.html">每天写点东西</a> <span class="date">2010-07-26 14:06:16</span></h3>
+  <p>没啥,想写点东西了</p>
+
+<p>随意吧,开心就好</p>
+
+  <div class="more">
+    <a href="/4.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

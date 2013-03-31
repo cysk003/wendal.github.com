@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alfresco配置 — 第三节</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Alfresco配置 — 第三节 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>今天打算说说Alfresco里面的工作流,这个是我折腾了好几个星期的事.</p>
+
+<p>Alfresco的工作流分为3部分, Define/Model/UI</p>
+
+<p>其中Define就是普通的jBpm3.2工作流引擎,你可以使用Alfresco提供的AlfrescoScriptAction直接调用Alfresco的服务,最基本的就是logger</p>
+
+<p>Model,其实不单单是工作流的配置,它使用你定义的命名空间,声明需要用户输入的属性,和需要显示的属性</p>
+
+<p>UI, 属于web-client-config.xml的自定义版本 web-client-config-custom.xml,用于定义各Model中的type如何显示在页面上.</p>
+
+<p>具体的工作流我就不打算详细说了,也许以后会贴出示例.</p>
+
+<p>说说几个技巧:</p>
+
+<ol>
+<li><p>如果无法用AlfrescoScriptAction解决你遇到的问题,请毫不犹豫地使用自定义的ActionHandler,不过最好继承JBPMSpringActionHandler,以便获取Alfresco相应服务的bean, 而且,bean的name一般就是接口的首字母小写,例如节点服务 nodeService, 用户服务 personService,操作服务actionService(可以创建mail action).</p></li>
+
+<li><p>流程意外停止,无法继续正常流下去,咋办? 使用 admin/workflow-console.jsp , 然后使用相关的命令对付该流程.例如signal, delete, cancel</p></li>
+
+<li><p>开发工作流时,请先确保工作流本身是正确的,然后再调试Model/UI</p></li>
+</ol>
+
+<p>哈哈,差点忘了, UI还需要properties&lt; 文件,用于定义页面上显示的label</p>
+
+<p>有用的链接:</p>
+
+<p><a href="http://wiki.alfresco.com/wiki/WorkflowAdministration">alfresco WorkflowAdministration</a></p>
+
+<p><a href="http://wiki.alfresco.com/wiki/Workflow_Console">alfresco Workflow_Console</a></p>
+
+<p><a href="http://docs.jboss.com/jbpm/v3/userguide/">jbpm userguide/</a></p>
+
+<p><a href="http://wiki.alfresco.com/wiki/Data_Dictionary_Guide">alfresco Data_Dictionary_Guide</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/35.html" title="Alfresco配置 — 第四节">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/29.html" title="Alfresco配置 — 第二节">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2010-08-04 22:14:25</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Alfresco-ref">Alfresco <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#alfresco-ref">alfresco <span>17</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#JBoss-ref">JBoss <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#jbpm-ref">jbpm <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#logger-ref">logger <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Wiki-ref">Wiki <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#XML-ref">XML <span>15</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%B7%A5%E4%BD%9C-ref">工作 <span>18</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%B7%A5%E4%BD%9C%E6%B5%81-ref">工作流 <span>8</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

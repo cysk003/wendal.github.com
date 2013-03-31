@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NutzMole -- Nutz的代码生成器</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>NutzMole -- Nutz的代码生成器 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>惯例,先上下载地址:
+<a href="http://nutz.googlecode.com/files/rapid-generator-for-nutzmole-1.1.zip">NutzMole 1.1 for rapid</a></p>
+
+<p>这个项目的原始地址,原本是nutzlab的一个实验项目:
+<a href="http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole">http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole</a></p>
+
+<p><strong>历史:</strong>
+最初的代码,是在2010年11月提交的,之后一直处于冻结状态 &ndash; 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
+直到几天前,我重启这个项目,并作了少量修正后,发布了NutzMole 1.0版,可独立运行,说白了,就是把旧代码清理一下,打包成一个独立运行包</p>
+
+<p>1.0发布后,意见/建议/批评纷纷袭来,很大的原因是这个版本并未严格测试,模板本身使用的一些代码在Nutz 1.b.39已经无法使用</p>
+
+<p>很快的, 1.1版发布了,更新了模板,并采用了rapid的代码生成器平台</p>
+
+<p><strong>对比一下最初的NutzMole和rapid代码生成器平台</strong>:
+    NutzMole使用多个配置文件,rapid仅一个配置文件
+    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板&ndash;&gt;文件的机制</p>
+
+<p>NutzMole以专用工具的思想设计, rapid是按平台的理念设计,我对其代码生成器的印象是:
+    1. 单一配置文件,对用户非常友好
+    2. 平等的文件模板机制 &ndash;&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
+
+<p><strong>NutzMole 1.1的使用指南</strong>:
+    修改generator.xml以符合你的数据库配置,如果lib文件夹未包含你需要的数据库驱动,请自行添加,然后执行rapid-gen.bat</p>
+
+<p>非常简单的使用方法,另外我正考虑做一个简单的GUI供用户填写信息</p>
+
+<p>另外,值得注意的是,我在nutzmole的模板中使用了lombok,一个非常非常好用的工具包,最大的用处就是免去写Getter/Setter
+下载地址:
+<a href="http://projectlombok.org/">http://projectlombok.org/</a>
+我已经多次思考是否把lombok加入模板中,最近决定:这东西实在太好,非常值得推广!!强推吧!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/316.html" title="广工,3年来,你改变了什么?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/312.html" title="把VPS翻新了一下">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-08-21 11:39:55</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#XML-ref">XML <span>15</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E8%B7%AF%E5%BE%84-ref">路径 <span>13</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

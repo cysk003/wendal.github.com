@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Nutz 1.b.38发布了,将来怎么走呢?</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Nutz 1.b.38发布了,将来怎么走呢? </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>经过马拉松式的开发,在1.b.37发布之后的3个月,1.b.38终于正式发布</p>
+
+<p>在我看来,这是个里程碑式的版本,截至到1.b.38,Nutz的每一部分都至少重构了一次</p>
+
+<p>Ioc很久以前就重构过,大概是1.a.27,zozoh操刀
+Aop,1.a.29进行重构,我操刀
+Json,1.b.38历经两次重构,先是jukai,后面是我
+Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
+
+<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 &ndash; 在不停的fix bug中完善</p>
+
+<p>然而,Nutz还需要些什么呢?或者说,用户还需要些什么呢?
+1. 代码生成器 &ndash; 很多很多用户要求这个,但是,真的能提供生产效率吗??
+2. IDE &ndash; 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
+3. 支持NoSQL &ndash; 貌似没啥意义
+4. 还有一些零碎的功能增强,一时半刻没想起来</p>
+
+<p>我觉得Nutz还有一些设计欠佳的地方:
+1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 &ndash; 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
+2. Ioc的单例 &ndash; NutIoc中的单例的概念,我依旧觉得很怪,呵呵
+3. Dao的Pojo实例的生成机制 &ndash; 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
+4. Json反序列化的定制性 &ndash; 1.b.38引入的JsonField注解,恩,应该得到一些改善
+5. Castor的扩展机制 &ndash; 这东西到底有没有人用过呢??</p>
+
+<p>恩, Nutz,继续努力!!</p>
+
+<p><strong>喜欢Nutz?? Fork它!!</strong></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/303.html" title="Autoproxy Forever!!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/299.html" title="JGit初试牛刀">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-07-17 19:17:19</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

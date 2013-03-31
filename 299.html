@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>JGit初试牛刀</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>JGit初试牛刀 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>最近爱上了Git,当然不能忽略jGit啦</p>
+
+<p>好吧废话少说,直接上代码先:</p>
+
+<pre><code>package net.wendal.jgit;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+public class JGit {
+
+    public static void main(String[] args) throws Throwable {
+        File root = new File(&quot;gitme&quot;);
+        if(!root.exists())
+            root.mkdir();
+        File gitF = new File(&quot;gitme/.git&quot;);
+        if(!gitF.exists()) {//如果已经初始化过,那肯定有.git文件夹
+                        //初始化git库,相当于命令行的 git init
+            Git.init().setDirectory(root).call();
+        }
+        Git git = Git.open(root); //打开git库
+
+                //好吧,随便写一个文件进去先
+        File newFile = new File(&quot;gitme/&quot;+System.currentTimeMillis()+&quot;.java&quot;);
+        FileWriter fw = new FileWriter(newFile);
+        fw.write(System.currentTimeMillis() + &quot; ABC&quot;);
+        fw.flush();
+        fw.close();
+
+                //添加文件咯,相当于 git add .
+        git.add().addFilepattern(&quot;.+&quot;).call();
+
+                //然后当然是提交啦,相当于 git commit
+        git.commit().setCommitter(&quot;wendal&quot;, &quot;wendal1985@gmail.com&quot;).setMessage(&quot;Try jgit!&quot;).call();
+
+        //接下来,我们看看log信息
+        for(RevCommit revCommit : git.log().call()){
+            System.out.println(revCommit);
+            System.out.println(revCommit.getFullMessage());
+            System.out.println(revCommit.getCommitterIdent().getName() + &quot; &quot; + revCommit.getCommitterIdent().getEmailAddress());
+        }
+    }
+
+}
+</code></pre>
+
+<p>输出的内容:</p>
+
+<pre><code>commit 5fb38fa714f42f5be72cea9221f9264a5944a14e 1310829994 ----sp
+Try jgit!
+wendal wendal1985@gmail.com
+</code></pre>
+
+<p>如果你重复运行,会看到好几条哦,呵呵</p>
+
+<p>就现在看来,JGit的API设计得还不错,链式操作,而且比较直观</p>
+
+<p>JGit项目地址: <a href="http://www.eclipse.org/jgit">http://www.eclipse.org/jgit</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/302.html" title="Nutz 1.b.38发布了,将来怎么走呢?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/296.html" title="Rk2918固件新打包格式分析">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-07-16 21:53:35</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#Eclipse-ref">Eclipse <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#git-ref">git <span>20</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

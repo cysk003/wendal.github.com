@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/434.html">NutIoc的执行过程</a> <span class="date">2012-06-23 19:05:17</span></h3>
+  <p>越来越多人阅读Nutz的源码,很是欣慰.</p>
+
+<p>首先,什么是Ioc呢? Ioc本质上就是一个有状态的Map<String,Object>, 其中bean就是用户通过各种形式的配置信息所定义的对象</p>
+
+<p>先上一段代码,通过一个js配置一个Ioc容器,并获取一个bean</p>
+
+<pre><code>public static void main(String[] args) {
+    IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
+    Ioc ioc = new NutIoc(loader);
+    Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
+    System.out.println(pet.getName());
+}
+</code></pre>
+
+<p>ioc的js配置文件(ioc.js,名字是随意的)</p>
+
+<pre><code>var ioc = {
+    pet : {
+        type : &quot;net.wendal.test.Pet&quot;,
+        fields : {
+            name : &quot;wendal&quot;
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/434.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/429.html">北京之行,就上一张图吧</a> <span class="date">2012-06-01 10:19:17</span></h3>
+  <p><img src="/assets/media/2012/06/6f91c323jw1dtdb6o9986j.jpg">Nutz的代码就是这么来滴~~~~</img></p>
+
+  <div class="more">
+    <a href="/429.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/427.html">今天生日,上一张图!</a> <span class="date">2012-05-24 21:58:24</span></h3>
+  <p><img src="/assets/media/2012/05/psb.jpg">鸣鸣玩电脑</img></p>
+
+<p>明天去帝都: 机票OK,酒店OK,保险OK</p>
+
+  <div class="more">
+    <a href="/427.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/426.html">香港的婚礼,不一样的</a> <span class="date">2012-05-21 10:32:38</span></h3>
+  <p>先上个google地图:</p>
+
+<p><a href="http://ditu.google.com/maps?f=d&amp;source=embed&amp;saddr=%E5%B9%BF%E5%B7%9E%E5%B8%82%E8%8A%B1%E9%83%BD%E5%8C%BA%E6%96%B0%E5%8D%8E%E8%A1%97%E9%94%A6%E5%B0%9A%E5%90%8D%E8%8B%91&amp;daddr=%E9%A6%99%E6%B8%AF%E6%9F%B4%E6%B9%BE%E9%81%93%E9%B2%A4%E9%B1%BC%E9%97%A8%E5%85%AC%E5%9B%AD%E5%8F%8A%E6%B8%A1%E5%81%87%E6%9D%91&amp;hl=en&amp;geocode=FQAZZQEdcti_BiHOsyv7oLhdCg%3BFfPtUwEdcxHPBiG9kDx6EHJRAynv0E63eAEENDHYfuKNakENzw&amp;aq=2&amp;oq=%E9%A6%99%E6%B8%AF+%E9%B2%A4%E9%B1%BC%E9%97%A8%E5%85%AC%E5%9B%AD+&amp;sll=22.840186,113.734884&amp;sspn=1.354174,2.705383&amp;t=w&amp;brcurrent=3,0x3402f895a35c2bc7:0xe59e075adeae415,0%3B5,0,0&amp;dirflg=r&amp;ttype=now&amp;noexp=0&amp;noal=0&amp;sort=def&amp;mra=ltm&amp;ie=UTF8&amp;ll=22.83893,113.733585&amp;spn=1.12796,0.99499&amp;start=0">View Larger Map</a></p>
+
+<p>整个婚礼的流程如下:</p>
+
+<ol>
+<li><p>律师兼主持人,宣布仪式开始,全场肃静,婚礼进行曲响起</p></li>
+
+<li><p>新郎站在前台(高台),等待新娘入场</p></li>
+
+<li><p>大门打开,2个小女孩撒花开路,2个姐妹间隔2米左右,引领新娘缓缓走向新郎</p></li>
+
+<li><p>新郎挽住新娘的手,走上前台</p></li>
+
+<li><p>律师站2人正中,新郎新娘分站2边,对视</p></li>
+
+<li><p>律师提示婚姻在法律上的约束力,并询问双方是否自愿成为夫妻</p></li>
+
+<li><p>新郎宣读誓言</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/426.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/424.html">在LuaJIT中通过FFI直接调用newlisp</a> <span class="date">2012-05-17 22:02:59</span></h3>
+  <ol>
+<li>首先,当然是编译newlisp,并拷贝到/usr/lib/libnewlisp.so</li>
+<li>编译luajit,启动之</li>
+</ol>
+
+<p>上代码</p>
+
+<pre><code>--载入ffi
+ffi = require(&quot;ffi&quot;)
+--载入newlisp
+newlisp = ffi.load(&quot;newlisp&quot;)
+--定义newlisp的公开API
+ffi.cdef[[
+char * newlispEvalStr(char * cmd);
+]]
+
+--接下来,就是调用过程了
+newlisp_str = &quot;()&quot;
+tmp = ffi.new(&quot;char[2]&quot;) -- 因为newlispEvalStr的参数是char*,而newlisp_str是string,需要转一下
+ffi.copy(tmp, newlisp_str)
+</code></pre>
+
+  <div class="more">
+    <a href="/424.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/423.html">将诺顿Ghost(诺顿克隆精灵)正版化了</a> <span class="date">2012-05-12 21:17:33</span></h3>
+  <p><strong>不打算说其他的,就贴一下邮件内容吧:</strong></p>
+
+<pre><code>感谢您光临诺顿网络商店。
+以下是您所购买产品的下载信息。
+请务必妥善保管本邮件。
+
+[订单内容]
+───────────────────────────────────
+[订单号码]       NSCN0000017XXXX
+[定购日期]       2012-05-12 22:09:28
+───────────────────────────────────
+[订购的商品1]      诺顿克隆精灵15.0 一用戶 下载版
+[类别]             下载
+[数量]             1 个
+[产品密钥]   09-A052-0969-XXXXXX
+───────────────────────────────────
+</code></pre>
+
+  <div class="more">
+    <a href="/423.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/422.html">增强型Proxy_Pass - 替换nginx内置的proxy_pass</a> <span class="date">2012-05-09 10:33:34</span></h3>
+  <p><strong>项目地址: <a href="https://github.com/wendal/lua-resty-http">https://github.com/wendal/lua-resty-http</a></strong></p>
+
+<p>这个项目是<a href="https://github.com/liseen/lua-resty-http">https://github.com/liseen/lua-resty-http</a>的fork版本, 暂未被合并.</p>
+
+<p><strong>nginx内置的proxy_pass有几个问题</strong>:
+1. 无法方便的调整后端host
+2. 总是等待后端host把响应写完了,才开始向客户端写数据
+3. proxy_next_upstream不灵活</p>
+
+<p><strong>演示,实时proxy_pass,每读取1k就往浏览器写1k数据:</strong></p>
+
+<pre><code>local url = 'http://'
+if ngx.var.http_host then
+   url = url .. ngx.var.http_host 
+end
+url = url .. ngx.var.request_uri  -- 拼接完整的URL
+if ngx.var.args then
+   url = url .. '?' .. ngx.var.args
+end
+local ok, code, headers, status, body  = hc:proxy_pass {
+    url = url,
+    fetch_size = 1024, -- 分段大小
+    max_body_size = 100*1024*1024 ,  --响应体的最大大小.
+    headers = ngx.req.get_headers(), -- 传递客户端的参数,可以根据需要进行修改哦.
+    method = ngx.var.request_method, -- 真实还原客户端的请求方法,当然,你可以改!!
+}
+if not ok and not ngx.headers_sent then
+    ngx.exit(502) -- 出错了哦? 这里只是简单遵循了nginx在后端报错时的响应,你完全可以实现自己的逻辑,进行错误处理
+else
+    ngx.eof()
+end
+</code></pre>
+
+  <div class="more">
+    <a href="/422.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/421.html">bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</a> <span class="date">2012-05-07 23:34:03</span></h3>
+  <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank">http://glines.org/software/bfr</a></p>
+
+<p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
+Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
+
+<p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
+
+<p>终于,问题还是回来了, 而且,很巧的,我找到了bfr,一个古老的管道缓冲器(2004年之后就没有更新了&hellip;),So, 为其建立一个github的库 <a href="https://github.com/wendal/bfr" target="_blank">https://github.com/wendal/bfr</a></p>
+
+<p>使用说明,简单翻译:</p>
+
+<pre><code>bfr v1.6 (c) 1999-2003 Mark Glines &lt;mark@glines.org&gt;
+Usage follows:
+
+bfr [-v|--verbose] [-t0|--threshold=0] [-T0|--timeout=0]
+    [-b100|--bufsize=100] [-p&lt;arg&gt;|--progress=&lt;arg&gt;] [-m0|--minimum=0]
+    [-T90|--throttle=90] [-C0|--speedcap=0] [&lt;input file or -&gt; ...]
+
+short --long       default desc
+-h    --help       -       display this (hopefully) helpful message.(帮助信息)
+-v    --verbose            enable verbosity (use twice for pedantic verbosity) (详尽信息,除非你遇到bug!!)
+-p    --progress   k1k     Enables &quot;progress mode&quot; (see manpage) (进度显示, 强烈建议无视这个选项)
+-m    --minimum    600k    set the amount of buffer to reach before output
+                       begins (to ensure a full stream even at start).(低于多少缓冲,就先不输出)
+-i    --initial    minimum Special case of --minimum to preload at the start
+                       of operation.  If unset, --mimumum value is used.(真正输出前,先接收多少数据)
+-t    --timeout    0       time, in seconds, to wait before aborting if both
+                       input and output are locked.  0 = wait forever.(输入输出被阻塞的超时设置,基本上是用不上的)
+-T    --throttle   90      after filling the buffer, the percentage to let the
+                       amount of onhand data to go down to before accepting
+                       more input. (缓冲区接近满的时候,停止接收数据,直至缓冲区的占有率下降)
+-C    --speedcap   0       If set to a non-zero value, bfr will allow only
+                       this many bytes to be output per second. (限制流出的速率,基本上没用)
+</code></pre>
+
+  <div class="more">
+    <a href="/421.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/420.html">成功编译OpenJDK 7u2 ! 哦也！</a> <span class="date">2012-05-06 23:12:24</span></h3>
+  <p>这个周末，连续编译了好几款开源程序：
+ffmpeg+x264 很传统的编译,./configure和make
+mongo+v8     使用scons进行编译，改为V8引擎的mongo，性能是否会大幅提速呢？ 打算出个报告哦！
+mysql5.5       使用cmake</p>
+
+<p>最后一个重头戏，本打算编译Chrome的，但发现其源码实在太大了，改为编译向往已久的OpenJDK 7u2</p>
+
+<p>编译环境，Ubuntu 12.04 x64桌面版, root用户下操作</p>
+
+<p><strong>准备工作</strong></p>
+
+<pre><code>apt-get build-dep openjdk-6
+apt-get install openjdk-6-jdk
+apt-get install libasound-dev build-essential
+</code></pre>
+
+<p><strong>下载OpenJDK 7 update 2 的源码</strong></p>
+
+<pre><code>cd /opt
+wget http://www.java.net/download/openjdk/jdk7u2/promoted/b13/openjdk-7u2-fcs-src-b13-17_nov_2011.zip
+unzip openjdk-7u2-fcs-src-b13-17_nov_2011.zip
+cd /opt/openjdk
+</code></pre>
+
+  <div class="more">
+    <a href="/420.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/418.html">深入一下Git的Hook(钩子)机制</a> <span class="date">2012-05-06 13:35:16</span></h3>
+  <p>首先, 先来看看我刚刚翻译完成的<a href="https://github.com/wendal/wendal/blob/master/githooks/githooks.txt">GitHooks.txt(官方文档的翻译)</a></p>
+
+<p>接着,当然是俺的总结发言了(已经附在翻译稿后面):
+<strong>1. hook列表</strong>:</p>
+
+<pre><code>------------------------------------------------------
+|钩子名字          |触发命令    |参数|非0导致取消|备注|
+|applypatch-msg    |git am      |1   |Yes||
+|pre-applypatch    |git am      |0   |Yes||
+|post-applypatch   |git am      |0   |No ||
+
+|pre-commit        |git commit  |0   |Yes||
+|prepare-commit-msg|git commit  |1~3 |Yes||
+|commit-msg        |git commit  |1   |Yes||
+|post-commit       |git commit  |0   |No ||
+
+|pre-rebase        |git rebase  |2   |Yes||
+
+|post-checkout     |git checkout|3   |No ||
+</code></pre>
+
+  <div class="more">
+    <a href="/418.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

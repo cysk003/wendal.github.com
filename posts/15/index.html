@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/252.html">最近速成Lua了,简单记一下</a> <span class="date">2011-03-10 19:56:26</span></h3>
+  <p>最近速成Lua,写篇文章mark一下, 参考了 <a href="http://luaforge.net/frs/download.php/4416/A_Quick_Start_Guide_On_Lua_For_C_C_Programmer_CN.pdf">Lua-Quick-Start-Guide-CN</a></p>
+
+<p>Lua执行器, 官方当前最新5.1.4, 但我觉得LuaJIT 2.0 beta6 更好</p>
+
+<p>我的考虑是这样的:
+1. 为了性能,把固定的处理逻辑用C写
+2. 为了灵活,与配置紧密相关的用Lua写</p>
+
+<p>8种类型:
+数字(double), 字符串, 布尔值(true/false)
+函数(function)
+表(相当于HashMap+List,唯一的数据结构)
+用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) &ndash; 对我基本无用处
+协程(thread) &ndash; 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
+nil(空,啥都不是,一般就是标志物)</p>
+
+<p>语法:
+1. 变量无类型
+2. 无需;之类的语句终结符,最好一行一条语句, 语言本身对缩进不感冒.
+3. 函数可以返回多个值 (Java中我也想啊!)
+4. if语句, 除了false和nil外, 一律视为true (真的比较单纯的约定)
+5. 没有数组,只有table, 相当于HashMap+List
+6. 支持闭包,但我用不上,无视之
+7. 有假的多线程,直接无视</p>
+
+  <div class="more">
+    <a href="/252.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/251.html">[误报]难道我遇到lua-nginx-module的一个bug?</a> <span class="date">2011-03-09 22:30:07</span></h3>
+  <p>已经确定是我自己的原因
+实在不是很肯定,如果加入特定的&ndash;with-cc-opt参数就报错.</p>
+
+<p>环境: Ubuntu 10.04.2 LTS Server</p>
+
+<p>先安装好依赖的包:
+apt-get install liblua5.1-0-dev g++
+然后下载google-perftools:</p>
+
+<pre><code>wget http://google-perftools.googlecode.com/files/google-perftools-1.6.tar.gz
+tar xvf google-perftools-1.6.tar.gz
+cd google-perftools-1.6
+./configure
+make
+make install
+</code></pre>
+
+<p>然后到nginx编译:
+下载ngx_devel_kit 0.2.17
+下载lua-nginx-module 0.1.6rc2</p>
+
+  <div class="more">
+    <a href="/251.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/250.html">兼容FireFox 4的AutoProxy</a> <span class="date">2011-03-09 07:50:52</span></h3>
+  <p>#########################################
+##官方已经发布兼容FF4 版本!! <a href="https://addons.mozilla.org/zh-CN/firefox/addon/autoproxy/versions/">马上去下载安装吧!!</a>
+#########################################</p>
+
+<p>前几天, FF4 RC1 放出, 作为FF粉丝怎么可以不升级?</p>
+
+<p>安装后,启动,检查附件组件兼容性, 什么?!! Autoproxy不兼容?!! 这可不行,这是必备的!!!</p>
+
+<p>到处查找更新版,官方发布的0.4b1也不支持FF4 RC1 !!!</p>
+
+<p>好吧,根据其<a href="http://code.google.com/p/autoproxy/issues/detail?id=147">issue 174</a>,其实已经修改,只是还没有发布,只好直接跑到Autoproxy的官网下载源码进行编译(为此下载了Git For Windows,Perl,MS-DOS Zip)</p>
+
+<p>经过简单试用,恩,一切正常!!</p>
+
+<p>好东西不能独享,放出我自己的编译的版本给大家救急</p>
+
+<p>如有更新,我也会及时跟进(前提是官方还未放出)
+<strong>下载:
+&mdash;&gt; autoproxy-0.4.0+.2011030823.xpi
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hY2JhMTZjNjUtODE2ZC00ODE0LThjMjYtZTZmNmNhMDNlOGJl&amp;sort=name&amp;layout=list&amp;num=50">Google Docs 下载</a> , <a href="http://build.sunfarms.net/download/autoproxy-0.4.0+.2011030823.xpi"> 本地下载</a></strong></p>
+
+  <div class="more">
+    <a href="/250.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/248.html">一个简单XML工具类,支持简单的路径求值</a> <span class="date">2011-03-06 19:57:55</span></h3>
+  <p>估计是个轮子,因为一说起XML,自然想到的是JDom/dom4j等老牌/强大的工具.</p>
+
+<p>但我的需求如此简单: &ldquo;支持简单的路径求值&rdquo; ,就加一个N多垃圾的jar包,算了,一气之下,写了这个工具类.</p>
+
+<p>原本这个工具类包含 一个接口,一个实现类,一个工厂类,一个测试类</p>
+
+<p>完成初版后,发现,为啥还分这么多东西,不就一个简单需求嘛!! 很不符合我的风格. 而且,我还特意建了一个工程叫NutzXML &hellip;.</p>
+
+<p>不行,这种需要扩展,不考虑效率的东西, 咋调用一下都这么麻烦? 改!!</p>
+
+<p>最后,整个XmlMap类,加上注释,150行, 这里展示的是无注释的版本:</p>
+
+<pre><code>package org.nutz.xml;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+</code></pre>
+
+  <div class="more">
+    <a href="/248.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/247.html">一起来,为Nutz编写插件!</a> <span class="date">2011-03-05 21:33:29</span></h3>
+  <p><strong>随着Nutz代码的不断改进,为Nutz编写插件已经越来越容易.</strong></p>
+
+<p>早期我们编写的插件,很多都是为了兼容/集成XX框架而写的. 例如<a href="http://code.google.com/p/nutzmore/source/browse/trunk/src/org/nutz/ioc/impl/spring/SpringIocProvider.java">SpringIocLoader</a></p>
+
+<p>其实我们可以做更多更强大的插件,今天以当前扩展功能最好的MVC为例:
+1. 视图插件
+2. 适配器插件
+3. 处理器插件
+4. UrlMapping插件</p>
+
+<p>逐一讲解:
+<strong>1. 视图插件</strong>
+    要求: 实现View接口和ViewMarker接口
+    能做什么?
+        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+
+<p><strong>2. 适配器插件</strong>
+    要求: 实现HttpAdaptor接口
+    能做什么?
+        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
+        &ndash; 请求是加密的? 需要解码才能读取
+        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+
+  <div class="more">
+    <a href="/247.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/246.html">人生第一次离职,Mark一下</a> <span class="date">2011-02-25 21:18:59</span></h3>
+  <p>终于办完离职手续,离开了工作了3年的公司.</p>
+
+<p>太困了,虽然很多话想写,下次吧,先自己Mark一下,留个纪念.</p>
+
+  <div class="more">
+    <a href="/246.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/245.html">JDiff 使用与改进</a> <span class="date">2011-02-24 15:45:02</span></h3>
+  <p>不久前为Nutz的构建服务添加JDiff报告. 报告查看地址: <a href="http://build.sunfarms.net/nutz/lastest/jdiff/">http://build.sunfarms.net/nutz/lastest/jdiff/</a> 以后都可以知道不同的nutz版本API有何不同了.</p>
+
+<p>JDiff报告,就是描述不同版本的代码之间的API差异, 如某某public类被删除了,某某接口改变了</p>
+
+<p>感兴趣的可以先访问<a href="http://www.jdiff.org">官网</a>,以了解基本使用.</p>
+
+<p>但,原本的JDiff有一个很大的问题,对中文支持不好.故,我改进了一下,放出一个版本(原版已经很久没用更新了)
+添加了一个配置,用于设置源码的编码encoding. 另外,我移除了对xerces.jar的依赖.</p>
+
+<p>现在可以在old或者new节点添加encoding=&ldquo;UTF-8&rdquo;之类的设置. 实例配置,请查看Nutz项目的build2.xml文件,地址: <a href="http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml">http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml</a></p>
+
+<p>我已经上传到Google Doc,需要的童鞋就下载吧.
+地址: <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hMjViMjBlMGEtMDlkMi00NjllLWE0MjctNmUxNWI3N2QzZjE2&amp;hl=zh_CN">jdiff-1.1.1-Modify-by-Wendal.zip</a></p>
+
+<p>附上对原版的修改:</p>
+
+<ol>
+<li>移除对xerces.jar的依赖,
+将XML2API中的代码:</li>
+</ol>
+
+  <div class="more">
+    <a href="/245.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
+  <p>先放出下载地址:
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
+
+<p>原版下载地址: <a href="http://www.cs.ioc.ee/~ando/jbe/">JBE - Java Bytecode Editor</a></p>
+
+<p>原版存在的问题:
+对方法进行修改后,点击Save Method, 如果存在 invokeinterface 的行, 将无法保存!! 后台报错.</p>
+
+<p>以下是我在压缩包中写的描述:
+This JBE had been modify by Wendal Chen , base on JBE 0.1b</p>
+
+<p>Fix:
+when save method whit &ldquo;invokeinterface&rdquo; , app fail.</p>
+
+<p>File change:</p>
+
+<pre><code>JAsmParser.java line 169~170:
+int arg1 = getMethodConstRef(instrElems, cpg, labels);
+int arg2 = Utility.methodSignatureArgumentTypes(getDescrFromFullMethod(instrElems[1])).length;
+</code></pre>
+
+  <div class="more">
+    <a href="/244.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/243.html">一个极其简陋的Datasource连接池实现</a> <span class="date">2011-02-21 13:18:41</span></h3>
+  <p>写了一段时间了,一直没提交到Nutz,哈哈. 明显没有技术含量,提上去明显找抽!</p>
+
+<p>用来跑Nutz的测试,能够全部pass.</p>
+
+<p>直接上代码:</p>
+
+<pre><code>package org.nutz.dao.impl;
+
+import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+</code></pre>
+
+  <div class="more">
+    <a href="/243.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/242.html">Nutz 一些无法完成的功能</a> <span class="date">2011-02-16 20:58:49</span></h3>
+  <p>这篇文章针对的是1.b.35</p>
+
+<ol>
+<li><p>Nutz.Ioc与Spring.ioc相比,无法实现工厂类生成具体类的实例</p>
+
+<p>public class A {}</p>
+
+<p>public class B {
+    public static A makeA(){return new A();}
+}</p></li>
+
+<li><p>Nutz.Aop与Spring.Aop相比,无法拦截构造方法,静态方法</p></li>
+
+<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; &ndash;&gt;POJO转换工具</p></li>
+
+<li><p>Nutz.MVC 没有校验功能,没有配置方式的URL映射</p></li>
+
+<li><p>Nutz.MVC 与Struts2相比, 没有标签库</p></li>
+
+<li><p>Nutz.Lang 与Apache Common 系列相比, 很多功能都没有</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/242.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NutzMongoSession -- 轻便的分布式Session实现</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>NutzMongoSession -- 轻便的分布式Session实现 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>作为Ngqa项目的其中一个功能, NutzMongoSession已经开发完成,并迁入zTask项目中,与NutzMongo的代码整合.</p>
+
+<p><strong>1. 用法</strong>
+基本配置(web.xml),接管全部请求,并替换其获取会话的req.getSession方法:</p>
+
+<pre><code>    &lt;filter&gt;
+        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.nutz.mongo.session.MongoSessionFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
+    &lt;/filter-mapping&gt;
+</code></pre>
+
+<p>在项目启动的代码中,加入下面的语句:</p>
+
+<pre><code>new MongoSessionManager(dao).register(servletContext, null);
+//其中,dao是MongoDao的实例
+</code></pre>
+
+<p><strong>2. 与标准HttpSession的差异</strong>
+可存放的对象类型: 普通数据类型,MongoDao所管理的Pojo,一切可以顺利json序列化/反序列化的对象
+由于是分布式的Session,必须考虑对象的状态托管问题,上代码:</p>
+
+<pre><code>User user = new User();
+user.setName(&quot;wendal&quot;);
+session.setAttribute(&quot;me&quot;, user);
+user.setName(&quot;ABC&quot;); //这个方法调用,改变了对象的属性,但没有再次调用session.setAttribute
+//....
+
+//另外一个方法里面
+String myName = ((User)session.getAttribute(&quot;me&quot;)).getName();
+//这里所得到的值,将是&quot;wendal&quot;而非&quot;ABC&quot;
+
+//------------------------------------------------------------------------------------
+
+//而,如果User是一个MongoDao所管理的bean的话,那么,它的
+session.setAttribute(&quot;me&quot;, user);
+user.setName(&quot;ABC&quot;); //这个方法调用,改变了对象的属性,但没有再次调用session.setAttribute
+dao.save(user); 把user更新到mongo
+
+//另外一个方法里面
+String myName = ((User)session.getAttribute(&quot;me&quot;)).getName();
+//这里所得到的值,将是&quot;ABC&quot;
+</code></pre>
+
+<p><strong>3. 获取全部Session</strong>
+一直以来,我都以为无法通过标准的ServletAPI简单获取当前应用的全部Session,直至我完成了NutzMongoSession,才发现HttpSession接口有一个已经废弃的方法可以做到
+好吧,我承认,我误导了很多很多童鞋&hellip;.</p>
+
+<pre><code>req.getSession().getSessionContext().getIds();
+//这样就能拿到全部Session的Id,然后通过Id,获取
+req.getSession().getSessionContext().getSession(id);
+//来获取具体的Session
+</code></pre>
+
+<p>为了与标准的HttpSession最大兼容,所以,NutzMongoSession也实现了这个方法.</p>
+
+<p><strong>4. 不足之处</strong>
+清理过期Session的算法,还需要改进,因为在服务器端,循环执行new Date()还是有一定成本的</p>
+
+<p>当前, NutMongoSession已经应用在Ngqa和zTask,效果还不错.
+有了NutMongoSession, <strong>应用做水平扩展</strong>就会很方便了,呵呵</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/394.html" title="获得方法形参名称列表 -- 哦也,搞定!!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/387.html" title="Win8消费者预览版无法拨通VPN的解决方法">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-03-06 15:20:40</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#mongodb-ref">mongodb <span>6</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#XML-ref">XML <span>15</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%85%BC%E5%AE%B9-ref">兼容 <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

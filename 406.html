@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>newLISP的ShellGame配套lsp源文件</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>newLISP的ShellGame配套lsp源文件 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p><a href="http://www.newlisp.org/">newLISP</a>官方提供的<a href="http://www.neglook.com/?Shell_Games">ShellGame</a>系列视频,并未提供lsp源文件,我看完了整个系列,顺便把源文件补了一部分,地址:
+<a href="https://github.com/wendal/learn-newLISP/tree/master/ShellGame">https://github.com/wendal/learn-newLISP/tree/master/ShellGame</a></p>
+
+<p>总共有23个视频,当前我完成了17个配套的lsp文件,剩下6个视频,没看懂,所以lsp文件还没写出来 &ndash; 难道是比较高阶的?</p>
+
+<p>附上第一个视频的lsp文件</p>
+
+<pre><code>;;视频原地址: http://www.neglook.com/
+;;lsp文件由wendal创建 http://wendal.net
+
+;; 用默认的context方法,创建数值生成器 -- 类似于自增
+
+(setq generator:acc 0)  ; 创建一个名叫generator的上下文,并添加一个符号acc
+
+(define (generator:generator) (inc generator:acc)) ;缺省的context方法(即与context同名的方法),其中的inc是方法,等同于++
+
+(generator)   ;;分号是单行注释的开始,而非语句的结束符
+
+(generator) 
+(generator)
+(generator)   ;;连续调用几次后,现在的值应该是acc应当等于4
+
+;;费波那西数列（Fibonacci Sequence）
+
+(define (fibo:fibo) 
+    (if (not fibo:mem) 
+        (setq fibo:mem '(0 1))) 
+    (last (push (+ (fibo:mem -2) (fibo:mem -1)) fibo:mem -1)))
+
+(fibo)
+(fibo)
+(fibo)
+(fibo)
+(fibo)
+
+(println fibo:mem) ;;打印fibo上下文(context)中mem变量的值
+
+(exit) ;; 执行完毕,环境关闭
+</code></pre>
+
+<p>同时,我也发现一个bug,就是中文注释后的一行代码,会被无视&hellip;汗 &mdash;&mdash;- 已经提交bug report</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/408.html" title="Nutz 1.b.43 发行后记">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/405.html" title="Python的while 1跟while True到底有什么区别?">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-03-27 22:08:44</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#lisp-ref">lisp <span>4</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#git-ref">git <span>20</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E8%A7%86%E9%A2%91-ref">视频 <span>6</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

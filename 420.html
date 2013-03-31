@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>成功编译OpenJDK 7u2 ! 哦也！</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>成功编译OpenJDK 7u2 ! 哦也！ </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>这个周末，连续编译了好几款开源程序：
+ffmpeg+x264 很传统的编译,./configure和make
+mongo+v8     使用scons进行编译，改为V8引擎的mongo，性能是否会大幅提速呢？ 打算出个报告哦！
+mysql5.5       使用cmake</p>
+
+<p>最后一个重头戏，本打算编译Chrome的，但发现其源码实在太大了，改为编译向往已久的OpenJDK 7u2</p>
+
+<p>编译环境，Ubuntu 12.04 x64桌面版, root用户下操作</p>
+
+<p><strong>准备工作</strong></p>
+
+<pre><code>apt-get build-dep openjdk-6
+apt-get install openjdk-6-jdk
+apt-get install libasound-dev build-essential
+</code></pre>
+
+<p><strong>下载OpenJDK 7 update 2 的源码</strong></p>
+
+<pre><code>cd /opt
+wget http://www.java.net/download/openjdk/jdk7u2/promoted/b13/openjdk-7u2-fcs-src-b13-17_nov_2011.zip
+unzip openjdk-7u2-fcs-src-b13-17_nov_2011.zip
+cd /opt/openjdk
+</code></pre>
+
+<p><strong>开始编译，会经历多个错误zzZZ</strong></p>
+
+<pre><code>export ALT_BOOTDIR=/usr/lib/jvm/java-1.6.0-openjdk-amd64
+export LANG=c
+jdk/make/jdk_generic_profile.sh
+make sanity
+
+#确认无错误后，执行
+make ALLOW_DOWNLOADS=true
+
+#然后，就等吧，必然出错，需要编辑一个文件
+vim hotspot/make/linux/makefiles/gcc.make
+#将其中的 WARNINGS_ARE_ERRORS = -Werror 注释掉
+
+#OK，再启动make
+make ALLOW_DOWNLOADS=true
+
+#然后，就到sound出错了
+cd jdk/make/javax/sound/jsoundalsa
+vim Makefile
+#找到CPPFLAGS ，在其结尾，添加 -lasound
+#如果再次make还是失败在这里，那么 ，先还原上一个修改， 并拷贝出错的最后一条gcc命令，添加-lasound后执行，应该无错误地pass
+
+#再次make
+make ALLOW_DOWNLOADS=true
+
+#OK，你会遇到最后的错误， corba的什么什么类找不到？！
+cp -r /opt/openjdk/build/linux-amd64/corba/classes/* /opt/openjdk/build/linux-amd64/classes/
+
+#好了，你最后一次跑make了，这次应该能够成功了！！
+make ALLOW_DOWNLOADS=true
+
+#漫长编译后，你终于能看到编译成功的提示：
+########################################################################
+##### Leaving jdk for target(s) sanity all docs images             #####
+########################################################################
+##### Build time 00:04:19 jdk for target(s) sanity all docs images #####
+########################################################################
+
+-- Build times ----------
+Target all_product_build
+Start 2012-05-06 23:07:41
+End   2012-05-06 23:12:30
+00:00:04 corba
+00:00:14 hotspot
+00:00:02 jaxp
+00:00:06 jaxws
+00:04:19 jdk
+00:00:04 langtools
+00:04:49 TOTAL
+-------------------------
+make[1]: Leaving directory `/opt/openjdk'
+</code></pre>
+
+<p><strong>大功告成，来玩玩吧！</strong></p>
+
+<pre><code>#现在，跑一下你的OpenJDK 7u2吧！！
+/opt/openjdk/build/linux-amd64/bin/java -version
+openjdk version &quot;1.7.0-internal&quot;
+OpenJDK Runtime Environment (build 1.7.0-internal-root_2012_05_06_19_19-b00)
+OpenJDK 64-Bit Server VM (build 22.0-b10, mixed mode)
+
+编译一个HelloWorld试试：
+/opt/openjdk/build/linux-amd64/bin/javac /tmp/Hi.java
+#################################
+root@ubuntu:/opt/openjdk/build/linux-amd64# /opt/openjdk/build/linux-amd64/bin/java -cp /tmp Hi
+Hi, this is my openJDK!
+root@ubuntu:/opt/openjdk/build/linux-amd64# 
+#################################
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/421.html" title="bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/418.html" title="深入一下Git的Hook(钩子)机制">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-05-06 23:12:24</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#cmake-ref">cmake <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#MySQL-ref">MySQL <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E5%B7%A5%E4%BD%9C-ref">工作 <span>18</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!! </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank">http://glines.org/software/bfr</a></p>
+
+<p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
+Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
+
+<p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
+
+<p>终于,问题还是回来了, 而且,很巧的,我找到了bfr,一个古老的管道缓冲器(2004年之后就没有更新了&hellip;),So, 为其建立一个github的库 <a href="https://github.com/wendal/bfr" target="_blank">https://github.com/wendal/bfr</a></p>
+
+<p>使用说明,简单翻译:</p>
+
+<pre><code>bfr v1.6 (c) 1999-2003 Mark Glines &lt;mark@glines.org&gt;
+Usage follows:
+
+bfr [-v|--verbose] [-t0|--threshold=0] [-T0|--timeout=0]
+    [-b100|--bufsize=100] [-p&lt;arg&gt;|--progress=&lt;arg&gt;] [-m0|--minimum=0]
+    [-T90|--throttle=90] [-C0|--speedcap=0] [&lt;input file or -&gt; ...]
+
+short --long       default desc
+-h    --help       -       display this (hopefully) helpful message.(帮助信息)
+-v    --verbose            enable verbosity (use twice for pedantic verbosity) (详尽信息,除非你遇到bug!!)
+-p    --progress   k1k     Enables &quot;progress mode&quot; (see manpage) (进度显示, 强烈建议无视这个选项)
+-m    --minimum    600k    set the amount of buffer to reach before output
+                       begins (to ensure a full stream even at start).(低于多少缓冲,就先不输出)
+-i    --initial    minimum Special case of --minimum to preload at the start
+                       of operation.  If unset, --mimumum value is used.(真正输出前,先接收多少数据)
+-t    --timeout    0       time, in seconds, to wait before aborting if both
+                       input and output are locked.  0 = wait forever.(输入输出被阻塞的超时设置,基本上是用不上的)
+-T    --throttle   90      after filling the buffer, the percentage to let the
+                       amount of onhand data to go down to before accepting
+                       more input. (缓冲区接近满的时候,停止接收数据,直至缓冲区的占有率下降)
+-C    --speedcap   0       If set to a non-zero value, bfr will allow only
+                       this many bytes to be output per second. (限制流出的速率,基本上没用)
+
+-b    --buffersize 1M      full size of memory buffer.(总的缓冲区大小,非常重要!!)
+
+-f    --fork               forks off the read half, to work around buggy
+                       kernels which block even in nonblocking mode, such
+                       as when reading from a cdrom or nfs volume hangs
+
+-o    --output     -       selects the output device(输出到哪里,默认是stdout)
+</code></pre>
+
+<p>关于编译,虽然它提供了configure等标准的构建脚本,但实际上,仅bfr.c和bfr.h是必须的, 简单修改bfr.h,定义VERSION,移除config.h,即可直接编译bfr!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/422.html" title="增强型Proxy_Pass - 替换nginx内置的proxy_pass">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/420.html" title="成功编译OpenJDK 7u2 ! 哦也！">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-05-07 23:34:03</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#Ant-ref">Ant <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#git-ref">git <span>20</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

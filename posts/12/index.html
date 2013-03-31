@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/302.html">Nutz 1.b.38发布了,将来怎么走呢?</a> <span class="date">2011-07-17 19:17:19</span></h3>
+  <p>经过马拉松式的开发,在1.b.37发布之后的3个月,1.b.38终于正式发布</p>
+
+<p>在我看来,这是个里程碑式的版本,截至到1.b.38,Nutz的每一部分都至少重构了一次</p>
+
+<p>Ioc很久以前就重构过,大概是1.a.27,zozoh操刀
+Aop,1.a.29进行重构,我操刀
+Json,1.b.38历经两次重构,先是jukai,后面是我
+Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
+
+<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 &ndash; 在不停的fix bug中完善</p>
+
+<p>然而,Nutz还需要些什么呢?或者说,用户还需要些什么呢?
+1. 代码生成器 &ndash; 很多很多用户要求这个,但是,真的能提供生产效率吗??
+2. IDE &ndash; 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
+3. 支持NoSQL &ndash; 貌似没啥意义
+4. 还有一些零碎的功能增强,一时半刻没想起来</p>
+
+<p>我觉得Nutz还有一些设计欠佳的地方:
+1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 &ndash; 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
+2. Ioc的单例 &ndash; NutIoc中的单例的概念,我依旧觉得很怪,呵呵
+3. Dao的Pojo实例的生成机制 &ndash; 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
+4. Json反序列化的定制性 &ndash; 1.b.38引入的JsonField注解,恩,应该得到一些改善
+5. Castor的扩展机制 &ndash; 这东西到底有没有人用过呢??</p>
+
+  <div class="more">
+    <a href="/302.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/299.html">JGit初试牛刀</a> <span class="date">2011-07-16 21:53:35</span></h3>
+  <p>最近爱上了Git,当然不能忽略jGit啦</p>
+
+<p>好吧废话少说,直接上代码先:</p>
+
+<pre><code>package net.wendal.jgit;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+public class JGit {
+
+    public static void main(String[] args) throws Throwable {
+        File root = new File(&quot;gitme&quot;);
+        if(!root.exists())
+            root.mkdir();
+        File gitF = new File(&quot;gitme/.git&quot;);
+        if(!gitF.exists()) {//如果已经初始化过,那肯定有.git文件夹
+                        //初始化git库,相当于命令行的 git init
+            Git.init().setDirectory(root).call();
+        }
+        Git git = Git.open(root); //打开git库
+</code></pre>
+
+  <div class="more">
+    <a href="/299.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/296.html">Rk2918固件新打包格式分析</a> <span class="date">2011-06-26 11:25:37</span></h3>
+  <p>本文针对 台电T760的2.x固件,原道N10,酷比1.0.5等RK2918方案的新固件打包格式</p>
+
+<p>文件总体结构:
+文件内容描述块 0x00 ~ 0x65
+Loader程序 0x66 ~ 0x66+Loader的长度
+update.img 0x66+Loader的长度+1 ~ 文件结束前32个字节
+MD5 文件的最后32个字节为文件其余部分的MD5码&ndash;ASCII形式</p>
+
+<p>文件内容描述块:
+文件头 0x00~0x04 共5个字节,固定为RKFWf
+固件版本号 0x05~0x09 共5个字节, 例如 00 03 00 02 00 代表 0.2.03, 00 09 00 02 08 代表 8.2.09
+芯片型号 0x15 一个字节, 50代表RK29,40代表RKCROWN,30代表RKNANO,20代表RK28,10代表RK27
+loader信息 0x19~0x20 共8个字节,前4个字节是偏移量,后4个字节是长度.例如66 00 00 00代表0x66,5A 55 02 00代表0x02555A
+update.img信息0x22~0x29 共8个字节,与loader信息含义一致</p>
+
+<p>附图片:
+<a href="/assets/media/2011/06/RK2918_IMG_Format.jpg">RK2918_IMG_Format.jpg</a></p>
+
+<p>我已经实现的版本:
+<a href="https://github.com/wendal/teclast_tools">https://github.com/wendal/teclast_tools</a> 源码
+下载:
+<a href="http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o">http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o</a></p>
+
+  <div class="more">
+    <a href="/296.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/295.html">搭建Git服务器,真的很简单</a> <span class="date">2011-06-21 21:07:36</span></h3>
+  <p><strong>重要提醒, 本教材适用于gitolite v2,与当前最新版v3不兼容!!</strong>
+<strong>需要在checkout gitolite后,切换到v2版!!</strong></p>
+
+<p>最近都在玩Git, <a href="https://github.com/nutzam/nutz">Nutz也已经迁移到Github上</a></p>
+
+<p>原文地址: <a href="http://sitaramc.github.com/gitolite/doc/1-INSTALL.html">http://sitaramc.github.com/gitolite/doc/1-INSTALL.html</a></p>
+
+<p>其实真的只需要几句</p>
+
+<pre><code>#现在开始是root做的
+
+#安装Git
+apt-get install git
+#拷贝你自己的公钥
+cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
+git clone git://github.com/sitaramc/gitolite
+cd gitolite
+##################################
+#重要!! 切换到v2版!!
+git checkout g2
+##################################
+src/gl-system-install
+</code></pre>
+
+  <div class="more">
+    <a href="/295.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/292.html">在几种编程语言中探索(Java/Python/Lua/C)</a> <span class="date">2011-06-10 12:15:42</span></h3>
+  <p>猛然发现自己已经快一个月没写blog,太懒惰了!!</p>
+
+<p>5月,先是脚受伤,接着过敏&hellip;</p>
+
+<p>Java &ndash; 为Nutz重写的Json解析器,最初的实现(zozoh)我看不懂,第二版(juqkai)改造得不够彻底,代码比较乱. 这次修改之后,解析将比之前严格,对于非法转义字符,不匹配的[}均直接抛出异常. 这将导致已经使用nutz的项目,其json文件可能会被报错. 然而,这并未100%的执行Json规范,主要是数字处理和map的key</p>
+
+<p>Python &ndash; 最近用得比较多,但至今未打动我. 很多情况下,Python依旧是Shell的替代品,呵呵. 不知道是不是习惯于一种思维: 编程语言=语法+API , 也许还没领会到Python的精髓与思维模式. 与Java相比, 多了些语法糖果,如in和缩进式的逻辑语句</p>
+
+<p>Lua &ndash; 呵呵,最近貌似很流行呢!! 最近玩的愤怒的小鸟,也是用Lua写的
+成果: <a href="http://www.teclast.com/bbs/forum.php?mod=viewthread&amp;tid=157140&amp;extra=">RK29xx固件解包打包工具_v1.1测试版</a> 当前唯一正确解包/打包RK2918方案固件的工具,完美解开台电T760的2.x固件,酷比1.x固件
+Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值得学习的一门语言</p>
+
+<p>C &ndash; 处理字符串,真是痛苦啊&hellip;</p>
+
+<p>刚刚把Nutz的代码迁移到Github了,准备写个简单教程,说说经验,呵呵</p>
+
+  <div class="more">
+    <a href="/292.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/288.html">鸣鸣满100天了!! 申领了身份证等重要证件,嘻嘻</a> <span class="date">2011-05-13 14:38:54</span></h3>
+  <p>嘻嘻,一百天了</p>
+
+<p>花了一个上午,办:
+身份证    40个工作日可取?!
+港澳通行证 15天
+护照        15天</p>
+
+<p>恩,还挺顺利的</p>
+
+<p>工作耽误了一些,明后两天加班,呵呵</p>
+
+<p>附回执,嘻嘻,关键信息都已经涂黑:
+<a href="/assets/media/2011/05/MM_SF.jpg">MM_SF-300x225.jpg</a></p>
+
+  <div class="more">
+    <a href="/288.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/287.html">不跟你玩,玩不起!!</a> <span class="date">2011-05-10 15:37:08</span></h3>
+  <p>认认真真地把robot.txt写好了,国内的百度,Soso,搜狗,一概屏蔽!!</p>
+
+<p>不跟你们玩了!!</p>
+
+  <div class="more">
+    <a href="/287.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/285.html">宝宝快100天了,记录一下经验</a> <span class="date">2011-05-04 19:12:41</span></h3>
+  <p>嘻嘻,鸣鸣诞生快100天,每天都如此充实.</p>
+
+<p>好,记录一下: <strong>13斤,63厘米</strong></p>
+
+<p>一些经验:
+<strong>1. 母乳喂养</strong>
+除非有生理/心理疾病,母乳都是足够的.
+首先,母乳是按需生产,宝宝喝得多,就产得多
+其次,认为母乳不足,添加奶粉,是非常错误的,BB少吮吸,奶自然就少
+最后,母乳如何才多? 1.怀孕期要按摩 2.喂奶前喝牛奶,吃鸡蛋,喂奶期间可以适当喝点水</p>
+
+<p><strong>2. 补钙</strong>
+千万被直接让BB吃钙片/液体钙!!
+如果宝宝晚上突然哭,不肯睡,可能就是缺钙.
+那么,妈妈就应该补钙了!! 我老婆每天补充400~500mg的钙,嘻嘻</p>
+
+<p><strong>3. 晚上喂奶</strong>
+晚上尽量不要喂奶!!
+临睡觉,让宝宝多喝点
+如果宝宝晚上醒了,先判断是否为纸尿裤湿了,不要急着喂奶.
+宝宝是需要调教的,除了第一个月,晚上基本上可以不用喂奶的
+如何调教? 临睡那一餐,多喂点,宝宝醒来的时候,慢一点喂,逐渐逐渐的,间隔时间就长起来了&hellip; 最后过渡到晚上不喂,或晚上只喂一点点
+我现在做的是,晚上不需要喂,或者只需要喂一两口(其实宝宝还是睡着的,眼睛都没睁开过), 整个晚上都不醒.
+睡得好,宝宝才能长得快,而非吃得好哦</p>
+
+  <div class="more">
+    <a href="/285.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/282.html">评价一下Everbox和微盘</a> <span class="date">2011-04-30 20:38:53</span></h3>
+  <p><strong>两者的官方:</strong>
+Everbox <a href="http://everbox.com">http://everbox.com</a>
+微盘 <a href="http://vdisk.me">http://vdisk.me</a></p>
+
+<p><strong>容量:</strong>
+Everbox 上限15G,单一文件大小仅受限于空间大小
+微盘      上限10G,单一文件大小未知(API也没说,页面也没提及&hellip;)</p>
+
+<p><strong>运行平台:</strong>
+两者的前端都是nginx,我喜欢!! 而且盛大的版本比较新,嘻嘻
+微盘肯定是php应用,跑在SAE上,估计是特权应用,因为SAE默认每个应用只允许存放10G数据
+Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的</p>
+
+<p><strong>两者API的优缺点:</strong>
+1. Everbox,请求一个文件的信息,响应体没有文件的指纹!!单单给edit time,受不了!! 微盘好歹也给个MD5啊!!
+2. 微盘有公开的API;Everbox暂时没有(官方答复是很快就会公开,呵呵)
+3. Everbox的上传机制比微盘好,起码能分段能续传;微盘对于大文件的上传还没给出API,乏力啊
+4. 微盘有个dolog机制, Everbox有ver标志,估计都能做些东西,但ver标志的含义至今没搞明白,纠结!!!</p>
+
+  <div class="more">
+    <a href="/282.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/280.html">Nutz中你未必知道的用法</a> <span class="date">2011-04-28 10:30:11</span></h3>
+  <p>========================================================================</p>
+
+<h1><strong>Ioc篇</strong></h1>
+
+<p><strong>1. 使用properties文件</strong></p>
+
+<pre><code>var ioc = {
+    config : {
+        type : &quot;org.nutz.ioc.impl.PropertiesProxy&quot;, /*1.b.37内置的一个代理类*/
+        fields : {
+            paths : [&quot;conf/jdbc.properties&quot;] /*可以写多个文件或文件夹*/
+        }
+    },
+// Data source
+    dataSource : {
+        type :&quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+        events : {
+            depose :&quot;close&quot;
+        },
+        fields : {
+            driverClassName : {
+                java :&quot;$config.get('driver')&quot;
+            },
+            url : {
+                java :&quot;$config.get('url')&quot;
+            },
+            username : {
+                java :&quot;$config.get('username')&quot;
+            },
+            password : {
+                java :&quot;$config.get('password')&quot;
+            }
+        }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/280.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

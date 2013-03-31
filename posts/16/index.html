@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/234.html">做爸爸了!! 过年前有了个虎宝宝!!</a> <span class="date">2011-02-08 20:38:16</span></h3>
+  <p>嘻嘻,母女平安. 靓照暂时就不曝光了.</p>
+
+<p>下面记一下经验,嘻嘻:
+. 买生育保险能省很多钱,常规产检都是免费的哦! 仅住院/做手术,就省了4k
+. 绿色(超薄干爽)的帮宝适,很舒服,但不是最好的,那只是中档货. 最好的是母乳宝宝,然后是超级棉柔,都是黄色包装的!!前者(母乳宝宝)大陆无销售,一般是美国产,需要在香港买/淘宝代购,2.5元/片;后者(超级棉柔),一般存货不多,而且标明是日本进口, 2元/片
+. 早点去医院的孕妇学校,能学到很多东西,而且能提前接触到产房的人
+. 手术后6小时就得翻身(很痛,但是一定要坚强),并且马上让宝宝吮吸,对恢复很有帮助!! 使用卧式,叫护士教.
+. 手术后6小时开始就要喝水/喝汤了,12小时就要喝粥,24小时务必下床!! 要坚强!! 放屁后就可以吃饭了!! 不会觉得饿的,但一样要吃,按平时的饭量吃.
+. 术前要求医生使用&rdquo;术后镇痛术&rdquo;,就是一个缓慢静脉镇痛药,250元,很值得的!!
+. 宝宝出生后,2小时~4小时就要先喂一次水,然后开始喂奶粉,20毫升就够了,宝宝开头仅喝10毫升的,接下来2天,每2小时喂一次.
+. 如果打算母乳喂养,那么怀孕时就要做按摩,我老婆12小时就开始有乳汁了(剖宫产啊,一般第2/3天才有的;顺产也要第二天),医院的护士都很惊讶呢!! 做法: 每天晚上,用大拇指,按压第3/4个脚趾,从脚趾的关节,顺着骨头往脚面推,不是脚底,每个脚趾按100下,共400下.这个要老公做的,我经常按到手软呢.
+. 怀孕后就先休假1个月!! 好好休息一下,一般就是睡大觉,然后再上班. 这样孕期的反应就少很多了.
+. 香港有卖一种仿乳头的奶瓶,英国产,淘宝也有代购,150ml的,其实完全足够了.
+. 奶粉我觉得明治最好,为黄种人设计,不热气,虽然有人提到会缺锌,但相比欧美的产品,还是明治好!! 买明治,一定要买日本本土产的,买其他的话,还不如买美赞臣/牛栏牌
+. 怀孕后,继续正常饮食,补充叶酸/维生素就可以了,不要经常进补!! 经常散步,即使顶着大肚子. 手术前,老婆走得比我还快呢!
+. 防辐射服 &ndash; 没用的,骗钱的     仅仅是心理安慰,我就没有买
+. 怀孕后,上Q/看电影,一切照旧! 我们周围最强的电磁波辐射,其实是光线,除非你住在黑暗的屏蔽室内,否则啥都挡不住!
+. 宝宝够暖就可以了,偶尔打个喷嚏其实很好很正常的. 衣服太多,会出红疹,严重的话要住院的!!</p>
+
+  <div class="more">
+    <a href="/234.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/233.html">Hibernate的ConnectionProvider是怎么一回事?</a> <span class="date">2011-01-28 14:28:12</span></h3>
+  <p>这次讨论一下Hibernate的ConnectionProvider接口, 因为我看到某些Hibernate项目是这样配置的:</p>
+
+<pre><code>&lt;property name=&quot;c3p0.min_size&quot;&gt;5&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_size&quot;&gt;30&lt;/property&gt;
+&lt;property name=&quot;c3p0.time_out&quot;&gt;1800&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_statement&quot;&gt;50&lt;/property&gt;
+</code></pre>
+
+<p>问题是, 这样就配置好了吗? hibernate.connection.provider_class到底需不需要呢?
+来看看Hibernate 3.3.2 GA的源码
+ConnectionProviderFactory类的newConnectionProvider方法.</p>
+
+<pre><code>public static ConnectionProvider newConnectionProvider(Properties properties, Map connectionProviderInjectionData) throws HibernateException {
+    ConnectionProvider connections;
+    String providerClass = properties.getProperty(Environment.CONNECTION_PROVIDER);
+    if ( providerClass!=null ) {
+        try {
+            log.info(&quot;Initializing connection provider: &quot; + providerClass);
+            connections = (ConnectionProvider) ReflectHelper.classForName(providerClass).newInstance();
+        }
+        catch ( Exception e ) {
+            log.error( &quot;Could not instantiate connection provider&quot;, e );
+            throw new HibernateException(&quot;Could not instantiate connection provider: &quot; + providerClass);
+        }
+    }
+    else if ( properties.getProperty(Environment.DATASOURCE)!=null ) {
+        connections = new DatasourceConnectionProvider();
+    }
+    else if ( properties.getProperty(Environment.URL)!=null ) {
+        connections = new DriverManagerConnectionProvider();
+    }
+    else {
+        connections = new UserSuppliedConnectionProvider();
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/233.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/232.html">系统变量file.encoding对Java的运行影响有多大?</a> <span class="date">2011-01-27 20:06:27</span></h3>
+  <p>这个话题来自: Nutz的<a href="http://code.google.com/p/nutz/issues/detail?id=361">issue 361</a></p>
+
+<p>在考虑这个issue时, 我一直倾向于使用系统变量file.encoding来改变JVM的默认编码.</p>
+
+<p>今天,我想到, 这个系统变量,对JVM的影响到底有多大呢?
+我使用最简单的方法看看这个变量的影响&ndash;在JDK 1.6.0_20的src.zip文件中,查找包含file.encoding字眼的文件.
+共找到4个, 分别是:
+先上重头戏 java.nio.Charset类:</p>
+
+<pre><code>    public static Charset defaultCharset() {
+        if (defaultCharset == null) {
+        synchronized (Charset.class) {
+        java.security.PrivilegedAction pa =
+            new GetPropertyAction(&quot;file.encoding&quot;);
+        String csn = (String)AccessController.doPrivileged(pa);
+        Charset cs = lookup(csn);
+        if (cs != null)
+            defaultCharset = cs;
+                else 
+            defaultCharset = forName(&quot;UTF-8&quot;);
+            }
+    }
+    return defaultCharset;
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/232.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/230.html">动手做一个Nginx Module-简洁版</a> <span class="date">2011-01-24 13:57:22</span></h3>
+  <p>如果在google上搜索Nginx Module,会得到17万条结果,但是,基本上都是千篇一律.
+结合我这段时间的尝试,我决定自己写一篇非常非常简单的入门,仅描述如何做出一个最简单的Hello模块</p>
+
+<ol>
+<li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-</li>
+</ol>
+
+<pre><code>    #进入主文件夹
+    cd ~
+    wget http://nginx.org/download/nginx-0.9.4.tar.gz
+    tar xvf nginx-0.9.4.tar.gz
+    cd nginx-0.9.4
+    mkdir ngx_http_hello_module
+</code></pre>
+
+<ol>
+<li>创建config文件,注意,切记要在Linux下创建这个文件!!
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
+</ol>
+
+<pre><code>    vim config
+    #敲入以下内容
+    ngx_addon_name=ngx_http_hello_module
+    HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_hello_module&quot;
+    NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_module.c&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/230.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/228.html">Nginx不同编译选项得到的二进制文件大小对比</a> <span class="date">2011-01-17 19:45:47</span></h3>
+  <p>Nginx信息:
+版本: 0.9.3
+对原版的修改, 将auto/cc/gcc的-g去掉,将-O改为-O2
+附上原始数据,比较长:</p>
+
+<pre><code>#默认编译
+./configure
+make
+ll objs/nginx
+make clean
+#File size 525556
+#--with-cc-opt=-g 2444312
+#--with-cc-opt=-g --with-debug 2513996
+
+#加载大部分可选模块
+./configure --with-http_ssl_module \
+        --with-http_realip_module \
+        --with-http_addition_module \
+        --with-http_xslt_module \
+        --with-http_sub_module \
+        --with-http_dav_module \
+        --with-http_flv_module \
+        --with-http_gzip_static_module \
+        --with-http_random_index_module \
+        --with-http_secure_link_module \
+        --with-http_degradation_module \
+        --with-http_stub_status_module \
+        --with-http_perl_module
+make &gt; /dev/null
+ll objs/nginx
+make clean
+#File size 642031
+#--with-cc-opt=-g 4557807
+#--with-cc-opt=-g --with-debug 4689478
+</code></pre>
+
+  <div class="more">
+    <a href="/228.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/227.html">WP-Codebox乱码问题</a> <span class="date">2011-01-10 22:05:52</span></h3>
+  <p>以前就发现代码高亮插件WP-Codebox在IE下乱码,且行号会分行,可惜CSS水平一直有限,一直未能修正.</p>
+
+<p>今天人品爆发,加上最近CSS修炼(从无知到极度菜鸟),终于修改成功!!
+需要修改的文件:
+geshi.php 解决乱码:</p>
+
+<pre><code>var $overall_style = 'font-family:monospace;';
+//改为
+var $overall_style = '';
+</code></pre>
+
+<p>codebox.css 解决行号换行问题(仅解决了100行以内):</p>
+
+<pre><code>.line_numbers pre {
+        padding: 0px;
+        margin: 0px;
+        text-align: right;
+        width: 14px; //新加一句
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/227.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/226.html">Alfresco Virtual tomcat默认不解析EL</a> <span class="date">2011-01-06 10:17:32</span></h3>
+  <p>我正在使用Alfresco 3.3 SP4 , 发现其Virtual tomcat竟然是构建在tomcat5.5上的.
+在jsp页面中写el表达式,死活不出来.最后才发现,是tomcat5.5默认不解析EL !!</p>
+
+<p>查原因, 在tomcat5.5.31的源码中:
+1. 类名: org.apache.jasper.compiler.JspConfig
+2. 代码:</p>
+
+<pre><code>if (webApp == null
+     || !&quot;2.4&quot;.equals(webApp.findAttribute(&quot;version&quot;))) {//直接字符串判断,晕!
+     defaultIsELIgnored = &quot;true&quot;;
+     return;
+}
+//如果version不是2.4,那根本不走这里!
+TreeNode jspConfig = webApp.findChild(&quot;jsp-config&quot;);
+if (jspConfig == null) {
+     return;
+}
+</code></pre>
+
+<p>解决方法: :
+第一种,在JSP页面头部加入指令:</p>
+
+  <div class="more">
+    <a href="/226.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/225.html">发起一个新项目 - NginxS</a> <span class="date">2011-01-03 10:19:25</span></h3>
+  <p>为了更好地阅读/研究Nginx的源码,我奋斗了一个上午,终于把NginxS项目搭建起来了.
+NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
+1. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Fbranches">branches</a> 中提交了0.<sup>7</sup>&frasl;<sub>0</sub>.<sup>8</sup>&frasl;<sub>0</sub>.9分支的源代码,便于分析不同版本之间的差异,如果官网有新版发布,就会及时跟进.
+2. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Ftrunk">trunk</a> 中,现在代码是当前最新稳定版0.8.54, 准备用于学习nginx的代码,并添加中文注释/笔记</p>
+
+<p>项目地址:
+<a href="http://code.google.com/p/nginxs/">http://code.google.com/p/nginxs/</a></p>
+
+<p>看看我能读出个啥东西来,哈哈!</p>
+
+  <div class="more">
+    <a href="/225.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/224.html">3年,换了4家公司!</a> <span class="date">2010-12-30 08:43:36</span></h3>
+  <p>不久前还说着一个朋友经常跳槽,昨天才发现,跳得最多的其实是自己!!</p>
+
+<p><strong>3年,不容易啊,换了4家!!</strong></p>
+
+<p>第一家,A公司, 200来人,干了5个月,美资
+第二家,B公司,2000来人,干了9个月,印度公司
+第三家,C公司,200来人,干了21个月,印度公司
+第四家,D公司,5000人,干了1天,美资</p>
+
+<p>^_^,2次被收购,1次被分拆,然而我仍在同一个办公室!!</p>
+
+<p>想不到都年底了,又被收购了一次. 哈哈</p>
+
+  <div class="more">
+    <a href="/224.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/222.html">增强型JavaDoc -- APIviz 简洁实践</a> <span class="date">2010-12-27 13:40:55</span></h3>
+  <p>一段时间之前,为Nutz的JavaDoc添加了这个插件,<a href="http://code.google.com/p/apiviz/">APIviz</a>,可以自动生成包依赖关系图,和简单的UML类图.
+在国内还没见到公开的使用,还是介绍一下,<a href="http://build.sunfarms.net/nutz/lastest/api/">Nutz示例</a>
+第一步,安装<a href="http://www.graphviz.org/">Graphviz</a>,该软件可以运行在N多平台上,这里以Ubuntu为例</p>
+
+<pre><code>apt-get install graphviz
+</code></pre>
+
+<p>第二步,当然就是下载APIviz了, 当前最新版为 1.3.1 GA
+第三步, Ant调用:</p>
+
+<pre><code>&lt;javadoc doclet=&quot;org.jboss.apiviz.APIviz&quot; encoding=&quot;UTF-8&quot; sourcepath=&quot;src&quot; docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; charset=&quot;utf-8&quot; destdir=&quot;${javadoc-dir}&quot; additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot; classpathref=&quot;nutz-classpath&quot; docencoding=&quot;utf-8&quot;&gt;&lt;/javadoc&gt;
+</code></pre>
+
+<p>与普通的JavaDoc相比,添加了3个属性:</p>
+
+<pre><code>#引用APIviz
+doclet=&quot;org.jboss.apiviz.APIviz&quot; 
+#指向APIviz的jar包
+docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; 
+#声明类文件的路径,其余的-author -version是官网上建议添加的,非必需.
+#这里的${classes-dir-jdk6}就是Nutz编译好的class存放的地址
+additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/222.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

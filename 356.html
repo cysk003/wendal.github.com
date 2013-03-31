@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NutDao配置多数据源</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>NutDao配置多数据源 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>首先,我必须声明,这是一个非常简单的方法,很多小菜没做出来,是因为把nutz想得太复杂</p>
+
+<p>数据源(或者是数据库连接池),在Nutz.Ioc看来,是一个普通的Bean,没任何特别之处. 再强调一点,除了$aop命名的bean用于配置Aop之外,其他所有的bean都是一视同仁的,没有任何特别关照!!</p>
+
+<p>先看看标准的单数据源配置方法:</p>
+
+<pre><code>var ioc = {
+    dataSource : {
+                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+                events : {
+                        depose : 'close'
+                },
+                fields : {
+                        driverClassName : 'org.h2.Driver',
+                        url : 'jdbc:h2:quick3;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
+                        username : 'sa',
+                        password : ''
+                }
+        },
+        /*定义NutDao*/
+        dao : {
+            type : &quot;org.nutz.dao.impl.NutDao&quot;,
+            fields : {
+                dataSource : {refer : 'dataSource'}
+            }
+        }
+}
+</code></pre>
+
+<p>然后,扩展成多个数据源:</p>
+
+<pre><code>var ioc = {
+/*定义第一个数据源*/
+    dataSource : {
+                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+                events : {
+                        depose : 'close'
+                },
+                fields : {
+                        driverClassName : 'org.h2.Driver',
+                        url : 'jdbc:h2:quick_a;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
+                        username : 'sa',
+                        password : ''
+                }
+        },
+        /*定义NutDao*/
+        dao : {
+            type : &quot;org.nutz.dao.impl.NutDao&quot;,
+            fields : {
+                dataSource : {refer : 'dataSource'}
+            }
+        },
+/*定义第二个数据源*/
+    dataSource2 : {
+                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+                events : {
+                        depose : 'close'
+                },
+                fields : {
+                        driverClassName : 'org.h2.Driver',
+                        url : 'jdbc:h2:quick_b;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
+                        username : 'sa',
+                        password : ''
+                }
+        },
+        /*定义第二个NutDao*/
+        dao2 : {
+            type : &quot;org.nutz.dao.impl.NutDao&quot;,
+            fields : {
+                dataSource : {refer : 'dataSource2'} /*这里引用第二个数据源*/
+            }
+        }
+}
+</code></pre>
+
+<p>明白了吗? 所谓多数据源的配置,其实就是几份单数据源的配置文件放在一起. 一个NutDao实例,对于一个数据源. 由于ioc里面的bean是不能重名的,所以,你需要做的,仅仅是为不同的数据源设定不同的名字,仅此而已.</p>
+
+<p>关于多数据源的事务管理问题,请看另外一篇博客: &ldquo;<a href="http://wendal.net/324.html">Nutz事务模板值得注意的细节</a>&ldquo;</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/357.html" title="香港两天,离开天朝的2天!!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/355.html" title="Java/Python/Lua/Lisp的胡思乱想">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-01-06 22:20:11</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E8%BF%9E%E6%8E%A5%E6%B1%A0-ref">连接池 <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

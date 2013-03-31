@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/118.html">离线下载Android SDK</a> <span class="date">2010-11-05 23:04:22</span></h3>
+  <p>我实在搞不懂,为啥GFW要墙Android 的开发网站.</p>
+
+<p>今天,把当前最新版本的Android SDK全部下载到 <a href="http://build.sunfarms.net/android/repository/">http://build.sunfarms.net/android/repository/</a>
+同时发现一个问题,即使把 <a href="http://build.sunfarms.net/android/repository/repository.xml">http://build.sunfarms.net/android/repository/repository.xml</a> 添加到SDK Manager ,与Google官网一样的内容,却不认平台下载.
+仔细找了一下,原来写死在代码里面的 <a href="http://code.google.com/p/android-sdk-tool/source/browse/src/main/java/com/m11n/android/AndroidSdkTool.java?r=6426c47fe356e9d649fe612464563960a1ca7d74">点击查看</a>
+没办法. 只好自己编译一个了,哈哈.
+Google源码截取:</p>
+
+<pre><code>        private String repositoryUrl = &quot;http://dl-ssl.google.com/android/repository/&quot;;
+        private String sdkUrl = &quot;http://dl.google.com/android/&quot;;
+        private String downloadDir = System.getProperty(&quot;java.io.tmpdir&quot;) + &quot;/&quot;;
+        private Boolean overwrite = true;
+        private Boolean verbose = true;
+        private DocumentBuilder builder;
+
+        public AndroidSdkTool() throws ParserConfigurationException {
+                builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        }
+</code></pre>
+
+  <div class="more">
+    <a href="/118.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/114.html">为Alfresco加速PDF文件索引速度</a> <span class="date">2010-11-01 17:14:41</span></h3>
+  <p>本文仅为 <a href="http://thinkalfresco.blogspot.com/2009/03/speeding-up-pdf-indexing-alfresco-hack.html">http://thinkalfresco.blogspot.com/2009/03/speeding-up-pdf-indexing-alfresco-hack.html</a> 的 Alfresco 3.2版. 因为原文中的代码,已经无法在3.2版上使用.</p>
+
+<p>新的代码:</p>
+
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE beans PUBLIC &quot;-//SPRING//DTD BEAN//EN&quot; &quot;http://www.springframework.org/dtd/spring-beans.dtd&quot;&gt;
+&lt;beans&gt;
+
+  &lt;bean id=&quot;transformer.PdfBox&quot; class=&quot;java.lang.String&quot;&gt;&lt;/bean&gt;
+
+  &lt;bean id=&quot;transformer.complex.OpenOffice.PdfBox&quot; class=&quot;java.lang.String&quot;&gt;&lt;/bean&gt;
+
+  &lt;bean id=&quot;transformer.PdfToTextTool&quot; class=&quot;org.alfresco.repo.content.transform.RuntimeExecutableContentTransformerWorker&quot;&gt;
+                &lt;property name=&quot;mimetypeService&quot;&gt;
+                &lt;ref bean=&quot;mimetypeService&quot;&gt;&lt;/ref&gt;
+            &lt;/property&gt;
+                &lt;property name=&quot;transformCommand&quot;&gt;
+                        &lt;bean name=&quot;transformer.pdftotext.Command&quot; class=&quot;org.alfresco.util.exec.RuntimeExec&quot;&gt;
+                                &lt;property name=&quot;commandMap&quot;&gt;
+                                        &lt;map&gt;
+                                                &lt;entry key=&quot;.*&quot;&gt;
+                                                        &lt;value&gt;/usr/bin/pdftotext -enc UTF-8 ${options} ${source} ${target}&lt;/value&gt;
+                                                &lt;/entry&gt;
+                                        &lt;/map&gt;
+                                &lt;/property&gt;
+                                &lt;property name=&quot;defaultProperties&quot;&gt;
+                                        &lt;props&gt;&lt;prop key=&quot;options&quot;&gt;&lt;/prop&gt;&lt;/props&gt;
+                                &lt;/property&gt;
+                        &lt;/bean&gt;
+                &lt;/property&gt;
+</code></pre>
+
+  <div class="more">
+    <a href="/114.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/110.html">想不到服务器一下子就被击垮了</a> <span class="date">2010-11-01 12:11:04</span></h3>
+  <p>上周末, 从同事口中得知我休假期间,Jboss服务器曾<strong>无故自己关闭</strong>了一次.</p>
+
+<p>顿时非常惊讶,咋就会自己关闭自己呢?</p>
+
+<p>第一反应是OOM了,一问,没啊,内存还剩好多,而且log没提示OOM.</p>
+
+<p>难道是程序里面写了System.exit(X)之类? 扫描了一遍代码,没有啊!! 我们还不至于写这么的代码</p>
+
+<p>奇怪的是, JBoss是按照标准的流程顺序关闭各个应用后,再shutdown完成的,并无直接被kill掉或者异常退出,也没有找到JVM报错的log.</p>
+
+<p>由于关闭的时间点在11:37AM,故,追查nginx的access.log  , 翻翻翻, 在一堆502(Jboss已经关闭,nginx无法proxy_pass,报502)前面,有一些不寻常的请求,节选如下:</p>
+
+<pre><code>/acunetix-wvs-test-for-some-inexistent-file-second-try
+
+/console/j_security_check
+
+/_vti_pvt/authors.pwd
+
+/phpmyadmin/main.php
+</code></pre>
+
+  <div class="more">
+    <a href="/110.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/108.html">使用Nginx搭建Http代理服务器</a> <span class="date">2010-10-24 20:42:46</span></h3>
+  <p>昨天, 折腾了一个下午,终于配好了.
+配置如下:</p>
+
+<pre><code>    server {
+        listen       8888;
+                client_body_timeout 60000;
+                client_max_body_size 1024m;
+                send_timeout       60000;
+                client_header_buffer_size 16k;
+                large_client_header_buffers 4 64k;
+
+                proxy_headers_hash_bucket_size 1024;
+                proxy_headers_hash_max_size 4096;
+                proxy_read_timeout 60000;
+                proxy_send_timeout 60000;
+
+        location / {
+            resolver 8.8.8.8;
+            proxy_pass http://$http_host$request_uri;
+        }
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/108.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/100.html">在Nutz MVC中使用Freemarker</a> <span class="date">2010-10-20 12:27:06</span></h3>
+  <p>大约一年前, axhack 发布了一篇文章 &ldquo;<a href="http://axhack.javaeye.com/blog/542441">给 nutz 添加 freemarker 视图</a>&rdquo; ,描述了如何集成nutz和freemarker.</p>
+
+<p>前几天,我使用另外一种更简单的方法来实现(基于Nutz 1.a.33版新增的内部重定向视图),我使用的是Freemarker 2.3.16
+首先, 在web.xml添加Freemarker官方文档描述的FreemarkerServlet, <a href="http://freemarker.sourceforge.net/docs/pgui_misc_servlet.html">查看原文描述</a>.</p>
+
+<pre><code>&lt;servlet&gt;
+&lt;servlet-name&gt;freemarker&lt;/servlet-name&gt;
+&lt;servlet-class&gt;freemarker.ext.servlet.FreemarkerServlet&lt;/servlet-class&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;TemplatePath&lt;/param-name&gt;
+  &lt;param-value&gt;/&lt;/param-value&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;NoCache&lt;/param-name&gt;
+  &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;ContentType&lt;/param-name&gt;
+  &lt;param-value&gt;text/html; charset=UTF-8&lt;/param-value&gt;
+  &lt;!-- 我觉得不需要了,如果是内部重定向的话, nutz已经设置了编码 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;template_update_delay&lt;/param-name&gt;
+  &lt;param-value&gt;0&lt;/param-value&gt;&lt;!-- 开发时才设置为0 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;default_encoding&lt;/param-name&gt;
+  &lt;param-value&gt;UTF-8&lt;/param-value&gt; &lt;!-- 模板文件的编码 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;number_format&lt;/param-name&gt;
+  &lt;param-value&gt;0.##########&lt;/param-value&gt;
+&lt;/init-param&gt;
+</code></pre>
+
+  <div class="more">
+    <a href="/100.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/94.html">为NutLab添加一个新项目-Nutz与OpenID集成</a> <span class="date">2010-10-12 22:16:53</span></h3>
+  <p>忙乎了两天, 终于把项目正确运行起来了.</p>
+
+<p>使用即将发布的Nutz 1.a.32 ,加 JOpenID 1.0.7</p>
+
+<p>地址: <a href="http://code.google.com/p/nutzlab/source/browse/#svn/trunk/NutOpenID">http://code.google.com/p/nutzlab/source/browse/#svn/trunk/NutOpenID</a></p>
+
+<p>同时,发现JOpenID 1.0.7的一个Bug.
+JOpenID 默认使用UTF-8来对参数进行getBytes. 当参数中还有非英文字符,且没有配置URIEncoding时,获取的byte[]是错误的.
+具体代码:</p>
+
+<pre><code>package org.expressme.openid;
+//......
+public class OpenIdManager {
+//......
+
+    String getHmacSha1(String data, byte[] key) {
+        SecretKeySpec signingKey = new SecretKeySpec(key, HMAC_SHA1_ALGORITHM);
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
+            mac.init(signingKey);
+        }
+        catch(NoSuchAlgorithmException e) {
+            throw new OpenIdException(e);
+        }
+        catch(InvalidKeyException e) {
+            throw new OpenIdException(e);
+        }
+        try {
+            byte[] rawHmac = mac.doFinal(data.getBytes(&quot;UTF-8&quot;)); //不一定,也许是ASCII
+            return Base64.encodeBytes(rawHmac);
+        }
+        catch(IllegalStateException e) {
+            throw new OpenIdException(e);
+        }
+        catch(UnsupportedEncodingException e) {
+            throw new OpenIdException(e);
+        }
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/94.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/92.html">抢占我带宽的流氓软件</a> <span class="date">2010-10-12 10:56:12</span></h3>
+  <p><strong>第一款, PPS的PPSAP(PPS 加速器)</strong>
+对系统的影响, 后台运行,抢占无数带宽,发起N多连接!!
+安装pps后, 在安装目录下有一个ppsap.exe的程序, 这个程序,在之前的版本,直接删除程序文件就可以了. 最近更新后, 发现删除后自动回复(再次启动pps后), 我日!! 这下可无敌流氓了!!</p>
+
+<p><strong>第二款, 360安全卫生的在线升级</strong>
+之前一直没有留意,后来打开360的流量查看器才发现其也是流氓之一! 自爆家丑!!
+除了直接kill掉外,没啥办法!!</p>
+
+  <div class="more">
+    <a href="/92.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/90.html">总结一点点项目经验–迁移/部署/静态资源</a> <span class="date">2010-10-01 09:45:59</span></h3>
+  <ol>
+<li><p>如果可能的话, 提前一天切换一个小时, 会发现不少问题.</p></li>
+
+<li><p>这次的部署,属于升级版,测试新版,应该在无法访问前一版本的网络环境中测试. 这一次部署,就发现项目中某些链接竟然直接指向旧的系统!!</p></li>
+
+<li><p>使用CDN (内容分发网络),就是静态资源分开存放, 例如 放到 res.sunfarms.net . 即使不能独立域名, 则最好把项目拆成两个工程, 一个放静态文件(css/jpg/gif/swf等),一个放动态内容</p></li>
+</ol>
+
+<p>&hellip; 先写这么多, 墨水不够.</p>
+
+  <div class="more">
+    <a href="/90.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/70.html">iText锚点的一个小陷阱 目标地锚点必须有字符串</a> <span class="date">2010-09-08 21:27:32</span></h3>
+  <p>昨晚折腾了一下zDoc的PDF生成功能, 不过,一听闻锚点功能失效,顿时不爽,马上研究!!</p>
+
+<p>首先发现 锚点无法对应起来,  触发锚点的编号,与锚点目的地无法对应起来! 这个通过查找实际对应的文件的绝对地址的hashcode生成</p>
+
+<p>然后发现锚点总是失效,无法跳转, 最后才发现,锚点的目标地anchor, 使用 Anchor anchor = new Anchor(); 生成, 页面上无显示!!</p>
+
+<p>实例:</p>
+
+<pre><code>Anchor anchorDest = new Anchor(); anchorDest.setName(&quot;dest&quot;);
+Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#dest&quot;);
+</code></pre>
+
+<p>无法跳转! 即使写成</p>
+
+<pre><code>Anchor anchorDest = new Anchor(&quot; &quot;);
+</code></pre>
+
+<p>一样无法跳转, 必须写成:</p>
+
+<pre><code>Anchor anchorDest = new Anchor(&quot;To here&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/70.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/68.html">Eclipse能够启动得快些</a> <span class="date">2010-09-08 21:18:44</span></h3>
+  <p>昨天在Javaeye上看到一篇关于Eclipse调优的文件,真是当头一棒,之前咋就没想到呢?!!</p>
+
+<p>自己调整了一下,得到以下参数:</p>
+
+<pre><code>-Xms40m
+-Xmx256m
+-XX:MaxPermSize=128m
+-XX:ReservedCodeCacheSize=128m
+-Dfile.encoding=utf8
+-Xverify:none
+-XX:+DisableExplicitGC
+-XX:+UseParNewGC
+-Xnoclassgc
+-XX:+UseBiasedLocking
+-XX:+UseFastAccessorMethods
+</code></pre>
+
+<p>感觉上快了不少哦</p>
+
+  <div class="more">
+    <a href="/68.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

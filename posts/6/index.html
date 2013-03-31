@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/417.html">Nutz编年史--简单图表版</a> <span class="date">2012-05-01 00:14:01</span></h3>
+  <p><strong>先上干货,纯数据</strong>:</p>
+
+<pre><code>|版本   |构建日期|文件总数|文件大小|
+|1.a.15|2009-09-20| 505| 524|
+|1.a.16|2009-10-18| 524| 544|
+|1.a.17|2009-11-03| 542| 559|
+|1.a.18|2009-11-15| 534| 544|
+|1.a.20|2009-11-19| 535| 544|
+|1.a.21|2009-11-26| 550| 566|
+|1.a.22|2009-11-29| 550| 568|
+|1.a.23|2009-11-30| 550| 568|
+|1.a.24|2009-12-20| 586| 636|
+|1.a.25|2009-12-29| 587| 640|
+|1.a.26|2010-03-01| 598| 638|
+|1.a.27|2010-04-26| 631| 712|
+|1.a.28|2010-05-30| 655| 737|
+|1.a.29|2010-06-13| 665| 752|
+|1.a.30|2010-07-13| 674| 759|
+|1.a.31|2010-08-12| 689| 775|
+|1.a.32|2010-10-13| 720| 816|
+|1.a.33|2010-11-11| 729| 825|
+|1.b.34|2010-12-24| 729| 828|
+|1.b.35|2011-02-14| 829| 877|
+|1.b.36|2011-03-25| 845| 933|
+|1.b.37|2011-04-25| 858| 945|
+|1.b.38|2011-07-15| 878| 994|
+|1.b.39|2011-08-13| 880| 999|
+|1.b.40|2011-10-21| 892|1019|
+|1.b.41|2012-01-18| 896|1042|
+|1.b.42|2012-02-14| 902|1053|
+|1.b.43|2012-04-01| 918|1082|
+</code></pre>
+
+  <div class="more">
+    <a href="/417.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/416.html">在Ant/Maven中使用ecj编译器(Eclipse内置的Java编译器)</a> <span class="date">2012-04-30 16:10:55</span></h3>
+  <p>为什么要换ecj呢? JDK自带的java不够好吗? 是的, 尤其是debug信息. 那两种兼容吗? 完全兼容, ecj和javac一样是经过认证的哦, 事实上,如果你正在使用Eclipse,那么,你的java源码, 100%是ecj编译的呢(当然,是你自己写的那部分)</p>
+
+<p>Ant换用ecj
+1. 在build.xml中加入:</p>
+
+<pre><code>&lt;property name=&quot;build.compiler&quot; value=&quot;org.eclipse.jdt.core.JDTCompilerAdapter&quot;&gt;&lt;/property&gt;
+</code></pre>
+
+<ol>
+<li><p>下载独立的ecj.jar
+<a href="http://mirrors.ustc.edu.cn/eclipse/eclipse/downloads/drops/R-3.7.2-201202080800/ecj-3.7.2.jar">ECJ 3.7.2</a></p></li>
+
+<li><p>将ecj-3.7.2.jar放入ant的lib文件夹中</p></li>
+
+<li><p>如果是eclipse中跑ant,那么,需要设置一下,     Run As &ndash; Ant Build &hellip; &ndash; ClassPath ,加入ecj.jar</p></li>
+</ol>
+
+<p>Maven换用ecj
+1. 官网文档: <a href="http://maven.apache.org/plugins/maven-compiler-plugin/non-javac-compilers.html">http://maven.apache.org/plugins/maven-compiler-plugin/non-javac-compilers.html</a>
+2. 设置为plexus-compiler-eclipse即可</p>
+
+<p>带来的好处: [](http://wendal.net/394.html)
+事实证明, 只有ecj编译的class文件的debug信息会原样遵循方法参数的声明顺序, 悲催啊&hellip;</p>
+
+  <div class="more">
+    <a href="/416.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/414.html">Nutz资源扫描的重新实现</a> <span class="date">2012-04-28 08:44:50</span></h3>
+  <p><strong>Nutz.Resource包,是2010年4月创建的,至今2年了.当初的设计,就是为了 &ldquo;资源扫描&rdquo; 这个基础话题.</strong></p>
+
+<p>Spring中也有类似的基础设施,但复杂很多,例如classpath与classpath*等定义.</p>
+
+<p><strong>之前的实现,按以下思路完成:</strong>
+1. 传入一个路径,通过Files.findFile尝试寻找是否有这个文件
+ &ndash;2. 路径是文件系统上的文件夹,将立马可以找到具体的File对象,可以直接扫描文件夹但
+ &ndash;2. 文件存在于jar包,则需要解析出其jar文件的路径,读取jar文件进行扫描
+3. 如果还没找到,搜索classpath和WEB-INF/lib,遍历里面的文件夹/jar文件</p>
+
+<p>一个突出的问题是,Files.findFile的返回值是File对象,这意味着,如果该路径存在于多个不同的classpath路径或jar中,只有第一个路径会被返回.
+而且,因为是File对象,对于Jar文件中的文件,读取比较麻烦(例如jarinjar打包的可执行jar文件).</p>
+
+<p><strong>解决复杂路径的jar文件读取问题</strong>:</p>
+
+<pre><code>    public static ZipInputStream makeZipInputStream(String jarPath)
+            throws MalformedURLException, IOException {
+        ZipInputStream zis = null;
+        try {
+            zis = new ZipInputStream(new FileInputStream(jarPath));
+        } catch (IOException e) {
+            zis = new ZipInputStream(new URL(jarPath).openStream());
+        }
+        return zis;
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/414.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/413.html">Nginx二级域名自动匹配到子文件夹(通过rewrite)</a> <span class="date">2012-04-11 20:32:23</span></h3>
+  <p>网站目录结构</p>
+
+<pre><code>html --
+       index.html
+       xxx.html
+       tuan --
+              index.html
+              tuan800.html
+       blog --
+              index.html
+              1.html
+              19.html
+       news --
+              index.html
+              how_to_XX.html
+              XX_XX_XX.html
+</code></pre>
+
+<p>分别对应主站(nutz.cn, www.nutz.cn), 团购子站(tuan.nutz.cn),博客子站(blog.nutz.cn),新闻子站(news.nutz.cn)</p>
+
+  <div class="more">
+    <a href="/413.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/412.html">lua-newLISP 包装器</a> <span class="date">2012-04-10 22:48:51</span></h3>
+  <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
+
+<p>今天第一次写lua模块,就做了一个lua-newLISP包装器,即在lua中执行newLISP脚本</p>
+
+<p><strong>首先遇到的是newLISP的编译:</strong>
+1. 官方提供的configure智能化程度极低,估计是手写的
+2. 生成的Makefile,是Ubuntu下的配置, 在centos下编译无法通过
+虽然修改一下,还是顺利能pass,但还是觉得不爽
+故, 动手做了一个<a href="https://gist.github.com/2351735">cmake for newLISP</a>的脚本.</p>
+
+<p><strong>生成so文件后,默认是newlisp.so,改名为libnewlisp.so,并放入/usr/lib中</strong></p>
+
+<p>由于newLISP的对外API仅2个(其中一个还不能用&hellip;),且自带的h文件比较混乱,<strong>干脆自己写了一个h文件</strong><a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.h">newlisp.h</a>,就一行:</p>
+
+<pre><code>char * newlispEvalStr(char * cmd); //把传入的cmd当成newlisp脚本执行,并返回char*
+</code></pre>
+
+<p>然后,当然是主体c文件<a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.c">newLISP.c</a>啦</p>
+
+<pre><code>//载入lua的头文件
+#include &quot;lua.h&quot;
+#include &quot;lualib.h&quot;
+#include &quot;lauxlib.h&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/412.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/411.html">Nutz是一个轮子吗?</a> <span class="date">2012-04-06 22:59:30</span></h3>
+  <p>不要重复发明轮子(Don&rsquo;t Reinvent the Wheel.) &ndash; 在开源社区经常都能看到的论调.</p>
+
+<p>问: Nutz是SSH的轮子吗?
+答: 飞机轮子与单车轮子,是同一种轮子吗?
+问: Nutz的Ioc,Aop,Dao,MVC,在SSH都有,这难道不是重复发明轮子吗?
+答: 你确定这是发明轮子吗? Nutz发明了Ioc?Nutz发明了Aop?
+&hellip; &hellip;
+&hellip; &hellip;</p>
+
+<p>&ldquo;不要重复发明轮子&rdquo;,其实是有后半句的,&ldquo;学会制造轮子,改进轮子&rdquo;.</p>
+
+<p>你可以批评他人的轮子做得不好,做得有多烂,但不可否定制造轮子的权利及付出的努力.</p>
+
+<p>如果中国的JavaWeb工程师,都能做一个Spring轮子,或者Hibernate轮子,或者Struts轮子,那么,Java也能强国了.
+可惜, 由于SSH/SSH2已经成为国内的JavaWeb的事实标准,以至于很大一部分人只会使用SSH, 而Ioc容器这种基本的概念都弄不清楚. 有多少号称&rdquo;精通SSH&rdquo;的工程师研读过其源码呢?</p>
+
+<p>的确,国内的程序员太忙了,天天加班,以至于&rdquo;怎么可能有空参与开源项目?!&ldquo;.</p>
+
+  <div class="more">
+    <a href="/411.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/409.html">用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load)</a> <span class="date">2012-04-05 22:45:56</span></h3>
+  <p>一直以来, NutDao的懒加载问题,都无数次被提起,我也曾经在另外一篇博客中提及其可行性: <a href="http://wendal.net/317.html">NutDao实现Lazy加载的可行性</a></p>
+
+<p>为了回应广大Nutzer的呼声,我花了点时间完成了一个<a href="https://github.com/nutzam/nutz/commit/a6e1d49f6e883aa75edc2938f36a475ab314d3ac">LazyNutDao</a>,如果你需要这个功能,那么只需要把NutDao简单换成LazyNutDao</p>
+
+<p>整个实现,算上空行及注释,大概200行,并修改了另外3个类(就是把部分属性改成protected)</p>
+
+<ol>
+<li><p>POJO的属性,必须带setter/getter,否则无法进行懒加载注入</p></li>
+
+<li><p>setter/getter应当是无逻辑的,不应加入业务逻辑.</p></li>
+</ol>
+
+<p>需要注意的问题:</p>
+
+<ol>
+<li><p>无Session控制,自行处理事务问题 &ndash; 对象在事务模板包裹下取出,但在事务模板外调用getter以获取属性值,那么,这部分的调用是在事务之外的</p></li>
+
+<li><p>多线程问题,LazyMethodInterceptor并非线程安全的,因为其中的代码并未锁定当前对象</p></li>
+</ol>
+
+<p><strong>实现思路:</strong>
+1. POJO的实例化,是由NutEntity完成的,由于懒加载是通过AOP实现的,所以需要接管其实例化过程
+2. NutEntity是由AnnotationEntityMaker创建,有NutDao持有,所以,通过覆写setDataSource方法,接管EntityHolder实例
+3. LazyNutEntity继承于NutEntity,通过生成Aop拦截链,生成Aoped类,以便拦截@One/@Many字段的setter/getter
+4. 懒加载状态管理: 当setter被调用,那么懒加载机制结束使命,回退为普通机制.</p>
+
+  <div class="more">
+    <a href="/409.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/408.html">Nutz 1.b.43 发行后记</a> <span class="date">2012-04-01 22:43:22</span></h3>
+  <p>折腾了半天,终于把1.b.43发布出去了.</p>
+
+<p>简单介绍修正的Bug及新功能,毕竟&rdquo;发行注记&rdquo;比较少涉及这些.</p>
+
+<p>Bug修正:
+1. #177 NutFilter关闭时,报NPE,原因是销毁NutFilter时,没有设置ThreadLocal的属性,导致获取IOC容器失败
+2. #177 PropertiesProxy只认最后一个配置文件,原因是加载新配置文件时,把旧数据clear了
+3. #170 高并发的情况下,当数据库连接池的连接耗尽,NutDao抛出NPE, 原因是处理连接池异常的代码,没有考虑到获取连接也会失败
+4. #155 入口方法如果包含Date参数,当页面不传值,会抛出NPE,原因是String2Datetime类没有把&rdquo;&ldquo;当初null来处理
+5. #172 nutz + Oracle JDBC 10.1.0.2.0 分页会出错,原因是这驱动有BUG!!
+6. #75  NutDao动态实体解析报错,原因是默认会以为动态实体也有主键,但实际上用户执行的是update,并不包含主键.
+7. Json.fromJson(Set.class, &ldquo;[1,2,3]&ldquo;)会报错,原因是没对Set进行特别处理,直接当成List返回了</p>
+
+<p>需求:
+1. #187 支持JarInJar,即eclipse打包输出Runnable Jar的第二项.
+2. #130 自定义SQL也支持Pager分页
+3. #158 Dao支持Set存入数据库,字段类型为varchar
+4. #120 JSON循环引用的序列化与反序列化, 以及EL支持Json需求
+5. MVC中,如果入口方法的参数没有@Param注解,且不被适配器所识别,那么,按@Param(&ldquo;参数名&rdquo;)进行处理
+6. 添加内置的fetchBoolean回调函数
+7. 新增@SessionBy注解,允许自定义Session的获取方式
+8. 新增SimpleDataSource,内置的DataSource实现</p>
+
+  <div class="more">
+    <a href="/408.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/406.html">newLISP的ShellGame配套lsp源文件</a> <span class="date">2012-03-27 22:08:44</span></h3>
+  <p><a href="http://www.newlisp.org/">newLISP</a>官方提供的<a href="http://www.neglook.com/?Shell_Games">ShellGame</a>系列视频,并未提供lsp源文件,我看完了整个系列,顺便把源文件补了一部分,地址:
+<a href="https://github.com/wendal/learn-newLISP/tree/master/ShellGame">https://github.com/wendal/learn-newLISP/tree/master/ShellGame</a></p>
+
+<p>总共有23个视频,当前我完成了17个配套的lsp文件,剩下6个视频,没看懂,所以lsp文件还没写出来 &ndash; 难道是比较高阶的?</p>
+
+<p>附上第一个视频的lsp文件</p>
+
+<pre><code>;;视频原地址: http://www.neglook.com/
+;;lsp文件由wendal创建 http://wendal.net
+
+;; 用默认的context方法,创建数值生成器 -- 类似于自增
+
+(setq generator:acc 0)  ; 创建一个名叫generator的上下文,并添加一个符号acc
+
+(define (generator:generator) (inc generator:acc)) ;缺省的context方法(即与context同名的方法),其中的inc是方法,等同于++
+
+(generator)   ;;分号是单行注释的开始,而非语句的结束符
+
+(generator) 
+(generator)
+(generator)   ;;连续调用几次后,现在的值应该是acc应当等于4
+</code></pre>
+
+  <div class="more">
+    <a href="/406.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/405.html">Python的while 1跟while True到底有什么区别?</a> <span class="date">2012-03-26 14:41:59</span></h3>
+  <p>定义两个方法,分别使用while循环</p>
+
+<pre><code>def w() :
+  while 1 :
+    pass
+
+def w2() :
+  while True:
+    pass
+</code></pre>
+
+<p>单从功能上说,两种无任何区别,那么,来看看字节码上的区别:</p>
+
+<pre><code>import dis  #载入反编译模块,Python内置的
+
+dis.dis(w) #对应的是while 1,下面是输出
+  2           0 SETUP_LOOP               3 (to 6)
+
+  3     &gt;&gt;    3 JUMP_ABSOLUTE            3
+        &gt;&gt;    6 LOAD_CONST               0 (None)
+              9 RETURN_VALUE
+</code></pre>
+
+  <div class="more">
+    <a href="/405.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

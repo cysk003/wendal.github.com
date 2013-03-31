@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/339.html">RK2918 内核源码 -- 想不到吧?!</a> <span class="date">2011-11-03 09:06:50</span></h3>
+  <p>想不到, 我竟然找到了, 这都要感谢一位外国友人的提示!!</p>
+
+<p>还是那句, 对国人保密,对外国人公开 &ndash; 不能太&rdquo;云南白药&rdquo;啊!!</p>
+
+<p>下载地址:
+<a href="http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip">http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip</a></p>
+
+<p>包含:
+busybox源码
+e2fs源码
+kernel源码 &ndash; 当然,这才是最关键的</p>
+
+<p>根据其日期,猜测是SDK 1.x的作品, 不过,一般来说,h文件都不会大改的,呵呵!!</p>
+
+  <div class="more">
+    <a href="/339.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/338.html">推荐OpenResty -- Nginx全能插件版</a> <span class="date">2011-10-20 22:39:40</span></h3>
+  <p>实在吐血,这是第二次写这个文章,刚才准备保存的时候操作失误,全没了&hellip;.</p>
+
+<p>官网: <a href="http://openresty.org/">http://openresty.org/</a>
+虽然是中国人做的,但没几个汉字&hellip;..</p>
+
+<p>我用Nginx,是这样一个过程:
+1. 系统rpm中的nginx,能让其跑起来
+2. 玩配置文件
+3. 玩编译选项
+4. 写插件,集成第三方插件</p>
+
+<p>OpenResty , 是淘宝一位大牛(agentzh)集成的包含N多好插件的Nginx捆绑源码包,这位仁兄自称Nginx最活跃的第三方模块开发人员哦</p>
+
+<p>下面,当然要列一下到底集成了什么模块(已经根据agentzh的微博提醒进行修正):</p>
+
+<p>LuaJIT &ndash; 极速版Lua实现
+ArrayVarNginxModule &ndash; 数组类型的Nginx变量
+AuthRequestNginxModule &ndash; 鉴权,想象一下以C代码的速度判断一个请求是否合法,是不是很有快感呢?!
+DrizzleNginxModule &ndash; Nginx-MySQL桥,非阻塞的哦,我又爱又恨的一个模块,值得注意的是,其响应是RDS流
+EchoNginxModule &ndash; 以非常直观的方式在Nginx配置文件中编写简单的处理逻辑,源码包含大量注释,绝对是入门好例子!!
+EncryptedSessionNginxModule &ndash; 加密会话
+FormInputNginxModule &ndash; 解析post请求中的参数,这下子,简单请求根本不需要PHP/Java来处理啦
+HeadersMoreNginxModule &ndash; Nginx默认的header模块只能添加或忽略,这个给你CRUD全套的!!
+IconvNginxModule &ndash; 编码转换,不多说,也不懂
+StandardLuaInterpreter &ndash; 与Lua官方实现所匹配,一般用不上,因为我们用LuaJIT!!
+MemcNginxModule &ndash; 与Memcached的绝配,谁用谁知道!! 与upstram_keepalive一起用,你能更High!!
+Nginx
+NginxDevelKit &ndash; N多第三方插件都依赖的东西,<del>不知道为啥</del> 提供一些方便使用的基础API封装
+LuaCjsonLibrary &ndash; Lua版的Json处理库实在太慢,这个才叫速度!!
+LuaNginxModule &ndash; 我的最爱,一般逻辑,完全没必要用Java/PHP啦
+LuaRdsParserLibrary &ndash; 在Lua中直接处理RDS流,速度杠杠的!
+LuaRedisParserLibrary &ndash; 在Lua中处理Redia模块的响应,暂时我还没用上
+PostgresNginxModule &ndash; Nginx-Postgres桥,输出的也是RDS流
+RdsCsvNginxModule &ndash; RDS流转CVS格式,不知道能干啥,报表?
+RdsJsonNginxModule &ndash; RDS流转JSON字符串,之前经常用这个
+Redis2NginxModule &ndash; Nginx-Redis2桥
+SetMiscNginxModule &ndash; 提供很多很实用的方法,例如base64编解码,URL编解码,SQL防注入等等
+SrcacheNginxModule &ndash; 缓存模块,据说跟Memc模块一起用比较爽
+UpstreamKeepaliveNginxModule &ndash; 与Memc模块的标配,号称性能提升几倍呢
+XssNginxModule &ndash; <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax编程</p>
+
+  <div class="more">
+    <a href="/338.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/335.html">捐点钱给自己喜欢的开源软件</a> <span class="date">2011-10-18 09:17:54</span></h3>
+  <p>声明: 本文并非为Nutz募捐</p>
+
+<p>昨晚,点了几次鼠标,填了信用卡资料,一笔微不足道的捐款送达Python基金会</p>
+
+<p>回想那些捐款过的开源/免费软件,我的款项也许还不够作者买瓶红酒或者吃一顿KFC, 但我的确捐了,以表达我的感激之情,这难道不就够了吗?</p>
+
+<p>感觉国内的开源/免费软件生存环境还是太差:
+1. 第一次发布, 99.99%被骂山寨,没创意&hellip;.
+2. 免费的,就要求开源,开源的就骂质量差
+3. 只知道索取,不会有所贡献 &ndash; 拿到源码就跑,有bug也不报告,更别说捐款了
+&hellip;</p>
+
+<p>当然,大家的理由都很多,很充分,很现实:
+1. 没钱
+2. 技术不够
+3. 没时间
+&hellip;</p>
+
+<p>捐10块钱,报个bug,发邮件咨询一下作者,帮助一下新手,写blog介绍一下经验,有这么难吗?</p>
+
+  <div class="more">
+    <a href="/335.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/332.html">Nut.Test -- 使用Nutz一样能方便地进行单元测试</a> <span class="date">2011-10-16 22:22:36</span></h3>
+  <p>首先,感谢Jay提出一个需求.</p>
+
+<p>这个功能很有可能出现在1.b.40中</p>
+
+<p>当前Nut.Test代码,主要解决以下几个问题:
+1. 测试方法使用NutzDao操作数据库,希望在测试方法执行完成后进行回滚
+2. Ioc支持,方便获取与实际生产环境类似的Ioc注入功能,方便进行功能测试</p>
+
+<p>这个测试Runner, 很好地平衡了侵入性与灵活性, 让用户以很低的成本与耦合度测试Nutz代码</p>
+
+<p>所以,我新建org.nutz.test包, 核心类NutzJUnit4ClassRunner,这个类本身非常简单</p>
+
+<pre><code>public class NutzJUnit4ClassRunner extends TestClassRunner {
+    public NutzJUnit4ClassRunner(final Class klass) throws InitializationError {
+        super(klass, new NutTestClassMethodsRunner(klass));
+    }
+}
+</code></pre>
+
+<p>核心代码位于NutTestClassMethodsRunner</p>
+
+  <div class="more">
+    <a href="/332.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/330.html">在Linux下编译Qt Libs -- 能不能快点呢?!</a> <span class="date">2011-10-01 08:37:57</span></h3>
+  <p>出于好玩,下载了Qt libs for linux, 发现是个源码包,好吧编译呗</p>
+
+<p>敲入:</p>
+
+<pre><code>./configure -qt-sql-sqlite
+gmake
+gmake install
+</code></pre>
+
+<p>原本以为半个小时就万事,结果花了2个多小时!! 我吐血啊&hellip;</p>
+
+<p>难道就不能快点吗? demo examples docs 能不能编译啊!!</p>
+
+<p>好吧,谷哥告诉我,能这样:</p>
+
+<pre><code>./configure -qt-sql-sqlite -opensource -fast -no-qt3support -nomake demos -nomake docs -nomake examples -optimized-qmake -nomake tools
+gmake -j4
+gmake install
+</code></pre>
+
+<p>呵呵,半个小时搞定!!!</p>
+
+  <div class="more">
+    <a href="/330.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/326.html">初试Jetty使用Mongodb作为Session管理器</a> <span class="date">2011-09-26 23:03:32</span></h3>
+  <p>闲话少说,直接上代码:</p>
+
+<pre><code>package net.wendal.jetty.mongodb;
+
+import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
+import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+public abstract class TestMongodb4Jetty {
+
+    public static void main(String[] args) throws Throwable {
+        Server server = new Server(9090);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
+        MongoSessionManager msm = new MongoSessionManager();
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.setSessionManager(msm);
+        webAppContext.setSessionHandler(sessionHandler);
+        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
+        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
+        idMgr.setScavengeDelay(60);
+        msm.setSessionIdManager(idMgr);
+        server.setHandler(webAppContext);
+        server.start();
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/326.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/325.html">不走寻常路--NutzCP初版</a> <span class="date">2011-09-18 14:41:17</span></h3>
+  <p>想了一个晚上,用了一个早上完成编码 &ndash; 效率还是很高的嘛</p>
+
+<p>项目地址: <a href="https://github.com/nutzam/nutzcp">https://github.com/nutzam/nutzcp</a></p>
+
+<p>很久之前,我也写过另外一个<a href="http://wendal.net/243.html">简单的连接池实现</a>,这次我认真地实现了另一个实现,也就是现在这个</p>
+
+<p><strong>这个连接池,基于一些假设:</strong>
+1. 数据库可接纳的总连接数是固定的
+2. 使用者是自律的,总是显式调用commit()/rollback(),然后调用close()</p>
+
+<p><strong>不走寻常路:</strong>
+1. 固定的连接池大小
+2. 超过固定连接数后,不允许再创建新连接,除非旧连接被返还</p>
+
+<p><strong>为何要固定的连接池大小呢?!</strong>
+以MySQL为例,server端可接纳的连接数是固件的,写在配置文件里面的,就是说,实际上server-client之间的可用连接数总数是稳定的,固定的,所以,维持一个固定大小的连接池比维持一个可变大小的连接池要简洁,更快,其实也更实用</p>
+
+<p>**为什么不允许overflow(连接池里面已经没有空余连接,那就创建不受管理的连接)呢? **
+因为不应该由数据库告诉程序: 我是MySQL数据库服务器,我已经没有可用的新连接啦!!
+客户端本身就能知道是否已经无法创建新连接,这样直接抛出异常,比服务器告知要快速得多</p>
+
+  <div class="more">
+    <a href="/325.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/324.html">Nutz事务模板值得注意的细节</a> <span class="date">2011-09-17 22:31:36</span></h3>
+  <p>Nutz.Dao事务模板的官方文档: <a href="http://code.google.com/p/nutz/wiki/dao_transaction">http://code.google.com/p/nutz/wiki/dao_transaction</a></p>
+
+<p>需要注意的几个细节,文档还没提及:
+<strong>1. 数据库连接池的AutoCommit属性</strong>
+对于我见到的大部分连接池和数据库驱动,默认情况下AutoCommit=true,应该是为了性能
+这就导致如果用户不自行设置的话,Trans的大部分操作都是不可回滚的.故,如果使用Trans,那么务必设置AutoCommit</p>
+
+<p><strong>2. 多个数据源的事务</strong>
+大部分情况下,用户都不是使用XA驱动,故,多数据源的事务提交,在最后的提交阶段出错的话,已经执行commit操作的数据源,是不可能回滚的</p>
+
+<p><strong>3. 子线程的事务</strong>
+考虑下面的代码:</p>
+
+<pre><code>Trans.exec(new Atom(){
+   public void run() {
+       dao.insert(pet);
+       new MySuperPowerThread().start();
+       dao.count(Pet.class);
+   }
+});
+</code></pre>
+
+  <div class="more">
+    <a href="/324.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/321.html">让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制</a> <span class="date">2011-09-11 08:51:23</span></h3>
+  <p>本文并非教你写病毒来破解Android系统,所提及的操作,均要求用户主动参与</p>
+
+<p>本文主要针对是平板.Andoird手机由于涉及你的帐号/资金的安全,非常不建议你使用下面的方法!!</p>
+
+<p>先感谢一下硬件小二,rk28小组的协助</p>
+
+<h2>第一步,/system可写</h2>
+
+<p><a href="http://wendal.net/320.html">Rk2918现在可使用我不久前发明的方法,将/system映射在/data/sysrw</a></p>
+
+<p>Rk2818的话,自然是使用aufs这种xda发明的方法,但使用rk2918的方法会快些</p>
+
+<h2>第二步,获取root权限</h2>
+
+<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码&ndash; <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
+
+<p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
+
+  <div class="more">
+    <a href="/321.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/320.html">实现Rk2918的System分区可写</a> <span class="date">2011-09-09 11:33:27</span></h3>
+  <p>这是2011-09-08,也就是前天顿悟出来的方法</p>
+
+<p><strong>核心原理</strong>:在data分区下建一个文件夹/data/sysrw存放system原本的数据,启动时,软连接/data/sysrw为system分区</p>
+
+<p><strong>解释</strong>:
+1. data分区,最终挂载为/data文件夹,默认情况下,这是ext3格式的分区,但禁用了suid
+2. system分区,为不可写的cramfs格式,默认挂载在/system文件夹</p>
+
+<p><strong>步骤</strong>:
+1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
+2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
+3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
+..A. 不再挂载system分区 &ndash; 注释掉 mount cramfs mtd@system /system &ndash; 也就是前面加#号
+..B. 不再建立system文件夹 &ndash; 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid &ndash; 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 &ndash; chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su &ndash; 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 &ndash; 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 &mdash; 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+
+  <div class="more">
+    <a href="/320.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

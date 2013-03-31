@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>项目地址: <a href="https://github.com/wendal/viv">https://github.com/wendal/viv</a></p>
+
+<p>项目的核心思想,是基于Issue的Tag而非Issue的Status, 由zozoh提出来,我只是扩展并按照自己的项目设计了一套,跟github的issue系统类似.</p>
+
+<p>终于赶在春节前,把主要功能点完成了(页面还没做,看看谁愿意帮忙弄一个,前后台通信用ajax/json)
+用户登录,新增issue,上传附件,添加comments &hellip; &hellip;</p>
+
+<p><strong>BuguMongo 项目主页</strong> <a href="http://code.google.com/p/bugumongo/">http://code.google.com/p/bugumongo/</a>
+国产的小框架,自称&rdquo;BuguMongo已在多个正式商业项目中使用，并取得了理想的效果。&rdquo;.我的使用感受是, 总体不错,但还很不成熟.
+1. 代码中的瑕疵还是比较明显的,我个人比较在意的是出错时不打印堆栈,严重错误时也不抛出异常&hellip;
+2. 文档还不够齐备,JavaDoc缺失严重</p>
+
+<p>这代表着,作者自己用得非常爽,但社区的人会碰很多很多的钉子&hellip; 我对某些错误真是无语+无语
+作为国内少有的mongodb框架,很希望它能持续发展下去.虽说Nutz的社区还不成熟,但发现BuguMongo的社区差不多等于0,基本上死寂 &hellip; 跟当年nutz刚发布的时候差不多. 看来Nutz社区与BuguMongo的社区做一些交流还是很有必要的,呵呵</p>
+
+<p><strong>回想自己参与开源事业这好几年,发现很多开源项目都需要突破一些坎:</strong></p>
+
+<p><strong>1. 勇敢发布,并产生第一个使用者</strong>
+&gt;&gt; 很多人想,这不是很容易吗? 看上去是的,但只需要到googlecode/github逛逛,你就能发现,很多项目连一个版本都没发布过,就消亡了</p>
+
+<p><strong>2. 收到第一个有用的Bug/Issue报告</strong>
+&gt;&gt; 有用户使用才能产生bug/issue报告,才能发现一些你没有考虑到的情况. 真正发起一个项目并得到第一个bug/issue报告,对很多开源项目来说,那是消亡之前都等不到的</p>
+
+<p><strong>3. 开立社区(论坛,QQ群,等一切交流工具,并维持一定的人气)</strong>
+&gt;&gt; 维持一个论坛比一个QQ群累,但效果会比QQ群好,在我看来,论坛属于知识积累的一部分,持久化的, 而QQ是过程式,临时交流的结果.可惜nutz的论坛至今发展不起来,QQ群倒是非常热闹</p>
+
+<p><strong>4. 找到第一个共同开发者</strong>
+&gt;&gt; 我已经深深感觉到找一个共同开发者对一个开源项目有多重要. 思想的碰撞,具体实现的差异,协助开发,等等,都非常有利于项目的延续.我自己也发起过,参与过不少的开源项目,很多很多,慢慢就变成个人项目,随之慢慢死去</p>
+
+<p>各位,春节了哦,快回家吃饭吧@@@!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/361.html" title="Mongodb学习小记">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/359.html" title="Nutz 1.b.41 发行后记">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-01-21 15:44:09</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#Java-ref">Java <span>95</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#mongodb-ref">mongodb <span>6</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#git-ref">git <span>20</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Java-ref">Java <span>55</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Javadoc-ref">Javadoc <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#mongodb-ref">mongodb <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#Nutz-ref">Nutz <span>60</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/linux/ssh_tunnel_without_shell/">ssh tunnel without shell</a> <span class="date">2012-12-10</span></h3>
+  <h1>IT人士,必备翻墙梯</h1>
+
+<h2>在VPS创建无权限的用户</h2>
+
+<pre><code>useradd -s /bin/false free2
+passwd free2 #创建密码
+</code></pre>
+
+<h2>在本地访问之</h2>
+
+<pre><code>ssh -D 0.0.0.0:7070 -N -C free2@nutz.cn
+#输入密码,就可以了
+</code></pre>
+
+<h1>前提?当然是你有自己的VPS了</h1>
+
+  <div class="more">
+    <a href="/linux/ssh_tunnel_without_shell/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1130.html">Reflect Of Golang</a> <span class="date">2012-11-30</span></h3>
+  <h2>正在重新实现mustache for golang</h2>
+
+<ul>
+<li>mustache作为模板引擎,必然需要用到反射啦</li>
+<li>官方的实现,就一个go源文件,几百行,蛋碎</li>
+<li>官方实现只返回一个string类型,出错就返回空字符串!!</li>
+<li>原本打算在上面改的,结果还是算了,重新实现一个更好,现在已经完成60%</li>
+<li><a href="https://github.com/wendal/mustache">mustache from wendal</a></li>
+</ul>
+
+<h2>访问Map</h2>
+
+<pre><code>// 这里的参数和返回值都用了reflect.Value,是因为这是最下层的实现
+// 在此之上,我们可以封装为 Get(_map interface{}, key string)之类的形式
+func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
+    //进行任何反射操作之前,判断其可用性很重要
+    if !value.IsVaild() {
+        return
+    }
+    //判断其真实类型
+    //注意,这里的真实,是指最终的类型,例如
+    // type AAA map[string]string, 那么仍会得到map,而非AAA
+    // 如果想得到AAA,那么应该使用 value.Type().Name()或者全路径value.Type().String()
+    if value.Type().Kind() != reflect.Map {
+        return 
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1130.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/linux/Way_of_VPS/">Way of VPS</a> <span class="date">2012-11-25</span></h3>
+  <h1>VPS之路</h1>
+
+<p>从2009年5月份第一次购买VPS,已经3年多了.
+尝试过超过5家的vps,最近换用80vps,但它能靠谱多久呢?
+下一步,是不是独立服务器呢?</p>
+
+<h2>先说说vps</h2>
+
+<h3>网速</h3>
+
+<ul>
+<li>香港机房,对于南方来说,显然是最快的</li>
+<li>美国机房,西海岸的,对北方来说也很快</li>
+<li>但购买之前,仅能通过ping测试ip的方式来判断, 我就是这样上了yardvps</li>
+<li>yardvps的ping很快,貌似配置也给力,结果呢, 网络一段一段的,完全是废品级</li>
+</ul>
+
+<h3>IO性能</h3>
+
+  <div class="more">
+    <a href="/linux/Way_of_VPS/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1115.html">低调发布&#34;短点&#34;</a> <span class="date">2012-11-15</span></h3>
+  <h1>庆祝SB大的结束</h1>
+
+<h2>访问网址</h2>
+
+<ul>
+<li><a href="http://nutz.cn">短点!</a></li>
+</ul>
+
+<h2>动机</h2>
+
+<ul>
+<li>现有的短地址服务,各种河蟹,各种验证码,各种墙,XXXXXXXXXXXX!!</li>
+<li>只单独网址或文件,Wendal我极度不爽!!</li>
+</ul>
+
+<h2>用法</h2>
+
+<ul>
+<li>直接贴长网址,然后按&rdquo;短点!&ldquo;,即刻给你清爽的短地址</li>
+<li>贴log,代码,长文章, 然后按&rdquo;短点!&ldquo;, 生成的网址有代码高亮哦</li>
+<li>需要分享文件?直接将其拖入输入框,即刻自动开始上传,完成后即得到短地址</li>
+</ul>
+
+  <div class="more">
+    <a href="/2012/1115.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/linux/%E4%BB%8EWordPress%E8%BF%81%E7%A7%BB%E5%88%B0Ruhoh%E7%9A%84%E7%BB%8F%E9%AA%8C/">从WordPress迁移到Ruhoh的经验</a> <span class="date">2012-11-07</span></h3>
+  <h2>预备工作</h2>
+
+<h3>备份旧博客</h3>
+
+<ul>
+<li>备份mysql数据库中的wordpress数据</li>
+<li>备份wordpress所在的目录</li>
+</ul>
+
+<h3>迁移评论</h3>
+
+<ul>
+<li>由于ruhoh是静态博客引擎,只能使用社会化评论系统了</li>
+<li>wordpress的评论转到DISQUS最为方便, 到DISQUS注册好,wordpress安装插件,等待导入完成即可</li>
+</ul>
+
+<h3>导出并转换旧博客的文章</h3>
+
+<ul>
+<li>由于ruhoh只认markdown格式,需要将进行转换</li>
+<li>在wordpress控制界面导出wordpress.xml</li>
+</ul>
+
+<h2>转换老文章</h2>
+
+  <div class="more">
+    <a href="/linux/%E4%BB%8EWordPress%E8%BF%81%E7%A7%BB%E5%88%B0Ruhoh%E7%9A%84%E7%BB%8F%E9%AA%8C/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/linux/Ruhoh%2CNow%21/">Ruhoh,Now!</a> <span class="date">2012-11-06</span></h3>
+  <h2>正式转用Ruhoh静态博客引擎</h2>
+
+<ul>
+<li>wordpress贴code实在太痛苦,还要排版</li>
+<li>由于生成的是静态html,再也不必用神马php,世界清净了</li>
+</ul>
+
+<h2>博客内容完整迁移</h2>
+
+<ul>
+<li>很早就转用DISQUS,所以全部评论都完整保留</li>
+<li>博客文章,转为markdown格式后,使用fix_wp_id_permalink.go和cleanup_blank_line.go修正为原链接及清理空行</li>
+<li>本网站的源码存在github的<a href="http://github.com/wendal/wendal.net">wendal.net库</a></li>
+<li>前端使用nginx 1.2.4, 配合git hook实现自动更新(待完成)</li>
+</ul>
+
+<h2>启用80vps的香港机房,弃用vpsee</h2>
+
+  <div class="more">
+    <a href="/linux/Ruhoh%2CNow%21/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/465.html">我做运维的那几个月</a> <span class="date">2012-10-31 11:28:43</span></h3>
+  <p>怎么我觉得这题目这么俗呢? 好吧,将就着吧</p>
+
+<p>肯定又有人骂了,wendal你不是做开发的吗?怎么又做运维了,你让不让人活啊?难道你公司就一个人?</p>
+
+<p>话说,6月的最后一天,公司的someone说:&ldquo;广州有几台机器需要修一下,要不你跑一趟?&rdquo;,然后我答:&ldquo;行啊,不就几台嘛&rdquo;</p>
+
+<p>然后,就开始了漫长的运维&hellip;</p>
+
+<p>谁想到要去这么多趟呢?谁想到那么多机器会出问题呢?谁想到那么多地方的信号不好呢? 那叫一个郁闷和纠结啊</p>
+
+<p><strong>说说经验吧</strong></p>
+
+<p><strong>1. 别跟硬件较劲,坏了就是坏了,你是修不好的</strong></p>
+
+<p>灰尘太多,风扇卡死,机柜密封不透气,电压不稳,漏水,小昆虫,老鼠 &ndash; 各种靠谱不靠谱的原因,导致各种各样的硬件损坏, 解决之道,唯有更换</p>
+
+<p>最初硬是较劲,尝试fix各种不靠谱的问题,最近才发现很多都是硬件问题,浪费精力</p>
+
+<p><strong>2. 要精通各种网络连接方式(各种网络隧道,嘿嘿,就是翻V墙)</strong></p>
+
+  <div class="more">
+    <a href="/465.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/462.html">在windows下编译goexif</a> <span class="date">2012-10-20 11:28:21</span></h3>
+  <p>纯go版:</p>
+
+<pre><code>go get github.com/rwcarlsen/goexif/exif
+</code></pre>
+
+<p>cgo版:</p>
+
+<pre><code># 1. 下载libexif源码,获取头文件
+# 2. 下载exif.dll, 记得下载cygwin下的版本, 直接google得到的版本不靠谱,版本太老
+go get github.com/gosexy/exif
+</code></pre>
+
+<p><a href="/assets/media/2012/10/libexif-0.6.21.zip">libexif-0.6.21</a></p>
+
+  <div class="more">
+    <a href="/462.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/461.html">查找mysql中的低效索引</a> <span class="date">2012-10-11 09:39:38</span></h3>
+  <p>从一个<a href="http://parand.com/say/index.php/2009/09/01/finding-and-fixing-slow-mysql-queries/">外国博客</a>引用过来的</p>
+
+<pre><code>SELECT t.TABLE_SCHEMA AS `db`,
+t.TABLE_NAME AS `table`,
+s.INDEX_NAME AS `index name`,
+s.COLUMN_NAME AS `FIELD name`,
+s.SEQ_IN_INDEX `seq IN index`,
+s2.max_columns AS `# cols`,
+s.CARDINALITY AS `card`,
+t.TABLE_ROWS AS `est rows`,
+ROUND(((s.CARDINALITY / IFNULL(t.TABLE_ROWS, 0.01)) * 100), 2) AS `sel %`
+
+FROM INFORMATION_SCHEMA.STATISTICS s
+INNER JOIN INFORMATION_SCHEMA.TABLES t ON s.TABLE_SCHEMA = t.TABLE_SCHEMA AND s.TABLE_NAME = t.TABLE_NAME
+INNER JOIN (
+SELECT TABLE_SCHEMA, TABLE_NAME, INDEX_NAME, MAX(SEQ_IN_INDEX) AS max_columns
+FROM INFORMATION_SCHEMA.STATISTICS
+WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS s2 ON s.TABLE_SCHEMA = s2.TABLE_SCHEMA AND s.TABLE_NAME = s2.TABLE_NAME AND s.INDEX_NAME = s2.INDEX_NAME
+</code></pre>
+
+  <div class="more">
+    <a href="/461.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/460.html">Windows下隐藏Golang的DOS黑色窗口</a> <span class="date">2012-10-07 09:45:59</span></h3>
+  <p>纯属自己mark一下,其实就是编译为Windows GUI程序, 默认是Windows Console程序</p>
+
+<pre><code>go build -ldflags -Hwindowsgui XXX.go
+</code></pre>
+
+<p>参考文档 <a href="https://golang.org/cmd/ld/">https://golang.org/cmd/ld/</a></p>
+
+<p>续: 那怎么关掉这个程序呢?</p>
+
+<p>可选方法: 在go代码中监听一个管理端口,用浏览器或telnet访问这个端口,就执行exit操作</p>
+
+  <div class="more">
+    <a href="/460.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

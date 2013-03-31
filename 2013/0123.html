@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Golang的坑之DNS查询与系统线程</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Golang的坑之DNS查询与系统线程 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>这个问题源之于我3个月前开发的一个缓存服务</h2>
+
+<ol>
+<li>代理Http请求</li>
+<li>缓存部分请求,减少外网访问</li>
+</ol>
+
+<h2>但是,在不稳定的网络环境下(例如3G网络),不时出现崩溃的情况</h2>
+
+<p>纠结啊纠结啊&hellip;</p>
+
+<ol>
+<li>难道是因为我在32位系统下使用golang?</li>
+<li>难道是RP问题?</li>
+</ol>
+
+<p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
+
+<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
+SIGABRT: abort
+PC=0xffffe424
+
+
+goroutine 1 [chan receive]:
+net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
+    /opt/go/src/pkg/net/fd.go:268 +0x75
+net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
+    /opt/go/src/pkg/net/fd.go:622 +0x199
+net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
+    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
+net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
+net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/http/server.go:1029 +0x77
+net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
+    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
+net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
+    /opt/go/src/pkg/net/http/server.go:1091 +0x55
+    
+尾部
+eax     0x0
+ebx     0x231f
+ecx     0x2357
+edx     0x6
+edi     0xb77ceff4
+esi     0xb
+ebp     0xafa112f8
+esp     0xafa11050
+eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
+eflags  0x202
+cs      0x73
+fs      0x0
+gs      0x33
+</code></pre>
+
+<p>一直没找到原因</p>
+
+<h2>直至几天前,忽然灵机一动,难道是DNS的问题?</h2>
+
+<p>因为每次崩溃,总会带几个类似的goroutine</p>
+
+<pre><code>goroutine 1614 [syscall]:
+net._C2func_getaddrinfo(0x87af730, 0x0)
+    net/_obj/_cgo_defun.c:42 +0x32
+net.cgoLookupIPCNAME(0xd20b36c, 0x1a, 0x0, 0x0, 0x0, ...)
+    net/_obj/_cgo_gotypes.go:177 +0xe7
+net.cgoLookupIP(0xd20b36c, 0x1a, 0x0, 0x0, 0x0, ...)
+    net/_obj/_cgo_gotypes.go:223 +0x3d
+net.cgoLookupHost(0xd20b36c, 0x1a, 0x0, 0x0, 0x0, ...)
+    net/_obj/_cgo_gotypes.go:101 +0x43
+net.lookupHost(0xd20b36c, 0x1a, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/lookup_unix.go:56 +0x3d
+net.LookupHost(0xd20b36c, 0x1a, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/doc.go:10 +0x3d
+net.hostPortToIP(0x81f6d58, 0x3, 0xd20b36c, 0x1f, 0x0, ...)
+    /opt/go/src/pkg/net/ipsock.go:120 +0x183
+net.ResolveTCPAddr(0x81f6d58, 0x3, 0xd20b36c, 0x1f, 0x0, ...)
+    /opt/go/src/pkg/net/tcpsock.go:31 +0x37
+net.resolveNetAddr(0x81f9c14, 0x4, 0x81f6d58, 0x3, 0xd20b36c, ...)
+    /opt/go/src/pkg/net/dial.go:50 +0x35d
+net._func_001(0xd4bf228, 0xd4bf230, 0xd4bf238, 0xd4bf240, 0x0, ...)
+    /opt/go/src/pkg/net/dial.go:134 +0x44
+created by net.DialTimeout
+    /opt/go/src/pkg/net/dial.go:142 +0x13b
+</code></pre>
+
+<p>So,做了一个简单的DNS Cache,在执行net.Dail前,先自行解析域名</p>
+
+<p>结果,在虚拟机上,模拟各种垃圾网络(断网,拔网线,拔路由器&hellip;),没有再出现崩溃</p>
+
+<h2>原因是什么呢?</h2>
+
+<p>看我10月份发送到讨论组的邮件 <a href="https://groups.google.com/group/golang-china/browse_thread/thread/96e25b27abf9673b/98d271d98925fa98?lnk=gst&amp;q=pthread_create#98d271d98925fa98">runtime/cgo: pthread_create failed: Resource temporarily unavailable</a></p>
+
+<p>待我解决问题后,马上有人解释原因了(汗&hellip; 为啥之前就没人回复呢? 问得太次?)</p>
+
+<p>关键就是: <em>系统调用阻塞时大量生成内核级线程导致的</em>, 而cgo启用的情况下, 每一次DNS查询,都会起动一个系统线程!</p>
+
+<p>我只能说,你妹啊!! 系统线程啊!! 难道就不能弄个线程池啊!! 再说,有pthread_cancel啊,为啥timeout不执行一下呢?!</p>
+
+<p>写着写着, 忽然回想起之前遇到的一个情况,就是http.Get不返回(一直卡着,不往下执行),现在想起来,99%也是DNS的问题</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/2013/0127.html" title="一个神奇的周末">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/2013/0116.html" title="Golang的坑之文件覆写">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-01-23</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#go-ref">go <span>16</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#go-ref">go <span>9</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

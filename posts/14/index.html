@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTTPSQS源码初探</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/263.html">Logger对象是否会重复创建呢? (以Log4j为例)</a> <span class="date">2011-04-05 20:51:34</span></h3>
+  <p>不久前有人问及 重复调用Logger.getLogger之类的语句,是否会拿到不同的Logger对象呢?
+起初我并未在意,但现在觉得是应该探究一下.</p>
+
+<p>故,先是设计这样的代码:</p>
+
+<pre><code>import org.apache.log4j.Logger;
+public class LogTest {
+
+    public static void main(String[] args) {
+        Logger log = Logger.getLogger(LogTest.class);
+        Logger log2 = Logger.getLogger(LogTest.class);
+        System.out.println(log == log2);
+    }
+}
+</code></pre>
+
+<p>log4j.properties文件的内容:</p>
+
+<pre><code>log4j.rootLogger=DEBUG,Console
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
+</code></pre>
+
+  <div class="more">
+    <a href="/263.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/262.html">神奇的Slf4J-API版本 - 2.0.99</a> <span class="date">2011-04-03 12:29:03</span></h3>
+  <p>今天,一位群友&rdquo;我思&rdquo;,在组合使用slf4j和logback时报一下错误:</p>
+
+<pre><code>Exception in thread &quot;main&quot; java.lang.NoSuchMethodError: org.slf4j.helpers.MessageFormatter.arrayFormat(Ljava/lang/String;[Ljava/lang/Object;)Lorg/slf4j/helpers/FormattingTuple;
+</code></pre>
+
+<p>最后发现是slf4j的版本不对, 他使用的是slf4j-api-2.0.99.jar</p>
+
+<p>但是,但是,官方正式版只有1.6.1,而且至今我都没发现有2.0.x系列的计划呢!!
+我的神啊,哪里来的版本? 经提醒,这个jar就在 1.6.1版的发行包中!!  slf4j-1.6.1.zip\slf4j-1.6.1\integration\lib</p>
+
+<p>神奇啊,为啥呢?? 找不到其源码jar,好吧,上JD-GUI,看看报错的类MessageFormatter.arrayFormat
+2.0.99版的方法声明:</p>
+
+<pre><code>public static final String arrayFormat(String messagePattern, Object[] argArray)
+</code></pre>
+
+<p>1.6.1版的方法声明:</p>
+
+<pre><code>public static final FormattingTuple arrayFormat(String messagePattern, Object[] argArray)
+</code></pre>
+
+<p>看到区别了吧,返回值的类型不同了!!! 同样的,还有一个1.6.99版的API,内容与2.0.99版一致</p>
+
+  <div class="more">
+    <a href="/262.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/261.html">发布一个Httpsqs的Python客户端</a> <span class="date">2011-04-01 21:04:15</span></h3>
+  <p>Httpsqs是张宴的一款开源队列服务器,项目首页 <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a></p>
+
+<p>这款软件有几种客户端, Java/Perl/C,却没有Python的客户端.</p>
+
+<p>故,本人奉上一个实现,欢迎指正!!</p>
+
+<p>直接去下载 <a href="http://wendal-common.googlecode.com/files/httpsqs-python-client-v1.zip">httpsqs-python-client-v1.zip</a></p>
+
+<p>代码:</p>
+
+<pre><code>#Verion 1.0
+#Author wendal(wendal1985@gmail.com)
+#If you find a bug, pls mail me
+
+import sys,httplib
+
+ERROR = 'HTTPSQS_ERROR'
+
+GET_END = 'HTTPSQS_GET_END'
+</code></pre>
+
+  <div class="more">
+    <a href="/261.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/260.html">TMD美赞臣,竟敢打电话过来推销奶粉!!</a> <span class="date">2011-03-30 07:19:03</span></h3>
+  <p>怒了! 彻底怒了!!</p>
+
+<p>电话: 020-62610328
+竟然推销美赞臣奶粉,竟然说母乳质量差!!! TMD你这是啥垃圾奶粉?!!!</p>
+
+<p>我靠!! 找死啊?!!!!!!!! TMD想害我女儿!!! 还有没有人性啊??!!!</p>
+
+<p>美赞臣,肯定说这是临时工,这不是我们公司的!! 靠,电话里只推销&rdquo;美赞臣&rdquo;,难道还有人特意害你啊!!</p>
+
+<p>再敢打来就直接开骂!!!!!!</p>
+
+<p>好,先去查一下WHO的投诉邮件地址!!!!</p>
+
+  <div class="more">
+    <a href="/260.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/259.html">HTTPSQS源码初探</a> <span class="date">2011-03-28 21:34:39</span></h3>
+  <p>官网: <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a>
+一句话介绍: HTTPSQS is a Simple Queue Service based on HTTP GET/POST protocol
+               HTTPSQS（HTTP Simple Queue Service）是一款基于 HTTP GET/POST 协议的轻量级开源简单消息队列服务</p>
+
+<p>其实以前就安装过这款队列实现,也简单测试过,但今天第一次看源码,呵呵</p>
+
+<p>源码就一个C文件 httpsqs.c , 外加一个MakeFile文件</p>
+
+<p>代码大概800行,原本以为是个很复杂的东西,最后才发现,真的如其中文介绍一样:
+使用 Tokyo Cabinet 的 B+Tree Key/Value 数据库来做数据的持久化存储</p>
+
+<p>我的理解就是一个Key/Value服务器的Http界面</p>
+
+<p>原本打算写点代码分析的,但源码上的注解太详细,算了,不写了,把方法列一下:</p>
+
+<pre><code>/* 全局设置 */
+TCBDB *httpsqs_db_tcbdb; /* 数据表 */
+int httpsqs_settings_syncinterval; /* 同步更新内容到磁盘的间隔时间 */
+char *httpsqs_settings_pidfile; /* PID文件 */
+</code></pre>
+
+  <div class="more">
+    <a href="/259.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/258.html">[求助]CHM文件的格式,我疑惑了!!!</a> <span class="date">2011-03-28 12:39:57</span></h3>
+  <p>这几天想做一个CHM文件的Java读写库,困困研读这种非公开的文件格式.
+参考了一篇外国人写的文档 <a href="http://www.russotto.net/chm/chmformat.html">Microsoft&rsquo;s HTML Help (.chm) format</a></p>
+
+<p>按照其规律一步步构建POJO, 结果被一个ENCINT类型难住了,实在搞不懂如何解析,呜呜:</p>
+
+<p>原文:
+
+Encoded Integers</p>
+
+<p>An ENCINT is a variable-length integer. The high bit of each byte indicates &ldquo;continued to the next byte&rdquo;. Bytes are stored most significant to least significant. So, for example, $EA $15 is (((0xEA&amp;0x7F)&lt; &lt;7)|0x15) = 0x3515.
+</p>
+
+<p>严重崩溃中, 求帮助啊!!</p>
+
+  <div class="more">
+    <a href="/258.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/257.html">总结一下最近Nginx模块开发走过的弯路</a> <span class="date">2011-03-22 20:42:00</span></h3>
+  <p>整了快一个月了,是时候总结一下:</p>
+
+<p>教训:
+1. 在虚拟机下编译Nginx
+算是犯的第一个错误, 环境如下: Window + 虚拟机中的Ubuntu, nginx等文件放在windows的一个文件夹中, Ubuntu使用vbox的数据空间进行访问.</p>
+
+<ul>
+<li><p>一开始并未察觉,因为觉得编译个东西, 几分钟,很正常吧.</p></li>
+
+<li><p>后来,做出一部分功能,开始测试. 用ab压, 总是几百req/s ,非常不爽,不应该是这种性能!!</p></li>
+
+<li><p>无意中,改为单worker进程, 竟然效果更好, 而且ab占用的cpu比nginx还高!!</p></li>
+
+<li><p>开始怀疑虚拟机的性能,决定用wubi安装一个</p></li>
+
+<li><p>安装好,例行编译,靠!! 咋一会就搞定了?! 用ab压,晕死,直接上10k req/s了,而且依旧ab的cpu比nginx高!!</p></li>
+
+<li><p>在Lua中习惯性写分号,习惯性忘记写end</p></li>
+
+<li><p>开头,基本上每行都不自觉地敲上分号</p></li>
+</ul>
+
+  <div class="more">
+    <a href="/257.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/256.html">想不到还有这种SSH客户端- FireSSH</a> <span class="date">2011-03-22 18:56:44</span></h3>
+  <p>在oschina中无意中看到的, 在Firefox里面使用ssh!!</p>
+
+<p>简单使用:
+1. 访问<a href="http://firessh.mozdev.org/">FireSSH主页</a>
+2. 安装,并重启Firefox
+3. 在菜单中选择FireSSH,启动,输入ip/帐户/密码,登陆!!</p>
+
+<p>马上就是 SSH的经典黑屏了,哈哈</p>
+
+<p>只有想不到,没有做不到啊&hellip;</p>
+
+<p>回想以前,曾尝试在手机上安装一个ssh客户端, 就为了随时随地访问 客户的服务器排除问题,哈哈</p>
+
+  <div class="more">
+    <a href="/256.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/255.html">[已经确认]想不到真的遇到Lua-nginx-module的bug</a> <span class="date">2011-03-17 15:32:15</span></h3>
+  <p>难以置信啊, agentzh大牛已经确认是个bug,对应的版本:
+Lua-nginx-module 0.16rc2 + Nginx 0.8.54</p>
+
+<p>期待修复,哈哈</p>
+
+<p>原本一直以为是自己代码的原因,因为实在很诡异,附上我的原文:</p>
+
+<pre><code>我得到的最小集合就是:
+1. nginx.conf
+location /test {
+    root html;
+    content_by_lua_file &quot;conf/test.lua&quot;;
+}
+server/http等配置按默认的, event module用的是 epoll
+
+2. test.lua文件仅2行:
+ngx.location.capture('/1.html')
+
+ngx.exec(&quot;/1.html&quot;)
+</code></pre>
+
+  <div class="more">
+    <a href="/255.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/253.html">累趴下了,就为了办出生证!!</a> <span class="date">2011-03-14 19:26:17</span></h3>
+  <p>原本打算一个早上就能搞好 &hellip;
+原本以为简单填一下表就搞定 &hellip;
+原本以为就一个地方搞定全部东西 &hellip;</p>
+
+<p>我承认,错了, 结果是用了一天. 除了中午吃饭的半个小时,都在奔波&hellip;</p>
+
+<p>宝宝42天了, 要体检,补听力筛查 .. 还得去洗澡,游泳&hellip;.
+老婆产后42天了, 需要复查, 验血,验尿,B超&hellip;.</p>
+
+<p>跑上跑下,今天不知道走了多少层楼, 不知道签了多少次名,不知道刷了多少次卡&hellip;</p>
+
+<p><strong>不过,总算是把出生证给拿到了!! ^_^</strong></p>
+
+<p>哈哈,宝宝, 中国承认你这个人了, 你成为法律上的人了!!</p>
+
+  <div class="more">
+    <a href="/253.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>
