@@ -99,11 +99,10 @@
 
 <p>虽然python脚本可以直接启动,但为了兼容其他进程,需要封装成一个原命名的进程</p>
 
-<p>
-#include <Python.h>
-#include <sched.h></p>
+<pre><code>#include &lt;Python.h&gt;
+#include &lt;sched.h&gt;
 
-<p>int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
     //设置进程优先级,因为有其他更重要的进程
     nice(10);
     // 设置cpu亲和性,因为是4线程的机器,所以仅亲和后2个cpu
@@ -111,7 +110,20 @@
     CPU_ZERO(&amp;mask);
     CPU_SET(2, &amp;mask);//第3个
     CPU_SET(3, &amp;mask);//第4个,其实就是第二个core
-    sched_setaffinity(0, sizeof(mask), &amp;mask);</p>
+    sched_setaffinity(0, sizeof(mask), &amp;mask);
+
+    Py_SetProgramName(argv[0]);
+    Py_Initialize(); //标准的啦,初始化Python环境
+    PySys_SetArgv(argc, argv);
+    FILE * fp = fopen(&quot;/home/xxx/yyy/zzz.py&quot;, &quot;r&quot;); //打开入口py脚本的句柄,准备打开
+    // 这里并没有去判断是否真的存放,因为必须存放,不然也什么都做不了
+    //PyRun_SimpleFile(fp, &quot;zzz.py&quot;);
+    PyRun_AnyFile(fp, &quot;zzz.py&quot;); //启动之,哈哈
+    Py_Finalize(); // 严格来说从不调用,哈哈,因为是守护进程,退出的话,都是直接退
+    return 0;//符合标准C嘛,哈哈
+}
+
+</code></pre>
 
 
   <div class="more">
@@ -319,10 +331,42 @@ Fast-Json 500w次耗时: 3048
 
 <p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
 
-<p>
-runtime/cgo: pthread_create failed: Resource temporarily unavailable
+<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
 SIGABRT: abort
-PC=0xffffe424</p>
+PC=0xffffe424
+
+
+goroutine 1 [chan receive]:
+net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
+    /opt/go/src/pkg/net/fd.go:268 +0x75
+net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
+    /opt/go/src/pkg/net/fd.go:622 +0x199
+net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
+    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
+net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
+net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/http/server.go:1029 +0x77
+net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
+    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
+net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
+    /opt/go/src/pkg/net/http/server.go:1091 +0x55
+    
+尾部
+eax     0x0
+ebx     0x231f
+ecx     0x2357
+edx     0x6
+edi     0xb77ceff4
+esi     0xb
+ebp     0xafa112f8
+esp     0xafa11050
+eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
+eflags  0x202
+cs      0x73
+fs      0x0
+gs      0x33
+</code></pre>
 
 
   <div class="more">
@@ -362,22 +406,30 @@ PC=0xffffe424</p>
 
 <p>源网页是国家地震局的一周内地震统计,编码是gb2312</p>
 
-<p>
-package main</p>
+<pre><code>package main
 
-<p>import (
-    iconv &ldquo;github.com/djimenez/iconv-go&rdquo;
-    &ldquo;io/ioutil&rdquo;
-    &ldquo;log&rdquo;
-    &ldquo;net/http&rdquo;
-)</p>
+import (
+    iconv &quot;github.com/djimenez/iconv-go&quot;
+    &quot;io/ioutil&quot;
+    &quot;log&quot;
+    &quot;net/http&quot; 
+)
 
-<p>func main() {
+func main() {
     log.SetFlags(log.LstdFlags | log.Lshortfile)
-    resp, err := http.Get(&ldquo;http://data.earthquake.cn/datashare/globeEarthquake_csn.html&rdquo;)
+    resp, err := http.Get(&quot;http://data.earthquake.cn/datashare/globeEarthquake_csn.html&quot;)
     if err != nil {
         log.Fatal(err)
-    }</p>
+    }
+ 
+    defer resp.Body.Close()
+    input, err := ioutil.ReadAll(resp.Body)
+    out := make([]byte, len(input))
+    out = out[:]
+    iconv.Convert(input, out, &quot;gb2312&quot;, &quot;utf-8&quot;)
+    ioutil.WriteFile(&quot;out.html&quot;, out, 0644)
+}
+</code></pre>
 
 
   <div class="more">

@@ -3,7 +3,7 @@
   <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>2013-03-31 02:19:34 +0800</pubDate>
+    <pubDate>2013-03-31 02:24:28 +0800</pubDate>
     <item>
       <title>Python还是很适合快速开发的</title>
       <link>http://wendal.net/2013/0325.html</link>
@@ -749,66 +749,6 @@ cd wendal.net
 </description>
     </item>
     <item>
-      <title>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</title>
-      <link>http://wendal.net/2012/1228.html</link>
-      <pubDate>2012-12-24 12:00:00 +0800</pubDate>
-      <description>&lt;p&gt;Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)&lt;/p&gt;
-
-&lt;h2&gt;首先,需要一个开源的客户端openconnect&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;#部分Linux发行版中有预编译版,但毕竟老
-#应该也能用,没试过  yum install openconnect
-
-wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
-tar xvf openconnect-4.07.tar.gz
-cd openconnect-4.07
-./configure
-make
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;得到编译好的openconnect后, 连接服务器&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;#root权限哦, 或者能添加tun的帐户也行
-./openconnect vpn.wendal.net
-#提示如下:
-Attempting to connect to 124.99.99.99:443
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/
-Got HTTP response: HTTP/1.0 302 Object Moved
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/+webvpn+/index.html
-Please enter your username and password.
-username: #输入帐户
-password: #输入密码
-
-#当然,你可以先指定user和password咯
-./openconnect -u wendal -p wendal vpn.wendal.net
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;登陆成功后, 查看本地地址&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;ifconfig tun0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;接下来,就是远程桌面了&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;#安装rdesktop
-yum install -y rdesktop
-./rdesktop -z win.wendal.net
-#哈哈,你能看到界面了吗? 输入帐户密码就可以登陆了
-
-#-z是压缩参数
-#还可以指定用户名和密码实现自动登陆
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2&gt;看看成果&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;/assets/media/2012/12/vpn_remote_desktop.jpg&#34;&gt;&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>在Golang中获取系统的磁盘空间内存占用</title>
       <link>http://wendal.net/2012/1224.html</link>
       <pubDate>2012-12-24 12:00:00 +0800</pubDate>
@@ -877,6 +817,66 @@ func MemStat() MemStatus {
 &lt;li&gt;很明显,Windows下的支持是最弱的, 当然,还能通过调用win32 API的方式获取缺失的信息&lt;/li&gt;
 &lt;li&gt;Golang的API并非完全跨平台, 正如上述的syscall.Statfs_t结构体,在Windows下是没有的&lt;/li&gt;
 &lt;/ol&gt;
+</description>
+    </item>
+    <item>
+      <title>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</title>
+      <link>http://wendal.net/2012/1228.html</link>
+      <pubDate>2012-12-24 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)&lt;/p&gt;
+
+&lt;h2&gt;首先,需要一个开源的客户端openconnect&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#部分Linux发行版中有预编译版,但毕竟老
+#应该也能用,没试过  yum install openconnect
+
+wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
+tar xvf openconnect-4.07.tar.gz
+cd openconnect-4.07
+./configure
+make
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;得到编译好的openconnect后, 连接服务器&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#root权限哦, 或者能添加tun的帐户也行
+./openconnect vpn.wendal.net
+#提示如下:
+Attempting to connect to 124.99.99.99:443
+SSL negotiation with vpn.wendal.net
+Connected to HTTPS on vpn.wendal.net
+GET https://vpn.wendal.net/
+Got HTTP response: HTTP/1.0 302 Object Moved
+SSL negotiation with vpn.wendal.net
+Connected to HTTPS on vpn.wendal.net
+GET https://vpn.wendal.net/+webvpn+/index.html
+Please enter your username and password.
+username: #输入帐户
+password: #输入密码
+
+#当然,你可以先指定user和password咯
+./openconnect -u wendal -p wendal vpn.wendal.net
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;登陆成功后, 查看本地地址&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;ifconfig tun0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;接下来,就是远程桌面了&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;#安装rdesktop
+yum install -y rdesktop
+./rdesktop -z win.wendal.net
+#哈哈,你能看到界面了吗? 输入帐户密码就可以登陆了
+
+#-z是压缩参数
+#还可以指定用户名和密码实现自动登陆
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;看看成果&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;/assets/media/2012/12/vpn_remote_desktop.jpg&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
@@ -1135,7 +1135,7 @@ public static void main(String[] args) {
     </item>
     <item>
       <title>ssh tunnel without shell</title>
-      <link>http://wendal.net/linux/ssh_tunnel_without_shell/</link>
+      <link>http://wendal.net/linux/ssh-tunnel-without-shell/</link>
       <pubDate>2012-12-10 12:00:00 +0800</pubDate>
       <description>&lt;h1&gt;IT人士,必备翻墙梯&lt;/h1&gt;
 
@@ -1274,7 +1274,7 @@ func GetStructValue(value reflect.Value, key string) (rs reflect.Value) {
     </item>
     <item>
       <title>Way of VPS</title>
-      <link>http://wendal.net/linux/Way_of_VPS/</link>
+      <link>http://wendal.net/linux/Way-of-VPS/</link>
       <pubDate>2012-11-25 12:00:00 +0800</pubDate>
       <description>&lt;h1&gt;VPS之路&lt;/h1&gt;
 
