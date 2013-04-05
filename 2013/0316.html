@@ -200,7 +200,7 @@ func main() {
 
 <p>coocood提醒到, go1.1有个新的API来完成这个蛋碎的东西</p>
 
-<pre><code>http.DefaultTransport.CancelRequest(req)
+<pre><code>http.DefaultTransport.(*http.Transport).CancelRequest(req)
 </code></pre>
 
 <p>如果不是默认的DefaultTransport,就找你自己set的Transport吧</p>
