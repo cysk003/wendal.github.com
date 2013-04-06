@@ -3,7 +3,88 @@
   <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>2013-03-31 02:24:28 +0800</pubDate>
+    <pubDate>2013-04-06 09:37:43 +0800</pubDate>
+    <item>
+      <title>Golang下通过syscall调用win32的api</title>
+      <link>http://wendal.net/2013/0406.html</link>
+      <pubDate>2013-04-06 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;源于golang群中再次提到windows下获取磁盘空间的方法&lt;/p&gt;
+
+&lt;p&gt;由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式&lt;/p&gt;
+
+&lt;h2&gt;syscall.Syscall系列方法&lt;/h2&gt;
+
+&lt;p&gt;当前共5个方法&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;syscall.Syscall
+syscall.Syscall6
+syscall.Syscall9
+syscall.Syscall12
+syscall.Syscall15
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;分别对应 3个/6个/9个/12个/15个参数或以下的调用&lt;/p&gt;
+
+&lt;p&gt;参数都形如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;syscall.Syscall(trap, nargs, a1, a2, a3)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第二个参数, nargs 即参数的个数,一旦传错, 轻则调用失败,重者直接APPCARSH&lt;/p&gt;
+
+&lt;p&gt;多余的参数, 用0代替&lt;/p&gt;
+
+&lt;h2&gt;调用示例&lt;/h2&gt;
+
+&lt;p&gt;获取磁盘空间&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;//首先,准备输入参数, GetDiskFreeSpaceEx需要4个参数, 可查MSDN
+dir := &amp;quot;C:&amp;quot;
+lpFreeBytesAvailable := int64(0) //注意类型需要跟API的类型相符
+lpTotalNumberOfBytes := int64(0)
+lpTotalNumberOfFreeBytes := int64(0)
+
+//获取方法的引用
+kernel32, err := syscall.LoadLibrary(&amp;quot;Kernel32.dll&amp;quot;) // 严格来说需要加上 defer syscall.FreeLibrary(kernel32)
+GetDiskFreeSpaceEx, err := syscall.GetProcAddress(syscall.Handle(kernel32), &amp;quot;GetDiskFreeSpaceExW&amp;quot;)
+
+//执行之. 因为有4个参数,故取Syscall6才能放得下. 最后2个参数,自然就是0了
+r, _, errno := syscall.Syscall6(uintptr(GetDiskFreeSpaceEx), 4,
+            uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&amp;quot;C:&amp;quot;))),
+            uintptr(unsafe.Pointer(&amp;amp;lpFreeBytesAvailable)),
+            uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfBytes)),
+            uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfFreeBytes)), 0, 0)
+            
+// 注意, errno并非error接口的, 不可能是nil
+// 而且,根据MSDN的说明,返回值为0就fail, 不为0就是成功
+if r != 0 {
+    log.Printf(&amp;quot;Free %dmb&amp;quot;, lpTotalNumberOfFreeBytes/1024/1024)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;简单点的方式? 用syscall.Call&lt;/h2&gt;
+
+&lt;p&gt;跟Syscall系列一样, Call方法最多15个参数. 这里用来Must开头的方法, 如不存在,会panic.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    h := syscall.MustLoadDLL(&amp;quot;kernel32.dll&amp;quot;)
+    c := h.MustFindProc(&amp;quot;GetDiskFreeSpaceExW&amp;quot;)
+    lpFreeBytesAvailable := int64(0)
+    lpTotalNumberOfBytes := int64(0)
+    lpTotalNumberOfFreeBytes := int64(0)
+    r2, _, err := c.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&amp;quot;F:&amp;quot;))),
+        uintptr(unsafe.Pointer(&amp;amp;lpFreeBytesAvailable)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfBytes)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfFreeBytes)))
+    if r2 != 0 {
+        log.Println(r2, err, lpFreeBytesAvailable/1024/1024)
+    }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;小提示&lt;/h2&gt;
+
+&lt;p&gt;传struct不是个好想法, 不同语言之间的差异不好磨合&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Python还是很适合快速开发的</title>
       <link>http://wendal.net/2013/0325.html</link>
@@ -176,6 +257,15 @@ func main() {
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;一个月没写blog了, 心情欠佳+身体抱恙 ~_~ 哎,多事的3月&lt;/p&gt;
+
+&lt;h2&gt;2013年4月5号更新&lt;/h2&gt;
+
+&lt;p&gt;coocood提醒到, go1.1有个新的API来完成这个蛋碎的东西&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http.DefaultTransport.(*http.Transport).CancelRequest(req)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果不是默认的DefaultTransport,就找你自己set的Transport吧&lt;/p&gt;
 </description>
     </item>
     <item>
@@ -817,6 +907,52 @@ func MemStat() MemStatus {
 &lt;li&gt;很明显,Windows下的支持是最弱的, 当然,还能通过调用win32 API的方式获取缺失的信息&lt;/li&gt;
 &lt;li&gt;Golang的API并非完全跨平台, 正如上述的syscall.Statfs_t结构体,在Windows下是没有的&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;h2&gt;2013年4月6号更新,windows下获取磁盘空间的方法&lt;/h2&gt;
+
+&lt;p&gt;通过调用win32 api&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func main() {
+    kernel32, err := syscall.LoadLibrary(&amp;quot;Kernel32.dll&amp;quot;)
+    if err != nil {
+        log.Panic(err)
+    }
+    defer syscall.FreeLibrary(kernel32)
+    GetDiskFreeSpaceEx, err := syscall.GetProcAddress(syscall.Handle(kernel32), &amp;quot;GetDiskFreeSpaceExW&amp;quot;)
+
+    if err != nil {
+        log.Panic(err)
+    }
+
+    lpFreeBytesAvailable := int64(0)
+    lpTotalNumberOfBytes := int64(0)
+    lpTotalNumberOfFreeBytes := int64(0)
+    r, a, b := syscall.Syscall6(uintptr(GetDiskFreeSpaceEx), 4,
+        uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&amp;quot;C:&amp;quot;))),
+        uintptr(unsafe.Pointer(&amp;amp;lpFreeBytesAvailable)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfBytes)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfFreeBytes)), 0, 0)
+
+    log.Printf(&amp;quot;Available  %dmb&amp;quot;, lpFreeBytesAvailable/1024/1024.0)
+    log.Printf(&amp;quot;Total      %dmb&amp;quot;, lpTotalNumberOfBytes/1024/1024.0)
+    log.Printf(&amp;quot;Free       %dmb&amp;quot;, lpTotalNumberOfFreeBytes/1024/1024.0)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;或者更简单的版本&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;func main() {
+    h := syscall.MustLoadDLL(&amp;quot;kernel32.dll&amp;quot;)
+    c := h.MustFindProc(&amp;quot;GetDiskFreeSpaceExW&amp;quot;)
+    lpFreeBytesAvailable := int64(0)
+    lpTotalNumberOfBytes := int64(0)
+    lpTotalNumberOfFreeBytes := int64(0)
+    r2, _, err := c.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&amp;quot;F:&amp;quot;))),
+        uintptr(unsafe.Pointer(&amp;amp;lpFreeBytesAvailable)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfBytes)),
+        uintptr(unsafe.Pointer(&amp;amp;lpTotalNumberOfFreeBytes)))
+}
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     <item>

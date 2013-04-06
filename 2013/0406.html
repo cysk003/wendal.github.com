@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python还是很适合快速开发的</title>
+    <title>Golang下通过syscall调用win32的api</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,75 +78,100 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>Python还是很适合快速开发的 </h1>
+  <h1>Golang下通过syscall调用win32的api </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>上周为了重写公司的其中一个关键进程,断然选用Python快速开发了一版</p>
+    <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
 
-<h2>首先,是启动器</h2>
+<p>由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式</p>
 
-<p>虽然python脚本可以直接启动,但为了兼容其他进程,需要封装成一个原命名的进程</p>
+<h2>syscall.Syscall系列方法</h2>
 
-<pre><code>#include &lt;Python.h&gt;
-#include &lt;sched.h&gt;
+<p>当前共5个方法</p>
 
-int main(int argc, char *argv[]) {
-    //设置进程优先级,因为有其他更重要的进程
-    nice(10);
-    // 设置cpu亲和性,因为是4线程的机器,所以仅亲和后2个cpu
-    cpu_set_t  mask;
-    CPU_ZERO(&amp;mask);
-    CPU_SET(2, &amp;mask);//第3个
-    CPU_SET(3, &amp;mask);//第4个,其实就是第二个core
-    sched_setaffinity(0, sizeof(mask), &amp;mask);
+<pre><code>syscall.Syscall
+syscall.Syscall6
+syscall.Syscall9
+syscall.Syscall12
+syscall.Syscall15
+</code></pre>
 
-    Py_SetProgramName(argv[0]);
-    Py_Initialize(); //标准的啦,初始化Python环境
-    PySys_SetArgv(argc, argv);
-    FILE * fp = fopen(&quot;/home/xxx/yyy/zzz.py&quot;, &quot;r&quot;); //打开入口py脚本的句柄,准备打开
-    // 这里并没有去判断是否真的存放,因为必须存放,不然也什么都做不了
-    //PyRun_SimpleFile(fp, &quot;zzz.py&quot;);
-    PyRun_AnyFile(fp, &quot;zzz.py&quot;); //启动之,哈哈
-    Py_Finalize(); // 严格来说从不调用,哈哈,因为是守护进程,退出的话,都是直接退
-    return 0;//符合标准C嘛,哈哈
+<p>分别对应 3个/6个/9个/12个/15个参数或以下的调用</p>
+
+<p>参数都形如</p>
+
+<pre><code>syscall.Syscall(trap, nargs, a1, a2, a3)
+</code></pre>
+
+<p>第二个参数, nargs 即参数的个数,一旦传错, 轻则调用失败,重者直接APPCARSH</p>
+
+<p>多余的参数, 用0代替</p>
+
+<h2>调用示例</h2>
+
+<p>获取磁盘空间</p>
+
+<pre><code>//首先,准备输入参数, GetDiskFreeSpaceEx需要4个参数, 可查MSDN
+dir := &quot;C:&quot;
+lpFreeBytesAvailable := int64(0) //注意类型需要跟API的类型相符
+lpTotalNumberOfBytes := int64(0)
+lpTotalNumberOfFreeBytes := int64(0)
+
+//获取方法的引用
+kernel32, err := syscall.LoadLibrary(&quot;Kernel32.dll&quot;) // 严格来说需要加上 defer syscall.FreeLibrary(kernel32)
+GetDiskFreeSpaceEx, err := syscall.GetProcAddress(syscall.Handle(kernel32), &quot;GetDiskFreeSpaceExW&quot;)
+
+//执行之. 因为有4个参数,故取Syscall6才能放得下. 最后2个参数,自然就是0了
+r, _, errno := syscall.Syscall6(uintptr(GetDiskFreeSpaceEx), 4,
+            uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&quot;C:&quot;))),
+            uintptr(unsafe.Pointer(&amp;lpFreeBytesAvailable)),
+            uintptr(unsafe.Pointer(&amp;lpTotalNumberOfBytes)),
+            uintptr(unsafe.Pointer(&amp;lpTotalNumberOfFreeBytes)), 0, 0)
+            
+// 注意, errno并非error接口的, 不可能是nil
+// 而且,根据MSDN的说明,返回值为0就fail, 不为0就是成功
+if r != 0 {
+    log.Printf(&quot;Free %dmb&quot;, lpTotalNumberOfFreeBytes/1024/1024)
 }
-
 </code></pre>
 
-<p>编译之</p>
+<h2>简单点的方式? 用syscall.Call</h2>
 
-<pre><code>gcc -O2 -I/usr/include/python2.7 -lpython2.7 -MD -MT -pthread -ldl zzz.c -o zzz
+<p>跟Syscall系列一样, Call方法最多15个参数. 这里用来Must开头的方法, 如不存在,会panic.</p>
+
+<pre><code>    h := syscall.MustLoadDLL(&quot;kernel32.dll&quot;)
+    c := h.MustFindProc(&quot;GetDiskFreeSpaceExW&quot;)
+    lpFreeBytesAvailable := int64(0)
+    lpTotalNumberOfBytes := int64(0)
+    lpTotalNumberOfFreeBytes := int64(0)
+    r2, _, err := c.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&quot;F:&quot;))),
+        uintptr(unsafe.Pointer(&amp;lpFreeBytesAvailable)),
+        uintptr(unsafe.Pointer(&amp;lpTotalNumberOfBytes)),
+        uintptr(unsafe.Pointer(&amp;lpTotalNumberOfFreeBytes)))
+    if r2 != 0 {
+        log.Println(r2, err, lpFreeBytesAvailable/1024/1024)
+    }
 </code></pre>
 
-<p>需要带上-pthread和-dl等参数,否则可能无法加载模块</p>
+<h2>小提示</h2>
 
-<h2>python代码部分</h2>
-
-<p>把路径添加进去,防止找不到py文件</p>
-
-<pre><code>import sys
-sys.path.append(&quot;/home/xxx/yyy&quot;)
-</code></pre>
-
-<p>接下来的,自然就是业务逻辑了</p>
-
-<p>话说,最近耗子哥跟百毒闹得很欢哦,哈哈</p>
+<p>传struct不是个好想法, 不同语言之间的差异不好磨合</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2013/0406.html" title="Golang下通过syscall调用win32的api">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2013/0316.html" title="Golang的坑之http读取大文件必须读完">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/0325.html" title="Python还是很适合快速开发的">Next &rarr;</a></li>
           
           
         </ul>
@@ -172,13 +197,13 @@ sys.path.append(&quot;/home/xxx/yyy&quot;)
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2013-03-25</span></div>
+    <div class="date"><span>2013-04-06</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>23</span></a>
+  <a href="/categories/#go-ref">go <span>17</span></a>
 </li>
     
     </ul>
@@ -187,7 +212,7 @@ sys.path.append(&quot;/home/xxx/yyy&quot;)
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#python%2C%E5%BF%AB%E9%80%9F%E5%BC%80%E5%8F%91-ref">python,快速开发 <span>1</span></a>
+  <a href="/tags/#%E4%BD%8E%E5%B1%82%E8%B0%83%E7%94%A8-ref">低层调用 <span>1</span></a>
 </li>
     
     </ul>

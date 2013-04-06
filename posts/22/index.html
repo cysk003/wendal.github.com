@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Golang中获取func的名称</title>
+    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -77,121 +77,111 @@
     <div class="container">
 
       <div class="content">
-        <div class="page-header">
-  <h1>在Golang中获取func的名称 </h1>
-</div>
+        
 
-<div class="row">
-  <div class="span8">
-    <p>这个问题源之于群友SeanWu的一个提问</p>
+<div class="post">
+  <h3 class="title"><a href="/4.html">每天写点东西</a> <span class="date">2010-07-26 14:06:16</span></h3>
+  <p>没啥,想写点东西了</p>
 
-<h2>期望的效果</h2>
+<p>随意吧,开心就好</p>
 
-<pre><code>func ABC() {
-}
-
-func GetFuncName(fn func()) string {
-    return //返回ABC
-}
-</code></pre>
-
-<h2>stackoverflow上的方法</h2>
-
-<p><a href="http://stackoverflow.com/questions/7052693/how-to-get-the-name-of-a-function-in-go">链接</a></p>
-
-<pre><code>func GetFunctionName(i interface{}) string {
-    return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
-}
-</code></pre>
-
-<h2>分析</h2>
-
-<p>我曾经尝试这种写法</p>
-
-<pre><code>runtime.FuncForPC(reflect.ValueOf(i).Addr()).Name()
-</code></pre>
-
-<p>但func是不能执行Addr()的, 而</p>
-
-<pre><code>funcPc,_,_ := runtime.Caller(0)
-runtime.FuncForPC(funcPc).Name()
-</code></pre>
-
-<p>只能在func被调用时才能获取到自身的名字</p>
-
-<pre><code>reflect.ValueOf(i).Pointer()
-</code></pre>
-
-<p>就是绕过了执行过程,直接通过PC值来获取Func对象,从而得到名字</p>
-
-    <hr>
-    <div class="pagination">
-      <ul>
-        <ul>
-          
-            <li class="prev"><a href="/2012/1228.html" title="Linux下通过CiscoAnyConnectVPN访问Windows远程桌面">&larr; Previous</a></li>
-          
-          
-
-            <li><a href="/archive">Archive</a></li>
-
-          
-            <li class="next"><a href="/2012/1221.html" title="Android中以root权限调用本地程序">Next &rarr;</a></li>
-          
-          
-        </ul>
-      </ul>
-    </div>
-    <hr>
-    
-<div id="disqus_thread"></div>
-<script>
-    var disqus_developer = 1;
-    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-
-  </div>
-  
-  <div class="span4">
-    <h4>Published</h4>
-    <div class="date"><span>2012-12-23</span></div>
-    <br>
-    <h4>Categories</h4>
-    <ul class="tag_box">
-    
-      <li>
-  <a href="/categories/#go-ref">go <span>17</span></a>
-</li>
-    
-    </ul>
-    <br>
-    <h4>Tags</h4>
-    <ul class="tag_box">
-    
-      <li>
-  <a href="/tags/#go-ref">go <span>9</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%2C-ref">, <span>4</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#reflect-ref">reflect <span>1</span></a>
-</li>
-    
-    </ul>
+  <div class="more">
+    <a href="/4.html" class="btn">read more..</a>
   </div>
 </div>
 
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+</ul>
       </div>
 
       <footer>

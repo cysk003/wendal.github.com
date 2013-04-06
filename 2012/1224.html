@@ -180,6 +180,21 @@ func MemStat() MemStatus {
 }
 </code></pre>
 
+<p>或者更简单的版本</p>
+
+<pre><code>func main() {
+    h := syscall.MustLoadDLL(&quot;kernel32.dll&quot;)
+    c := h.MustFindProc(&quot;GetDiskFreeSpaceExW&quot;)
+    lpFreeBytesAvailable := int64(0)
+    lpTotalNumberOfBytes := int64(0)
+    lpTotalNumberOfFreeBytes := int64(0)
+    r2, _, err := c.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(&quot;F:&quot;))),
+        uintptr(unsafe.Pointer(&amp;lpFreeBytesAvailable)),
+        uintptr(unsafe.Pointer(&amp;lpTotalNumberOfBytes)),
+        uintptr(unsafe.Pointer(&amp;lpTotalNumberOfFreeBytes)))
+}
+</code></pre>
+
     <hr>
     <div class="pagination">
       <ul>
@@ -224,7 +239,7 @@ func MemStat() MemStatus {
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#go-ref">go <span>16</span></a>
+  <a href="/categories/#go-ref">go <span>17</span></a>
 </li>
     
     </ul>

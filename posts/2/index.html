@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Nutz是一个轮子吗?</title>
+    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,42 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0115.html">Golang下进行字符集转换</a> <span class="date">2013-01-15</span></h3>
+  <h1>演示一下gb2312转UTF8</h1>
+
+<p>源网页是国家地震局的一周内地震统计,编码是gb2312</p>
+
+<pre><code>package main
+
+import (
+    iconv &quot;github.com/djimenez/iconv-go&quot;
+    &quot;io/ioutil&quot;
+    &quot;log&quot;
+    &quot;net/http&quot; 
+)
+
+func main() {
+    log.SetFlags(log.LstdFlags | log.Lshortfile)
+    resp, err := http.Get(&quot;http://data.earthquake.cn/datashare/globeEarthquake_csn.html&quot;)
+    if err != nil {
+        log.Fatal(err)
+    }
+ 
+    defer resp.Body.Close()
+    input, err := ioutil.ReadAll(resp.Body)
+    out := make([]byte, len(input))
+    out = out[:]
+    iconv.Convert(input, out, &quot;gb2312&quot;, &quot;utf-8&quot;)
+    ioutil.WriteFile(&quot;out.html&quot;, out, 0644)
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/0115.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0113.html">最近买了2款软件</a> <span class="date">2013-01-13</span></h3>
@@ -331,32 +367,6 @@ alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-ti
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/2012/1213.html">Deploy Nutz as HttpAPI by Jetty 7</a> <span class="date">2012-12-13</span></h3>
-  <h1>将Nutz挂载到jetty上,作为HttpAPI</h1>
-
-<h2>这里描述的,一个这样的web服务</h2>
-
-<ol>
-<li>不需要jsp</li>
-<li>不需要静态资源,例如js/css</li>
-<li>仅挂载一个NutFilter,不需要其他jar</li>
-</ol>
-
-<h2>实现</h2>
-
-<pre><code>//新建一个Jetty Server,监听8080端口
-Server server = new Server(8080); 
-//创建一个Servlet容器,并映射在根路径
-ServletContextHandler ctx = new ServletContextHandler();
-ctx.setContextPath(&quot;/&quot;);
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1213.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -442,6 +452,10 @@ ctx.setContextPath(&quot;/&quot;);
 
   <li>
 	21
+  </li>
+
+  <li>
+	22
   </li>
 
 </ul>

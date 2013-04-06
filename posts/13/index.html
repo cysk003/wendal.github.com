@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Nutz是一个轮子吗?</title>
+    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,49 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/280.html">Nutz中你未必知道的用法</a> <span class="date">2011-04-28 10:30:11</span></h3>
+  <p>========================================================================</p>
+
+<h1><strong>Ioc篇</strong></h1>
+
+<p><strong>1. 使用properties文件</strong></p>
+
+<pre><code>var ioc = {
+    config : {
+        type : &quot;org.nutz.ioc.impl.PropertiesProxy&quot;, /*1.b.37内置的一个代理类*/
+        fields : {
+            paths : [&quot;conf/jdbc.properties&quot;] /*可以写多个文件或文件夹*/
+        }
+    },
+// Data source
+    dataSource : {
+        type :&quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+        events : {
+            depose :&quot;close&quot;
+        },
+        fields : {
+            driverClassName : {
+                java :&quot;$config.get('driver')&quot;
+            },
+            url : {
+                java :&quot;$config.get('url')&quot;
+            },
+            username : {
+                java :&quot;$config.get('username')&quot;
+            },
+            password : {
+                java :&quot;$config.get('password')&quot;
+            }
+        }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/280.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/279.html">声明一下Everbox4j的相关事项</a> <span class="date">2011-04-28 09:38:56</span></h3>
@@ -331,37 +374,6 @@ static ngx_command_t  ngx_http_status_commands[] = {
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/266.html">再一次搞定UTF-8的BOM</a> <span class="date">2011-04-12 18:55:43</span></h3>
-  <p>一年前的某天,我觉察到BOM的问题 &ndash; 一个Java源文件死活无法编译
-今天,我狠狠地为 Nutz的Streams类添加了一个方法,用于自动过滤掉BOM头!!
-代码如下:</p>
-
-<pre><code>private static final byte[] UTF_BOM = new byte[]{(byte) 0xEF,(byte) 0xBB,(byte) 0xBF};
-
-/**
- * 判断并移除UTF-8的BOM头
-*/
-public static InputStream utf8filte(InputStream in) {
-    try {
-        PushbackInputStream pis = new PushbackInputStream(in,3);
-        byte[] header = new byte[3];
-        pis.read(header,0,3);
-        if(header[0] != UTF_BOM[0] || header[1] != UTF_BOM[1] || header[2] != UTF_BOM[2]) {
-            pis.unread(header,0,3);
-        }
-        return pis;
-    } catch (IOException e) {
-        throw Lang.wrapThrow(e);
-    }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/266.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -447,6 +459,10 @@ public static InputStream utf8filte(InputStream in) {
 
   <li>
 	21
+  </li>
+
+  <li>
+	22
   </li>
 
 </ul>
