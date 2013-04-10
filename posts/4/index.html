@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>搭建Git服务器,真的很简单</title>
+    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,33 +78,6 @@
 
       <div class="content">
         
-
-<div class="post">
-  <h3 class="title"><a href="/461.html">查找mysql中的低效索引</a> <span class="date">2012-10-11 09:39:38</span></h3>
-  <p>从一个<a href="http://parand.com/say/index.php/2009/09/01/finding-and-fixing-slow-mysql-queries/">外国博客</a>引用过来的</p>
-
-<pre><code>SELECT t.TABLE_SCHEMA AS `db`,
-t.TABLE_NAME AS `table`,
-s.INDEX_NAME AS `index name`,
-s.COLUMN_NAME AS `FIELD name`,
-s.SEQ_IN_INDEX `seq IN index`,
-s2.max_columns AS `# cols`,
-s.CARDINALITY AS `card`,
-t.TABLE_ROWS AS `est rows`,
-ROUND(((s.CARDINALITY / IFNULL(t.TABLE_ROWS, 0.01)) * 100), 2) AS `sel %`
-
-FROM INFORMATION_SCHEMA.STATISTICS s
-INNER JOIN INFORMATION_SCHEMA.TABLES t ON s.TABLE_SCHEMA = t.TABLE_SCHEMA AND s.TABLE_NAME = t.TABLE_NAME
-INNER JOIN (
-SELECT TABLE_SCHEMA, TABLE_NAME, INDEX_NAME, MAX(SEQ_IN_INDEX) AS max_columns
-FROM INFORMATION_SCHEMA.STATISTICS
-WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS s2 ON s.TABLE_SCHEMA = s2.TABLE_SCHEMA AND s.TABLE_NAME = s2.TABLE_NAME AND s.INDEX_NAME = s2.INDEX_NAME
-</code></pre>
-
-  <div class="more">
-    <a href="/461.html" class="btn">read more..</a>
-  </div>
-</div>
 
 <div class="post">
   <h3 class="title"><a href="/460.html">Windows下隐藏Golang的DOS黑色窗口</a> <span class="date">2012-10-07 09:45:59</span></h3>
@@ -344,6 +317,24 @@ func main() {
 
   <div class="more">
     <a href="/441.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/438.html">45分钟的Nutz敲门砖,高清无码 -- [视频教程] Nutz详解-基础框架的搭建</a> <span class="date">2012-07-20 09:47:17</span></h3>
+  <p>Nutz入门教程, 高清无码哦</p>
+
+<p>下载地址:
+<a href="http://code.google.com/p/nutz/downloads/list">http://code.google.com/p/nutz/downloads/list</a></p>
+
+<p>长达45分钟,让你一次性体会Nutz的3大块: Mvc Ioc Dao</p>
+
+<p><img src="/assets/media/2012/07/A.jpg"></img></p>
+
+<p><img src="/assets/media/2012/07/B.jpg"></img></p>
+
+  <div class="more">
+    <a href="/438.html" class="btn">read more..</a>
   </div>
 </div>
 

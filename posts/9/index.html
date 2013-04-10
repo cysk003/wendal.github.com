@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>搭建Git服务器,真的很简单</title>
+    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,23 +78,6 @@
 
       <div class="content">
         
-
-<div class="post">
-  <h3 class="title"><a href="/363.html">2011年回顾</a> <span class="date">2012-01-29 13:32:36</span></h3>
-  <p>2011年,<a href="http://wendal.net/224.html">换了一家公司</a> &ndash; 号称第5家公司
-2011年,接受了一份神奇的offer,神奇到我以为是去传销
-2011年,最大的事情,当然是<a href="http://wendal.net/234.html">鸣鸣的出生</a>,小家伙马上就要满一个太阳年了
-2011年,第一次接触到海外网购,才知道绕半个地球,价格反而便宜好多
-2011年,接触了好多<a href="http://wendal.net/292.html">新的编程语言</a>,严重扩宽了我对编程的理解
-2011年,<a href="http://wendal.net/326.html">接触NoSQL</a>,刷新我对数据库的理解
-2011年,我实现了<a href="http://wendal.net/320.html">RK2918的System可写</a>及<a href="http://wendal.net/339.html">公开了其源码地址</a>,引起不小的反响</p>
-
-<p>新的一年,keep going!!</p>
-
-  <div class="more">
-    <a href="/363.html" class="btn">read more..</a>
-  </div>
-</div>
 
 <div class="post">
   <h3 class="title"><a href="/361.html">Mongodb学习小记</a> <span class="date">2012-01-26 22:54:17</span></h3>
@@ -358,6 +341,36 @@ mv paulobrien-android_kernel_andypad-4c6b4f4c48d1/ rk29</p></li>
 
   <div class="more">
     <a href="/350.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/344.html">Git的几个实用小技巧</a> <span class="date">2011-11-14 10:51:50</span></h3>
+  <p>不止一次听到抱怨说, <strong>Git库好大</strong>啊,把整个历史都拉下来,慢死了
+我情何以堪呢?!! 你可以单单取最后几个,甚至最后一个版本的啊?</p>
+
+<pre><code>#仅获取最新版和一个历史版本,即最后2个版本
+git clone git@github.com:nutzam/nutz --depth=1
+
+#看看下载了多少数据:
+Cloning into nutz...
+remote: Counting objects: 2928, done.
+remote: Compressing objects: 100% (1956/1956), done.
+remote: Total 2928 (delta 1212), reused 2179 (delta 831)
+Receiving objects: 100% (2928/2928), 3.20 MiB | 1.06 MiB/s, done.
+Resolving deltas: 100% (1212/1212), done.
+
+#仅3.2mb哦, 小很多了吧?
+</code></pre>
+
+<p>上面的git clone,<strong>仅获取了最后2个版本</strong>,我是如何知道的呢?</p>
+
+<pre><code>cd nutz
+git rev-list master
+</code></pre>
+
+  <div class="more">
+    <a href="/344.html" class="btn">read more..</a>
   </div>
 </div>
 

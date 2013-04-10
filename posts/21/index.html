@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>搭建Git服务器,真的很简单</title>
+    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,40 +78,6 @@
 
       <div class="content">
         
-
-<div class="post">
-  <h3 class="title"><a href="/35.html">Alfresco配置 — 第四节</a> <span class="date">2010-08-05 22:57:29</span></h3>
-  <h4>讲讲如何在WebLogic上部署Alfresco 3.2, 以EAR方式</h4>
-
-<p><strong>创建一个文件夹, 名为 WL_Alfresco</strong></p>
-
-<p><strong>将alfresco.war解压到WL_Alfresco/alfresco.war</strong></p>
-
-<p><strong>创建WL_Alfresco/META-INF, 放入两个文件: application.xml 和 weblogic-application.xml, 内容分别是:</strong></p>
-
-<pre><code>    &lt;application&gt;
-        &lt;display -name&gt;Alfresco&lt;/display&gt;
-        &lt;description&gt;Alfresco&lt;/description&gt;
-        &lt;module&gt;
-            &lt;web&gt;&lt;/web&gt;
-            &lt;web-uri&gt;alfresco.war&lt;/web-uri&gt;
-            &lt;context-root&gt;alfresco&lt;/context-root&gt;
-        &lt;/module&gt;
-    &lt;/application&gt;
-
-    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-    &lt;weblogic -application xmlns=&quot;http://www.bea.com/ns/weblogic/90&quot;&gt;
-        &lt;prefer-application-packages&gt;
-            &lt;package-name&gt;org.mozilla.*&lt;/package-name&gt;
-            &lt;package-name&gt;antlr.*&lt;/package-name&gt;
-        &lt;/prefer-application-packages&gt;
-    &lt;/weblogic&gt;
-</code></pre>
-
-  <div class="more">
-    <a href="/35.html" class="btn">read more..</a>
-  </div>
-</div>
 
 <div class="post">
   <h3 class="title"><a href="/33.html">Alfresco配置 — 第三节</a> <span class="date">2010-08-04 22:14:25</span></h3>
@@ -301,6 +267,25 @@
 
   <div class="more">
     <a href="/9.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/7.html">开始尝试jBpm</a> <span class="date">2010-07-27 00:37:29</span></h3>
+  <p>非常无语,本周五要完成一个jBpm流程的开发,悲剧的是我才刚刚接触!!</p>
+
+<p>下载了Eclipse 3.4.2 和jBpm installer 3.2.7 开工啦</p>
+
+<p>这次,我还是打算用Alfresco集成的jBpm,因为它提供了预设的UI,无需另外编写.</p>
+
+<p>参考地址: <a href="http://wiki.alfresco.com/wiki/WorkflowAdministration">WorkflowAdministration</a></p>
+
+<p>需要建立Model和Define,Resource</p>
+
+<p>难点在于Define的识别,和Model的设计. 按照分工, Define由PM完成,我负责UI(打算用Alfresco原本的Model来构建UI)</p>
+
+  <div class="more">
+    <a href="/7.html" class="btn">read more..</a>
   </div>
 </div>
 

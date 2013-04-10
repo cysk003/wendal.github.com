@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>搭建Git服务器,真的很简单</title>
+    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,32 +78,6 @@
 
       <div class="content">
         
-
-<div class="post">
-  <h3 class="title"><a href="/2013/00909.html">VVV</a> <span class="date">2013-09-09</span></h3>
-  <h1><a style="display: block;" name="the-clojure-style-guide" href="#the-clojure-style-guide"></a>The Clojure Style Guide</h1>
-
-<p>This Clojure style guide recommends best practices so that real-world Clojure
-programmers can write code that can be maintained by other real-world Clojure
-programmers. A style guide that reflects real-world usage gets used, and a
-style guide that holds to an ideal that has been rejected by the people it is
-supposed to help risks not getting used at all &ndash; no matter how good it is.</p>
-
-<p>The guide is separated into several sections of related rules. I&rsquo;ve
-tried to add the rationale behind the rules (if it&rsquo;s omitted I&rsquo;ve
-assumed that is pretty obvious).</p>
-
-<p>I didn&rsquo;t come up with all the rules out of nowhere - they are mostly
-based on my extensive career as a professional software engineer,
-feedback and suggestions from members of the Clojure community, and
-various highly regarded Clojure programming resources, such as
-<a href="http://www.clojurebook.com/">&ldquo;Clojure Programming&rdquo;</a>
-and <a href="http://joyofclojure.com/">&ldquo;The Joy of Clojure&rdquo;</a>.</p>
-
-  <div class="more">
-    <a href="/2013/00909.html" class="btn">read more..</a>
-  </div>
-</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
@@ -394,6 +368,29 @@ gs      0x33
 
   <div class="more">
     <a href="/2013/0123.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
+  <h2>在Java/Python中, 文件打开后,默认是覆写,但golang默认是不覆盖的</h2>
+
+<p>最初以为这些代码会&rdquo;无则创建,有则覆盖&rdquo;</p>
+
+<pre><code>f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+</code></pre>
+
+<p>这样得到f, 如果不执行</p>
+
+<pre><code>f.Truncate(0)
+</code></pre>
+
+<p>就f.Write就只是覆盖当前位置的内容,并不会截断文件.</p>
+
+<h2>事实上需要这样写</h2>
+
+  <div class="more">
+    <a href="/2013/0116.html" class="btn">read more..</a>
   </div>
 </div>
 
