@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
+    <title>搭建Git服务器,真的很简单</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/406.html">newLISP的ShellGame配套lsp源文件</a> <span class="date">2012-03-27 22:08:44</span></h3>
+  <p><a href="http://www.newlisp.org/">newLISP</a>官方提供的<a href="http://www.neglook.com/?Shell_Games">ShellGame</a>系列视频,并未提供lsp源文件,我看完了整个系列,顺便把源文件补了一部分,地址:
+<a href="https://github.com/wendal/learn-newLISP/tree/master/ShellGame">https://github.com/wendal/learn-newLISP/tree/master/ShellGame</a></p>
+
+<p>总共有23个视频,当前我完成了17个配套的lsp文件,剩下6个视频,没看懂,所以lsp文件还没写出来 &ndash; 难道是比较高阶的?</p>
+
+<p>附上第一个视频的lsp文件</p>
+
+<pre><code>;;视频原地址: http://www.neglook.com/
+;;lsp文件由wendal创建 http://wendal.net
+
+;; 用默认的context方法,创建数值生成器 -- 类似于自增
+
+(setq generator:acc 0)  ; 创建一个名叫generator的上下文,并添加一个符号acc
+
+(define (generator:generator) (inc generator:acc)) ;缺省的context方法(即与context同名的方法),其中的inc是方法,等同于++
+
+(generator)   ;;分号是单行注释的开始,而非语句的结束符
+
+(generator) 
+(generator)
+(generator)   ;;连续调用几次后,现在的值应该是acc应当等于4
+</code></pre>
+
+  <div class="more">
+    <a href="/406.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/405.html">Python的while 1跟while True到底有什么区别?</a> <span class="date">2012-03-26 14:41:59</span></h3>
@@ -304,25 +334,6 @@ public Object xxx(HttpSession session) {
 
   <div class="more">
     <a href="/393.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/387.html">Win8消费者预览版无法拨通VPN的解决方法</a> <span class="date">2012-03-03 14:56:47</span></h3>
-  <p>用上Win8已经2天了,其中就纠结的莫过于VPN拨号失败&hellip;
-<img src="/assets/media/2012/03/Win8_VPN_FAIL.jpg"></img></p>
-
-<p>失败的原因是, VPN拨号是,会自动把计算机名做为域,并附加到验证信息中!! 非常非常纠结的一个行为,而且无法自行输入(^&amp;$&amp;#%&amp;$^%&amp;)</p>
-
-<p>几经探索,终于找到一个方法,就是设置VPN的选项,让其先拨ADSL:
-<img src="/assets/media/2012/03/Win8_VPN_1.jpg"></img></p>
-
-<p>拨号时,就会出现对话框了.. 鸡冻啊!!:</p>
-
-<p><img src="/assets/media/2012/03/Win8_VPN_2.jpg"></img></p>
-
-  <div class="more">
-    <a href="/387.html" class="btn">read more..</a>
   </div>
 </div>
 

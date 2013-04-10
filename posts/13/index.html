@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
+    <title>搭建Git服务器,真的很简单</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,32 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/282.html">评价一下Everbox和微盘</a> <span class="date">2011-04-30 20:38:53</span></h3>
+  <p><strong>两者的官方:</strong>
+Everbox <a href="http://everbox.com">http://everbox.com</a>
+微盘 <a href="http://vdisk.me">http://vdisk.me</a></p>
+
+<p><strong>容量:</strong>
+Everbox 上限15G,单一文件大小仅受限于空间大小
+微盘      上限10G,单一文件大小未知(API也没说,页面也没提及&hellip;)</p>
+
+<p><strong>运行平台:</strong>
+两者的前端都是nginx,我喜欢!! 而且盛大的版本比较新,嘻嘻
+微盘肯定是php应用,跑在SAE上,估计是特权应用,因为SAE默认每个应用只允许存放10G数据
+Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的</p>
+
+<p><strong>两者API的优缺点:</strong>
+1. Everbox,请求一个文件的信息,响应体没有文件的指纹!!单单给edit time,受不了!! 微盘好歹也给个MD5啊!!
+2. 微盘有公开的API;Everbox暂时没有(官方答复是很快就会公开,呵呵)
+3. Everbox的上传机制比微盘好,起码能分段能续传;微盘对于大文件的上传还没给出API,乏力啊
+4. 微盘有个dolog机制, Everbox有ver标志,估计都能做些东西,但ver标志的含义至今没搞明白,纠结!!!</p>
+
+  <div class="more">
+    <a href="/282.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/280.html">Nutz中你未必知道的用法</a> <span class="date">2011-04-28 10:30:11</span></h3>
@@ -343,34 +369,6 @@ System.out.println()才是真正的利器!!
 
   <div class="more">
     <a href="/268.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/267.html">Json格式的ngx_http_stub_status_module</a> <span class="date">2011-04-13 07:07:47</span></h3>
-  <p>原版的ngx_http_stub_status_module,查看到的状态信息是一个无格式文本,非常不好解析.</p>
-
-<p>网上有另外一些实现,例如<a href="https://github.com/drmingdrmer/nginx-json-status-module">nginx-json-status-module</a>,但实现得极其垃圾,竟然直接调用malloc. 另外为了庆贺一下Nginx 1.0.0版本的发布,我做了一些修改,使其以Json格式返回.</p>
-
-<p>上代码:</p>
-
-<pre><code>/*
- * Copyright (C) Igor Sysoev
- * Modify by Wendal Chen
- */
-
-#include &lt;ngx_config.h&gt;
-#include &lt;ngx_core.h&gt;
-#include &lt;ngx_http.h&gt;
-
-static char *ngx_http_set_status(ngx_conf_t *cf, ngx_command_t *cmd,
-                                 void *conf);
-
-static ngx_command_t  ngx_http_status_commands[] = {
-</code></pre>
-
-  <div class="more">
-    <a href="/267.html" class="btn">read more..</a>
   </div>
 </div>
 

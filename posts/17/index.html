@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
+    <title>搭建Git服务器,真的很简单</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,26 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/224.html">3年,换了4家公司!</a> <span class="date">2010-12-30 08:43:36</span></h3>
+  <p>不久前还说着一个朋友经常跳槽,昨天才发现,跳得最多的其实是自己!!</p>
+
+<p><strong>3年,不容易啊,换了4家!!</strong></p>
+
+<p>第一家,A公司, 200来人,干了5个月,美资
+第二家,B公司,2000来人,干了9个月,印度公司
+第三家,C公司,200来人,干了21个月,印度公司
+第四家,D公司,5000人,干了1天,美资</p>
+
+<p>^_^,2次被收购,1次被分拆,然而我仍在同一个办公室!!</p>
+
+<p>想不到都年底了,又被收购了一次. 哈哈</p>
+
+  <div class="more">
+    <a href="/224.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/222.html">增强型JavaDoc -- APIviz 简洁实践</a> <span class="date">2010-12-27 13:40:55</span></h3>
@@ -298,33 +318,6 @@ transformer.transform(source, result);
 
   <div class="more">
     <a href="/210.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/208.html">一次内存泄漏的排查</a> <span class="date">2010-12-09 21:07:10</span></h3>
-  <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
-问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
-
-<pre><code>409.879: [Full GC 409.879: [Tenured: 349567K-&gt;349567K(349568K), 1.5796790 secs] 506815K-&gt;382998K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5797868 secs] [Times: user=1.55 sys=0.00, real=1.58 secs] 
-417.784: [Full GC 417.784: [Tenured: 349567K-&gt;349568K(349568K), 1.6968523 secs] 506815K-&gt;382777K(506816K), [Perm : 15880K-&gt;15878K(65536K)], 1.6969534 secs] [Times: user=1.68 sys=0.00, real=1.69 secs] 
-422.242: [Full GC 422.242: [Tenured: 349568K-&gt;349568K(349568K), 1.5697638 secs] 506815K-&gt;382844K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5698652 secs] [Times: user=1.56 sys=0.00, real=1.56 secs] 
-Heap
- def new generation   total 157248K, used 156479K [0x029e0000, 0x0d480000, 0x0d480000)
-  eden space 139776K, 100% used [0x029e0000, 0x0b260000, 0x0b260000)
-  from space 17472K,  95% used [0x0b260000, 0x0c2afda8, 0x0c370000)
-  to   space 17472K,   0% used [0x0c370000, 0x0c370000, 0x0d480000)
- tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
-   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
- compacting perm gen  total 65536K, used 16259K [0x229e0000, 0x269e0000, 0x2a9e0000)
-   the space 65536K,  24% used [0x229e0000, 0x239c0e98, 0x239c1000, 0x269e0000)
-No shared spaces configured.
-</code></pre>
-
-<p>由于新生代应该会很快回收,故关注另外一块已经用完的空间tenured generation</p>
-
-  <div class="more">
-    <a href="/208.html" class="btn">read more..</a>
   </div>
 </div>
 

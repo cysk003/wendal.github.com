@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</title>
+    <title>搭建Git服务器,真的很简单</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,29 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
+  <h2>在Java/Python中, 文件打开后,默认是覆写,但golang默认是不覆盖的</h2>
+
+<p>最初以为这些代码会&rdquo;无则创建,有则覆盖&rdquo;</p>
+
+<pre><code>f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+</code></pre>
+
+<p>这样得到f, 如果不执行</p>
+
+<pre><code>f.Truncate(0)
+</code></pre>
+
+<p>就f.Write就只是覆盖当前位置的内容,并不会截断文件.</p>
+
+<h2>事实上需要这样写</h2>
+
+  <div class="more">
+    <a href="/2013/0116.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0115.html">Golang下进行字符集转换</a> <span class="date">2013-01-15</span></h3>
@@ -186,39 +209,6 @@ func main() {
 </div>
 
 <div class="post">
-  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
-  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
-
-<pre><code>import (
-    &quot;syscall&quot;
-)
-
-type DiskStatus struct {
-    All  uint64 `json:&quot;all&quot;`
-    Used uint64 `json:&quot;used&quot;`
-    Free uint64 `json:&quot;free&quot;`
-}
-
-// disk usage of path/disk
-func DiskUsage(path string) (disk DiskStatus) {
-    fs := syscall.Statfs_t{}
-    err := syscall.Statfs(path, &amp;fs)
-    if err != nil {
-        return
-    }
-    disk.All = fs.Blocks * uint64(fs.Bsize)
-    disk.Free = fs.Bfree * uint64(fs.Bsize)
-    disk.Used = disk.All - disk.Free
-    return
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1224.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
   <h3 class="title"><a href="/2012/1228.html">Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</a> <span class="date">2012-12-24</span></h3>
   <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
 
@@ -254,6 +244,39 @@ password: #输入密码
 
   <div class="more">
     <a href="/2012/1228.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
+  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
+
+<pre><code>import (
+    &quot;syscall&quot;
+)
+
+type DiskStatus struct {
+    All  uint64 `json:&quot;all&quot;`
+    Used uint64 `json:&quot;used&quot;`
+    Free uint64 `json:&quot;free&quot;`
+}
+
+// disk usage of path/disk
+func DiskUsage(path string) (disk DiskStatus) {
+    fs := syscall.Statfs_t{}
+    err := syscall.Statfs(path, &amp;fs)
+    if err != nil {
+        return
+    }
+    disk.All = fs.Blocks * uint64(fs.Bsize)
+    disk.Free = fs.Bfree * uint64(fs.Bsize)
+    disk.Used = disk.All - disk.Free
+    return
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1224.html" class="btn">read more..</a>
   </div>
 </div>
 
@@ -337,33 +360,6 @@ Drive conforms to: Unspecified:  ATA/ATAPI-7
 
   <div class="more">
     <a href="/2012/1215.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1214.html">rm文件不再需要按y了,解脱啊</a> <span class="date">2012-12-14</span></h3>
-  <h1>终于解决了在某些linux下rm特定文件需要按y的问题</h1>
-
-<h2>原因就是在alias</h2>
-
-<pre><code>[root@MyVPS2923 ~]# alias
-alias cp='cp -i'
-alias l.='ls -d .* --color=tty'
-alias ll='ls -l --color=tty'
-alias ls='ls --color=tty'
-alias mv='mv -i'
-alias rm='rm -i'
-alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
-</code></pre>
-
-<h2>再找根源</h2>
-
-<pre><code>[root@MyVPS2923 ~]# cat ~/.bashrc
-# .bashrc
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1214.html" class="btn">read more..</a>
   </div>
 </div>
 
