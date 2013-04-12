@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
+    <title>Nut.Test -- 使用Nutz一样能方便地进行单元测试</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/124.html">折腾了2天,终于把Nutz提交给Maven库</a> <span class="date">2010-11-10 22:07:12</span></h3>
+  <p>昨天在 <a href="https://oss.sonatype.org">https://oss.sonatype.org</a> 申请将Nutz加入资源库, 相关Issue:</p>
+
+<p><a href="https://issues.sonatype.org/browse/OSSRH-983">https://issues.sonatype.org/browse/OSSRH-983</a></p>
+
+<p>原本以为要2天,想不到一天就通过了申请.</p>
+
+<p>下午折腾了一下,搞到傍晚才成功上传一版,期间遇到的问题有:</p>
+
+<ol>
+<li><p>要求asc文件,开头无头绪,后来发现是gpg工具生存的.</p></li>
+
+<li><p>提交后提示public key未登记,又折腾了一下,提交到公共服务器</p></li>
+
+<li><p>签名无效, 神奇之极, 没办法,重新签名, 并打包为bundle,一次性提交!</p></li>
+</ol>
+
+<p>哦也,成功,release! 哈哈,发布成功:</p>
+
+<p><a href="https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/">https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/</a></p>
+
+<p>不过,很奇怪,并没要在Maven中央库找到nutz,难道是同步间隔的问题??</p>
+
+  <div class="more">
+    <a href="/124.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/122.html">换上1TB的希捷硬盘,虚惊一场</a> <span class="date">2010-11-08 21:57:49</span></h3>
@@ -351,35 +380,6 @@ public class OpenIdManager {
 
   <div class="more">
     <a href="/90.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/70.html">iText锚点的一个小陷阱 目标地锚点必须有字符串</a> <span class="date">2010-09-08 21:27:32</span></h3>
-  <p>昨晚折腾了一下zDoc的PDF生成功能, 不过,一听闻锚点功能失效,顿时不爽,马上研究!!</p>
-
-<p>首先发现 锚点无法对应起来,  触发锚点的编号,与锚点目的地无法对应起来! 这个通过查找实际对应的文件的绝对地址的hashcode生成</p>
-
-<p>然后发现锚点总是失效,无法跳转, 最后才发现,锚点的目标地anchor, 使用 Anchor anchor = new Anchor(); 生成, 页面上无显示!!</p>
-
-<p>实例:</p>
-
-<pre><code>Anchor anchorDest = new Anchor(); anchorDest.setName(&quot;dest&quot;);
-Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#dest&quot;);
-</code></pre>
-
-<p>无法跳转! 即使写成</p>
-
-<pre><code>Anchor anchorDest = new Anchor(&quot; &quot;);
-</code></pre>
-
-<p>一样无法跳转, 必须写成:</p>
-
-<pre><code>Anchor anchorDest = new Anchor(&quot;To here&quot;);
-</code></pre>
-
-  <div class="more">
-    <a href="/70.html" class="btn">read more..</a>
   </div>
 </div>
 

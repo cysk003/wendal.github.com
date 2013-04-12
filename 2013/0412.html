@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>HTTPSQS源码初探</title>
+    <title>在windows下编译nginx</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,83 +78,126 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>HTTPSQS源码初探 </h1>
+  <h1>在windows下编译nginx </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>官网: <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a>
-一句话介绍: HTTPSQS is a Simple Queue Service based on HTTP GET/POST protocol
-               HTTPSQS（HTTP Simple Queue Service）是一款基于 HTTP GET/POST 协议的轻量级开源简单消息队列服务</p>
+    <p>又有人在windows下编译nginx &ndash; 为什么那么多人喜欢自残呢?</p>
 
-<p>其实以前就安装过这款队列实现,也简单测试过,但今天第一次看源码,呵呵</p>
+<h2>官网教程</h2>
 
-<p>源码就一个C文件 httpsqs.c , 外加一个MakeFile文件</p>
+<p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
 
-<p>代码大概800行,原本以为是个很复杂的东西,最后才发现,真的如其中文介绍一样:
-使用 Tokyo Cabinet 的 B+Tree Key/Value 数据库来做数据的持久化存储</p>
+<p>本文基本上就是对着做,但需要对其进行微调 &ndash; 不爽吗?咬我啊!!</p>
 
-<p>我的理解就是一个Key/Value服务器的Http界面</p>
+<h2>准备工具</h2>
 
-<p>原本打算写点代码分析的,但源码上的注解太详细,算了,不写了,把方法列一下:</p>
+<p>系统: winxp sp3 32位, 例如你可以用个虚拟机什么的安装一个winxp</p>
 
-<pre><code>/* 全局设置 */
-TCBDB *httpsqs_db_tcbdb; /* 数据表 */
-int httpsqs_settings_syncinterval; /* 同步更新内容到磁盘的间隔时间 */
-char *httpsqs_settings_pidfile; /* PID文件 */
+<p><a href="https://msys-cn.googlecode.com/files/MSYS-Update.7z">MSYS-CN 2010-08-19 更新版本</a></p>
 
-/* 创建多层目录的函数 */
-void create_multilayer_dir( char *muldir ) ;
-/* URL解码 */
-char *urldecode(char *input_str) ;
-/* 显示帮助信息 */
-static void show_help(void);
+<p><a href="http://zlib.net/zlib-1.2.7.tar.gz">zlib 1.2.7</a></p>
 
-/* 读取队列写入点的值 */
-static int httpsqs_read_putpos(const char* httpsqs_input_name);
-/* 读取队列读取点的值 */
-static int httpsqs_read_getpos(const char* httpsqs_input_name);
-/* 读取用于设置的最大队列数 */
-static int httpsqs_read_maxqueue(const char* httpsqs_input_name);
-/* 设置最大的队列数量，返回值为设置的队列数量。如果返回值为0，则表示设置取消（取消原因为：设置的最大的队列数量小于”当前队列写入位置点“和”当前队列读取位置点“，或者”当前队列写入位置点“小于”当前队列的读取位置点） */
-static int httpsqs_maxqueue(const char* httpsqs_input_name, int httpsqs_input_num);
-/* 重置队列，0表示重置成功 */
-static int httpsqs_reset(const char* httpsqs_input_name);
-/* 查看单条队列内容 */
-char *httpsqs_view(const char* httpsqs_input_name, int pos);
-/* 修改定时更新内存内容到磁盘的间隔时间，返回间隔时间（秒） */
-static int httpsqs_synctime(int httpsqs_input_num);
-/* 获取本次“入队列”操作的队列写入点 */
-static int httpsqs_now_putpos(const char* httpsqs_input_name);
-/* 获取本次“出队列”操作的队列读取点，返回值为0时队列全部读取完成 */
-static int httpsqs_now_getpos(const char* httpsqs_input_name);
-/* 处理模块 */
-void httpsqs_handler(struct evhttp_request *req, void *arg);
-/* 信号处理,关闭信号,保存内存数据 */
-static void kill_signal(const int sig);
-/* 定时信号处理，定时将内存中的内容写入磁盘 */
-static void sync_signal(const int sig);
+<p><a href="http://nchc.dl.sourceforge.net/project/pcre/pcre/8.32/pcre-8.32.zip">pcre 8.32</a></p>
 
-/* 入口方法 */
-int main(int argc, char **argv);
+<p><a href="http://www.openssl.org/source/openssl-1.0.1e.tar.gz">openssl 1.0.1e</a></p>
+
+<p><a href="http://download.microsoft.com/download/3/0/2/3025EAE6-2E15-4972-972A-F5B1ED248E85/VS2008ExpressWithSP1CHSX1504735.iso">VS2008 Express With SP1</a></p>
+
+<p><a href="http://strawberry-perl.googlecode.com/files/strawberry-perl-5.16.3.1-32bit.msi">Perl 5.16.3.1</a></p>
+
+<p><a href="http://www.sliksvn.com/pub/Slik-Subversion-1.7.9-win32.msi">Subversion</a> 或者你喜欢的svn客户端</p>
+
+<h2>安装必要的程序</h2>
+
+<p>VS2008,附带的sqlserver无需安装,也用不上</p>
+
+<p>Perl,一直下一步即可</p>
+
+<p>Slik-Subversion,一直就是下一步</p>
+
+<p>将MSYS-CN解压到C盘</p>
+
+<h2>下载源码</h2>
+
+<p>到C:\MSYS启动msys.bat,进入msys的bash</p>
+
+<p>非常重要哦, 官网的tar包是不包含windows构建文件的!!</p>
+
+<pre><code>svn co svn://svn.nginx.org/nginx/tags/release-1.3.15
+cd release-1.3.15
+mkdir objs
+mkdir objs/lib
 </code></pre>
 
-<p>功能就和一个Memcached服务器差不多.
-恩,考虑做个Nginx的模块,哈哈.</p>
+<p>然后, 把pcre/zlib/openssl的源码,均解压到C:\MSYS\home\UserName\release-1.3.15\objs\lib,
+即上述语句所建立的文件夹,其中UserName是你的用户名.</p>
+
+<h2>生成构建脚本</h2>
+
+<p>依然在msys bash下.</p>
+
+<pre><code>cd release-1.3.15
+auto/configure --with-cc=cl --builddir=objs --prefix= \
+--conf-path=conf/nginx.conf --pid-path=logs/nginx.pid \
+--http-log-path=logs/access.log --error-log-path=logs/error.log \
+--sbin-path=nginx.exe --http-client-body-temp-path=temp/client_body_temp \
+--http-proxy-temp-path=temp/proxy_temp \
+--http-fastcgi-temp-path=temp/fastcgi_temp \
+--with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/pcre-8.32 \
+--with-zlib=objs/lib/zlib-1.2.7 --with-openssl=objs/lib/openssl-1.0.1e \
+--with-select_module --with-http_ssl_module --with-ipv6
+</code></pre>
+
+<p>语句比较长,可以写到build.bat中,然后执行 ./build.bat</p>
+
+<h2>编译</h2>
+
+<p>总有要编译啦,哇哈哈. 在开始菜单找VS2008的VS2008命令行,启动之</p>
+
+<p>执行下面的语句</p>
+
+<pre><code>C:
+cd \MSYS\home\UserName\release-1.3.15\
+nmake -f objs/Makefile
+</code></pre>
+
+<p>你很快就会发现报错了,说找不到某某头文件.</p>
+
+<p>用你喜欢的编辑器打开 C:\MSYS\home\UserName\release-1.3.15\objs\lib\pcre-8.32\config.h</p>
+
+<p>找到并注释掉(加//):</p>
+
+<pre><code>#ifndef HAVE_INTTYPES_H
+#define HAVE_INTTYPES_H 1
+#endif
+
+#ifndef HAVE_STDINT_H
+#define HAVE_STDINT_H 1
+#endif
+</code></pre>
+
+<p>然后再执行就成功了:</p>
+
+<pre><code>nmake -f objs/Makefile
+</code></pre>
+
+<h2>好吧,祝你好运!!</h2>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/260.html" title="TMD美赞臣,竟敢打电话过来推销奶粉!!">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/258.html" title="[求助]CHM文件的格式,我疑惑了!!!">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/0406.html" title="Golang下通过syscall调用win32的api">Next &rarr;</a></li>
           
           
         </ul>
@@ -180,17 +223,13 @@ int main(int argc, char **argv);
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2011-03-28 21:34:39</span></div>
+    <div class="date"><span>2013-04-12</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
-</li>
-    
-      <li>
-  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>23</span></a>
+  <a href="/categories/#nginx-ref">nginx <span>1</span></a>
 </li>
     
     </ul>
@@ -199,15 +238,11 @@ int main(int argc, char **argv);
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#el-ref">el <span>68</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#httpsqs-ref">httpsqs <span>2</span></a>
-</li>
-    
-      <li>
   <a href="/tags/#nginx-ref">nginx <span>22</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E7%BC%96%E8%AF%91-ref">编译 <span>1</span></a>
 </li>
     
     </ul>

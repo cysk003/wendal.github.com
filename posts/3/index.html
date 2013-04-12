@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
+    <title>Nut.Test -- 使用Nutz一样能方便地进行单元测试</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1214.html">rm文件不再需要按y了,解脱啊</a> <span class="date">2012-12-14</span></h3>
+  <h1>终于解决了在某些linux下rm特定文件需要按y的问题</h1>
+
+<h2>原因就是在alias</h2>
+
+<pre><code>[root@MyVPS2923 ~]# alias
+alias cp='cp -i'
+alias l.='ls -d .* --color=tty'
+alias ll='ls -l --color=tty'
+alias ls='ls --color=tty'
+alias mv='mv -i'
+alias rm='rm -i'
+alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+</code></pre>
+
+<h2>再找根源</h2>
+
+<pre><code>[root@MyVPS2923 ~]# cat ~/.bashrc
+# .bashrc
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1214.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2012/1213.html">Deploy Nutz as HttpAPI by Jetty 7</a> <span class="date">2012-12-13</span></h3>
@@ -321,33 +348,6 @@ go get github.com/gosexy/exif
 
   <div class="more">
     <a href="/462.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/461.html">查找mysql中的低效索引</a> <span class="date">2012-10-11 09:39:38</span></h3>
-  <p>从一个<a href="http://parand.com/say/index.php/2009/09/01/finding-and-fixing-slow-mysql-queries/">外国博客</a>引用过来的</p>
-
-<pre><code>SELECT t.TABLE_SCHEMA AS `db`,
-t.TABLE_NAME AS `table`,
-s.INDEX_NAME AS `index name`,
-s.COLUMN_NAME AS `FIELD name`,
-s.SEQ_IN_INDEX `seq IN index`,
-s2.max_columns AS `# cols`,
-s.CARDINALITY AS `card`,
-t.TABLE_ROWS AS `est rows`,
-ROUND(((s.CARDINALITY / IFNULL(t.TABLE_ROWS, 0.01)) * 100), 2) AS `sel %`
-
-FROM INFORMATION_SCHEMA.STATISTICS s
-INNER JOIN INFORMATION_SCHEMA.TABLES t ON s.TABLE_SCHEMA = t.TABLE_SCHEMA AND s.TABLE_NAME = t.TABLE_NAME
-INNER JOIN (
-SELECT TABLE_SCHEMA, TABLE_NAME, INDEX_NAME, MAX(SEQ_IN_INDEX) AS max_columns
-FROM INFORMATION_SCHEMA.STATISTICS
-WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS s2 ON s.TABLE_SCHEMA = s2.TABLE_SCHEMA AND s.TABLE_NAME = s2.TABLE_NAME AND s.INDEX_NAME = s2.INDEX_NAME
-</code></pre>
-
-  <div class="more">
-    <a href="/461.html" class="btn">read more..</a>
   </div>
 </div>
 

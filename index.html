@@ -91,6 +91,33 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2013/0412.html">在windows下编译nginx</a> <span class="date">2013-04-12</span></h3>
+
+  <p>又有人在windows下编译nginx &ndash; 为什么那么多人喜欢自残呢?</p>
+
+<h2>官网教程</h2>
+
+<p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
+
+<p>本文基本上就是对着做,但需要对其进行微调 &ndash; 不爽吗?咬我啊!!</p>
+
+<h2>准备工具</h2>
+
+<p>系统: winxp sp3 32位, 例如你可以用个虚拟机什么的安装一个winxp</p>
+
+<p><a href="https://msys-cn.googlecode.com/files/MSYS-Update.7z">MSYS-CN 2010-08-19 更新版本</a></p>
+
+<p><a href="http://zlib.net/zlib-1.2.7.tar.gz">zlib 1.2.7</a></p>
+
+<p><a href="http://nchc.dl.sourceforge.net/project/pcre/pcre/8.32/pcre-8.32.zip">pcre 8.32</a></p>
+
+
+  <div class="more">
+    <a href="/2013/0412.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
 
   <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
@@ -397,31 +424,6 @@ gs      0x33
 
   <div class="more">
     <a href="/2013/0123.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
-
-  <h2>在Java/Python中, 文件打开后,默认是覆写,但golang默认是不覆盖的</h2>
-
-<p>最初以为这些代码会&rdquo;无则创建,有则覆盖&rdquo;</p>
-
-<pre><code>f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, os.ModePerm)
-</code></pre>
-
-<p>这样得到f, 如果不执行</p>
-
-<pre><code>f.Truncate(0)
-</code></pre>
-
-<p>就f.Write就只是覆盖当前位置的内容,并不会截断文件.</p>
-
-<h2>事实上需要这样写</h2>
-
-
-  <div class="more">
-    <a href="/2013/0116.html" class="btn">read more..</a>
   </div>
 </div>
 

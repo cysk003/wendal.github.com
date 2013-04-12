@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</title>
+    <title>Nut.Test -- 使用Nutz一样能方便地进行单元测试</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,29 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
+  <h2>在Java/Python中, 文件打开后,默认是覆写,但golang默认是不覆盖的</h2>
+
+<p>最初以为这些代码会&rdquo;无则创建,有则覆盖&rdquo;</p>
+
+<pre><code>f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+</code></pre>
+
+<p>这样得到f, 如果不执行</p>
+
+<pre><code>f.Truncate(0)
+</code></pre>
+
+<p>就f.Write就只是覆盖当前位置的内容,并不会截断文件.</p>
+
+<h2>事实上需要这样写</h2>
+
+  <div class="more">
+    <a href="/2013/0116.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0115.html">Golang下进行字符集转换</a> <span class="date">2013-01-15</span></h3>
@@ -337,33 +360,6 @@ Drive conforms to: Unspecified:  ATA/ATAPI-7
 
   <div class="more">
     <a href="/2012/1215.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1214.html">rm文件不再需要按y了,解脱啊</a> <span class="date">2012-12-14</span></h3>
-  <h1>终于解决了在某些linux下rm特定文件需要按y的问题</h1>
-
-<h2>原因就是在alias</h2>
-
-<pre><code>[root@MyVPS2923 ~]# alias
-alias cp='cp -i'
-alias l.='ls -d .* --color=tty'
-alias ll='ls -l --color=tty'
-alias ls='ls --color=tty'
-alias mv='mv -i'
-alias rm='rm -i'
-alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
-</code></pre>
-
-<h2>再找根源</h2>
-
-<pre><code>[root@MyVPS2923 ~]# cat ~/.bashrc
-# .bashrc
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1214.html" class="btn">read more..</a>
   </div>
 </div>
 
