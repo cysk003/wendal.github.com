@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python还是很适合快速开发的</title>
+    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
+  <p>先放出下载地址:
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
+
+<p>原版下载地址: <a href="http://www.cs.ioc.ee/~ando/jbe/">JBE - Java Bytecode Editor</a></p>
+
+<p>原版存在的问题:
+对方法进行修改后,点击Save Method, 如果存在 invokeinterface 的行, 将无法保存!! 后台报错.</p>
+
+<p>以下是我在压缩包中写的描述:
+This JBE had been modify by Wendal Chen , base on JBE 0.1b</p>
+
+<p>Fix:
+when save method whit &ldquo;invokeinterface&rdquo; , app fail.</p>
+
+<p>File change:</p>
+
+<pre><code>JAsmParser.java line 169~170:
+int arg1 = getMethodConstRef(instrElems, cpg, labels);
+int arg2 = Utility.methodSignatureArgumentTypes(getDescrFromFullMethod(instrElems[1])).length;
+</code></pre>
+
+  <div class="more">
+    <a href="/244.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/243.html">一个极其简陋的Datasource连接池实现</a> <span class="date">2011-02-21 13:18:41</span></h3>
@@ -364,23 +392,6 @@ if (jspConfig == null) {
 
   <div class="more">
     <a href="/226.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/225.html">发起一个新项目 - NginxS</a> <span class="date">2011-01-03 10:19:25</span></h3>
-  <p>为了更好地阅读/研究Nginx的源码,我奋斗了一个上午,终于把NginxS项目搭建起来了.
-NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
-1. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Fbranches">branches</a> 中提交了0.<sup>7</sup>&frasl;<sub>0</sub>.<sup>8</sup>&frasl;<sub>0</sub>.9分支的源代码,便于分析不同版本之间的差异,如果官网有新版发布,就会及时跟进.
-2. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Ftrunk">trunk</a> 中,现在代码是当前最新稳定版0.8.54, 准备用于学习nginx的代码,并添加中文注释/笔记</p>
-
-<p>项目地址:
-<a href="http://code.google.com/p/nginxs/">http://code.google.com/p/nginxs/</a></p>
-
-<p>看看我能读出个啥东西来,哈哈!</p>
-
-  <div class="more">
-    <a href="/225.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python还是很适合快速开发的</title>
+    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/350.html">编译RK2918源码 -- 简单说明</a> <span class="date">2011-11-18 13:23:23</span></h3>
+  <p>自从公布RK29的源码地址,各种模块都成为可能</p>
+
+<p>我也说说如何编译吧, 环境 Ubuntu 10.10 server x86版</p>
+
+<ol>
+<li><p>第一步当然是下载源码并解压啦, 以andy pad的源码为例</p>
+
+<p>cd ~/
+mkdir android
+cd ~/android
+wget <a href="https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip">https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip</a>
+unzip 4c6b4f4c48d1.zip
+mv paulobrien-android_kernel_andypad-4c6b4f4c48d1/ rk29</p></li>
+
+<li><p>安装依赖包</p>
+
+<p>sudo apt-get install lzop sharutils libncurses5-dev vim</p></li>
+
+<li><p>下载交叉编译器(我个人认为是错误翻译,应该叫跨平台编译器) arm 4.4.0</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/350.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/344.html">Git的几个实用小技巧</a> <span class="date">2011-11-14 10:51:50</span></h3>
@@ -354,35 +382,6 @@ public abstract class TestMongodb4Jetty {
 
   <div class="more">
     <a href="/325.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/324.html">Nutz事务模板值得注意的细节</a> <span class="date">2011-09-17 22:31:36</span></h3>
-  <p>Nutz.Dao事务模板的官方文档: <a href="http://code.google.com/p/nutz/wiki/dao_transaction">http://code.google.com/p/nutz/wiki/dao_transaction</a></p>
-
-<p>需要注意的几个细节,文档还没提及:
-<strong>1. 数据库连接池的AutoCommit属性</strong>
-对于我见到的大部分连接池和数据库驱动,默认情况下AutoCommit=true,应该是为了性能
-这就导致如果用户不自行设置的话,Trans的大部分操作都是不可回滚的.故,如果使用Trans,那么务必设置AutoCommit</p>
-
-<p><strong>2. 多个数据源的事务</strong>
-大部分情况下,用户都不是使用XA驱动,故,多数据源的事务提交,在最后的提交阶段出错的话,已经执行commit操作的数据源,是不可能回滚的</p>
-
-<p><strong>3. 子线程的事务</strong>
-考虑下面的代码:</p>
-
-<pre><code>Trans.exec(new Atom(){
-   public void run() {
-       dao.insert(pet);
-       new MySuperPowerThread().start();
-       dao.count(Pet.class);
-   }
-});
-</code></pre>
-
-  <div class="more">
-    <a href="/324.html" class="btn">read more..</a>
   </div>
 </div>
 

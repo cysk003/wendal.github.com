@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python还是很适合快速开发的</title>
+    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,48 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/421.html">bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</a> <span class="date">2012-05-07 23:34:03</span></h3>
+  <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank">http://glines.org/software/bfr</a></p>
+
+<p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
+Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
+
+<p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
+
+<p>终于,问题还是回来了, 而且,很巧的,我找到了bfr,一个古老的管道缓冲器(2004年之后就没有更新了&hellip;),So, 为其建立一个github的库 <a href="https://github.com/wendal/bfr" target="_blank">https://github.com/wendal/bfr</a></p>
+
+<p>使用说明,简单翻译:</p>
+
+<pre><code>bfr v1.6 (c) 1999-2003 Mark Glines &lt;mark@glines.org&gt;
+Usage follows:
+
+bfr [-v|--verbose] [-t0|--threshold=0] [-T0|--timeout=0]
+    [-b100|--bufsize=100] [-p&lt;arg&gt;|--progress=&lt;arg&gt;] [-m0|--minimum=0]
+    [-T90|--throttle=90] [-C0|--speedcap=0] [&lt;input file or -&gt; ...]
+
+short --long       default desc
+-h    --help       -       display this (hopefully) helpful message.(帮助信息)
+-v    --verbose            enable verbosity (use twice for pedantic verbosity) (详尽信息,除非你遇到bug!!)
+-p    --progress   k1k     Enables &quot;progress mode&quot; (see manpage) (进度显示, 强烈建议无视这个选项)
+-m    --minimum    600k    set the amount of buffer to reach before output
+                       begins (to ensure a full stream even at start).(低于多少缓冲,就先不输出)
+-i    --initial    minimum Special case of --minimum to preload at the start
+                       of operation.  If unset, --mimumum value is used.(真正输出前,先接收多少数据)
+-t    --timeout    0       time, in seconds, to wait before aborting if both
+                       input and output are locked.  0 = wait forever.(输入输出被阻塞的超时设置,基本上是用不上的)
+-T    --throttle   90      after filling the buffer, the percentage to let the
+                       amount of onhand data to go down to before accepting
+                       more input. (缓冲区接近满的时候,停止接收数据,直至缓冲区的占有率下降)
+-C    --speedcap   0       If set to a non-zero value, bfr will allow only
+                       this many bytes to be output per second. (限制流出的速率,基本上没用)
+</code></pre>
+
+  <div class="more">
+    <a href="/421.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/420.html">成功编译OpenJDK 7u2 ! 哦也！</a> <span class="date">2012-05-06 23:12:24</span></h3>
@@ -357,36 +399,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/409.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/408.html">Nutz 1.b.43 发行后记</a> <span class="date">2012-04-01 22:43:22</span></h3>
-  <p>折腾了半天,终于把1.b.43发布出去了.</p>
-
-<p>简单介绍修正的Bug及新功能,毕竟&rdquo;发行注记&rdquo;比较少涉及这些.</p>
-
-<p>Bug修正:
-1. #177 NutFilter关闭时,报NPE,原因是销毁NutFilter时,没有设置ThreadLocal的属性,导致获取IOC容器失败
-2. #177 PropertiesProxy只认最后一个配置文件,原因是加载新配置文件时,把旧数据clear了
-3. #170 高并发的情况下,当数据库连接池的连接耗尽,NutDao抛出NPE, 原因是处理连接池异常的代码,没有考虑到获取连接也会失败
-4. #155 入口方法如果包含Date参数,当页面不传值,会抛出NPE,原因是String2Datetime类没有把&rdquo;&ldquo;当初null来处理
-5. #172 nutz + Oracle JDBC 10.1.0.2.0 分页会出错,原因是这驱动有BUG!!
-6. #75  NutDao动态实体解析报错,原因是默认会以为动态实体也有主键,但实际上用户执行的是update,并不包含主键.
-7. Json.fromJson(Set.class, &ldquo;[1,2,3]&ldquo;)会报错,原因是没对Set进行特别处理,直接当成List返回了</p>
-
-<p>需求:
-1. #187 支持JarInJar,即eclipse打包输出Runnable Jar的第二项.
-2. #130 自定义SQL也支持Pager分页
-3. #158 Dao支持Set存入数据库,字段类型为varchar
-4. #120 JSON循环引用的序列化与反序列化, 以及EL支持Json需求
-5. MVC中,如果入口方法的参数没有@Param注解,且不被适配器所识别,那么,按@Param(&ldquo;参数名&rdquo;)进行处理
-6. 添加内置的fetchBoolean回调函数
-7. 新增@SessionBy注解,允许自定义Session的获取方式
-8. 新增SimpleDataSource,内置的DataSource实现</p>
-
-  <div class="more">
-    <a href="/408.html" class="btn">read more..</a>
   </div>
 </div>
 

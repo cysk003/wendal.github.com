@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在windows下编译nginx</title>
+    <title>X11的xcb库卡死</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,123 +78,103 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>在windows下编译nginx </h1>
+  <h1>X11的xcb库卡死 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>又有人在windows下编译nginx &ndash; 为什么那么多人喜欢自残呢?</p>
+    <p>一个多月没写blog,郁闷了&hellip;</p>
 
-<h2>官网教程</h2>
+<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
 
-<p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
+<p>操作系统: opensuse 11.4 x86
+语言:     Qt 4.8.4,vdpau + Nv卡</p>
 
-<p>本文基本上就是对着做,但需要对其进行微调 &ndash; 不爽吗?咬我啊!!</p>
+<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
 
-<h2>准备工具</h2>
+<p>堆栈:</p>
 
-<p>系统: winxp sp3 32位, 例如你可以用个虚拟机什么的安装一个winxp</p>
+<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
+#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
+#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
+#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
+#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
+#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
 
-<p><a href="https://msys-cn.googlecode.com/files/MSYS-Update.7z">MSYS-CN 2010-08-19 更新版本</a></p>
-
-<p><a href="http://zlib.net/zlib-1.2.7.tar.gz">zlib 1.2.7</a></p>
-
-<p><a href="http://nchc.dl.sourceforge.net/project/pcre/pcre/8.32/pcre-8.32.zip">pcre 8.32</a></p>
-
-<p><a href="http://www.openssl.org/source/openssl-1.0.1e.tar.gz">openssl 1.0.1e</a></p>
-
-<p><a href="http://download.microsoft.com/download/3/0/2/3025EAE6-2E15-4972-972A-F5B1ED248E85/VS2008ExpressWithSP1CHSX1504735.iso">VS2008 Express With SP1</a></p>
-
-<p><a href="http://strawberry-perl.googlecode.com/files/strawberry-perl-5.16.3.1-32bit.msi">Perl 5.16.3.1</a></p>
-
-<p><a href="http://www.sliksvn.com/pub/Slik-Subversion-1.7.9-win32.msi">Subversion</a> 或者你喜欢的svn客户端</p>
-
-<h2>安装必要的程序</h2>
-
-<p>VS2008,附带的sqlserver无需安装,也用不上</p>
-
-<p>Perl,一直下一步即可</p>
-
-<p>Slik-Subversion,一直就是下一步</p>
-
-<p>将MSYS-CN解压到C盘</p>
-
-<h2>下载源码</h2>
-
-<p>到C:\MSYS启动msys.bat,进入msys的bash</p>
-
-<p>非常重要哦, 官网的tar包是不包含windows构建文件的!!</p>
-
-<pre><code>svn co svn://svn.nginx.org/nginx/tags/release-1.3.15
-cd release-1.3.15
-mkdir objs
-mkdir objs/lib
 </code></pre>
 
-<p>然后, 把pcre/zlib/openssl的源码,均解压到C:\MSYS\home\UserName\release-1.3.15\objs\lib,
-即上述语句所建立的文件夹,其中UserName是你的用户名.</p>
+<h2>最初,我猜是这个bug的原因</h2>
 
-<h2>生成构建脚本</h2>
+<p>(Thread hangs in xcb_wait_for_reply() if another thread calls xcb_poll_for_event())[https://bugs.freedesktop.org/show_bug.cgi?id=40372]</p>
 
-<p>依然在msys bash下.</p>
+<p>看着bug的意思,是不正确的使用xcb库,但,我XXX, 那是驱动调用的,我哪知道呢&hellip;</p>
 
-<pre><code>cd release-1.3.15
-auto/configure --with-cc=cl --builddir=objs --prefix= \
---conf-path=conf/nginx.conf --pid-path=logs/nginx.pid \
---http-log-path=logs/access.log --error-log-path=logs/error.log \
---sbin-path=nginx.exe --http-client-body-temp-path=temp/client_body_temp \
---http-proxy-temp-path=temp/proxy_temp \
---http-fastcgi-temp-path=temp/fastcgi_temp \
---with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/pcre-8.32 \
---with-zlib=objs/lib/zlib-1.2.7 --with-openssl=objs/lib/openssl-1.0.1e \
---with-select_module --with-http_ssl_module --with-ipv6
+<p>按部就班修改了一下,测试,继续死&hellip; 我XXXX!!</p>
+
+<h2>好吧,换驱动</h2>
+
+<p>换最新的310系列,依然死,我XXXXXX</p>
+
+<h2>看来是bug,但怎么解决呢?</h2>
+
+<p>还是回到堆栈去, 卡死在xcb_wait_for_reply方法上,而这个方法有这样一句</p>
+
+<pre><code>378         while(!poll_for_reply(c, request, &amp;ret, e)) {
+379             if(!_xcb_conn_wait(c, &amp;cond, 0, 0)) {
+380                 break;
+381             }
+382             count ++; // 所以我加上下面几个逻辑,强制break,看看死不死
+383             if ( count &gt; 1000 ) {
+384                 printf(&quot;Loop more than 1000 times, break&quot;);
+385                 break;
+386             }
+387         }
 </code></pre>
 
-<p>语句比较长,可以写到build.bat中,然后执行 ./build.bat</p>
+<p>结果,还是死&hellip;.</p>
 
-<h2>编译</h2>
+<h2>看来要釜底抽薪啦,从最底层的api给跳出来</h2>
 
-<p>总有要编译啦,哇哈哈. 在开始菜单找VS2008的VS2008命令行,启动之</p>
+<p>从第1帧来灭掉它</p>
 
-<p>执行下面的语句</p>
-
-<pre><code>C:
-cd \MSYS\home\UserName\release-1.3.15\
-nmake -f objs/Makefile
+<pre><code>#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
 </code></pre>
 
-<p>你很快就会发现报错了,说找不到某某头文件.</p>
+<p>这一帧调用linux标准的poll方法,但timeout传入的是-1,即永久等待.</p>
 
-<p>用你喜欢的编辑器打开 C:\MSYS\home\UserName\release-1.3.15\objs\lib\pcre-8.32\config.h</p>
+<p>反正不知道神马原因,就是没等到触发条件,卡住了, SO,妹的,改成1秒吧!!</p>
 
-<p>找到并注释掉(加//):</p>
+<p>代码如下:</p>
 
-<pre><code>#ifndef HAVE_INTTYPES_H
-#define HAVE_INTTYPES_H 1
-#endif
-
-#ifndef HAVE_STDINT_H
-#define HAVE_STDINT_H 1
-#endif
+<pre><code>312 #if USE_POLL
+313         ret = poll(&amp;fd, 1, 1000);
+314 #else
+315         ret = select(c-&gt;fd + 1, &amp;rfds, &amp;wfds, 0, 0);
+316 #endif
 </code></pre>
 
-<p>然后再执行就成功了:</p>
+<p>编译,重启, 测试, 竟然好了,我XXX,但为什么呢? 不知道呢&hellip; 反正没再死了&hellip;</p>
 
-<pre><code>nmake -f objs/Makefile
-</code></pre>
+<h2>mark一下gdb常用命令</h2>
 
-<h2>好吧,祝你好运!!</h2>
+<pre><code>gdb -p $pid        直接attach到正在运行的程序中
 
-<pre><code>C:\MSYS\home\Administrator\release-1.3.15&gt;nginx.exe -V
-nginx version: nginx/1.3.15-http://wendal.net
-TLS SNI support enabled
-configure arguments: --with-cc=cl --builddir=objs --prefix= --conf-path=conf/ng
-nx.conf --pid-path=logs/nginx.pid --http-log-path=logs/access.log --error-log-p
-th=logs/error.log --sbin-path=nginx.exe --http-client-body-temp-path=temp/clien
-_body_temp --http-proxy-temp-path=temp/proxy_temp --http-fastcgi-temp-path=temp
-fastcgi_temp --with-cc-opt=-DFD_SETSIZE=1024 --with-pcre=objs/lib/pcre-8.32 --w
-th-zlib=objs/lib/zlib-1.2.7 --with-openssl=objs/lib/openssl-1.0.1e --with-selec
-_module --with-http_ssl_module
+set height 0       显示时,不分页
+info threads       显示所有线程
+thread 3           切换到3号线程
+bt                 显示当前线程的堆栈
+f 2                调到第二帧
+c                  继续运行
+Ctrl+C             中断运行,进行gdb交互模式
+info locals        打印全部本地变量
+print fd           打印名为fd的变量的值
 </code></pre>
 
     <hr>
@@ -202,14 +182,14 @@ _module --with-http_ssl_module
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2013/05/23.html" title="X11的xcb库卡死">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2013/0406.html" title="Golang下通过syscall调用win32的api">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/0412.html" title="在windows下编译nginx">Next &rarr;</a></li>
           
           
         </ul>
@@ -235,7 +215,7 @@ _module --with-http_ssl_module
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2013-04-12</span></div>
+    <div class="date"><span>2013-05-23</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -250,11 +230,7 @@ _module --with-http_ssl_module
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#nginx-ref">nginx <span>22</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E7%BC%96%E8%AF%91-ref">编译 <span>1</span></a>
+  <a href="/tags/#X11-ref">X11 <span>1</span></a>
 </li>
     
     </ul>

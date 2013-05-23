@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python还是很适合快速开发的</title>
+    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/408.html">Nutz 1.b.43 发行后记</a> <span class="date">2012-04-01 22:43:22</span></h3>
+  <p>折腾了半天,终于把1.b.43发布出去了.</p>
+
+<p>简单介绍修正的Bug及新功能,毕竟&rdquo;发行注记&rdquo;比较少涉及这些.</p>
+
+<p>Bug修正:
+1. #177 NutFilter关闭时,报NPE,原因是销毁NutFilter时,没有设置ThreadLocal的属性,导致获取IOC容器失败
+2. #177 PropertiesProxy只认最后一个配置文件,原因是加载新配置文件时,把旧数据clear了
+3. #170 高并发的情况下,当数据库连接池的连接耗尽,NutDao抛出NPE, 原因是处理连接池异常的代码,没有考虑到获取连接也会失败
+4. #155 入口方法如果包含Date参数,当页面不传值,会抛出NPE,原因是String2Datetime类没有把&rdquo;&ldquo;当初null来处理
+5. #172 nutz + Oracle JDBC 10.1.0.2.0 分页会出错,原因是这驱动有BUG!!
+6. #75  NutDao动态实体解析报错,原因是默认会以为动态实体也有主键,但实际上用户执行的是update,并不包含主键.
+7. Json.fromJson(Set.class, &ldquo;[1,2,3]&ldquo;)会报错,原因是没对Set进行特别处理,直接当成List返回了</p>
+
+<p>需求:
+1. #187 支持JarInJar,即eclipse打包输出Runnable Jar的第二项.
+2. #130 自定义SQL也支持Pager分页
+3. #158 Dao支持Set存入数据库,字段类型为varchar
+4. #120 JSON循环引用的序列化与反序列化, 以及EL支持Json需求
+5. MVC中,如果入口方法的参数没有@Param注解,且不被适配器所识别,那么,按@Param(&ldquo;参数名&rdquo;)进行处理
+6. 添加内置的fetchBoolean回调函数
+7. 新增@SessionBy注解,允许自定义Session的获取方式
+8. 新增SimpleDataSource,内置的DataSource实现</p>
+
+  <div class="more">
+    <a href="/408.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/406.html">newLISP的ShellGame配套lsp源文件</a> <span class="date">2012-03-27 22:08:44</span></h3>
@@ -307,33 +337,6 @@ public Object xxx(HttpSession session) {
 
   <div class="more">
     <a href="/394.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/393.html">NutzMongoSession -- 轻便的分布式Session实现</a> <span class="date">2012-03-06 15:20:40</span></h3>
-  <p>作为Ngqa项目的其中一个功能, NutzMongoSession已经开发完成,并迁入zTask项目中,与NutzMongo的代码整合.</p>
-
-<p><strong>1. 用法</strong>
-基本配置(web.xml),接管全部请求,并替换其获取会话的req.getSession方法:</p>
-
-<pre><code>    &lt;filter&gt;
-        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
-        &lt;filter-class&gt;org.nutz.mongo.session.MongoSessionFilter&lt;/filter-class&gt;
-    &lt;/filter&gt;
-    &lt;filter-mapping&gt;
-        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
-        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
-        &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
-    &lt;/filter-mapping&gt;
-</code></pre>
-
-<p>在项目启动的代码中,加入下面的语句:</p>
-
-  <div class="more">
-    <a href="/393.html" class="btn">read more..</a>
   </div>
 </div>
 
