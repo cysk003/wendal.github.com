@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,26 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/211.html">Jxl与WPS的一点点不兼容</a> <span class="date">2010-12-10 14:18:56</span></h3>
+  <p>今天与同事探讨了一个诡异的问题,用Jxl处理一个空的excel文件,<strong>第二次</strong>运行就报错,代码如下:</p>
+
+<pre><code>Workbook workbook = Workbook.getWorkbook(new File(&quot;Book1.xls&quot;));
+WritableWorkbook w = Workbook.createWorkbook(new File(&quot;Book1.xls&quot;),workbook);
+w.write();
+w.close();
+workbook.close();
+</code></pre>
+
+<p>很平常的代码而已,第一次运行,Pass,第二次,FAIL! 然后把旧的空xls文件覆盖回去,第一依然PASS,再跑就FAIL
+折腾来折腾去,终于发现是因为这个xls文件是右键新建出来的. 如果打开WPS,然后新建一个,然后保存,就完全没有问题!!
+够诡异了吧&hellip; WPS的版本是: 6.6.0.2461</p>
+
+  <div class="more">
+    <a href="/211.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/210.html">将Dom对象变成XML并写入流</a> <span class="date">2010-12-10 12:37:21</span></h3>
@@ -285,21 +305,6 @@ cp objs/nginx /usr/local/nginx/sbin/
 
   <div class="more">
     <a href="/135.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/133.html">亚运比赛,还是没看成!</a> <span class="date">2010-11-20 08:48:42</span></h3>
-  <p>6个月前买了票
-2周前取了票
-坐了两个小时公交车</p>
-
-<p>到达后发现,<strong>去错场馆了</strong>!!! 严格来说,是去了同一个场馆的不同区域.这两个区域相距9公里!</p>
-
-<p>哎,没法,去不了&hellip;</p>
-
-  <div class="more">
-    <a href="/133.html" class="btn">read more..</a>
   </div>
 </div>
 

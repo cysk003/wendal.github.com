@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,39 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/409.html">用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load)</a> <span class="date">2012-04-05 22:45:56</span></h3>
+  <p>一直以来, NutDao的懒加载问题,都无数次被提起,我也曾经在另外一篇博客中提及其可行性: <a href="http://wendal.net/317.html">NutDao实现Lazy加载的可行性</a></p>
+
+<p>为了回应广大Nutzer的呼声,我花了点时间完成了一个<a href="https://github.com/nutzam/nutz/commit/a6e1d49f6e883aa75edc2938f36a475ab314d3ac">LazyNutDao</a>,如果你需要这个功能,那么只需要把NutDao简单换成LazyNutDao</p>
+
+<p>整个实现,算上空行及注释,大概200行,并修改了另外3个类(就是把部分属性改成protected)</p>
+
+<ol>
+<li><p>POJO的属性,必须带setter/getter,否则无法进行懒加载注入</p></li>
+
+<li><p>setter/getter应当是无逻辑的,不应加入业务逻辑.</p></li>
+</ol>
+
+<p>需要注意的问题:</p>
+
+<ol>
+<li><p>无Session控制,自行处理事务问题 &ndash; 对象在事务模板包裹下取出,但在事务模板外调用getter以获取属性值,那么,这部分的调用是在事务之外的</p></li>
+
+<li><p>多线程问题,LazyMethodInterceptor并非线程安全的,因为其中的代码并未锁定当前对象</p></li>
+</ol>
+
+<p><strong>实现思路:</strong>
+1. POJO的实例化,是由NutEntity完成的,由于懒加载是通过AOP实现的,所以需要接管其实例化过程
+2. NutEntity是由AnnotationEntityMaker创建,有NutDao持有,所以,通过覆写setDataSource方法,接管EntityHolder实例
+3. LazyNutEntity继承于NutEntity,通过生成Aop拦截链,生成Aoped类,以便拦截@One/@Many字段的setter/getter
+4. 懒加载状态管理: 当setter被调用,那么懒加载机制结束使命,回退为普通机制.</p>
+
+  <div class="more">
+    <a href="/409.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/408.html">Nutz 1.b.43 发行后记</a> <span class="date">2012-04-01 22:43:22</span></h3>
@@ -309,34 +342,6 @@ public Object xxx(HttpSession session) {
 
   <div class="more">
     <a href="/397.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/394.html">获得方法形参名称列表 -- 哦也,搞定!!</a> <span class="date">2012-03-10 22:46:33</span></h3>
-  <p>JAVA获取类的方法的参数名 &ndash; 老话题,新方法!!</p>
-
-<p>折腾了一天,终于搞定了.测试了nutz所有的类,均读取正常!! 完美读取任何class的变量名信息! 呵呵,当前,前提是编译时含debug信息.</p>
-
-<p><strong>无任何依赖</strong>,不需要asm,不要其他任何字节码工具,纯标准JDK API实现. 核心代码,仅一个方法,130行,哦也!!</p>
-
-<p>终于完成这个一直想做到的功能 &ndash; 在Java中,获取方法的形参(参数)的名字.由于这个类只做需要做的事,所以,我非常确信它比asm的vistor更快,更可靠.</p>
-
-<pre><code>public void list(int page , int pageSize) { //这个类的作用,就是拿到page和pageSize这两个名字,是的,是名字.
-   //...
-}
-</code></pre>
-
-<p><strong>实现关键点:</strong>:
-1. 跳过一切不需要的数据结构,如版本号,接口信息,字段信息
-2. 只解析常量池中UTF8_String,因为只用到这个,其他都是多余的常量
-3. 实现方法到descriptor的转换函数,因为字节码中的方法签名,是descriptor格式的</p>
-
-<p>代码中含义泛型,直接贴这里的话,页面显示比较麻烦,就上个截图吧.
-<img src="/assets/media/2012/03/method_param.jpg"></img></p>
-
-  <div class="more">
-    <a href="/394.html" class="btn">read more..</a>
   </div>
 </div>
 

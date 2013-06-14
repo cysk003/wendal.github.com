@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,21 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/92.html">抢占我带宽的流氓软件</a> <span class="date">2010-10-12 10:56:12</span></h3>
+  <p><strong>第一款, PPS的PPSAP(PPS 加速器)</strong>
+对系统的影响, 后台运行,抢占无数带宽,发起N多连接!!
+安装pps后, 在安装目录下有一个ppsap.exe的程序, 这个程序,在之前的版本,直接删除程序文件就可以了. 最近更新后, 发现删除后自动回复(再次启动pps后), 我日!! 这下可无敌流氓了!!</p>
+
+<p><strong>第二款, 360安全卫生的在线升级</strong>
+之前一直没有留意,后来打开360的流量查看器才发现其也是流氓之一! 自爆家丑!!
+除了直接kill掉外,没啥办法!!</p>
+
+  <div class="more">
+    <a href="/92.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/90.html">总结一点点项目经验–迁移/部署/静态资源</a> <span class="date">2010-10-01 09:45:59</span></h3>
@@ -274,30 +289,6 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
   <div class="more">
     <a href="/52.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/43.html">VeryCD的标题–变化中的警示语</a> <span class="date">2010-08-09 22:13:26</span></h3>
-  <p>很久以前就留意到VeryCD主页的标题栏是一句警示语,而且,刷新一下就会变成新的. 算不上非常惊人的举动,但成为以前经常访问其网站的原因.</p>
-
-<p>实现的关键:
-<a href="view-source:http://www.verycd.com/statics/title.saying">http://www.verycd.com/statics/title.saying</a>
-内容为一个js文件, 定义一个数组,包含几条警示语,然后产生一个随机数,抽取出一句警示语,与原有的标题成新标题,然后再设置为页面的标题.
-今天的内容:</p>
-
-<pre><code>_VC_DocumentTitles = new Array('每一天都是一个全新的开始', 
-'你希望掌握永恒，那你必须控制现在',
- '心是最大的骗子，别人能骗你一时，而它却能骗你一辈子',
- '你的谦逊会使别人感到高兴', '自知不自见，自爱不自贵',
- '最艰苦之时，便是胜利将到之日', '拳不离手，曲不离口', '百艺通，不如一艺精',
- '只要功夫深，铁杵磨成绣花针', '如果一个人很慷慨，那他就必须把自己的慷慨表现得充满感情');
- _VC_DocumentTitleIndex = Math.floor(Math.random() * _VC_DocumentTitles.length);
-document.title = 'VeryCD - '+ _VC_DocumentTitles[_VC_DocumentTitleIndex];
-</code></pre>
-
-  <div class="more">
-    <a href="/43.html" class="btn">read more..</a>
   </div>
 </div>
 

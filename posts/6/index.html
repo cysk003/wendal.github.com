@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,46 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/422.html">增强型Proxy_Pass - 替换nginx内置的proxy_pass</a> <span class="date">2012-05-09 10:33:34</span></h3>
+  <p><strong>项目地址: <a href="https://github.com/wendal/lua-resty-http">https://github.com/wendal/lua-resty-http</a></strong></p>
+
+<p>这个项目是<a href="https://github.com/liseen/lua-resty-http">https://github.com/liseen/lua-resty-http</a>的fork版本, 暂未被合并.</p>
+
+<p><strong>nginx内置的proxy_pass有几个问题</strong>:
+1. 无法方便的调整后端host
+2. 总是等待后端host把响应写完了,才开始向客户端写数据
+3. proxy_next_upstream不灵活</p>
+
+<p><strong>演示,实时proxy_pass,每读取1k就往浏览器写1k数据:</strong></p>
+
+<pre><code>local url = 'http://'
+if ngx.var.http_host then
+   url = url .. ngx.var.http_host 
+end
+url = url .. ngx.var.request_uri  -- 拼接完整的URL
+if ngx.var.args then
+   url = url .. '?' .. ngx.var.args
+end
+local ok, code, headers, status, body  = hc:proxy_pass {
+    url = url,
+    fetch_size = 1024, -- 分段大小
+    max_body_size = 100*1024*1024 ,  --响应体的最大大小.
+    headers = ngx.req.get_headers(), -- 传递客户端的参数,可以根据需要进行修改哦.
+    method = ngx.var.request_method, -- 真实还原客户端的请求方法,当然,你可以改!!
+}
+if not ok and not ngx.headers_sent then
+    ngx.exit(502) -- 出错了哦? 这里只是简单遵循了nginx在后端报错时的响应,你完全可以实现自己的逻辑,进行错误处理
+else
+    ngx.eof()
+end
+</code></pre>
+
+  <div class="more">
+    <a href="/422.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/421.html">bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</a> <span class="date">2012-05-07 23:34:03</span></h3>
@@ -366,39 +406,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/411.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/409.html">用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load)</a> <span class="date">2012-04-05 22:45:56</span></h3>
-  <p>一直以来, NutDao的懒加载问题,都无数次被提起,我也曾经在另外一篇博客中提及其可行性: <a href="http://wendal.net/317.html">NutDao实现Lazy加载的可行性</a></p>
-
-<p>为了回应广大Nutzer的呼声,我花了点时间完成了一个<a href="https://github.com/nutzam/nutz/commit/a6e1d49f6e883aa75edc2938f36a475ab314d3ac">LazyNutDao</a>,如果你需要这个功能,那么只需要把NutDao简单换成LazyNutDao</p>
-
-<p>整个实现,算上空行及注释,大概200行,并修改了另外3个类(就是把部分属性改成protected)</p>
-
-<ol>
-<li><p>POJO的属性,必须带setter/getter,否则无法进行懒加载注入</p></li>
-
-<li><p>setter/getter应当是无逻辑的,不应加入业务逻辑.</p></li>
-</ol>
-
-<p>需要注意的问题:</p>
-
-<ol>
-<li><p>无Session控制,自行处理事务问题 &ndash; 对象在事务模板包裹下取出,但在事务模板外调用getter以获取属性值,那么,这部分的调用是在事务之外的</p></li>
-
-<li><p>多线程问题,LazyMethodInterceptor并非线程安全的,因为其中的代码并未锁定当前对象</p></li>
-</ol>
-
-<p><strong>实现思路:</strong>
-1. POJO的实例化,是由NutEntity完成的,由于懒加载是通过AOP实现的,所以需要接管其实例化过程
-2. NutEntity是由AnnotationEntityMaker创建,有NutDao持有,所以,通过覆写setDataSource方法,接管EntityHolder实例
-3. LazyNutEntity继承于NutEntity,通过生成Aop拦截链,生成Aoped类,以便拦截@One/@Many字段的setter/getter
-4. 懒加载状态管理: 当setter被调用,那么懒加载机制结束使命,回退为普通机制.</p>
-
-  <div class="more">
-    <a href="/409.html" class="btn">read more..</a>
   </div>
 </div>
 

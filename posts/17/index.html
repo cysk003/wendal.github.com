@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/226.html">Alfresco Virtual tomcat默认不解析EL</a> <span class="date">2011-01-06 10:17:32</span></h3>
+  <p>我正在使用Alfresco 3.3 SP4 , 发现其Virtual tomcat竟然是构建在tomcat5.5上的.
+在jsp页面中写el表达式,死活不出来.最后才发现,是tomcat5.5默认不解析EL !!</p>
+
+<p>查原因, 在tomcat5.5.31的源码中:
+1. 类名: org.apache.jasper.compiler.JspConfig
+2. 代码:</p>
+
+<pre><code>if (webApp == null
+     || !&quot;2.4&quot;.equals(webApp.findAttribute(&quot;version&quot;))) {//直接字符串判断,晕!
+     defaultIsELIgnored = &quot;true&quot;;
+     return;
+}
+//如果version不是2.4,那根本不走这里!
+TreeNode jspConfig = webApp.findChild(&quot;jsp-config&quot;);
+if (jspConfig == null) {
+     return;
+}
+</code></pre>
+
+<p>解决方法: :
+第一种,在JSP页面头部加入指令:</p>
+
+  <div class="more">
+    <a href="/226.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/225.html">发起一个新项目 - NginxS</a> <span class="date">2011-01-03 10:19:25</span></h3>
@@ -287,26 +316,6 @@ cd mysql-5.5.8</p></li>
 
   <div class="more">
     <a href="/212.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/211.html">Jxl与WPS的一点点不兼容</a> <span class="date">2010-12-10 14:18:56</span></h3>
-  <p>今天与同事探讨了一个诡异的问题,用Jxl处理一个空的excel文件,<strong>第二次</strong>运行就报错,代码如下:</p>
-
-<pre><code>Workbook workbook = Workbook.getWorkbook(new File(&quot;Book1.xls&quot;));
-WritableWorkbook w = Workbook.createWorkbook(new File(&quot;Book1.xls&quot;),workbook);
-w.write();
-w.close();
-workbook.close();
-</code></pre>
-
-<p>很平常的代码而已,第一次运行,Pass,第二次,FAIL! 然后把旧的空xls文件覆盖回去,第一依然PASS,再跑就FAIL
-折腾来折腾去,终于发现是因为这个xls文件是右键新建出来的. 如果打开WPS,然后新建一个,然后保存,就完全没有问题!!
-够诡异了吧&hellip; WPS的版本是: 6.6.0.2461</p>
-
-  <div class="more">
-    <a href="/211.html" class="btn">read more..</a>
   </div>
 </div>
 

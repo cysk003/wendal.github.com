@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,38 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/270.html">学习Java时需要掌握的一些技能</a> <span class="date">2011-04-16 21:45:20</span></h3>
+  <p>本文并不涉及语法/具体API,就是一些学习方法</p>
+
+<p><strong>1. 找不到XXX类</strong>
+学习Java的路上,找不到类简直就是家常便饭,故,快速找到需要的类非常关键
+<a href="http://www.findjar.com">Findjar</a> 输入类名,一般都能找到
+<a href="http://repo1.maven.org/maven2/">Maven repo</a> 如果能猜到大概的项目,通过Maven中央库肯定是最权威的</p>
+
+<p><strong>2. 学习XXX框架</strong>
+在这个框架满天飞的时代,不懂几个框架都不好意思说是玩Java的
+但是,以下事情你是否做过呢:
+A. 从源码编译过
+B. 跑过官方测试
+C. 瞄过源码</p>
+
+<p>找一个好的社区,一起看源码,是很开心的事哦
+知其然,也要知其所以然</p>
+
+<p><strong>3. 找Bug的方法</strong>
+你马上就开始debug了? No! No! 请把debug放到最后,当成无计可施的最后手段
+System.out.println()才是真正的利器!!
+你马上会反驳,println很耗时间的 &ndash; 是的,但帮你理清思路
+通过println,打印变量的值/应该经过的分支,帮你一步步理清思路
+使用Debug往往是最快解决问题的,但也是最容易让你无法找到问题的根源
+良好的Log,是生产环境中必不可少的信息</p>
+
+  <div class="more">
+    <a href="/270.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/268.html">启用新的域名 wendal.net</a> <span class="date">2011-04-14 11:39:26</span></h3>
@@ -310,35 +342,6 @@ Encoded Integers</p>
 
   <div class="more">
     <a href="/258.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/257.html">总结一下最近Nginx模块开发走过的弯路</a> <span class="date">2011-03-22 20:42:00</span></h3>
-  <p>整了快一个月了,是时候总结一下:</p>
-
-<p>教训:
-1. 在虚拟机下编译Nginx
-算是犯的第一个错误, 环境如下: Window + 虚拟机中的Ubuntu, nginx等文件放在windows的一个文件夹中, Ubuntu使用vbox的数据空间进行访问.</p>
-
-<ul>
-<li><p>一开始并未察觉,因为觉得编译个东西, 几分钟,很正常吧.</p></li>
-
-<li><p>后来,做出一部分功能,开始测试. 用ab压, 总是几百req/s ,非常不爽,不应该是这种性能!!</p></li>
-
-<li><p>无意中,改为单worker进程, 竟然效果更好, 而且ab占用的cpu比nginx还高!!</p></li>
-
-<li><p>开始怀疑虚拟机的性能,决定用wubi安装一个</p></li>
-
-<li><p>安装好,例行编译,靠!! 咋一会就搞定了?! 用ab压,晕死,直接上10k req/s了,而且依旧ab的cpu比nginx高!!</p></li>
-
-<li><p>在Lua中习惯性写分号,习惯性忘记写end</p></li>
-
-<li><p>开头,基本上每行都不自觉地敲上分号</p></li>
-</ul>
-
-  <div class="more">
-    <a href="/257.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/446.html">在Golang中,Log打印行号等信息</a> <span class="date">2012-07-24 19:11:08</span></h3>
+  <p>做个小笔记, 默认情况下,log模块的只打印日期和时间, 没具体行号,比较不爽,嘿嘿</p>
+
+<pre><code>package main
+/*
+#include &lt;stdlib.h&gt;
+*/
+import &quot;C&quot;
+import &quot;log&quot;
+
+func main() {
+    log.SetFlags(log.Lshortfile | log.LstdFlags)
+    log.Println( C.random())
+}
+</code></pre>
+
+<p>打印结果:</p>
+
+<pre><code>2012/07/24 19:27:55 X.cgo1.go:14: 1804289383
+</code></pre>
+
+<p>其中, log.Lshortfile 还可以设置为log.Llongfile 即完整文件路径</p>
+
+  <div class="more">
+    <a href="/446.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/441.html">Nutz T恤与小鸣鸣</a> <span class="date">2012-07-21 21:29:48</span></h3>
@@ -280,46 +309,6 @@ ffi.copy(tmp, newlisp_str)
 
   <div class="more">
     <a href="/423.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/422.html">增强型Proxy_Pass - 替换nginx内置的proxy_pass</a> <span class="date">2012-05-09 10:33:34</span></h3>
-  <p><strong>项目地址: <a href="https://github.com/wendal/lua-resty-http">https://github.com/wendal/lua-resty-http</a></strong></p>
-
-<p>这个项目是<a href="https://github.com/liseen/lua-resty-http">https://github.com/liseen/lua-resty-http</a>的fork版本, 暂未被合并.</p>
-
-<p><strong>nginx内置的proxy_pass有几个问题</strong>:
-1. 无法方便的调整后端host
-2. 总是等待后端host把响应写完了,才开始向客户端写数据
-3. proxy_next_upstream不灵活</p>
-
-<p><strong>演示,实时proxy_pass,每读取1k就往浏览器写1k数据:</strong></p>
-
-<pre><code>local url = 'http://'
-if ngx.var.http_host then
-   url = url .. ngx.var.http_host 
-end
-url = url .. ngx.var.request_uri  -- 拼接完整的URL
-if ngx.var.args then
-   url = url .. '?' .. ngx.var.args
-end
-local ok, code, headers, status, body  = hc:proxy_pass {
-    url = url,
-    fetch_size = 1024, -- 分段大小
-    max_body_size = 100*1024*1024 ,  --响应体的最大大小.
-    headers = ngx.req.get_headers(), -- 传递客户端的参数,可以根据需要进行修改哦.
-    method = ngx.var.request_method, -- 真实还原客户端的请求方法,当然,你可以改!!
-}
-if not ok and not ngx.headers_sent then
-    ngx.exit(502) -- 出错了哦? 这里只是简单遵循了nginx在后端报错时的响应,你完全可以实现自己的逻辑,进行错误处理
-else
-    ngx.eof()
-end
-</code></pre>
-
-  <div class="more">
-    <a href="/422.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</title>
+    <title>Golang连接Mysql</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/465.html">我做运维的那几个月</a> <span class="date">2012-10-31 11:28:43</span></h3>
+  <p>怎么我觉得这题目这么俗呢? 好吧,将就着吧</p>
+
+<p>肯定又有人骂了,wendal你不是做开发的吗?怎么又做运维了,你让不让人活啊?难道你公司就一个人?</p>
+
+<p>话说,6月的最后一天,公司的someone说:&ldquo;广州有几台机器需要修一下,要不你跑一趟?&rdquo;,然后我答:&ldquo;行啊,不就几台嘛&rdquo;</p>
+
+<p>然后,就开始了漫长的运维&hellip;</p>
+
+<p>谁想到要去这么多趟呢?谁想到那么多机器会出问题呢?谁想到那么多地方的信号不好呢? 那叫一个郁闷和纠结啊</p>
+
+<p><strong>说说经验吧</strong></p>
+
+<p><strong>1. 别跟硬件较劲,坏了就是坏了,你是修不好的</strong></p>
+
+<p>灰尘太多,风扇卡死,机柜密封不透气,电压不稳,漏水,小昆虫,老鼠 &ndash; 各种靠谱不靠谱的原因,导致各种各样的硬件损坏, 解决之道,唯有更换</p>
+
+<p>最初硬是较劲,尝试fix各种不靠谱的问题,最近才发现很多都是硬件问题,浪费精力</p>
+
+<p><strong>2. 要精通各种网络连接方式(各种网络隧道,嘿嘿,就是翻V墙)</strong></p>
+
+  <div class="more">
+    <a href="/465.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/462.html">在windows下编译goexif</a> <span class="date">2012-10-20 11:28:21</span></h3>
@@ -327,35 +354,6 @@ type User struct {
 
   <div class="more">
     <a href="/448.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/446.html">在Golang中,Log打印行号等信息</a> <span class="date">2012-07-24 19:11:08</span></h3>
-  <p>做个小笔记, 默认情况下,log模块的只打印日期和时间, 没具体行号,比较不爽,嘿嘿</p>
-
-<pre><code>package main
-/*
-#include &lt;stdlib.h&gt;
-*/
-import &quot;C&quot;
-import &quot;log&quot;
-
-func main() {
-    log.SetFlags(log.Lshortfile | log.LstdFlags)
-    log.Println( C.random())
-}
-</code></pre>
-
-<p>打印结果:</p>
-
-<pre><code>2012/07/24 19:27:55 X.cgo1.go:14: 1804289383
-</code></pre>
-
-<p>其中, log.Lshortfile 还可以设置为log.Llongfile 即完整文件路径</p>
-
-  <div class="more">
-    <a href="/446.html" class="btn">read more..</a>
   </div>
 </div>
 
