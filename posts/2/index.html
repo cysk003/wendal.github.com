@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Golang连接Mysql</title>
+    <title>Python的while 1跟while True到底有什么区别?</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -300,6 +300,39 @@ func main() {
 </div>
 
 <div class="post">
+  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
+  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
+
+<pre><code>import (
+    &quot;syscall&quot;
+)
+
+type DiskStatus struct {
+    All  uint64 `json:&quot;all&quot;`
+    Used uint64 `json:&quot;used&quot;`
+    Free uint64 `json:&quot;free&quot;`
+}
+
+// disk usage of path/disk
+func DiskUsage(path string) (disk DiskStatus) {
+    fs := syscall.Statfs_t{}
+    err := syscall.Statfs(path, &amp;fs)
+    if err != nil {
+        return
+    }
+    disk.All = fs.Blocks * uint64(fs.Bsize)
+    disk.Free = fs.Bfree * uint64(fs.Bsize)
+    disk.Used = disk.All - disk.Free
+    return
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1224.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2012/1228.html">Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</a> <span class="date">2012-12-24</span></h3>
   <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
 
@@ -335,39 +368,6 @@ password: #输入密码
 
   <div class="more">
     <a href="/2012/1228.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
-  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
-
-<pre><code>import (
-    &quot;syscall&quot;
-)
-
-type DiskStatus struct {
-    All  uint64 `json:&quot;all&quot;`
-    Used uint64 `json:&quot;used&quot;`
-    Free uint64 `json:&quot;free&quot;`
-}
-
-// disk usage of path/disk
-func DiskUsage(path string) (disk DiskStatus) {
-    fs := syscall.Statfs_t{}
-    err := syscall.Statfs(path, &amp;fs)
-    if err != nil {
-        return
-    }
-    disk.All = fs.Blocks * uint64(fs.Bsize)
-    disk.Free = fs.Bfree * uint64(fs.Bsize)
-    disk.Used = disk.All - disk.Free
-    return
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1224.html" class="btn">read more..</a>
   </div>
 </div>
 
