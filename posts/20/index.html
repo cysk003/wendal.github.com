@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,54 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/94.html">为NutLab添加一个新项目-Nutz与OpenID集成</a> <span class="date">2010-10-12 22:16:53</span></h3>
+  <p>忙乎了两天, 终于把项目正确运行起来了.</p>
+
+<p>使用即将发布的Nutz 1.a.32 ,加 JOpenID 1.0.7</p>
+
+<p>地址: <a href="http://code.google.com/p/nutzlab/source/browse/#svn/trunk/NutOpenID">http://code.google.com/p/nutzlab/source/browse/#svn/trunk/NutOpenID</a></p>
+
+<p>同时,发现JOpenID 1.0.7的一个Bug.
+JOpenID 默认使用UTF-8来对参数进行getBytes. 当参数中还有非英文字符,且没有配置URIEncoding时,获取的byte[]是错误的.
+具体代码:</p>
+
+<pre><code>package org.expressme.openid;
+//......
+public class OpenIdManager {
+//......
+
+    String getHmacSha1(String data, byte[] key) {
+        SecretKeySpec signingKey = new SecretKeySpec(key, HMAC_SHA1_ALGORITHM);
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
+            mac.init(signingKey);
+        }
+        catch(NoSuchAlgorithmException e) {
+            throw new OpenIdException(e);
+        }
+        catch(InvalidKeyException e) {
+            throw new OpenIdException(e);
+        }
+        try {
+            byte[] rawHmac = mac.doFinal(data.getBytes(&quot;UTF-8&quot;)); //不一定,也许是ASCII
+            return Base64.encodeBytes(rawHmac);
+        }
+        catch(IllegalStateException e) {
+            throw new OpenIdException(e);
+        }
+        catch(UnsupportedEncodingException e) {
+            throw new OpenIdException(e);
+        }
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/94.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/92.html">抢占我带宽的流氓软件</a> <span class="date">2010-10-12 10:56:12</span></h3>
@@ -262,33 +310,6 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
   <div class="more">
     <a href="/54.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/52.html">说说这个blog的VPS提供商</a> <span class="date">2010-08-10 18:50:12</span></h3>
-  <p>用了大半个月,感觉非常不错,地址: <a href="http://www.vpsee.com/vps-plans/">http://www.vpsee.com/vps-plans/</a>重申一下,我不是托!<img src="http://www.vpsee.com/vps-plans/" alt="
-" />
-</p>
-
-<p>准备续费了,说说感受,打算继续月付</p>
-
-<ol>
-<li><p>速度, 不错, 你简单ping一下本网站就知道,而且访问这个blog应该也是很快的</p></li>
-
-<li><p>价格,我买了的是256m方案,70元一个月, 算是比较实惠的,是Xen虚拟的!!!</p></li>
-
-<li><p>波折,曾经试过机房断电,凤凰城机房,vpsee的主页有提及,现在免费迁移到另外一个机房,O(∩_∩)O哈哈~</p></li>
-
-<li><p>性能,感觉不错, CPU : Intel&reg; Xeon&reg; CPU           X3220  @ 2.40GHz</p></li>
-
-<li><p>操作系统, 我最初选的是openSUSE,后来改回Ubuntu 10.04.1 Server 初始化内存占用仅20M</p></li>
-</ol>
-
-<p>与vpsee的工作人员交流过,感觉上应该是几个人一起在经营,而且老板还在上班呢(有一次去开会了),没有提供7*24的服务,但是我觉得没所谓,感觉上那只会是幌子.</p>
-
-  <div class="more">
-    <a href="/52.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,44 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/326.html">初试Jetty使用Mongodb作为Session管理器</a> <span class="date">2011-09-26 23:03:32</span></h3>
+  <p>闲话少说,直接上代码:</p>
+
+<pre><code>package net.wendal.jetty.mongodb;
+
+import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
+import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+public abstract class TestMongodb4Jetty {
+
+    public static void main(String[] args) throws Throwable {
+        Server server = new Server(9090);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
+        MongoSessionManager msm = new MongoSessionManager();
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.setSessionManager(msm);
+        webAppContext.setSessionHandler(sessionHandler);
+        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
+        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
+        idMgr.setScavengeDelay(60);
+        msm.setSessionIdManager(idMgr);
+        server.setHandler(webAppContext);
+        server.start();
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/326.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/325.html">不走寻常路--NutzCP初版</a> <span class="date">2011-09-18 14:41:17</span></h3>
@@ -326,36 +364,6 @@ private String zIndex;
 
   <div class="more">
     <a href="/312.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/309.html">数据库连接长时间空闲后,爆连接已经关闭的解决方法</a> <span class="date">2011-08-13 21:31:59</span></h3>
-  <p>本文仅讨论使用连接池的情况:</p>
-
-<p>在很多场合都碰到有人提问: 第二天第一次访问应用,总是报连接已经关闭(Connection Close)</p>
-
-<p>其实,数据库连接池大都已经考虑了这个问题,进行设置一下即可:</p>
-
-<p><a href="http://commons.apache.org/dbcp/api-1.4/org/apache/commons/dbcp/BasicDataSource.html">Apache DBCP</a>:</p>
-
-<pre><code>dataSource.setValidationQuery('select 1');
-</code></pre>
-
-<p><a href="http://sourceforge.net/projects/c3p0/">C3po</a>:</p>
-
-<pre><code>dataSource.setTestConnectionOnCheckout(true);
-dataSource.setPreferredTestQuery('select 1')
-</code></pre>
-
-<p><a href="http://proxool.sourceforge.net/api-dev/org/logicalcobwebs/proxool/ProxoolDataSource.html">Proxool</a>:</p>
-
-<pre><code>dataSource.setTestBeforeUse(true);
-dataSource.setHouseKeepingTestSql('select 1')
-</code></pre>
-
-  <div class="more">
-    <a href="/309.html" class="btn">read more..</a>
   </div>
 </div>
 

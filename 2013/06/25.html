@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>在windows下编译OpenResty</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>在windows下编译OpenResty </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>折腾了一天,终于解决了</p>
+
+<h1>首先,准备cygwin环境</h1>
+
+<p>cygwin下载setup.exe,启动并开始安装,建议选163源或者日本的源,速度较快</p>
+
+<p>需要的安装的包及其devel包:
+openssl zlib pcre</p>
+
+<p>还有就是一些编译需要的工具:
+gcc4 make perl lua  (不使用openresty内置的lua)</p>
+
+<p><img src="/assets/media/2013/06/25/cygwin_install.jpg"></img></p>
+
+<p><img src="/assets/media/2013/06/25/cygwin_install2.jpg"></img></p>
+
+<p>下载openresty, <a href="http://openresty.org/">openresty官网</a></p>
+
+<p>并解压到 C:\cygwin\tmp下</p>
+
+<p><img src="/assets/media/2013/06/25/openresty_download.jpg"></img></p>
+
+<h1>修正lua的C模块编译脚本</h1>
+
+<p>共需要修正3个文件(其实就是3个模块),而且都是一样的修改. 版本号日新月异,自己搞定啦</p>
+
+<p>打开 C:\cygwin\tmp\ngx_openresty-1.2.8.6\bundle\lua-cjson-1.0.3\Makefile, 加入 -llua5.1</p>
+
+<p><img src="/assets/media/2013/06/25/cjson_fix.jpg"></img></p>
+
+<p>然后就是如法炮制,修正rds和redis处理模块</p>
+
+<p><img src="/assets/media/2013/06/25/rds_fix.jpg"></img></p>
+
+<p><img src="/assets/media/2013/06/25/redis_fix.jpg"></img></p>
+
+<h1>开始编译吧,童鞋们!</h1>
+
+<p>启动cgywin</p>
+
+<p><img src="/assets/media/2013/06/25/cygwin_startup.jpg"></img></p>
+
+<p>开始执行配置,注意,这里使用系统的lua,而非openresty内置的lua,原因就是cjson等模块会找不到内置的lua(配一下也可以,但麻烦)</p>
+
+<pre><code>cd /tmp/ngx_openresty-1.2.8.6
+
+./configure --without-select_module --prefix=/opt/openresty --with-lua51=/usr
+</code></pre>
+
+<p><img src="/assets/media/2013/06/25/openresty_configure.jpg"></img></p>
+
+<p>开始编译(按你的实际情况设置并发数哦,不然很久很久的)</p>
+
+<pre><code>make -j8                  #8就是内核数,并行编译,按你的实际情况而定
+</code></pre>
+
+<p><img src="/assets/media/2013/06/25/openresty_make.jpg"></img></p>
+
+<p>编译完成</p>
+
+<p><img src="/assets/media/2013/06/25/openresty_make_done.jpg"></img></p>
+
+<h1>安装那点小事</h1>
+
+<p>如果你直接执行make install, 你会看到这些错误(也许?)</p>
+
+<p><img src="/assets/media/2013/06/25/default_install_fail.jpg"></img></p>
+
+<p>这个我也纠结了一段时间,然后改成这样执行,注意是/opt2,而非原本的/opt</p>
+
+<pre><code>make install DSETDIR=/opt2
+</code></pre>
+
+<p><img src="/assets/media/2013/06/25/install_opt2.jpg"></img></p>
+
+<p>你以为完了?其实还没有,你需要把名字改回去</p>
+
+<pre><code>rm -fr /opt/openresty
+mv /opt2/opt/openresty /opt/
+</code></pre>
+
+<h1>先简单测试一下</h1>
+
+<h2>测试最基本的配置文件检查</h2>
+
+<pre><code>/opt/openresty/nginx/sbin/nginx.exe -t
+</code></pre>
+
+<p><img src="/assets/media/2013/06/25/openresty_simple_test.jpg"></img></p>
+
+<h2>然后就是测试核心的lua调用</h2>
+
+<p>打开nginx.conf文件,添加一个location</p>
+
+<pre><code>        location /lua/hi {
+            content_by_lua 'ngx.say(&quot;LUA Here&quot;)' ;
+        }
+</code></pre>
+
+<p>保存,启动nginx, 然后curl一下看看</p>
+
+<pre><code>/opt/openresty/nginx/sbin/nginx.exe
+curl -v http://127.0.0.1/lua/hi
+</code></pre>
+
+<p><img src="/assets/media/2013/06/25/openresty_lua_hi.jpg"></img></p>
+
+<h1>测试数据库连接</h1>
+
+<p>数据库的resty.mysql库需要LuaBitOP库(汗,为啥openresty不包含?)</p>
+
+<p>下载LuaBitOP库, <a href="http://bitop.luajit.org/download.html">猛击下载地址</a>,并解压到C:\cygwin\tmp下</p>
+
+<p>惯例了,修正编译参数</p>
+
+<p><img src="/assets/media/2013/06/25/bitop_fix.jpg"></img></p>
+
+<p>编译然后拷贝到openresty的lualib</p>
+
+<pre><code>cd /tmp/LuaBitOp-1.0.2
+make
+cp bit.so /opt/openresty/lualib
+</code></pre>
+
+<p>接下来,就是修改nginx.conf,加上官方的<a href="https://github.com/agentzh/lua-resty-mysql">测试例子</a>了</p>
+
+<pre><code>        location /lua/mysql {
+            content_by_lua '
+            
+            local mysql = require &quot;resty.mysql&quot;
+            local db, err = mysql:new()
+            if not db then
+                ngx.say(&quot;failed to instantiate mysql: &quot;, err)
+                return
+            end
+
+            -- 省略1000字,自行到官网拷贝吧
+            ' ;
+        }
+</code></pre>
+
+<p>让nginx重新加载配置,然后访问之</p>
+
+<pre><code>/opt/openresty/nginx/sbin/nginx.exe -s reload
+curl -v http://127.0.0.1/lua/mysql
+</code></pre>
+
+<p>哦也,上截图</p>
+
+<p><img src="/assets/media/2013/06/25/openresty_mysql_test.jpg"></img></p>
+
+<h1>打完收工!! 但有啥不足呢?</h1>
+
+<p>没有luajit,反正我没弄出来, configure阶段总是找不到库,不管了,windows就不那么追求性能了</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+          
+            <li class="prev disabled"><a>&larr; Previous</a></li>
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/2013/06/14.html" title="马来西亚,闲游">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-06-25</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#nginx-ref">nginx <span>3</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#nginx-ref">nginx <span>23</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#openresty-ref">openresty <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
+
+  </body>
+</html>

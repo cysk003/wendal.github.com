@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,27 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/288.html">鸣鸣满100天了!! 申领了身份证等重要证件,嘻嘻</a> <span class="date">2011-05-13 14:38:54</span></h3>
+  <p>嘻嘻,一百天了</p>
+
+<p>花了一个上午,办:
+身份证    40个工作日可取?!
+港澳通行证 15天
+护照        15天</p>
+
+<p>恩,还挺顺利的</p>
+
+<p>工作耽误了一些,明后两天加班,呵呵</p>
+
+<p>附回执,嘻嘻,关键信息都已经涂黑:
+<a href="/assets/media/2011/05/MM_SF.jpg">MM_SF-300x225.jpg</a></p>
+
+  <div class="more">
+    <a href="/288.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/287.html">不跟你玩,玩不起!!</a> <span class="date">2011-05-10 15:37:08</span></h3>
@@ -335,34 +356,6 @@ public class Main {
 
   <div class="more">
     <a href="/273.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/272.html">Nginx与中文域名</a> <span class="date">2011-04-17 18:36:30</span></h3>
-  <p>这个问题来自Nginx群</p>
-
-<p>Google了一轮,发现其实很简单</p>
-
-<p>直接写中文域名是无法解析到正确的Server的
-中文域名其实就是一个英文域名!!
-中文域名 &mdash;(Punycode编码) &ndash;&gt; 英文域名
-而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn&ndash;fiq228c.com 进行访问,仅此而已!!</p>
-
-<p>那Punycode编码是什么呢? 先看看Python如何调用:
-尝试编码  www.坚果.com</p>
-
-<pre><code>'坚果'.decode('gbk').encode('punycode')
-</code></pre>
-
-<p>得到jfs419a,然后合成真正的URL www.xn&ndash;jfs419a.com &ndash; 这个域名还没启用的.</p>
-
-<p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
-
-<p>当然还得说说中文实现, 在Apache的HttpClient 4.x系列中就有,<a href="http://www.docjar.com/html/api/org/apache/http/client/utils/Rfc3492Idn.java.html">看源码</a></p>
-
-  <div class="more">
-    <a href="/272.html" class="btn">read more..</a>
   </div>
 </div>
 

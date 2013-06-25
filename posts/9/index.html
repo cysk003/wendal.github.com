@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,31 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/369.html">纯Java处理CMYK格式(32位色深)的JPEG文件!!</a> <span class="date">2012-02-10 20:31:19</span></h3>
+  <p>无限折腾之后,终于找到一个能用的纯Java的解决方法:
+1. 获取jpeg格式的ImageReader
+2. 通过ImageIO.createImageInputStream生成ImageInputStream
+3. ImageReader和ImageInputStream协作,产生Raster
+4. 使用createJPEG4通过色彩空间变化,生成BufferedImage
+5. 重要: 把BufferedImage保存为临时的jpg文件,然后重新解析为BufferedImage</p>
+
+<p>这样,最后得到的BufferedImage,将是一个普通的24位色深的RGB的jpg文件所对应的BufferedImage</p>
+
+<p>注意, 第4步所产生的BufferedImage,进行某些操作时会报错,因为色彩空间是ColorSpace.CS_sRGB,所以,先保存到临时jpg文件,然后再生成标准的BufferedImage是非常重要的.</p>
+
+<p>具体实现已经集成到<a href="https://github.com/nutzam/nutz/blob/master/src/org/nutz/img/Images.java">Nutz的Images类</a></p>
+
+<p>感谢:
+Sun java <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4799903">http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4799903</a>
+dsmart-30buy
+ <a href="http://dsmart-30buy.iteye.com/blog/1226969">http://dsmart-30buy.iteye.com/blog/1226969</a></p>
+
+  <div class="more">
+    <a href="/369.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/366.html">鸣鸣满一个太阳年了</a> <span class="date">2012-02-02 22:11:36</span></h3>
@@ -313,37 +338,6 @@ db.getCollection().update(query, update);
 
   <div class="more">
     <a href="/355.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/353.html">新年了,开始写论文了~_~</a> <span class="date">2012-01-04 12:45:48</span></h3>
-  <p>拖了一年了,老婆也发话了&hellip; 看来是时候认认真真把论文搞定了</p>
-
-<p>文档啥的,一直都不是强项,宁愿写100行代码也想不出10行文档的我,要写出一份几十页的论文,真是情何以堪啊&hellip;</p>
-
-<ol>
-<li>文档格式</li>
-</ol>
-
-<p>说明一下,我这里说的不是文档的排版,而是文档的存储格式</p>
-
-<p>最初的想法,当然是传统的Work文档,直观易用,但,这玩意真不适合程序员使用,尤其是没有版本管理,转换成其他格式也非常不便
-昨晚学了一下传说中的Latex,这玩意强大得很,简直不是人用的&hellip;. 一眼看上去,都不知道最终文档长啥样</p>
-
-<p>所以呢,我决定尝试一把,用zDoc或者Markdown来写.现在主要是倾向于zDoc(即nutzdoc),理由很简单,自己参与的项目,如果有bug也立马修正.
-但保险起见,实现zDoc&ndash;&gt;MarkDown转换器也立马提上日程,这个需求最初是nutz迁移到github时提出的,后来发现github的wiki的不如google code做得好,这个需求也就沉寂下去了</p>
-
-<ol>
-<li>文档管理</li>
-</ol>
-
-<p>既然文档是zdoc格式,那么,版本管理和持续集成也就不成问题咯
-Git &ndash; 版本控制,话说我已经爱上这玩意,svn已经N久没有使用过
-Hudson &ndash; 不知道什么原因,我一直喜欢用这个进行持续集成,我也用过其他的啊,咋就还钟情于hudson呢</p>
-
-  <div class="more">
-    <a href="/353.html" class="btn">read more..</a>
   </div>
 </div>
 

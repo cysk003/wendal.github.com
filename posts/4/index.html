@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,31 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/linux/Ruhoh%2CNow%21/">Ruhoh,Now!</a> <span class="date">2012-11-06</span></h3>
+  <h2>正式转用Ruhoh静态博客引擎</h2>
+
+<ul>
+<li>wordpress贴code实在太痛苦,还要排版</li>
+<li>由于生成的是静态html,再也不必用神马php,世界清净了</li>
+</ul>
+
+<h2>博客内容完整迁移</h2>
+
+<ul>
+<li>很早就转用DISQUS,所以全部评论都完整保留</li>
+<li>博客文章,转为markdown格式后,使用fix_wp_id_permalink.go和cleanup_blank_line.go修正为原链接及清理空行</li>
+<li>本网站的源码存在github的<a href="http://github.com/wendal/wendal.net">wendal.net库</a></li>
+<li>前端使用nginx 1.2.4, 配合git hook实现自动更新(待完成)</li>
+</ul>
+
+<h2>启用80vps的香港机房,弃用vpsee</h2>
+
+  <div class="more">
+    <a href="/linux/Ruhoh%2CNow%21/" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/465.html">我做运维的那几个月</a> <span class="date">2012-10-31 11:28:43</span></h3>
@@ -322,38 +347,6 @@ CGO_ENABLED=0 GOARCH=arm GOOS=linux ./make.bash
 
   <div class="more">
     <a href="/450.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/448.html">Golang连接Mysql</a> <span class="date">2012-07-31 19:33:39</span></h3>
-  <p>首先,安装golang-mysql库, 我这里选用是google上的<a href="http://code.google.com/p/go-mysql-driver/">go-mysql-driver</a></p>
-
-<pre><code>go get code.google.com/p/go-mysql-driver/mysql
-#如果访问失败,请翻墙吧!! 需要mysql 4.1以上哦
-</code></pre>
-
-<p>然后,当然是我的最爱 &ndash; 代码</p>
-
-<pre><code>package main
-
-// 导入sql包, 跟java.sql类似的
-import &quot;database/sql&quot;
-import _ &quot;code.google.com/p/go-mysql-driver/mysql&quot;
-import &quot;encoding/json&quot;
-import &quot;fmt&quot;
-
-// 定义一个结构体, 需要大写开头哦, 字段名也需要大写开头哦, 否则json模块会识别不了
-// 结构体成员仅大写开头外界才能访问
-type User struct {
-    User      string    `json:&quot;user&quot;`
-    Password string `json:&quot;password&quot;`
-    Host   string `json:&quot;host&quot;`
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/448.html" class="btn">read more..</a>
   </div>
 </div>
 

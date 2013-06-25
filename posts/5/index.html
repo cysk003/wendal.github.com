@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,38 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/448.html">Golang连接Mysql</a> <span class="date">2012-07-31 19:33:39</span></h3>
+  <p>首先,安装golang-mysql库, 我这里选用是google上的<a href="http://code.google.com/p/go-mysql-driver/">go-mysql-driver</a></p>
+
+<pre><code>go get code.google.com/p/go-mysql-driver/mysql
+#如果访问失败,请翻墙吧!! 需要mysql 4.1以上哦
+</code></pre>
+
+<p>然后,当然是我的最爱 &ndash; 代码</p>
+
+<pre><code>package main
+
+// 导入sql包, 跟java.sql类似的
+import &quot;database/sql&quot;
+import _ &quot;code.google.com/p/go-mysql-driver/mysql&quot;
+import &quot;encoding/json&quot;
+import &quot;fmt&quot;
+
+// 定义一个结构体, 需要大写开头哦, 字段名也需要大写开头哦, 否则json模块会识别不了
+// 结构体成员仅大写开头外界才能访问
+type User struct {
+    User      string    `json:&quot;user&quot;`
+    Password string `json:&quot;password&quot;`
+    Host   string `json:&quot;host&quot;`
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/448.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/446.html">在Golang中,Log打印行号等信息</a> <span class="date">2012-07-24 19:11:08</span></h3>
@@ -284,31 +316,6 @@ ffi.copy(tmp, newlisp_str)
 
   <div class="more">
     <a href="/424.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/423.html">将诺顿Ghost(诺顿克隆精灵)正版化了</a> <span class="date">2012-05-12 21:17:33</span></h3>
-  <p><strong>不打算说其他的,就贴一下邮件内容吧:</strong></p>
-
-<pre><code>感谢您光临诺顿网络商店。
-以下是您所购买产品的下载信息。
-请务必妥善保管本邮件。
-
-[订单内容]
-───────────────────────────────────
-[订单号码]       NSCN0000017XXXX
-[定购日期]       2012-05-12 22:09:28
-───────────────────────────────────
-[订购的商品1]      诺顿克隆精灵15.0 一用戶 下载版
-[类别]             下载
-[数量]             1 个
-[产品密钥]   09-A052-0969-XXXXXX
-───────────────────────────────────
-</code></pre>
-
-  <div class="more">
-    <a href="/423.html" class="btn">read more..</a>
   </div>
 </div>
 

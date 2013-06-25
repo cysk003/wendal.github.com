@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Python的while 1跟while True到底有什么区别?</title>
+    <title>在Linux下安装Cuda5</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/309.html">数据库连接长时间空闲后,爆连接已经关闭的解决方法</a> <span class="date">2011-08-13 21:31:59</span></h3>
+  <p>本文仅讨论使用连接池的情况:</p>
+
+<p>在很多场合都碰到有人提问: 第二天第一次访问应用,总是报连接已经关闭(Connection Close)</p>
+
+<p>其实,数据库连接池大都已经考虑了这个问题,进行设置一下即可:</p>
+
+<p><a href="http://commons.apache.org/dbcp/api-1.4/org/apache/commons/dbcp/BasicDataSource.html">Apache DBCP</a>:</p>
+
+<pre><code>dataSource.setValidationQuery('select 1');
+</code></pre>
+
+<p><a href="http://sourceforge.net/projects/c3p0/">C3po</a>:</p>
+
+<pre><code>dataSource.setTestConnectionOnCheckout(true);
+dataSource.setPreferredTestQuery('select 1')
+</code></pre>
+
+<p><a href="http://proxool.sourceforge.net/api-dev/org/logicalcobwebs/proxool/ProxoolDataSource.html">Proxool</a>:</p>
+
+<pre><code>dataSource.setTestBeforeUse(true);
+dataSource.setHouseKeepingTestSql('select 1')
+</code></pre>
+
+  <div class="more">
+    <a href="/309.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/308.html">鸣鸣第一次出境, Mark一下</a> <span class="date">2011-08-07 19:44:14</span></h3>
@@ -311,27 +341,6 @@ Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值�
 
   <div class="more">
     <a href="/292.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/288.html">鸣鸣满100天了!! 申领了身份证等重要证件,嘻嘻</a> <span class="date">2011-05-13 14:38:54</span></h3>
-  <p>嘻嘻,一百天了</p>
-
-<p>花了一个上午,办:
-身份证    40个工作日可取?!
-港澳通行证 15天
-护照        15天</p>
-
-<p>恩,还挺顺利的</p>
-
-<p>工作耽误了一些,明后两天加班,呵呵</p>
-
-<p>附回执,嘻嘻,关键信息都已经涂黑:
-<a href="/assets/media/2011/05/MM_SF.jpg">MM_SF-300x225.jpg</a></p>
-
-  <div class="more">
-    <a href="/288.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -91,6 +91,33 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2013/06/25.html">在windows下编译OpenResty</a> <span class="date">2013-06-25</span></h3>
+
+  <p>折腾了一天,终于解决了</p>
+
+<h1>首先,准备cygwin环境</h1>
+
+<p>cygwin下载setup.exe,启动并开始安装,建议选163源或者日本的源,速度较快</p>
+
+<p>需要的安装的包及其devel包:
+openssl zlib pcre</p>
+
+<p>还有就是一些编译需要的工具:
+gcc4 make perl lua  (不使用openresty内置的lua)</p>
+
+<p><img src="/assets/media/2013/06/25/cygwin_install.jpg"></img></p>
+
+<p><img src="/assets/media/2013/06/25/cygwin_install2.jpg"></img></p>
+
+<p>下载openresty, <a href="http://openresty.org/">openresty官网</a></p>
+
+
+  <div class="more">
+    <a href="/2013/06/25.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/06/14.html">马来西亚,闲游</a> <span class="date">2013-06-14</span></h3>
 
   <h1>严重声明</h1>
@@ -364,32 +391,6 @@ runtime·GetGoId(int32 ret)
 
   <div class="more">
     <a href="/2013/0205.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0130.html">在Linux下安装Cuda5</a> <span class="date">2013-01-30</span></h3>
-
-  <p>所有操作均为root用户.</p>
-
-<h2>安装环境</h2>
-
-<p>系统环境: Ubuntu 11.10 Desktop 32位
-硬件环境: Nvidia GT540M
-注意!! 虚拟机是不行的!!</p>
-
-<h2>下载cuda</h2>
-
-<pre><code>wget http://developer.download.nvidia.com/compute/cuda/5_0/rel-update-1/installers/cuda_5.0.35_linux_32_ubuntu11.10-1.run
-#当然,我更喜欢用QQ旋风之类的先下载好
-#无需额外下载显卡驱动, cuda 5.0已经包含了最适合的显卡驱动
-</code></pre>
-
-<h2>安装必要的库</h2>
-
-
-  <div class="more">
-    <a href="/2013/0130.html" class="btn">read more..</a>
   </div>
 </div>
 
