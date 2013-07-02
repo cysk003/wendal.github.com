@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,26 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
+  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug &ndash; <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
+
+<p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
+
+<p>找到以下代码:</p>
+
+<pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
+</code></pre>
+
+<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 &ndash; mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
+
+<p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
+
+  <div class="more">
+    <a href="/214.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/212.html">让Nginx的SSI支持相对路径--更安全的方法</a> <span class="date">2010-12-14 14:04:24</span></h3>
@@ -277,45 +297,6 @@ cp objs/nginx /usr/local/nginx/sbin/
 
   <div class="more">
     <a href="/186.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/138.html">3年,追忆,回顾</a> <span class="date">2010-11-23 07:47:05</span></h3>
-  <p>2007年9月,成功考过<strong>SCJP</strong>
-2007年10月,人生第一个职业面试,竟然不问我Java的知识,只因我过了SCJP
-2007年11月,拿到第一份offer,无比激动啊!! 因为我不是计算机专业本科毕业的
-2008年2月,开始到公司实习,号称最低工资的Billable员工
-2008年7月,正式入职,无试用期
-2008年8月,正式接管项目组的管理,几个人的小团队.
-2008年8月,获得季度&rdquo;最佳项目&rdquo;称号
-2008年9月,改革项目.废弃沿用2年Excel式的任务管理,启用组内bugzilla;改变工作方式,强调分工,对Mac的依赖降低.(新官上任3把火?)
-2008年10月,开发JLint,极大地提高项目组的工作效率,进一步降低对Mac的依赖
-2008年10月,参加GCT考试,3小时回答185条题目,好在我答题是出了名的快!
-2008年12月,顺利获得暨南大学的工程硕士入学资格,专业&ndash;软件工程
-2009年1月,私下改造公司第一个Android项目XRace,改进其启动性能90%以上,但未获公司的注意
-2009年1月,开始组内学习计划,先后学习Ruby/ror/Perl
-2009年5月,开发一个Android Dex文件反编译器,后来发现其他项目做得更好,放弃之
-2009年5月,考SCJD,差4分失败而归,这可是400分的总分啊!!
-2009年X月,在我的推荐下,启用CDC-bugzilla,推动Hudson自动构建
-2009年X月,开始参加一个内部项目的code review
-2009年7月,参与一个短期的外出培训项目,是培训学生的
-2009年10月,在Javaeye上发现Nutz,当时是1.a.15版. 提出几处修改意见后,成为commiter
-2009年12月,使用ASM重新实现Nut.Aop,后来又做了现在这一版.
-2009年12月,试水公司的Jira系统,带壳的Jira用得非常不爽!
-2010年1月,项目解散,被分配到另外一个项目组,仅仅待了几天,完成了一个小功能
-2010年2月,再次被分配,到了一个深圳的网站项目,折腾到现在
-2010年3月,驻深圳现场开发,2男2女,哈哈
-2010年4月,一期上线,奇迹!
-2010年5月,负责Alfresco的底层配置,天天对着putty敲命令
-2010年6月,实现了一个改资源URL的工具,因为实际部署时, 图片等静态资源放在另外域名/机器上.
-2010年7月,开发基于Alfresco的工作流定制,天啊,我之前还没搞过工作流
-2010年9月,二期上线,部署到全球的3个站点,客户有钱嘛
-2010年11月,获颁&rdquo;季度最佳员工&rdquo; &ndash; 经过好几次提名后
-&hellip; 人生还在继续</p>
-
-  <div class="more">
-    <a href="/138.html" class="btn">read more..</a>
   </div>
 </div>
 

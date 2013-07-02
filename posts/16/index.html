@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,37 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/247.html">一起来,为Nutz编写插件!</a> <span class="date">2011-03-05 21:33:29</span></h3>
+  <p><strong>随着Nutz代码的不断改进,为Nutz编写插件已经越来越容易.</strong></p>
+
+<p>早期我们编写的插件,很多都是为了兼容/集成XX框架而写的. 例如<a href="http://code.google.com/p/nutzmore/source/browse/trunk/src/org/nutz/ioc/impl/spring/SpringIocProvider.java">SpringIocLoader</a></p>
+
+<p>其实我们可以做更多更强大的插件,今天以当前扩展功能最好的MVC为例:
+1. 视图插件
+2. 适配器插件
+3. 处理器插件
+4. UrlMapping插件</p>
+
+<p>逐一讲解:
+<strong>1. 视图插件</strong>
+    要求: 实现View接口和ViewMarker接口
+    能做什么?
+        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+
+<p><strong>2. 适配器插件</strong>
+    要求: 实现HttpAdaptor接口
+    能做什么?
+        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
+        &ndash; 请求是加密的? 需要解码才能读取
+        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+
+  <div class="more">
+    <a href="/247.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/246.html">人生第一次离职,Mark一下</a> <span class="date">2011-02-25 21:18:59</span></h3>
@@ -331,49 +362,6 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 
   <div class="more">
     <a href="/230.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/228.html">Nginx不同编译选项得到的二进制文件大小对比</a> <span class="date">2011-01-17 19:45:47</span></h3>
-  <p>Nginx信息:
-版本: 0.9.3
-对原版的修改, 将auto/cc/gcc的-g去掉,将-O改为-O2
-附上原始数据,比较长:</p>
-
-<pre><code>#默认编译
-./configure
-make
-ll objs/nginx
-make clean
-#File size 525556
-#--with-cc-opt=-g 2444312
-#--with-cc-opt=-g --with-debug 2513996
-
-#加载大部分可选模块
-./configure --with-http_ssl_module \
-        --with-http_realip_module \
-        --with-http_addition_module \
-        --with-http_xslt_module \
-        --with-http_sub_module \
-        --with-http_dav_module \
-        --with-http_flv_module \
-        --with-http_gzip_static_module \
-        --with-http_random_index_module \
-        --with-http_secure_link_module \
-        --with-http_degradation_module \
-        --with-http_stub_status_module \
-        --with-http_perl_module
-make &gt; /dev/null
-ll objs/nginx
-make clean
-#File size 642031
-#--with-cc-opt=-g 4557807
-#--with-cc-opt=-g --with-debug 4689478
-</code></pre>
-
-  <div class="more">
-    <a href="/228.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,48 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/100.html">在Nutz MVC中使用Freemarker</a> <span class="date">2010-10-20 12:27:06</span></h3>
+  <p>大约一年前, axhack 发布了一篇文章 &ldquo;<a href="http://axhack.javaeye.com/blog/542441">给 nutz 添加 freemarker 视图</a>&rdquo; ,描述了如何集成nutz和freemarker.</p>
+
+<p>前几天,我使用另外一种更简单的方法来实现(基于Nutz 1.a.33版新增的内部重定向视图),我使用的是Freemarker 2.3.16
+首先, 在web.xml添加Freemarker官方文档描述的FreemarkerServlet, <a href="http://freemarker.sourceforge.net/docs/pgui_misc_servlet.html">查看原文描述</a>.</p>
+
+<pre><code>&lt;servlet&gt;
+&lt;servlet-name&gt;freemarker&lt;/servlet-name&gt;
+&lt;servlet-class&gt;freemarker.ext.servlet.FreemarkerServlet&lt;/servlet-class&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;TemplatePath&lt;/param-name&gt;
+  &lt;param-value&gt;/&lt;/param-value&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;NoCache&lt;/param-name&gt;
+  &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;ContentType&lt;/param-name&gt;
+  &lt;param-value&gt;text/html; charset=UTF-8&lt;/param-value&gt;
+  &lt;!-- 我觉得不需要了,如果是内部重定向的话, nutz已经设置了编码 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;template_update_delay&lt;/param-name&gt;
+  &lt;param-value&gt;0&lt;/param-value&gt;&lt;!-- 开发时才设置为0 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;default_encoding&lt;/param-name&gt;
+  &lt;param-value&gt;UTF-8&lt;/param-value&gt; &lt;!-- 模板文件的编码 --&gt;
+&lt;/init-param&gt;
+&lt;init-param&gt;
+  &lt;param-name&gt;number_format&lt;/param-name&gt;
+  &lt;param-value&gt;0.##########&lt;/param-value&gt;
+&lt;/init-param&gt;
+</code></pre>
+
+  <div class="more">
+    <a href="/100.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/94.html">为NutLab添加一个新项目-Nutz与OpenID集成</a> <span class="date">2010-10-12 22:16:53</span></h3>
@@ -297,19 +339,6 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
   <div class="more">
     <a href="/56.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/54.html">发布了阳光牧场外挂 3.34版</a> <span class="date">2010-08-27 22:47:53</span></h3>
-  <p>原本不打算在这个blog写这个新闻的,但毕竟是该外挂一个月以来的更新,还是忍不住说说.</p>
-
-<p>阳光牧场,这款游戏,这款外挂,给了我不少体会, 写外挂本身的代码活并不算很复杂.问题的关键是用户喜欢用,继续用.相比其他外挂,界面最简陋的,选项最多,而且免费. 之前一直站在开发者的角度看这款外挂,而QQ群的建立,使我直接面对用户,直接面对需求!! 之前以为很好的功能,才发现对用户只是鸡肋.而开发纯果乐果园部分的代码,使我真正意识到设计简洁,做最需要做的事,才是软件要完成的,而非所谓的高级设计技巧</p>
-
-<p>在外挂中,纯果乐部分,我使用了Nutz的Ioc与Aop,对于一款外挂,显然是无需的,甚至多余的.但是,我作为一个实验来看待,比较这些用户的环境,恰恰是测试Nutz ioc/aop的好地方,系统配置千差万别.结论是,至今没有发现大问题.</p>
-
-  <div class="more">
-    <a href="/54.html" class="btn">read more..</a>
   </div>
 </div>
 

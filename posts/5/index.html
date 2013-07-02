@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,51 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/450.html">fql改造记录 -- fql is a tool that use SQL like query to manipulate files</a> <span class="date">2012-08-13 16:52:41</span></h3>
+  <p>fql is a tool that use SQL like query to manipulate files</p>
+
+<p>挺好玩的一个小工具, 用SQL语法来find文件,官网 <a href="https://github.com/dccmx/fql" title="fql is a tool that use SQL like query to manipulate files." target="_blank">https://github.com/dccmx/fql</a></p>
+
+<ol>
+<li><p>添加readline支持, 原本是极其简单的fgets读取输入,那叫一个简陋啊</p>
+
+<p>//添加headers
+#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1</p>
+
+<h1><a style="display: block;" name="include-&lt;readline/readline.h&gt;" href="#include-&lt;readline/readline.h&gt;"></a>include <readline/readline.h></h1>
+
+<h1><a style="display: block;" name="include-&lt;readline/history.h&gt;" href="#include-&lt;readline/history.h&gt;"></a>include <readline/history.h></h1>
+
+<p>#endif</p>
+
+<p>//改造其获取输入的代码:
+#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1
+  if (isatty(STDIN_FILENO)) { //如果是控制台输入,则输出提示符
+      str = readline(&ldquo;&gt; &ldquo;);
+      if( str &amp;&amp; *str )
+          add_history(str); //加入到readline历史记录
+      else
+          continue;
+  } else {
+      str = readline(&ldquo;&rdquo;);
+      if (! str) break;
+  }
+#else
+  //老的,直接读取的方法, 不带历史记录,无法读取多行文本
+  if (isatty(STDIN_FILENO)) printf(&ldquo;&gt; &ldquo;);
+  char str[1024];
+  fgets(str, 1024, stdin);
+  if (feof(stdin)) break;
+  if (!str || !strcmp(&rdquo;\n&rdquo;, str) || !strcmp(&rdquo;\r\n&rdquo;, str)) continue;
+#endif</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/450.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/448.html">Golang连接Mysql</a> <span class="date">2012-07-31 19:33:39</span></h3>
@@ -287,35 +332,6 @@ func main() {
 
   <div class="more">
     <a href="/426.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/424.html">在LuaJIT中通过FFI直接调用newlisp</a> <span class="date">2012-05-17 22:02:59</span></h3>
-  <ol>
-<li>首先,当然是编译newlisp,并拷贝到/usr/lib/libnewlisp.so</li>
-<li>编译luajit,启动之</li>
-</ol>
-
-<p>上代码</p>
-
-<pre><code>--载入ffi
-ffi = require(&quot;ffi&quot;)
---载入newlisp
-newlisp = ffi.load(&quot;newlisp&quot;)
---定义newlisp的公开API
-ffi.cdef[[
-char * newlispEvalStr(char * cmd);
-]]
-
---接下来,就是调用过程了
-newlisp_str = &quot;()&quot;
-tmp = ffi.new(&quot;char[2]&quot;) -- 因为newlispEvalStr的参数是char*,而newlisp_str是string,需要转一下
-ffi.copy(tmp, newlisp_str)
-</code></pre>
-
-  <div class="more">
-    <a href="/424.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,38 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/412.html">lua-newLISP 包装器</a> <span class="date">2012-04-10 22:48:51</span></h3>
+  <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
+
+<p>今天第一次写lua模块,就做了一个lua-newLISP包装器,即在lua中执行newLISP脚本</p>
+
+<p><strong>首先遇到的是newLISP的编译:</strong>
+1. 官方提供的configure智能化程度极低,估计是手写的
+2. 生成的Makefile,是Ubuntu下的配置, 在centos下编译无法通过
+虽然修改一下,还是顺利能pass,但还是觉得不爽
+故, 动手做了一个<a href="https://gist.github.com/2351735">cmake for newLISP</a>的脚本.</p>
+
+<p><strong>生成so文件后,默认是newlisp.so,改名为libnewlisp.so,并放入/usr/lib中</strong></p>
+
+<p>由于newLISP的对外API仅2个(其中一个还不能用&hellip;),且自带的h文件比较混乱,<strong>干脆自己写了一个h文件</strong><a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.h">newlisp.h</a>,就一行:</p>
+
+<pre><code>char * newlispEvalStr(char * cmd); //把传入的cmd当成newlisp脚本执行,并返回char*
+</code></pre>
+
+<p>然后,当然是主体c文件<a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.c">newLISP.c</a>啦</p>
+
+<pre><code>//载入lua的头文件
+#include &quot;lua.h&quot;
+#include &quot;lualib.h&quot;
+#include &quot;lauxlib.h&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/412.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/411.html">Nutz是一个轮子吗?</a> <span class="date">2012-04-06 22:59:30</span></h3>
@@ -329,35 +361,6 @@ IocContext按配置信息管理bean的生命周期(create/fetch/depose)</p>
 
   <div class="more">
     <a href="/400.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/399.html">登录入口的一个小小的细节,HttpSession.setAttribute的调用顺序</a> <span class="date">2012-03-14 21:23:40</span></h3>
-  <p>今天与zozoh的交谈中,又把这个问题提了一下. 就是登录代码中,Session处于一个不可靠的状态.</p>
-
-<p>这里用NutzMVC的代码来演示,但并不代表是nutz的问题,而是J2EE都面对的问题(PS: 如果你使用了SpringSecurity等安全框架,则可能它已经帮你出来了这个问题)</p>
-
-<pre><code>//登录入口方法
-public View login(String userName, String passwd, HttpSession session) {
-    session.setAttribute(&quot;me&quot;, user); //当代码运行到这里,会话中已经存在me这个attr
-    session.setAttribute(&quot;rule&quot;, rule);
-    return new JspView(&quot;/index.jsp&quot;);
-}
-
-//登录后才能访问的入口方法
-@Filters(@By(type = CheckSession.class, args = {&quot;me&quot;, &quot;/&quot;})) //已经HttpSession中已经包含me这个attr,所以,这个过滤器会判定为已经登录
-public Object xxx(HttpSession session) {
-    Rule myRule = session.get(&quot;rule&quot;); //由于已经被@Filters标注,所以方法会认为会话是已经完整初始化的
-    // .... ... .. 
-}
-</code></pre>
-
-<p>也就是说, HttpSession在登录入口方法完成前,处于一个不可靠的状态 &ndash; 对于检测是否登录的代码来说,这个会话是已经登录的,但事实上这个会话并未完成逻辑上的初始化.
-当恶意进行类似的访问(多线程),那么其他入口方法要么报NPE,要么执行不可预测的逻辑.如果入口方法需要设置多个attr,那么HttpSession将处于多个不同的半初始化状态.</p>
-
-  <div class="more">
-    <a href="/399.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在Linux下安装Cuda5</title>
+    <title>推荐OpenResty -- Nginx全能插件版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/259.html">HTTPSQS源码初探</a> <span class="date">2011-03-28 21:34:39</span></h3>
+  <p>官网: <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a>
+一句话介绍: HTTPSQS is a Simple Queue Service based on HTTP GET/POST protocol
+               HTTPSQS（HTTP Simple Queue Service）是一款基于 HTTP GET/POST 协议的轻量级开源简单消息队列服务</p>
+
+<p>其实以前就安装过这款队列实现,也简单测试过,但今天第一次看源码,呵呵</p>
+
+<p>源码就一个C文件 httpsqs.c , 外加一个MakeFile文件</p>
+
+<p>代码大概800行,原本以为是个很复杂的东西,最后才发现,真的如其中文介绍一样:
+使用 Tokyo Cabinet 的 B+Tree Key/Value 数据库来做数据的持久化存储</p>
+
+<p>我的理解就是一个Key/Value服务器的Http界面</p>
+
+<p>原本打算写点代码分析的,但源码上的注解太详细,算了,不写了,把方法列一下:</p>
+
+<pre><code>/* 全局设置 */
+TCBDB *httpsqs_db_tcbdb; /* 数据表 */
+int httpsqs_settings_syncinterval; /* 同步更新内容到磁盘的间隔时间 */
+char *httpsqs_settings_pidfile; /* PID文件 */
+</code></pre>
+
+  <div class="more">
+    <a href="/259.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/258.html">[求助]CHM文件的格式,我疑惑了!!!</a> <span class="date">2011-03-28 12:39:57</span></h3>
@@ -314,37 +342,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
   <div class="more">
     <a href="/248.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/247.html">一起来,为Nutz编写插件!</a> <span class="date">2011-03-05 21:33:29</span></h3>
-  <p><strong>随着Nutz代码的不断改进,为Nutz编写插件已经越来越容易.</strong></p>
-
-<p>早期我们编写的插件,很多都是为了兼容/集成XX框架而写的. 例如<a href="http://code.google.com/p/nutzmore/source/browse/trunk/src/org/nutz/ioc/impl/spring/SpringIocProvider.java">SpringIocLoader</a></p>
-
-<p>其实我们可以做更多更强大的插件,今天以当前扩展功能最好的MVC为例:
-1. 视图插件
-2. 适配器插件
-3. 处理器插件
-4. UrlMapping插件</p>
-
-<p>逐一讲解:
-<strong>1. 视图插件</strong>
-    要求: 实现View接口和ViewMarker接口
-    能做什么?
-        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
-        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
-
-<p><strong>2. 适配器插件</strong>
-    要求: 实现HttpAdaptor接口
-    能做什么?
-        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
-        &ndash; 请求是加密的? 需要解码才能读取
-        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
-
-  <div class="more">
-    <a href="/247.html" class="btn">read more..</a>
   </div>
 </div>
 
