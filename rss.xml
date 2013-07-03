@@ -2,9 +2,9 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>2013-07-03 11:33:27 +0800</pubDate>
+    <pubDate>2013-07-03 11:34:39 +0800</pubDate>
     <item>
-      <title>py2exe</title>
+      <title>py2exe练手</title>
       <link>http://wendal.net/2013/07/03.html</link>
       <pubDate>2013-07-03 12:00:00 +0800</pubDate>
       <description>&lt;p&gt;受老同学所托,写了个字符串抽样的东西(就是N个字符串抽取固定的几个),代码如下:&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;#!python&#xA;# -*- coding: UTF-8 -*-&#xA;&#xA;import os.path&#xA;import time&#xA;import sys&#xA;import itertools &#xA;import random&#xA;&#xA;if not os.path.exists(&amp;quot;numbers.txt&amp;quot;) :&#xA;    print u&amp;quot;没找到数据文件 numbers.txt&amp;quot;&#xA;    time.sleep(5)&#xA;    sys.exit()&#xA;&#xA;with open(&amp;quot;numbers.txt&amp;quot;) as f :&#xA;    d = str(f.read())&#xA;&#xA;#print d&#xA;numbs = d.split(&amp;quot;,&amp;quot;)&#xA;#print numbs, u&amp;quot;长度&amp;quot; ,len(numbs)&#xA;&#xA;re = itertools.combinations(numbs, 5) #内置的一个库,so easy&#xA;re = list(re)&#xA;random.shuffle(re)                    #把顺序打乱,哈哈&#xA;&#xA;with open(&amp;quot;re.csv&amp;quot;, &amp;quot;w&amp;quot;) as f:        #按同学要求,输出为csv文件&#xA;    for p in re :&#xA;        f.write(&#39;, &#39;.join(str(x) for x in p))&#xA;        f.write(&amp;quot;\n&amp;quot;)&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;然后?就是py2exe做成可执行文件了&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;from distutils.core import setup&#xA;import py2exe&#xA;&#xA;setup(console=[&amp;quot;main.py&amp;quot;])&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;非常简单的执行&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;python setup.py py2exe&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;搞定,哈哈&lt;/p&gt;&#xA;</description>
