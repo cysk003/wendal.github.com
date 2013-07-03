@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,42 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/356.html">NutDao配置多数据源</a> <span class="date">2012-01-06 22:20:11</span></h3>
+  <p>首先,我必须声明,这是一个非常简单的方法,很多小菜没做出来,是因为把nutz想得太复杂</p>
+
+<p>数据源(或者是数据库连接池),在Nutz.Ioc看来,是一个普通的Bean,没任何特别之处. 再强调一点,除了$aop命名的bean用于配置Aop之外,其他所有的bean都是一视同仁的,没有任何特别关照!!</p>
+
+<p>先看看标准的单数据源配置方法:</p>
+
+<pre><code>var ioc = {
+    dataSource : {
+                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+                events : {
+                        depose : 'close'
+                },
+                fields : {
+                        driverClassName : 'org.h2.Driver',
+                        url : 'jdbc:h2:quick3;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
+                        username : 'sa',
+                        password : ''
+                }
+        },
+        /*定义NutDao*/
+        dao : {
+            type : &quot;org.nutz.dao.impl.NutDao&quot;,
+            fields : {
+                dataSource : {refer : 'dataSource'}
+            }
+        }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/356.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/355.html">Java/Python/Lua/Lisp的胡思乱想</a> <span class="date">2012-01-05 00:52:55</span></h3>
@@ -347,34 +383,6 @@ XssNginxModule &ndash; <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax
 
   <div class="more">
     <a href="/335.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/332.html">Nut.Test -- 使用Nutz一样能方便地进行单元测试</a> <span class="date">2011-10-16 22:22:36</span></h3>
-  <p>首先,感谢Jay提出一个需求.</p>
-
-<p>这个功能很有可能出现在1.b.40中</p>
-
-<p>当前Nut.Test代码,主要解决以下几个问题:
-1. 测试方法使用NutzDao操作数据库,希望在测试方法执行完成后进行回滚
-2. Ioc支持,方便获取与实际生产环境类似的Ioc注入功能,方便进行功能测试</p>
-
-<p>这个测试Runner, 很好地平衡了侵入性与灵活性, 让用户以很低的成本与耦合度测试Nutz代码</p>
-
-<p>所以,我新建org.nutz.test包, 核心类NutzJUnit4ClassRunner,这个类本身非常简单</p>
-
-<pre><code>public class NutzJUnit4ClassRunner extends TestClassRunner {
-    public NutzJUnit4ClassRunner(final Class klass) throws InitializationError {
-        super(klass, new NutTestClassMethodsRunner(klass));
-    }
-}
-</code></pre>
-
-<p>核心代码位于NutTestClassMethodsRunner</p>
-
-  <div class="more">
-    <a href="/332.html" class="btn">read more..</a>
   </div>
 </div>
 

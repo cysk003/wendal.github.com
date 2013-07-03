@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,45 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1228.html">Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</a> <span class="date">2012-12-24</span></h3>
+  <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
+
+<h2>首先,需要一个开源的客户端openconnect</h2>
+
+<pre><code>#部分Linux发行版中有预编译版,但毕竟老
+#应该也能用,没试过  yum install openconnect
+
+wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
+tar xvf openconnect-4.07.tar.gz
+cd openconnect-4.07
+./configure
+make
+</code></pre>
+
+<h2>得到编译好的openconnect后, 连接服务器</h2>
+
+<pre><code>#root权限哦, 或者能添加tun的帐户也行
+./openconnect vpn.wendal.net
+#提示如下:
+Attempting to connect to 124.99.99.99:443
+SSL negotiation with vpn.wendal.net
+Connected to HTTPS on vpn.wendal.net
+GET https://vpn.wendal.net/
+Got HTTP response: HTTP/1.0 302 Object Moved
+SSL negotiation with vpn.wendal.net
+Connected to HTTPS on vpn.wendal.net
+GET https://vpn.wendal.net/+webvpn+/index.html
+Please enter your username and password.
+username: #输入帐户
+password: #输入密码
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1228.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
@@ -329,36 +368,6 @@ func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
 
   <div class="more">
     <a href="/linux/Way-of-VPS/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1115.html">低调发布&#34;短点&#34;</a> <span class="date">2012-11-15</span></h3>
-  <h1>庆祝SB大的结束</h1>
-
-<h2>访问网址</h2>
-
-<ul>
-<li><a href="http://nutz.cn">短点!</a></li>
-</ul>
-
-<h2>动机</h2>
-
-<ul>
-<li>现有的短地址服务,各种河蟹,各种验证码,各种墙,XXXXXXXXXXXX!!</li>
-<li>只单独网址或文件,Wendal我极度不爽!!</li>
-</ul>
-
-<h2>用法</h2>
-
-<ul>
-<li>直接贴长网址,然后按&rdquo;短点!&ldquo;,即刻给你清爽的短地址</li>
-<li>贴log,代码,长文章, 然后按&rdquo;短点!&ldquo;, 生成的网址有代码高亮哦</li>
-<li>需要分享文件?直接将其拖入输入框,即刻自动开始上传,完成后即得到短地址</li>
-</ul>
-
-  <div class="more">
-    <a href="/2012/1115.html" class="btn">read more..</a>
   </div>
 </div>
 

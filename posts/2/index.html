@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,39 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0215.html">Gor 2.1 发布了</a> <span class="date">2013-02-15</span></h3>
+  <h2>重要改进</h2>
+
+<p>脱离了libyaml引入的cgo限制, 使用纯golang实现, 实现真正的跨平台</p>
+
+<p><a href="http://code.google.com/p/gor/downloads/list">下载地址</a>
+已编译好的linux/windows/macx下的二进制程序</p>
+
+<p>当然, 也可以通过go install来安装</p>
+
+<pre><code>go get -u github.com/wendal/gor
+go install github.com/wendal/gor/gor
+</code></pre>
+
+<h2>ChangeLog</h2>
+
+<ol>
+<li>Update:  goyaml2 v2.0     纯golang实现的yaml解析器,兼容部分yaml语法(常用的部分)</li>
+<li>Update:  mustache v2.0   纯golang实现的mustache模板引擎</li>
+<li>Add:      同时支持yaml与json格式的配置文件及meta数据</li>
+<li>Add:      对自定义partials的支持</li>
+<li>Add:      对自定义widget的支持
+6: Add:      更换markdown引擎,支持github形式的markdown格式</li>
+<li>Fix:       引用不存在的layout会NPE</li>
+<li>Fix:       Post元数据与widget可能冲突</li>
+</ol>
+
+  <div class="more">
+    <a href="/2013/0215.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0205.html">获取goroutine的id</a> <span class="date">2013-02-05</span></h3>
@@ -351,45 +384,6 @@ func main() {
 
   <div class="more">
     <a href="/2013/0108.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1228.html">Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</a> <span class="date">2012-12-24</span></h3>
-  <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
-
-<h2>首先,需要一个开源的客户端openconnect</h2>
-
-<pre><code>#部分Linux发行版中有预编译版,但毕竟老
-#应该也能用,没试过  yum install openconnect
-
-wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
-tar xvf openconnect-4.07.tar.gz
-cd openconnect-4.07
-./configure
-make
-</code></pre>
-
-<h2>得到编译好的openconnect后, 连接服务器</h2>
-
-<pre><code>#root权限哦, 或者能添加tun的帐户也行
-./openconnect vpn.wendal.net
-#提示如下:
-Attempting to connect to 124.99.99.99:443
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/
-Got HTTP response: HTTP/1.0 302 Object Moved
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/+webvpn+/index.html
-Please enter your username and password.
-username: #输入帐户
-password: #输入密码
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1228.html" class="btn">read more..</a>
   </div>
 </div>
 

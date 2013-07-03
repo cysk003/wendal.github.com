@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
+  <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
+
+<p>一贯风格,尝鲜,马上编译之. 折腾了一段时间,发现需要用<a href="http://www.cmake.org/">cmake</a>进行配置了</p>
+
+<ol>
+<li><p>先安装cmake和ccmake</p>
+
+<p>sudo apt-get install cmake cmake-curses-gui libncurses5-dev</p></li>
+
+<li><p>下载并解压mysql-5.5.8.tar.gz到mysql-5.5.8</p>
+
+<p>wget -o mysql-5.5.8.tar.gz <a href="http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/">http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/</a>
+tar xvf mysql-5.5.8.tar.gz
+cd mysql-5.5.8</p></li>
+
+<li><p>然后执行ccmake进行配置,建议将CMAKE_BUILD_TYPE设置为Release</p>
+
+<p>sudo ccmake .
+#或者 cmake -i 对话式配置</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/217.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
@@ -270,33 +298,6 @@ org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade 
 
   <div class="more">
     <a href="/191.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/186.html">升级到Nginx 0.9.0</a> <span class="date">2010-11-30 08:36:52</span></h3>
-  <p>今早一开邮箱,发现Nginx 0.9开发分支已经发布!!
-对于我这种喜欢尝鲜的人,怎么错过!!
-马上下载编译:</p>
-
-<pre><code>wget http://nginx.org/download/nginx-0.9.0.tar.gz
-tar xvf nginx-0.9.0.tar.gz
-cd nginx-0.9.0
-vim auto/cc/gcc #将Debug去掉,优化改为o3
-./configure --with-cpu-opt=pentium4 --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module
-make
-/usr/local/nginx/sbin/nginx -s stop #停掉旧版本
-cp objs/nginx /usr/local/nginx/sbin/
-/usr/local/nginx/sbin/nginx #启动新版本
-</code></pre>
-
-<p>这里没有用热切换.
-顺便更新了<a href="http://wiki.nginx.org/NginxChs">Nginx中文Wiki</a>主页上的版本信息.</p>
-
-<p><strong>最新更新： 已经发布 0.9.1 ，本blog也同步更新</strong></p>
-
-  <div class="more">
-    <a href="/186.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/248.html">一个简单XML工具类,支持简单的路径求值</a> <span class="date">2011-03-06 19:57:55</span></h3>
+  <p>估计是个轮子,因为一说起XML,自然想到的是JDom/dom4j等老牌/强大的工具.</p>
+
+<p>但我的需求如此简单: &ldquo;支持简单的路径求值&rdquo; ,就加一个N多垃圾的jar包,算了,一气之下,写了这个工具类.</p>
+
+<p>原本这个工具类包含 一个接口,一个实现类,一个工厂类,一个测试类</p>
+
+<p>完成初版后,发现,为啥还分这么多东西,不就一个简单需求嘛!! 很不符合我的风格. 而且,我还特意建了一个工程叫NutzXML &hellip;.</p>
+
+<p>不行,这种需要扩展,不考虑效率的东西, 咋调用一下都这么麻烦? 改!!</p>
+
+<p>最后,整个XmlMap类,加上注释,150行, 这里展示的是无注释的版本:</p>
+
+<pre><code>package org.nutz.xml;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+</code></pre>
+
+  <div class="more">
+    <a href="/248.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/247.html">一起来,为Nutz编写插件!</a> <span class="date">2011-03-05 21:33:29</span></h3>
@@ -332,36 +362,6 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 
   <div class="more">
     <a href="/232.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/230.html">动手做一个Nginx Module-简洁版</a> <span class="date">2011-01-24 13:57:22</span></h3>
-  <p>如果在google上搜索Nginx Module,会得到17万条结果,但是,基本上都是千篇一律.
-结合我这段时间的尝试,我决定自己写一篇非常非常简单的入门,仅描述如何做出一个最简单的Hello模块</p>
-
-<ol>
-<li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-</li>
-</ol>
-
-<pre><code>    #进入主文件夹
-    cd ~
-    wget http://nginx.org/download/nginx-0.9.4.tar.gz
-    tar xvf nginx-0.9.4.tar.gz
-    cd nginx-0.9.4
-    mkdir ngx_http_hello_module
-</code></pre>
-
-<ol>
-<li>创建config文件,注意,切记要在Linux下创建这个文件!!
-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
-</ol>
-
-<p></p>
-
-  <div class="more">
-    <a href="/230.html" class="btn">read more..</a>
   </div>
 </div>
 

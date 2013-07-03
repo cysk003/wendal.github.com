@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/230.html">动手做一个Nginx Module-简洁版</a> <span class="date">2011-01-24 13:57:22</span></h3>
+  <p>如果在google上搜索Nginx Module,会得到17万条结果,但是,基本上都是千篇一律.
+结合我这段时间的尝试,我决定自己写一篇非常非常简单的入门,仅描述如何做出一个最简单的Hello模块</p>
+
+<ol>
+<li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-</li>
+</ol>
+
+<pre><code>    #进入主文件夹
+    cd ~
+    wget http://nginx.org/download/nginx-0.9.4.tar.gz
+    tar xvf nginx-0.9.4.tar.gz
+    cd nginx-0.9.4
+    mkdir ngx_http_hello_module
+</code></pre>
+
+<ol>
+<li>创建config文件,注意,切记要在Linux下创建这个文件!!
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
+</ol>
+
+<p></p>
+
+  <div class="more">
+    <a href="/230.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/228.html">Nginx不同编译选项得到的二进制文件大小对比</a> <span class="date">2011-01-17 19:45:47</span></h3>
@@ -310,34 +340,6 @@ no-beep
 
   <div class="more">
     <a href="/218.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
-  <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
-
-<p>一贯风格,尝鲜,马上编译之. 折腾了一段时间,发现需要用<a href="http://www.cmake.org/">cmake</a>进行配置了</p>
-
-<ol>
-<li><p>先安装cmake和ccmake</p>
-
-<p>sudo apt-get install cmake cmake-curses-gui libncurses5-dev</p></li>
-
-<li><p>下载并解压mysql-5.5.8.tar.gz到mysql-5.5.8</p>
-
-<p>wget -o mysql-5.5.8.tar.gz <a href="http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/">http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/</a>
-tar xvf mysql-5.5.8.tar.gz
-cd mysql-5.5.8</p></li>
-
-<li><p>然后执行ccmake进行配置,建议将CMAKE_BUILD_TYPE设置为Release</p>
-
-<p>sudo ccmake .
-#或者 cmake -i 对话式配置</p></li>
-</ol>
-
-  <div class="more">
-    <a href="/217.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/108.html">使用Nginx搭建Http代理服务器</a> <span class="date">2010-10-24 20:42:46</span></h3>
+  <p>昨天, 折腾了一个下午,终于配好了.
+配置如下:</p>
+
+<pre><code>    server {
+        listen       8888;
+                client_body_timeout 60000;
+                client_max_body_size 1024m;
+                send_timeout       60000;
+                client_header_buffer_size 16k;
+                large_client_header_buffers 4 64k;
+
+                proxy_headers_hash_bucket_size 1024;
+                proxy_headers_hash_max_size 4096;
+                proxy_read_timeout 60000;
+                proxy_send_timeout 60000;
+
+        location / {
+            resolver 8.8.8.8;
+            proxy_pass http://$http_host$request_uri;
+        }
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/108.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/100.html">在Nutz MVC中使用Freemarker</a> <span class="date">2010-10-20 12:27:06</span></h3>
@@ -324,21 +354,6 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
   <div class="more">
     <a href="/58.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/56.html">对用户体验的一点点看法</a> <span class="date">2010-08-29 20:16:30</span></h3>
-  <p>一直以来,SunFarm助手的使用反馈,让我体会到, 让用户想你一样思考,是不可能的!</p>
-
-<p>例如升级, 99%的用户首先想到的是,下载后直接覆盖上去! 对于现在的设计,这样是完全不行的.</p>
-
-<p>简单易用,符合常规,才是最好的选择??</p>
-
-<p>纠结&hellip;</p>
-
-  <div class="more">
-    <a href="/56.html" class="btn">read more..</a>
   </div>
 </div>
 

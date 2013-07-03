@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>科学城的办公室有奶茶!</title>
+    <title>py2exe</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,32 +78,72 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>科学城的办公室有奶茶! </h1>
+  <h1>py2exe </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>有奶茶,有精力!</p>
+    <p>受老同学所托,写了个字符串抽样的东西(就是N个字符串抽取固定的几个),代码如下:</p>
 
-<p>久违的奶茶,O(∩_∩)O哈哈~ 热乎乎的泡上一杯!</p>
+<pre><code>#!python
+# -*- coding: UTF-8 -*-
 
-<p>中午还吃了烧鸭饭! 半年前的味道,爽!! 之前在SC呆了一年多,现在找回习惯的味道,(<em>^__^</em>) 嘻嘻……</p>
+import os.path
+import time
+import sys
+import itertools 
+import random
 
-<p>继续奋斗工作流&hellip;</p>
+if not os.path.exists(&quot;numbers.txt&quot;) :
+    print u&quot;没找到数据文件 numbers.txt&quot;
+    time.sleep(5)
+    sys.exit()
+
+with open(&quot;numbers.txt&quot;) as f :
+    d = str(f.read())
+
+#print d
+numbs = d.split(&quot;,&quot;)
+#print numbs, u&quot;长度&quot; ,len(numbs)
+
+re = itertools.combinations(numbs, 5) #内置的一个库,so easy
+re = list(re)
+random.shuffle(re)                    #把顺序打乱,哈哈
+
+with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输出为csv文件
+    for p in re :
+        f.write(', '.join(str(x) for x in p))
+        f.write(&quot;\n&quot;)
+</code></pre>
+
+<p>然后?就是py2exe做成可执行文件了</p>
+
+<pre><code>from distutils.core import setup
+import py2exe
+
+setup(console=[&quot;main.py&quot;])
+</code></pre>
+
+<p>非常简单的执行</p>
+
+<pre><code>python setup.py py2exe
+</code></pre>
+
+<p>搞定,哈哈</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/11.html" title="被Alfresco的工作流搞崩溃了">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/7.html" title="开始尝试jBpm">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/07/02.html" title="微信公众平台开发小结">Next &rarr;</a></li>
           
           
         </ul>
@@ -129,13 +169,13 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2010-07-27 16:19:53</span></div>
+    <div class="date"><span>2013-07-03</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>24</span></a>
+  <a href="/categories/#python-ref">python <span>1</span></a>
 </li>
     
     </ul>
@@ -144,19 +184,7 @@
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#%E5%A5%B6%E8%8C%B6-ref">奶茶 <span>1</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>18</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E5%B7%A5%E4%BD%9C%E6%B5%81-ref">工作流 <span>8</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E7%A7%91%E5%AD%A6%E5%9F%8E-ref">科学城 <span>1</span></a>
+  <a href="/tags/#%E7%BB%83%E6%89%8B-ref">练手 <span>1</span></a>
 </li>
     
     </ul>

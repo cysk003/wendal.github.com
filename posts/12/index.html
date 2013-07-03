@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/314.html">NutzMole -- Nutz的代码生成器</a> <span class="date">2011-08-21 11:39:55</span></h3>
+  <p>惯例,先上下载地址:
+<a href="http://nutz.googlecode.com/files/rapid-generator-for-nutzmole-1.1.zip">NutzMole 1.1 for rapid</a></p>
+
+<p>这个项目的原始地址,原本是nutzlab的一个实验项目:
+<a href="http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole">http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole</a></p>
+
+<p><strong>历史:</strong>
+最初的代码,是在2010年11月提交的,之后一直处于冻结状态 &ndash; 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
+直到几天前,我重启这个项目,并作了少量修正后,发布了NutzMole 1.0版,可独立运行,说白了,就是把旧代码清理一下,打包成一个独立运行包</p>
+
+<p>1.0发布后,意见/建议/批评纷纷袭来,很大的原因是这个版本并未严格测试,模板本身使用的一些代码在Nutz 1.b.39已经无法使用</p>
+
+<p>很快的, 1.1版发布了,更新了模板,并采用了rapid的代码生成器平台</p>
+
+<p><strong>对比一下最初的NutzMole和rapid代码生成器平台</strong>:
+    NutzMole使用多个配置文件,rapid仅一个配置文件
+    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板&ndash;&gt;文件的机制</p>
+
+<p>NutzMole以专用工具的思想设计, rapid是按平台的理念设计,我对其代码生成器的印象是:
+    1. 单一配置文件,对用户非常友好
+    2. 平等的文件模板机制 &ndash;&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
+
+  <div class="more">
+    <a href="/314.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/312.html">把VPS翻新了一下</a> <span class="date">2011-08-20 11:34:53</span></h3>
@@ -316,37 +345,6 @@ update.img信息0x22~0x29 共8个字节,与loader信息含义一致</p>
 
   <div class="more">
     <a href="/296.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/295.html">搭建Git服务器,真的很简单</a> <span class="date">2011-06-21 21:07:36</span></h3>
-  <p><strong>重要提醒, 本教材适用于gitolite v2,与当前最新版v3不兼容!!</strong>
-<strong>需要在checkout gitolite后,切换到v2版!!</strong></p>
-
-<p>最近都在玩Git, <a href="https://github.com/nutzam/nutz">Nutz也已经迁移到Github上</a></p>
-
-<p>原文地址: <a href="http://sitaramc.github.com/gitolite/doc/1-INSTALL.html">http://sitaramc.github.com/gitolite/doc/1-INSTALL.html</a></p>
-
-<p>其实真的只需要几句</p>
-
-<pre><code>#现在开始是root做的
-
-#安装Git
-apt-get install git
-#拷贝你自己的公钥
-cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
-git clone git://github.com/sitaramc/gitolite
-cd gitolite
-##################################
-#重要!! 切换到v2版!!
-git checkout g2
-##################################
-src/gl-system-install
-</code></pre>
-
-  <div class="more">
-    <a href="/295.html" class="btn">read more..</a>
   </div>
 </div>
 

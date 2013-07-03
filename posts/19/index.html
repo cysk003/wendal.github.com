@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>推荐OpenResty -- Nginx全能插件版</title>
+    <title>Nutz编年史--简单图表版</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/186.html">升级到Nginx 0.9.0</a> <span class="date">2010-11-30 08:36:52</span></h3>
+  <p>今早一开邮箱,发现Nginx 0.9开发分支已经发布!!
+对于我这种喜欢尝鲜的人,怎么错过!!
+马上下载编译:</p>
+
+<pre><code>wget http://nginx.org/download/nginx-0.9.0.tar.gz
+tar xvf nginx-0.9.0.tar.gz
+cd nginx-0.9.0
+vim auto/cc/gcc #将Debug去掉,优化改为o3
+./configure --with-cpu-opt=pentium4 --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_gzip_static_module
+make
+/usr/local/nginx/sbin/nginx -s stop #停掉旧版本
+cp objs/nginx /usr/local/nginx/sbin/
+/usr/local/nginx/sbin/nginx #启动新版本
+</code></pre>
+
+<p>这里没有用热切换.
+顺便更新了<a href="http://wiki.nginx.org/NginxChs">Nginx中文Wiki</a>主页上的版本信息.</p>
+
+<p><strong>最新更新： 已经发布 0.9.1 ，本blog也同步更新</strong></p>
+
+  <div class="more">
+    <a href="/186.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/138.html">3年,追忆,回顾</a> <span class="date">2010-11-23 07:47:05</span></h3>
@@ -321,36 +348,6 @@ Google源码截取:</p>
 
   <div class="more">
     <a href="/110.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/108.html">使用Nginx搭建Http代理服务器</a> <span class="date">2010-10-24 20:42:46</span></h3>
-  <p>昨天, 折腾了一个下午,终于配好了.
-配置如下:</p>
-
-<pre><code>    server {
-        listen       8888;
-                client_body_timeout 60000;
-                client_max_body_size 1024m;
-                send_timeout       60000;
-                client_header_buffer_size 16k;
-                large_client_header_buffers 4 64k;
-
-                proxy_headers_hash_bucket_size 1024;
-                proxy_headers_hash_max_size 4096;
-                proxy_read_timeout 60000;
-                proxy_send_timeout 60000;
-
-        location / {
-            resolver 8.8.8.8;
-            proxy_pass http://$http_host$request_uri;
-        }
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/108.html" class="btn">read more..</a>
   </div>
 </div>
 
