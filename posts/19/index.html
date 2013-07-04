@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>换种顺序来执行TestCase(Junit适用)</title>
+    <title>微信公众平台开发小结</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
+  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
+
+<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
+启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
+
+<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
+org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
+    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
+    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
+    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
+    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
+</code></pre>
+
+<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
+再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
+没办法，出我的绝招，看源码/反编译！
+研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
+最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
+
+<pre><code>hibernate.default_schema=ALFRESCO
+</code></pre>
+
+  <div class="more">
+    <a href="/191.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/186.html">升级到Nginx 0.9.0</a> <span class="date">2010-11-30 08:36:52</span></h3>
@@ -320,34 +349,6 @@ Google源码截取:</p>
 
   <div class="more">
     <a href="/114.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/110.html">想不到服务器一下子就被击垮了</a> <span class="date">2010-11-01 12:11:04</span></h3>
-  <p>上周末, 从同事口中得知我休假期间,Jboss服务器曾<strong>无故自己关闭</strong>了一次.</p>
-
-<p>顿时非常惊讶,咋就会自己关闭自己呢?</p>
-
-<p>第一反应是OOM了,一问,没啊,内存还剩好多,而且log没提示OOM.</p>
-
-<p>难道是程序里面写了System.exit(X)之类? 扫描了一遍代码,没有啊!! 我们还不至于写这么的代码</p>
-
-<p>奇怪的是, JBoss是按照标准的流程顺序关闭各个应用后,再shutdown完成的,并无直接被kill掉或者异常退出,也没有找到JVM报错的log.</p>
-
-<p>由于关闭的时间点在11:37AM,故,追查nginx的access.log  , 翻翻翻, 在一堆502(Jboss已经关闭,nginx无法proxy_pass,报502)前面,有一些不寻常的请求,节选如下:</p>
-
-<pre><code>/acunetix-wvs-test-for-some-inexistent-file-second-try
-
-/console/j_security_check
-
-/_vti_pvt/authors.pwd
-
-/phpmyadmin/main.php
-</code></pre>
-
-  <div class="more">
-    <a href="/110.html" class="btn">read more..</a>
   </div>
 </div>
 

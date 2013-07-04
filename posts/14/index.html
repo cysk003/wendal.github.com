@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>换种顺序来执行TestCase(Junit适用)</title>
+    <title>微信公众平台开发小结</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,41 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/275.html">用Jsoup查台电的固件更新情况</a> <span class="date">2011-04-26 18:13:57</span></h3>
+  <p>最近入手台电T720 Wifi,便宜货,不要跟iPad比.</p>
+
+<p>T720用的是 Android 2.1 , 比较旧, 但官方已经说了很久会出2.2的固件,哎&hellip; 何年何月啊?!</p>
+
+<p>每次都上台电查,烦,决定用Jsoup写一个检查的,上代码:</p>
+
+<pre><code>import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class Main {
+
+    public static void main(String[] args) throws Throwable {
+        Document doc = Jsoup.connect(&quot;http://www.teclast.com/topic.php?channelID=78&amp;topicID;=148&quot;).get();
+        Elements es = doc.select(&quot;font[color$=003399]&quot;);
+        String type = &quot;T720&quot;;//机器型号
+        for (Element e : es) {
+            if(!e.ownText().startsWith(type))
+                continue;
+            Element f = e.parent().parent().select(&quot;font[color$=0000CC]&quot;).first();
+            if(f!= null)
+                System.out.println(e.ownText() + &quot; &quot; + f.ownText());
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/275.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/274.html">Everbox4j 当前进度(2011-04-26)</a> <span class="date">2011-04-26 09:23:12</span></h3>
@@ -328,34 +363,6 @@ log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
 
   <div class="more">
     <a href="/262.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/261.html">发布一个Httpsqs的Python客户端</a> <span class="date">2011-04-01 21:04:15</span></h3>
-  <p>Httpsqs是张宴的一款开源队列服务器,项目首页 <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a></p>
-
-<p>这款软件有几种客户端, Java/Perl/C,却没有Python的客户端.</p>
-
-<p>故,本人奉上一个实现,欢迎指正!!</p>
-
-<p>直接去下载 <a href="http://wendal-common.googlecode.com/files/httpsqs-python-client-v1.zip">httpsqs-python-client-v1.zip</a></p>
-
-<p>代码:</p>
-
-<pre><code>#Verion 1.0
-#Author wendal(wendal1985@gmail.com)
-#If you find a bug, pls mail me
-
-import sys,httplib
-
-ERROR = 'HTTPSQS_ERROR'
-
-GET_END = 'HTTPSQS_GET_END'
-</code></pre>
-
-  <div class="more">
-    <a href="/261.html" class="btn">read more..</a>
   </div>
 </div>
 

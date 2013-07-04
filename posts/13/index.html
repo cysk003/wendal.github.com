@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>换种顺序来执行TestCase(Junit适用)</title>
+    <title>微信公众平台开发小结</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/296.html">Rk2918固件新打包格式分析</a> <span class="date">2011-06-26 11:25:37</span></h3>
+  <p>本文针对 台电T760的2.x固件,原道N10,酷比1.0.5等RK2918方案的新固件打包格式</p>
+
+<p>文件总体结构:
+文件内容描述块 0x00 ~ 0x65
+Loader程序 0x66 ~ 0x66+Loader的长度
+update.img 0x66+Loader的长度+1 ~ 文件结束前32个字节
+MD5 文件的最后32个字节为文件其余部分的MD5码&ndash;ASCII形式</p>
+
+<p>文件内容描述块:
+文件头 0x00~0x04 共5个字节,固定为RKFWf
+固件版本号 0x05~0x09 共5个字节, 例如 00 03 00 02 00 代表 0.2.03, 00 09 00 02 08 代表 8.2.09
+芯片型号 0x15 一个字节, 50代表RK29,40代表RKCROWN,30代表RKNANO,20代表RK28,10代表RK27
+loader信息 0x19~0x20 共8个字节,前4个字节是偏移量,后4个字节是长度.例如66 00 00 00代表0x66,5A 55 02 00代表0x02555A
+update.img信息0x22~0x29 共8个字节,与loader信息含义一致</p>
+
+<p>附图片:
+<a href="/assets/media/2011/06/RK2918_IMG_Format.jpg">RK2918_IMG_Format.jpg</a></p>
+
+<p>我已经实现的版本:
+<a href="https://github.com/wendal/teclast_tools">https://github.com/wendal/teclast_tools</a> 源码
+下载:
+<a href="http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o">http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o</a></p>
+
+  <div class="more">
+    <a href="/296.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/295.html">搭建Git服务器,真的很简单</a> <span class="date">2011-06-21 21:07:36</span></h3>
@@ -320,41 +350,6 @@ http://code.google.com/p/everbox4j/downloads/list</a></p>
 
   <div class="more">
     <a href="/276.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/275.html">用Jsoup查台电的固件更新情况</a> <span class="date">2011-04-26 18:13:57</span></h3>
-  <p>最近入手台电T720 Wifi,便宜货,不要跟iPad比.</p>
-
-<p>T720用的是 Android 2.1 , 比较旧, 但官方已经说了很久会出2.2的固件,哎&hellip; 何年何月啊?!</p>
-
-<p>每次都上台电查,烦,决定用Jsoup写一个检查的,上代码:</p>
-
-<pre><code>import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-public class Main {
-
-    public static void main(String[] args) throws Throwable {
-        Document doc = Jsoup.connect(&quot;http://www.teclast.com/topic.php?channelID=78&amp;topicID;=148&quot;).get();
-        Elements es = doc.select(&quot;font[color$=003399]&quot;);
-        String type = &quot;T720&quot;;//机器型号
-        for (Element e : es) {
-            if(!e.ownText().startsWith(type))
-                continue;
-            Element f = e.parent().parent().select(&quot;font[color$=0000CC]&quot;).first();
-            if(f!= null)
-                System.out.println(e.ownText() + &quot; &quot; + f.ownText());
-        }
-    }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/275.html" class="btn">read more..</a>
   </div>
 </div>
 

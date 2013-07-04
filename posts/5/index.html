@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>换种顺序来执行TestCase(Junit适用)</title>
+    <title>微信公众平台开发小结</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/454.html">在Android中运行go程序(Golang 1.0.2, ARM 6)</a> <span class="date">2012-08-31 22:14:37</span></h3>
+  <p>原本以为很简单的,网上一堆什么5g啊5l啊, 下载go 1.0.2才发现, 我去,根本就没有5g和5l</p>
+
+<p>难道是官方编译版本没带而已,我自己编译一个呗</p>
+
+<pre><code>apt-get install gcc libc6-dev ercurial
+#yum install gcc libc6-devel mercurial
+
+#预先把变量设置好
+export GOROOT=$HOME/go
+export PATH=$PATH:$GOROOT/bin
+
+#获取go的源码
+cd $HOME
+hg clone -u release https://code.google.com/p/go
+cd go/src
+./all.bash
+
+#这样就安装好适合当前系统的go,但还需要arm(即Android的低层环境)的版本
+CGO_ENABLED=0 GOARCH=arm GOOS=linux ./make.bash
+</code></pre>
+
+  <div class="more">
+    <a href="/454.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/453.html">换种顺序来执行TestCase(Junit适用)</a> <span class="date">2012-08-26 22:18:26</span></h3>
@@ -319,17 +347,6 @@ func main() {
 
   <div class="more">
     <a href="/429.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/427.html">今天生日,上一张图!</a> <span class="date">2012-05-24 21:58:24</span></h3>
-  <p><img src="/assets/media/2012/05/psb.jpg">鸣鸣玩电脑</img></p>
-
-<p>明天去帝都: 机票OK,酒店OK,保险OK</p>
-
-  <div class="more">
-    <a href="/427.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>换种顺序来执行TestCase(Junit适用)</title>
+    <title>微信公众平台开发小结</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,32 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/316.html">广工,3年来,你改变了什么?</a> <span class="date">2011-08-27 21:57:46</span></h3>
+  <p>广东工业大学,我本科的母校,毕业3年了</p>
+
+<p>今天,我再次回去,看看它的变化</p>
+
+<p>看着以前上课的课室,实验楼,一条条熟悉的过道 &ndash; 记忆中画面不停飘过</p>
+
+<p>校园内,树木高了,绿化多了,然而,栏杆,铁门,围墙也多了 &ndash; 以安全/治安的名义,能干很多事</p>
+
+<p>晚饭过后,去看看校外江边的公园,想不到啊,3年就能荒废成这样子,以至于我不敢为其拍照!!</p>
+
+<p>还是晚饭后,还是晚上7点,还是这个地理坐标,完全不一样的景象</p>
+
+<p>杂草丛生,灯看上去已经很久很久没亮过,路,如果那还是路的话,80%的面积被草覆盖了
+那曾经的草坪,是多么美,今天我只看到了杂草,小灌木,以至于我不敢踏足 &ndash; 曾几何时,我躺着看着星空
+那座小桥,木板桥,已经破烂不堪,露出30%以上的水泥底座 &ndash; 多少次与挚友,情侣路过这座小桥
+那条小河,已经不是小河,最多能说得上是条垃圾填埋沟 &ndash; 曾经,它流淌着小小溪流</p>
+
+<p>以至于那座山,我不敢上前来,我甚至无法确认那条路还存在</p>
+
+  <div class="more">
+    <a href="/316.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/314.html">NutzMole -- Nutz的代码生成器</a> <span class="date">2011-08-21 11:39:55</span></h3>
@@ -315,36 +341,6 @@ public class JGit {
 
   <div class="more">
     <a href="/299.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/296.html">Rk2918固件新打包格式分析</a> <span class="date">2011-06-26 11:25:37</span></h3>
-  <p>本文针对 台电T760的2.x固件,原道N10,酷比1.0.5等RK2918方案的新固件打包格式</p>
-
-<p>文件总体结构:
-文件内容描述块 0x00 ~ 0x65
-Loader程序 0x66 ~ 0x66+Loader的长度
-update.img 0x66+Loader的长度+1 ~ 文件结束前32个字节
-MD5 文件的最后32个字节为文件其余部分的MD5码&ndash;ASCII形式</p>
-
-<p>文件内容描述块:
-文件头 0x00~0x04 共5个字节,固定为RKFWf
-固件版本号 0x05~0x09 共5个字节, 例如 00 03 00 02 00 代表 0.2.03, 00 09 00 02 08 代表 8.2.09
-芯片型号 0x15 一个字节, 50代表RK29,40代表RKCROWN,30代表RKNANO,20代表RK28,10代表RK27
-loader信息 0x19~0x20 共8个字节,前4个字节是偏移量,后4个字节是长度.例如66 00 00 00代表0x66,5A 55 02 00代表0x02555A
-update.img信息0x22~0x29 共8个字节,与loader信息含义一致</p>
-
-<p>附图片:
-<a href="/assets/media/2011/06/RK2918_IMG_Format.jpg">RK2918_IMG_Format.jpg</a></p>
-
-<p>我已经实现的版本:
-<a href="https://github.com/wendal/teclast_tools">https://github.com/wendal/teclast_tools</a> 源码
-下载:
-<a href="http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o">http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o</a></p>
-
-  <div class="more">
-    <a href="/296.html" class="btn">read more..</a>
   </div>
 </div>
 
