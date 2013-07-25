@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>篮子里的鸡蛋</title>
+    <title>总结一点点项目经验–迁移/部署/静态资源</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/24.html">Alfresco配置 — 第一节</a> <span class="date">2010-08-02 23:19:53</span></h3>
+  <p><strong>1. 有用的信息</strong></p>
+
+<p>Alfresco下载地址 <a href="http://wiki.alfresco.com/wiki/Download_Community_Edition">社区版</a> 企业版可以试用30天,区别不大.</p>
+
+<p><strong>2. 安装</strong></p>
+
+<p>如果你下载的是Windows版的超大安装包,那么,基本上就是一路的next,中途填一下管理员密码就可以了.</p>
+
+<p>启动之前,我建议你看看   安装文件夹/tomcat/shared/classes/alfresco-global.properties      ,你会看到不少有用的信息:</p>
+
+<pre><code>dir.root=./alf_data 非常非常核心的参数,务必使用绝对路径,能减少不必要的麻烦(例如移动文件夹后,启动报错)
+</code></pre>
+
+<p>db.开头的都是数据库配置, 其中db.url就是把部分参数合成jdbc url. 关于数据库,我的建议是使用数据源,Alfresco会默认查找jndi名为jdbc/dataSource的资源作为数据源.</p>
+
+<p>如果你安装的时候使用默认密码admin,就会看到一个</p>
+
+<pre><code>alfresco_user_store.adminpassword=209c6174da490caeb422f3fa5a7ae634
+</code></pre>
+
+<p>提前说一个问题&ndash;忘记管理员密码咋办? 看看这篇文章</p>
+
+  <div class="more">
+    <a href="/24.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/20.html">加班的星期天,应该是第一次</a> <span class="date">2010-08-01 22:18:18</span></h3>

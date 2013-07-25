@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>篮子里的鸡蛋</title>
+    <title>总结一点点项目经验–迁移/部署/静态资源</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,32 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0316.html">Golang的坑之http读取大文件必须读完</a> <span class="date">2013-03-16</span></h3>
+  <h2>先上代码</h2>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+)
+
+func main() {
+    resp, err := http.Get(&quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
+    resp.Body.Close() // 注意,这里并不读取resp.Body, 而resp.Body有大概700mb未读取
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/0316.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0216.html">天语T619也能Root</a> <span class="date">2013-02-16</span></h3>
@@ -355,32 +381,6 @@ func main() {
 
   <div class="more">
     <a href="/2013/0113.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0111.html">Gor--极快的静态博客引擎</a> <span class="date">2013-01-11</span></h3>
-  <h2>1秒编译200篇文章</h2>
-
-<p>Gor的速度极快哦, 编译本网站200篇文章仅需1秒!</p>
-
-<p><img src="/assets/media/2013/01/gor_1.jpg"></img></p>
-
-<h2>为什么写Gor?</h2>
-
-<p>Gor源于对ruhoh的不满</p>
-
-<ol>
-<li>依赖一大堆东西</li>
-<li>ruby编写,看不懂</li>
-<li>速度慢, 需要10秒以上</li>
-<li>gor在很多方面就是ruhoh for golang版</li>
-</ol>
-
-<p>Gor跟jekyll/octopress 有啥不同</p>
-
-  <div class="more">
-    <a href="/2013/0111.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -91,6 +91,57 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2013/07/25.html">Ubuntu12.04下asoundrc不起效</a> <span class="date">2013-07-25</span></h3>
+
+  <p>因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子</p>
+
+<p>最后,终于发现这个痕迹</p>
+
+<pre><code>wendal@ubuntu:~$ aplay -L
+default
+    Playback/recording through the PulseAudio sound server
+sysdefault:CARD=I82801AAICH
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Default Audio Device
+front:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Front speakers
+surround40:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.0 Surround output to Front and Rear speakers
+surround41:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.1 Surround output to Front, Rear and Subwoofer speakers
+surround50:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.0 Surround output to Front, Center and Rear speakers
+surround51:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.1 Surround output to Front, Center, Rear and Subwoofer speakers
+iec958:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    IEC958 (S/PDIF) Digital Audio Output
+dmix:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample mixing device
+dsnoop:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample snooping device
+hw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct hardware device without any conversions
+plughw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Hardware device with all software conversions
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2013/07/25.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/07/04.html">篮子里的鸡蛋</a> <span class="date">2013-07-04</span></h3>
 
   <p>一个鸡蛋,一块吐司</p>
@@ -356,34 +407,6 @@ int main(int argc, char *argv[]) {
 
   <div class="more">
     <a href="/2013/0325.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0316.html">Golang的坑之http读取大文件必须读完</a> <span class="date">2013-03-16</span></h3>
-
-  <h2>先上代码</h2>
-
-<pre><code>package main
-
-import (
-    &quot;fmt&quot;
-    &quot;net/http&quot;
-)
-
-func main() {
-    resp, err := http.Get(&quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;)
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
-    resp.Body.Close() // 注意,这里并不读取resp.Body, 而resp.Body有大概700mb未读取
-}
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/0316.html" class="btn">read more..</a>
   </div>
 </div>
 

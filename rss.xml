@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>2013-07-04 10:37:17 +0800</pubDate>
+    <pubDate>2013-07-25 03:51:12 +0800</pubDate>
+    <item>
+      <title>Ubuntu12.04下asoundrc不起效</title>
+      <link>http://wendal.net/2013/07/25.html</link>
+      <pubDate>2013-07-25 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子&lt;/p&gt;&#xA;&#xA;&lt;p&gt;最后,终于发现这个痕迹&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;wendal@ubuntu:~$ aplay -L&#xA;default&#xA;    Playback/recording through the PulseAudio sound server&#xA;sysdefault:CARD=I82801AAICH&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Default Audio Device&#xA;front:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Front speakers&#xA;surround40:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    4.0 Surround output to Front and Rear speakers&#xA;surround41:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    4.1 Surround output to Front, Rear and Subwoofer speakers&#xA;surround50:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    5.0 Surround output to Front, Center and Rear speakers&#xA;surround51:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    5.1 Surround output to Front, Center, Rear and Subwoofer speakers&#xA;iec958:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    IEC958 (S/PDIF) Digital Audio Output&#xA;dmix:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Direct sample mixing device&#xA;dsnoop:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Direct sample snooping device&#xA;hw:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Direct hardware device without any conversions&#xA;plughw:CARD=I82801AAICH,DEV=0&#xA;    Intel 82801AA-ICH, Intel 82801AA-ICH&#xA;    Hardware device with all software conversions&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;最可疑的就是default这段,在我之前测试的centos 5.6上是没有的&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;default&#xA;    Playback/recording through the PulseAudio sound server&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;果断卸载之,管他是啥&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;sudo apt-get autoremove pulseaudio&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;重启,搞定,哦也!!&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>篮子里的鸡蛋</title>
       <link>http://wendal.net/2013/07/04.html</link>

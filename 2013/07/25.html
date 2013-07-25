@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>篮子里的鸡蛋</title>
+    <title>Ubuntu12.04下asoundrc不起效</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,32 +78,79 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>篮子里的鸡蛋 </h1>
+  <h1>Ubuntu12.04下asoundrc不起效 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>一个鸡蛋,一块吐司</p>
+    <p>因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子</p>
 
-<p><img src="/assets/media/2013/07/04/1.jpg" /></p>
+<p>最后,终于发现这个痕迹</p>
 
-<p>成品</p>
+<pre><code>wendal@ubuntu:~$ aplay -L
+default
+    Playback/recording through the PulseAudio sound server
+sysdefault:CARD=I82801AAICH
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Default Audio Device
+front:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Front speakers
+surround40:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.0 Surround output to Front and Rear speakers
+surround41:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.1 Surround output to Front, Rear and Subwoofer speakers
+surround50:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.0 Surround output to Front, Center and Rear speakers
+surround51:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.1 Surround output to Front, Center, Rear and Subwoofer speakers
+iec958:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    IEC958 (S/PDIF) Digital Audio Output
+dmix:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample mixing device
+dsnoop:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample snooping device
+hw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct hardware device without any conversions
+plughw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Hardware device with all software conversions
+</code></pre>
 
-<p><img src="/assets/media/2013/07/04/2.jpg" /></p>
+<p>最可疑的就是default这段,在我之前测试的centos 5.6上是没有的</p>
+
+<pre><code>default
+    Playback/recording through the PulseAudio sound server
+</code></pre>
+
+<p>果断卸载之,管他是啥</p>
+
+<pre><code>sudo apt-get autoremove pulseaudio
+</code></pre>
+
+<p>重启,搞定,哦也!!</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2013/07/25.html" title="Ubuntu12.04下asoundrc不起效">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2013/07/03.html" title="py2exe练手">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/07/04.html" title="篮子里的鸡蛋">Next &rarr;</a></li>
           
           
         </ul>
@@ -129,7 +176,7 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2013-07-04</span></div>
+    <div class="date"><span>2013-07-25</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -144,7 +191,7 @@
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#%E8%8F%9C%E8%82%B4-ref">菜肴 <span>1</span></a>
+  <a href="/tags/#linux-ref">linux <span>2</span></a>
 </li>
     
     </ul>

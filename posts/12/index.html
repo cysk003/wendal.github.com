@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>篮子里的鸡蛋</title>
+    <title>总结一点点项目经验–迁移/部署/静态资源</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,34 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/317.html">NutDao实现Lazy加载的可行性</a> <span class="date">2011-09-06 23:33:16</span></h3>
+  <p>不知道多少人问过@Many @One等注释能否实现懒加载或者自动加载</p>
+
+<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 &ndash; 其实也就是有点不方便,外加效率较低</p>
+
+<p>我这里讨论的是NutDao做到真正懒加载的可能性与实现方式
+焦点集中在NutDao.query方法,因为大部分DB&ndash;&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
+
+<p>由于实现的是懒加载,不可避免的使用Aop,以拦截@Many/@One的getter
+使用Aop会导致一个问题,就是query方法返回的对象的类改变了,变成用户请求的类的一个定制化的子类的对象,这本身就导致一些问题:
+    1. 使用query出来的对象进行update/delete时,由于其并非用户期望的类(实际上是其子类),导致getEntity需要改造,因为@Table等注解是不被继承的,@Column也是,这样,写在@Many/@One字段上的信息会被隐藏掉
+    2. 用户代码可能会需要修改,当然,都是那些不好的写法,例如Class对象进行equal比较</p>
+
+<p>Aop实现的关键点:
+    1. 获取Dao对象,并存为其一个属性的值
+    2. 记录当前getter是否已经获取过,或者setter已经被执行过
+    3. 跳过Hibernate式的事务问题,平等对待getter调用时的事务问题</p>
+
+<p>可能的改造方法:
+    1. Aop整个NutDao,对于query以外的方法,进行对象解包/类解包,以移除query方法带出Aoped类的影响
+    2. 改造/继承AnnotationEntityMaker,让其生成对象时,使用Aop改造过的类</p>
+
+  <div class="more">
+    <a href="/317.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/316.html">广工,3年来,你改变了什么?</a> <span class="date">2011-08-27 21:57:46</span></h3>
@@ -308,39 +336,6 @@ Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
 
   <div class="more">
     <a href="/302.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/299.html">JGit初试牛刀</a> <span class="date">2011-07-16 21:53:35</span></h3>
-  <p>最近爱上了Git,当然不能忽略jGit啦</p>
-
-<p>好吧废话少说,直接上代码先:</p>
-
-<pre><code>package net.wendal.jgit;
-
-import java.io.File;
-import java.io.FileWriter;
-
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.revwalk.RevCommit;
-
-public class JGit {
-
-    public static void main(String[] args) throws Throwable {
-        File root = new File(&quot;gitme&quot;);
-        if(!root.exists())
-            root.mkdir();
-        File gitF = new File(&quot;gitme/.git&quot;);
-        if(!gitF.exists()) {//如果已经初始化过,那肯定有.git文件夹
-                        //初始化git库,相当于命令行的 git init
-            Git.init().setDirectory(root).call();
-        }
-        Git git = Git.open(root); //打开git库
-</code></pre>
-
-  <div class="more">
-    <a href="/299.html" class="btn">read more..</a>
   </div>
 </div>
 
