@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,37 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/279.html">声明一下Everbox4j的相关事项</a> <span class="date">2011-04-28 09:38:56</span></h3>
+  <p><strong>1. 你是盛大的前员工/现员工吗?</strong>
+不是,我只是盛大Everbox的用户,最近也没打算去盛大求职,我有一份满意的工作</p>
+
+<p><strong>2. Everbox4j是盛大官方发布的吗?</strong>
+不是, everbox4j是非官方的</p>
+
+<p><strong>3. Everbox4j收费吗?有广告吗?</strong>
+免费,开源,无广告</p>
+
+<p><strong>4. Everbox4j能在公司里使用吗?</strong>
+可以免费使用,但不得用于任何非法用途</p>
+
+<p><strong>5. Everbox4j基于官方的公开API吗?</strong>
+官方没有公开的API文档,至今没有公开发布可操作的接口</p>
+
+<p><strong>6. Everbox4j有任何盈利方式吗?</strong>
+无,没有广告,顶多为我的博客增加点流量,但我的博客一样没有广告</p>
+
+<p><strong>7. Everbox4j能被官方接受吗?</strong>
+这个很难说,毕竟盛大有自己的研发团队
+Everbox4j使用固定的User-Agent, 如有必要, 官方可以随时封掉.
+Everbox4j的下一版本打算使用一个自己定义的User-agent, 进一步降低官方封杀的难度.
+但是,我觉得,有这样一款能在Linux/Mac上跑的客户端,应该是对Everbox的发展有好处的</p>
+
+  <div class="more">
+    <a href="/279.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/276.html">Everbox4j 1.0 终于发布啦! Everbox也能在Linux/Mac上用!!</a> <span class="date">2011-04-27 22:10:03</span></h3>
@@ -328,37 +359,6 @@ public static InputStream utf8filte(InputStream in) {
 
   <div class="more">
     <a href="/266.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/263.html">Logger对象是否会重复创建呢? (以Log4j为例)</a> <span class="date">2011-04-05 20:51:34</span></h3>
-  <p>不久前有人问及 重复调用Logger.getLogger之类的语句,是否会拿到不同的Logger对象呢?
-起初我并未在意,但现在觉得是应该探究一下.</p>
-
-<p>故,先是设计这样的代码:</p>
-
-<pre><code>import org.apache.log4j.Logger;
-public class LogTest {
-
-    public static void main(String[] args) {
-        Logger log = Logger.getLogger(LogTest.class);
-        Logger log2 = Logger.getLogger(LogTest.class);
-        System.out.println(log == log2);
-    }
-}
-</code></pre>
-
-<p>log4j.properties文件的内容:</p>
-
-<pre><code>log4j.rootLogger=DEBUG,Console
-log4j.appender.Console=org.apache.log4j.ConsoleAppender
-log4j.appender.Console.layout=org.apache.log4j.PatternLayout
-log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
-</code></pre>
-
-  <div class="more">
-    <a href="/263.html" class="btn">read more..</a>
   </div>
 </div>
 

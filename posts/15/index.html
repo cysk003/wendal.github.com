@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,37 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/263.html">Logger对象是否会重复创建呢? (以Log4j为例)</a> <span class="date">2011-04-05 20:51:34</span></h3>
+  <p>不久前有人问及 重复调用Logger.getLogger之类的语句,是否会拿到不同的Logger对象呢?
+起初我并未在意,但现在觉得是应该探究一下.</p>
+
+<p>故,先是设计这样的代码:</p>
+
+<pre><code>import org.apache.log4j.Logger;
+public class LogTest {
+
+    public static void main(String[] args) {
+        Logger log = Logger.getLogger(LogTest.class);
+        Logger log2 = Logger.getLogger(LogTest.class);
+        System.out.println(log == log2);
+    }
+}
+</code></pre>
+
+<p>log4j.properties文件的内容:</p>
+
+<pre><code>log4j.rootLogger=DEBUG,Console
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
+</code></pre>
+
+  <div class="more">
+    <a href="/263.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/262.html">神奇的Slf4J-API版本 - 2.0.99</a> <span class="date">2011-04-03 12:29:03</span></h3>
@@ -302,38 +333,6 @@ ngx.exec(&quot;/1.html&quot;)
 
   <div class="more">
     <a href="/253.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/252.html">最近速成Lua了,简单记一下</a> <span class="date">2011-03-10 19:56:26</span></h3>
-  <p>最近速成Lua,写篇文章mark一下, 参考了 <a href="http://luaforge.net/frs/download.php/4416/A_Quick_Start_Guide_On_Lua_For_C_C_Programmer_CN.pdf">Lua-Quick-Start-Guide-CN</a></p>
-
-<p>Lua执行器, 官方当前最新5.1.4, 但我觉得LuaJIT 2.0 beta6 更好</p>
-
-<p>我的考虑是这样的:
-1. 为了性能,把固定的处理逻辑用C写
-2. 为了灵活,与配置紧密相关的用Lua写</p>
-
-<p>8种类型:
-数字(double), 字符串, 布尔值(true/false)
-函数(function)
-表(相当于HashMap+List,唯一的数据结构)
-用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) &ndash; 对我基本无用处
-协程(thread) &ndash; 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
-nil(空,啥都不是,一般就是标志物)</p>
-
-<p>语法:
-1. 变量无类型
-2. 无需;之类的语句终结符,最好一行一条语句, 语言本身对缩进不感冒.
-3. 函数可以返回多个值 (Java中我也想啊!)
-4. if语句, 除了false和nil外, 一律视为true (真的比较单纯的约定)
-5. 没有数组,只有table, 相当于HashMap+List
-6. 支持闭包,但我用不上,无视之
-7. 有假的多线程,直接无视</p>
-
-  <div class="more">
-    <a href="/252.html" class="btn">read more..</a>
   </div>
 </div>
 

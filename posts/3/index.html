@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -80,6 +80,23 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/0113.html">最近买了2款软件</a> <span class="date">2013-01-13</span></h3>
+  <p>最近又入手了2款软件</p>
+
+<h2>Sublime Text 2</h2>
+
+<p><img src="/assets/media/2013/01/13/1.jpg"></img></p>
+
+<h2>IDEA 12</h2>
+
+<p><img src="/assets/media/2013/01/13/2.jpg"></img></p>
+
+  <div class="more">
+    <a href="/2013/0113.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/0111.html">Gor--极快的静态博客引擎</a> <span class="date">2013-01-11</span></h3>
   <h2>1秒编译200篇文章</h2>
 
@@ -133,39 +150,6 @@
 </div>
 
 <div class="post">
-  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
-  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
-
-<pre><code>import (
-    &quot;syscall&quot;
-)
-
-type DiskStatus struct {
-    All  uint64 `json:&quot;all&quot;`
-    Used uint64 `json:&quot;used&quot;`
-    Free uint64 `json:&quot;free&quot;`
-}
-
-// disk usage of path/disk
-func DiskUsage(path string) (disk DiskStatus) {
-    fs := syscall.Statfs_t{}
-    err := syscall.Statfs(path, &amp;fs)
-    if err != nil {
-        return
-    }
-    disk.All = fs.Blocks * uint64(fs.Bsize)
-    disk.Free = fs.Bfree * uint64(fs.Bsize)
-    disk.Used = disk.All - disk.Free
-    return
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1224.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
   <h3 class="title"><a href="/2012/1228.html">Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</a> <span class="date">2012-12-24</span></h3>
   <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
 
@@ -201,6 +185,39 @@ password: #输入密码
 
   <div class="more">
     <a href="/2012/1228.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
+  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
+
+<pre><code>import (
+    &quot;syscall&quot;
+)
+
+type DiskStatus struct {
+    All  uint64 `json:&quot;all&quot;`
+    Used uint64 `json:&quot;used&quot;`
+    Free uint64 `json:&quot;free&quot;`
+}
+
+// disk usage of path/disk
+func DiskUsage(path string) (disk DiskStatus) {
+    fs := syscall.Statfs_t{}
+    err := syscall.Statfs(path, &amp;fs)
+    if err != nil {
+        return
+    }
+    disk.All = fs.Blocks * uint64(fs.Bsize)
+    disk.Free = fs.Bfree * uint64(fs.Bsize)
+    disk.Used = disk.All - disk.Free
+    return
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1224.html" class="btn">read more..</a>
   </div>
 </div>
 
@@ -337,29 +354,6 @@ ctx.setContextPath(&quot;/&quot;);
 
   <div class="more">
     <a href="/2012/1213.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/linux/ssh-tunnel-without-shell/">ssh tunnel without shell</a> <span class="date">2012-12-10</span></h3>
-  <h1>IT人士,必备翻墙梯</h1>
-
-<h2>在VPS创建无权限的用户</h2>
-
-<pre><code>useradd -s /bin/false free2
-passwd free2 #创建密码
-</code></pre>
-
-<h2>在本地访问之</h2>
-
-<pre><code>ssh -D 0.0.0.0:7070 -N -C free2@nutz.cn
-#输入密码,就可以了
-</code></pre>
-
-<h1>前提?当然是你有自己的VPS了</h1>
-
-  <div class="more">
-    <a href="/linux/ssh-tunnel-without-shell/" class="btn">read more..</a>
   </div>
 </div>
 

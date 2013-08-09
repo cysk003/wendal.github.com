@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</title>
+    <title>用openresty做redis订阅发布</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,79 +78,49 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面 </h1>
+  <h1>用openresty做redis订阅发布 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
+    <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
 
-<h2>首先,需要一个开源的客户端openconnect</h2>
-
-<pre><code>#部分Linux发行版中有预编译版,但毕竟老
-#应该也能用,没试过  yum install openconnect
-
-wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
-tar xvf openconnect-4.07.tar.gz
-cd openconnect-4.07
-./configure
-make
+<pre><code>    location =/subscribe {
+        send_timeout 365h; #很久很久很久,呵呵
+        content_by_lua &quot;
+        local redis = require \&quot;resty.redis\&quot;
+        local red = redis:new()
+        red:connect(\&quot;127.0.0.1\&quot;, 6379)
+        red:subscribe(ngx.var.arg_key) -- 严格来说,需要判断空值和url decode
+        local res, err = red:read_reply()
+        if res then 
+            ngx.say(res) -- 其实是个数组.. 第3个值才是publish的值
+        else
+            ngx.status = 500
+        end
+        red:close()
+        &quot;;
+    }
 </code></pre>
 
-<h2>得到编译好的openconnect后, 连接服务器</h2>
+<p>客户端? 简单啦,Nutz一行代码搞定</p>
 
-<pre><code>#root权限哦, 或者能添加tun的帐户也行
-./openconnect vpn.wendal.net
-#提示如下:
-Attempting to connect to 124.99.99.99:443
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/
-Got HTTP response: HTTP/1.0 302 Object Moved
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/+webvpn+/index.html
-Please enter your username and password.
-username: #输入帐户
-password: #输入密码
-
-#当然,你可以先指定user和password咯
-./openconnect -u wendal -p wendal vpn.wendal.net
+<pre><code>String str = Sender.create(url).setTimeout(60*60*1000).send().getContent();
 </code></pre>
-
-<h2>登陆成功后, 查看本地地址</h2>
-
-<pre><code>ifconfig tun0
-</code></pre>
-
-<h2>接下来,就是远程桌面了</h2>
-
-<pre><code>#安装rdesktop
-yum install -y rdesktop
-./rdesktop -z win.wendal.net
-#哈哈,你能看到界面了吗? 输入帐户密码就可以登陆了
-
-#-z是压缩参数
-#还可以指定用户名和密码实现自动登陆
-</code></pre>
-
-<h2>看看成果</h2>
-
-<p><img src="/assets/media/2012/12/vpn_remote_desktop.jpg"></p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2013/0108.html" title="Nutz福利之轻功">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2012/1224.html" title="在Golang中获取系统的磁盘空间内存占用">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/07/25.html" title="Ubuntu12.04下asoundrc不起效">Next &rarr;</a></li>
           
           
         </ul>
@@ -176,13 +146,13 @@ yum install -y rdesktop
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2012-12-24</span></div>
+    <div class="date"><span>2013-08-09</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#linux-ref">linux <span>10</span></a>
+  <a href="/categories/#nginx-ref">nginx <span>4</span></a>
 </li>
     
     </ul>
@@ -191,7 +161,15 @@ yum install -y rdesktop
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#AnyConnect-ref">AnyConnect <span>1</span></a>
+  <a href="/tags/#linux-ref">linux <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#openresty-ref">openresty <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#redis-ref">redis <span>1</span></a>
 </li>
     
     </ul>

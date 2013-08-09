@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/29.html">Alfresco配置 — 第二节</a> <span class="date">2010-08-03 22:49:31</span></h3>
+  <p>如何关闭/调整部分功能(通过添加选项到alfresco-global.properties):</p>
+
+<p><strong>1. 关闭OpenOffice连接 ooo.enabled=false</strong></p>
+
+<p>Alfresco默认安装OpenOffice进行文件转换,不过,大部分时间是无需的,这部分功能会占用超过100M的内存,而且是JVM之外的内容</p>
+
+<p><strong>2. 关闭CIFS和FTP cifs.enabled=false  ftp.enabled=false</strong></p>
+
+<p>当你启动Alfresco后,你也许能通过 \你的ip 访问到Alfresco的资源库,这对开发非常有用,但是一般情况下不太需要, ftp也是.</p>
+
+<p><strong>3. 关闭用户空间配额限制 system.usages.enabled=false</strong></p>
+
+<p>Alfresco允许你配置每个用户的空间占用,一般使用都是无需的,而且,要真正启用这个功能,你需要逐一配置每个用户的配额.</p>
+
+<p><strong>4. 关闭自动创建用户空间 home.folder.creation.eager=false</strong></p>
+
+<p>这个选项,是我在配置LDAP信息同步的时候遇到的,由于有好几千的用户信息同步到Alfresco,结果在User Space中对应地产生了好几千个子空间,虽然无害,但毕竟非常不雅!!</p>
+
+<p><strong>5. 将索引恢复模式设置为自动 index.recovery.mode=AUTO</strong></p>
+
+  <div class="more">
+    <a href="/29.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/24.html">Alfresco配置 — 第一节</a> <span class="date">2010-08-02 23:19:53</span></h3>

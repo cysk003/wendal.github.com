@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
+  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo&ndash;&gt;String的转换</p>
+
+<p>1.b.38版新增了@JsonField,在即将发布的1.b.40版将这个注解再次增强
+正如其名,@JsonField是针对Json处理中字段级别的控制</p>
+
+<p>首先是字段命名,看代码</p>
+
+<pre><code>@JsonField(&quot;z-index&quot;)
+private String zIndex;
+</code></pre>
+
+<p>对应的Json将会是:</p>
+
+<pre><code>{
+    'z-index' : '10px'
+}
+</code></pre>
+
+<p>可以看到,无需再强求 json的key的名字与类属性名一致了</p>
+
+<p>然后是&rdquo;忽略&rdquo;,看代码</p>
+
+  <div class="more">
+    <a href="/319.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/317.html">NutDao实现Lazy加载的可行性</a> <span class="date">2011-09-06 23:33:16</span></h3>
@@ -305,37 +334,6 @@ List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.i
 
   <div class="more">
     <a href="/303.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/302.html">Nutz 1.b.38发布了,将来怎么走呢?</a> <span class="date">2011-07-17 19:17:19</span></h3>
-  <p>经过马拉松式的开发,在1.b.37发布之后的3个月,1.b.38终于正式发布</p>
-
-<p>在我看来,这是个里程碑式的版本,截至到1.b.38,Nutz的每一部分都至少重构了一次</p>
-
-<p>Ioc很久以前就重构过,大概是1.a.27,zozoh操刀
-Aop,1.a.29进行重构,我操刀
-Json,1.b.38历经两次重构,先是jukai,后面是我
-Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
-
-<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 &ndash; 在不停的fix bug中完善</p>
-
-<p>然而,Nutz还需要些什么呢?或者说,用户还需要些什么呢?
-1. 代码生成器 &ndash; 很多很多用户要求这个,但是,真的能提供生产效率吗??
-2. IDE &ndash; 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
-3. 支持NoSQL &ndash; 貌似没啥意义
-4. 还有一些零碎的功能增强,一时半刻没想起来</p>
-
-<p>我觉得Nutz还有一些设计欠佳的地方:
-1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 &ndash; 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
-2. Ioc的单例 &ndash; NutIoc中的单例的概念,我依旧觉得很怪,呵呵
-3. Dao的Pojo实例的生成机制 &ndash; 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
-4. Json反序列化的定制性 &ndash; 1.b.38引入的JsonField注解,恩,应该得到一些改善
-5. Castor的扩展机制 &ndash; 这东西到底有没有人用过呢??</p>
-
-  <div class="more">
-    <a href="/302.html" class="btn">read more..</a>
   </div>
 </div>
 

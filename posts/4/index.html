@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,29 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/linux/ssh-tunnel-without-shell/">ssh tunnel without shell</a> <span class="date">2012-12-10</span></h3>
+  <h1>IT人士,必备翻墙梯</h1>
+
+<h2>在VPS创建无权限的用户</h2>
+
+<pre><code>useradd -s /bin/false free2
+passwd free2 #创建密码
+</code></pre>
+
+<h2>在本地访问之</h2>
+
+<pre><code>ssh -D 0.0.0.0:7070 -N -C free2@nutz.cn
+#输入密码,就可以了
+</code></pre>
+
+<h1>前提?当然是你有自己的VPS了</h1>
+
+  <div class="more">
+    <a href="/linux/ssh-tunnel-without-shell/" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2012/1130.html">Reflect Of Golang</a> <span class="date">2012-11-30</span></h3>
@@ -317,31 +340,6 @@ WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS
 
   <div class="more">
     <a href="/460.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/459.html">Golang连接Oracle数据库(通过OCI库)</a> <span class="date">2012-10-06 11:17:54</span></h3>
-  <p>这是我对mattn/go-oci8的一个fork <a href="https://github.com/wendal/go-oci8">https://github.com/wendal/go-oci8</a></p>
-
-<p>在Linux下的安装,应该是没啥难度的了,唯独蛋疼的Windows需要介绍一下:</p>
-
-<pre><code>//假设的GOPATH指向C:\gohome
-0. 执行 go get github.com/wendal/go-oci8 ,然后肯定是报错了,没关系,代码会下载下来.
-1. 首先,你需要安装mingw到C:\mingw
-2. 然后,到Oracle官网,下载OCI及其SDK,解压到instantclient_11_2  -- 当前最新版
-3. 从我的go-oci8库的windows文件夹,拷贝pkg-config.exe到C:\mingw\bin\,拷贝oci8.pc到C:\mingw\lib\pkg-config\
-4. 设置环境变量 PATH           ,值为     原有PATH;C:\instantclient_11_2;C:\mingw\bin;
-5. 设置环境变量 PKG_CONFIG_PATH,值为     C:\mingw\lib\pkg-config
-6. 接下来,就最重要的,就是再执行一次,这次应该能成功的:  go get github.com/wendal/go-oci8
-7. 测试一下:
-    cd %GOPATH%/src/github.com/wendal/go-oci8/example
-    go run oracle.go
-    #提醒一句, oracle.go里面的写的密码是system/123456, 实例名XE  
-</code></pre>
-
-  <div class="more">
-    <a href="/459.html" class="btn">read more..</a>
   </div>
 </div>
 

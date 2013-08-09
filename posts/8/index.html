@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>总结一点点项目经验–迁移/部署/静态资源</title>
+    <title>鸣鸣第一次出境, Mark一下</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/404.html">Java匿名内部类的传值</a> <span class="date">2012-03-24 21:37:42</span></h3>
+  <p>在Nutz中,存在大量需要使用匿名内部类的情况,很多童鞋都对传值很困惑,所以我这里说明一下</p>
+
+<p><strong>传入:</strong></p>
+
+<pre><code>//匿名内部类,只能访问final的本地变量及方法参数
+public void addUser(final String name, String passwd, final String userType) {
+    User user = null;
+    if (&quot;admin&quot;.equal(userType))
+        user = new AdminUser(name, passwd); //仅作演示.
+    else
+        user = new User(name, passwd);
+    final User _user = user; //因为user变量不能设置为final,所以需要新加一个变量来中转
+    Trans.run(new Atom(){
+        public void run() {
+            dao.insert(_user);
+            if (log.isDebugEnable())
+                log.debugf(&quot;Add user id=%d, name=%s , type=%s&quot;, _user.getId(), name, userType);
+        }
+    });
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/404.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/403.html">学习Java字节码的一些提示</a> <span class="date">2012-03-23 20:49:14</span></h3>
@@ -296,24 +325,6 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 
   <div class="more">
     <a href="/383.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/379.html">鸣鸣与本地樱花</a> <span class="date">2012-02-26 15:46:35</span></h3>
-  <p>广州市花都区梯面镇,一小片的樱花树</p>
-
-<p><img src="/assets/media/2012/02/C-300x225.jpg">鸣鸣与樱花合影</img></p>
-
-<p><img src="/assets/media/2012/02/DSCF0983-300x225.jpg">小樱花特写2</img></p>
-
-<p><img src="/assets/media2012/02/DSCF0986-300x225.jpg">小樱花特写1</img></p>
-
-<p>相机: 富士, 非单反, 纯傻瓜机
-未PS,但用Windows自带的画图工具缩小的尺寸.</p>
-
-  <div class="more">
-    <a href="/379.html" class="btn">read more..</a>
   </div>
 </div>
 
