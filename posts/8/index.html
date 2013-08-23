@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>鸣鸣第一次出境, Mark一下</title>
+    <title>遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,36 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/405.html">Python的while 1跟while True到底有什么区别?</a> <span class="date">2012-03-26 14:41:59</span></h3>
+  <p>定义两个方法,分别使用while循环</p>
+
+<pre><code>def w() :
+  while 1 :
+    pass
+
+def w2() :
+  while True:
+    pass
+</code></pre>
+
+<p>单从功能上说,两种无任何区别,那么,来看看字节码上的区别:</p>
+
+<pre><code>import dis  #载入反编译模块,Python内置的
+
+dis.dis(w) #对应的是while 1,下面是输出
+  2           0 SETUP_LOOP               3 (to 6)
+
+  3     &gt;&gt;    3 JUMP_ABSOLUTE            3
+        &gt;&gt;    6 LOAD_CONST               0 (None)
+              9 RETURN_VALUE
+</code></pre>
+
+  <div class="more">
+    <a href="/405.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/404.html">Java匿名内部类的传值</a> <span class="date">2012-03-24 21:37:42</span></h3>
@@ -296,38 +326,6 @@ public Object xxx(HttpSession session) {
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/383.html">SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</a> <span class="date">2012-02-26 22:15:59</span></h3>
-  <p>自认翻X墙高手,却与同事交流的时候败下阵来,我最初还口口声声说 几条命令 就能搞定,绝对米问题.
-结果,俺发现,这玩意还是有点技术含量的&hellip; 不过,经过我不断提炼,最后是十几条命令搞定(关键语句仅3条,即启动3个进程),哦也!!</p>
-
-<p>需求基本上是这样:
-客户端只需要配置一下代理服务器,就能做到需要翻墙就翻墙,不需要就走普通渠道.</p>
-
-<p>最初,我的想法
-1. 直接ssh隧道 &ndash; 只有部分程序支持sockt5代理
-2. squid+ssh隧道 &ndash; squid压根不支持sockt5的后端代理,我靠
-3. squid+Polipo+ssh隧道 &ndash; 有点靠谱了,我差点就狠心学一下squid恶心的配置文件
-4. nginx+Polipo+ssh隧道 &ndash; 代理https有点问题,我一直没解决</p>
-
-<ol>
-<li><p>在本地一台Linux服务器,创建用proxy,创建sshkey并上传到国外的vps:</p>
-
-<p>#添加用户
-adduser proxy
-#切换到proxy用户
-su proxy
-#创建ssh密钥,一路回车
-ssh-keygen
-#将刚刚生成的key,上传到国外vps,以便进行无密码登录
-ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
-</ol>
-
-  <div class="more">
-    <a href="/383.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -419,6 +417,10 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 	22
   </li>
 
+  <li>
+	23
+  </li>
+
 </ul>
       </div>
 
@@ -444,11 +446,20 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 </script>
 
     
-<script>
-    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>

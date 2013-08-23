@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>鸣鸣第一次出境, Mark一下</title>
+    <title>遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,37 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/266.html">再一次搞定UTF-8的BOM</a> <span class="date">2011-04-12 18:55:43</span></h3>
+  <p>一年前的某天,我觉察到BOM的问题 &ndash; 一个Java源文件死活无法编译
+今天,我狠狠地为 Nutz的Streams类添加了一个方法,用于自动过滤掉BOM头!!
+代码如下:</p>
+
+<pre><code>private static final byte[] UTF_BOM = new byte[]{(byte) 0xEF,(byte) 0xBB,(byte) 0xBF};
+
+/**
+ * 判断并移除UTF-8的BOM头
+*/
+public static InputStream utf8filte(InputStream in) {
+    try {
+        PushbackInputStream pis = new PushbackInputStream(in,3);
+        byte[] header = new byte[3];
+        pis.read(header,0,3);
+        if(header[0] != UTF_BOM[0] || header[1] != UTF_BOM[1] || header[2] != UTF_BOM[2]) {
+            pis.unread(header,0,3);
+        }
+        return pis;
+    } catch (IOException e) {
+        throw Lang.wrapThrow(e);
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/266.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/263.html">Logger对象是否会重复创建呢? (以Log4j为例)</a> <span class="date">2011-04-05 20:51:34</span></h3>
@@ -314,28 +345,6 @@ ngx.exec(&quot;/1.html&quot;)
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/253.html">累趴下了,就为了办出生证!!</a> <span class="date">2011-03-14 19:26:17</span></h3>
-  <p>原本打算一个早上就能搞好 &hellip;
-原本以为简单填一下表就搞定 &hellip;
-原本以为就一个地方搞定全部东西 &hellip;</p>
-
-<p>我承认,错了, 结果是用了一天. 除了中午吃饭的半个小时,都在奔波&hellip;</p>
-
-<p>宝宝42天了, 要体检,补听力筛查 .. 还得去洗澡,游泳&hellip;.
-老婆产后42天了, 需要复查, 验血,验尿,B超&hellip;.</p>
-
-<p>跑上跑下,今天不知道走了多少层楼, 不知道签了多少次名,不知道刷了多少次卡&hellip;</p>
-
-<p><strong>不过,总算是把出生证给拿到了!! ^_^</strong></p>
-
-<p>哈哈,宝宝, 中国承认你这个人了, 你成为法律上的人了!!</p>
-
-  <div class="more">
-    <a href="/253.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -427,6 +436,10 @@ ngx.exec(&quot;/1.html&quot;)
 	22
   </li>
 
+  <li>
+	23
+  </li>
+
 </ul>
       </div>
 
@@ -452,11 +465,20 @@ ngx.exec(&quot;/1.html&quot;)
 </script>
 
     
-<script>
-    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>

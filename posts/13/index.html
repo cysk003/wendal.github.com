@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>鸣鸣第一次出境, Mark一下</title>
+    <title>遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,20 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/303.html">Autoproxy Forever!!</a> <span class="date">2011-07-24 08:54:14</span></h3>
+  <p>看到不少帖子又在找兼容 Firefox 5 Firefox 6 Firefox 7 Firefox 8的Autoproxy,我鸭梨很大啊,因为官方的动作还是很慢!!</p>
+
+<p>我现在用Firefox 8.0a1 , Autoproxy也很正常</p>
+
+<p>好吧,放出我自己的版本,兼容至Firefox9!!:
+<a href="http://dl.dbank.com/c0cluqlrqw">http://dl.dbank.com/c0cluqlrqw</a></p>
+
+  <div class="more">
+    <a href="/303.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/302.html">Nutz 1.b.38发布了,将来怎么走呢?</a> <span class="date">2011-07-17 19:17:19</span></h3>
@@ -317,49 +331,6 @@ Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/280.html">Nutz中你未必知道的用法</a> <span class="date">2011-04-28 10:30:11</span></h3>
-  <p>========================================================================</p>
-
-<h1><strong>Ioc篇</strong></h1>
-
-<p><strong>1. 使用properties文件</strong></p>
-
-<pre><code>var ioc = {
-    config : {
-        type : &quot;org.nutz.ioc.impl.PropertiesProxy&quot;, /*1.b.37内置的一个代理类*/
-        fields : {
-            paths : [&quot;conf/jdbc.properties&quot;] /*可以写多个文件或文件夹*/
-        }
-    },
-// Data source
-    dataSource : {
-        type :&quot;org.apache.commons.dbcp.BasicDataSource&quot;,
-        events : {
-            depose :&quot;close&quot;
-        },
-        fields : {
-            driverClassName : {
-                java :&quot;$config.get('driver')&quot;
-            },
-            url : {
-                java :&quot;$config.get('url')&quot;
-            },
-            username : {
-                java :&quot;$config.get('username')&quot;
-            },
-            password : {
-                java :&quot;$config.get('password')&quot;
-            }
-        }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/280.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -451,6 +422,10 @@ Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的
 	22
   </li>
 
+  <li>
+	23
+  </li>
+
 </ul>
       </div>
 
@@ -476,11 +451,20 @@ Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的
 </script>
 
     
-<script>
-    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>

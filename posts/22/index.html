@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>鸣鸣第一次出境, Mark一下</title>
+    <title>遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,35 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/33.html">Alfresco配置 — 第三节</a> <span class="date">2010-08-04 22:14:25</span></h3>
+  <p>今天打算说说Alfresco里面的工作流,这个是我折腾了好几个星期的事.</p>
+
+<p>Alfresco的工作流分为3部分, Define/Model/UI</p>
+
+<p>其中Define就是普通的jBpm3.2工作流引擎,你可以使用Alfresco提供的AlfrescoScriptAction直接调用Alfresco的服务,最基本的就是logger</p>
+
+<p>Model,其实不单单是工作流的配置,它使用你定义的命名空间,声明需要用户输入的属性,和需要显示的属性</p>
+
+<p>UI, 属于web-client-config.xml的自定义版本 web-client-config-custom.xml,用于定义各Model中的type如何显示在页面上.</p>
+
+<p>具体的工作流我就不打算详细说了,也许以后会贴出示例.</p>
+
+<p>说说几个技巧:</p>
+
+<ol>
+<li><p>如果无法用AlfrescoScriptAction解决你遇到的问题,请毫不犹豫地使用自定义的ActionHandler,不过最好继承JBPMSpringActionHandler,以便获取Alfresco相应服务的bean, 而且,bean的name一般就是接口的首字母小写,例如节点服务 nodeService, 用户服务 personService,操作服务actionService(可以创建mail action).</p></li>
+
+<li><p>流程意外停止,无法继续正常流下去,咋办? 使用 admin/workflow-console.jsp , 然后使用相关的命令对付该流程.例如signal, delete, cancel</p></li>
+
+<li><p>开发工作流时,请先确保工作流本身是正确的,然后再调试Model/UI</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/33.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/29.html">Alfresco配置 — 第二节</a> <span class="date">2010-08-03 22:49:31</span></h3>
@@ -260,17 +289,6 @@
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/4.html">每天写点东西</a> <span class="date">2010-07-26 14:06:16</span></h3>
-  <p>没啥,想写点东西了</p>
-
-<p>随意吧,开心就好</p>
-
-  <div class="more">
-    <a href="/4.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -362,6 +380,10 @@
 	22
   </li>
 
+  <li>
+	23
+  </li>
+
 </ul>
       </div>
 
@@ -387,11 +409,20 @@
 </script>
 
     
-<script>
-    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>

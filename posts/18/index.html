@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>鸣鸣第一次出境, Mark一下</title>
+    <title>遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,6 +78,37 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/222.html">增强型JavaDoc -- APIviz 简洁实践</a> <span class="date">2010-12-27 13:40:55</span></h3>
+  <p>一段时间之前,为Nutz的JavaDoc添加了这个插件,<a href="http://code.google.com/p/apiviz/">APIviz</a>,可以自动生成包依赖关系图,和简单的UML类图.
+在国内还没见到公开的使用,还是介绍一下,<a href="http://build.sunfarms.net/nutz/lastest/api/">Nutz示例</a>
+第一步,安装<a href="http://www.graphviz.org/">Graphviz</a>,该软件可以运行在N多平台上,这里以Ubuntu为例</p>
+
+<pre><code>apt-get install graphviz
+</code></pre>
+
+<p>第二步,当然就是下载APIviz了, 当前最新版为 1.3.1 GA
+第三步, Ant调用:</p>
+
+<pre><code>&lt;javadoc doclet=&quot;org.jboss.apiviz.APIviz&quot; encoding=&quot;UTF-8&quot; sourcepath=&quot;src&quot; docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; charset=&quot;utf-8&quot; destdir=&quot;${javadoc-dir}&quot; additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot; classpathref=&quot;nutz-classpath&quot; docencoding=&quot;utf-8&quot;&gt;&lt;/javadoc&gt;
+</code></pre>
+
+<p>与普通的JavaDoc相比,添加了3个属性:</p>
+
+<pre><code>#引用APIviz
+doclet=&quot;org.jboss.apiviz.APIviz&quot; 
+#指向APIviz的jar包
+docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; 
+#声明类文件的路径,其余的-author -version是官网上建议添加的,非必需.
+#这里的${classes-dir-jdk6}就是Nutz编译好的class存放的地址
+additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/222.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/220.html">Nutz终于beta版了!!</a> <span class="date">2010-12-24 19:00:19</span></h3>
@@ -297,20 +328,6 @@ No shared spaces configured.
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
-  <p>今天,升级了好几样东西</p>
-
-<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        &mdash;&gt;  0.9.2           新增一个功能.修复几个bug
-<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             &mdash;&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
-<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             &mdash;&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
-<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  &mdash;&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
-
-  <div class="more">
-    <a href="/206.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -402,6 +419,10 @@ No shared spaces configured.
 	22
   </li>
 
+  <li>
+	23
+  </li>
+
 </ul>
       </div>
 
@@ -427,11 +448,20 @@ No shared spaces configured.
 </script>
 
     
-<script>
-    var _gaq=[['_setAccount','UA-22727186-1'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
 </script>
 	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 	<script type="text/javascript" src="http://lurongkai.github.com/anti-baidu/js/loader.min.js"></script>
