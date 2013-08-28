@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/243.html">一个极其简陋的Datasource连接池实现</a> <span class="date">2011-02-21 13:18:41</span></h3>
+  <p>写了一段时间了,一直没提交到Nutz,哈哈. 明显没有技术含量,提上去明显找抽!</p>
+
+<p>用来跑Nutz的测试,能够全部pass.</p>
+
+<p>直接上代码:</p>
+
+<pre><code>package org.nutz.dao.impl;
+
+import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+</code></pre>
+
+  <div class="more">
+    <a href="/243.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/242.html">Nutz 一些无法完成的功能</a> <span class="date">2011-02-16 20:58:49</span></h3>
   <p>这篇文章针对的是1.b.35</p>
 
@@ -354,26 +381,6 @@ NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
 
   <div class="more">
     <a href="/225.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/224.html">3年,换了4家公司!</a> <span class="date">2010-12-30 08:43:36</span></h3>
-  <p>不久前还说着一个朋友经常跳槽,昨天才发现,跳得最多的其实是自己!!</p>
-
-<p><strong>3年,不容易啊,换了4家!!</strong></p>
-
-<p>第一家,A公司, 200来人,干了5个月,美资
-第二家,B公司,2000来人,干了9个月,印度公司
-第三家,C公司,200来人,干了21个月,印度公司
-第四家,D公司,5000人,干了1天,美资</p>
-
-<p>^_^,2次被收购,1次被分拆,然而我仍在同一个办公室!!</p>
-
-<p>想不到都年底了,又被收购了一次. 哈哈</p>
-
-  <div class="more">
-    <a href="/224.html" class="btn">read more..</a>
   </div>
 </div>
 

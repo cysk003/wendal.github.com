@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>把VPS翻新了一下</title>
+    <title>让golang的get命令兼容gitlab</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,48 +78,114 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>把VPS翻新了一下 </h1>
+  <h1>让golang的get命令兼容gitlab </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>话说在vpsess的这个vps,用了一年了,感觉一直不错,昨天到期,干脆要了一个新的VPS,把数据迁移过去</p>
+    <h1>我们有些什么呢?</h1>
 
-<p>旧的VPS,是20G空间,用了10G,其实我也不清楚到底为何用了10G,删来删去,还是这么多</p>
+<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
 
-<p>步骤:</p>
+<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
 
-<ol>
-<li><p>拷贝.ssh文件夹 &ndash; scp就不需要密码了</p></li>
+<p>如果尝试执行下面的语句去获取这个库的话</p>
 
-<li><p>新vps装lnmp,旧vps导出数据库,打包/opt和nginx的配置</p></li>
+<pre><code>go get git.wendal.net/wendal/gofly
 
-<li><p>新vps导入数据库sql,覆盖nginx设置</p></li>
+#会输出
+package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
+</code></pre>
 
-<li><p>拷贝hudson历史数据,拷贝博客的文件</p></li>
+<p>然而,如果我们输入</p>
 
-<li><p>还有就是一些杂七杂八的数据,也迁移过去</p></li>
-</ol>
+<pre><code>go get git.wendal.net/wendal/gofly.git
 
-<p>哦也,重启lnmp服务,启动tomcat,验证一下,搞定!!</p>
+#会输出
+fatal: repository 'git.wendal.net/wendal/gofly' does not exist
+package git.wendal.net/wendal/gofly.git: exit status 128
+</code></pre>
 
-<p>接着,当然是安装python和git,不过vps上的ubuntu是10.04,找不到现成的python3.2和git,二话不说,直接下源码编译咯</p>
+<h1>为什么呢?貌似go get不支持自定义的库地址啊(git的)</h1>
 
-<p>就这样折腾了一个晚上,最后让vpsee帮忙切换到旧ip,完成,收工!!</p>
+<p>且看 $GOROOT/src/cmd/go/vcs.go里面的一段代码</p>
+
+<pre><code>    // General syntax for any server.
+    {
+        re:   `^(?P&lt;root&gt;(?P&lt;repo&gt;([a-z0-9.\-]+\.)+[a-z0-9.\-]+(:[0-9]+)?/[A-Za-z0-9_.\-/]*?)\.(?P&lt;vcs&gt;bzr|git|hg|svn))(/[A-Za-z0-9_.\-]+)*$`,
+        ping: true,
+    },
+</code></pre>
+
+<p>可以看到, 对于未知的库地址(非github/Google Code/Bitbucket/Launchpad),都按这里的配置进行设置</p>
+
+<p>按上述的正则表达式,输入git.wendal.net/wendal/gofly可以得到</p>
+
+<pre><code>root = git.wendal.net/wendal/gofly
+repo = git.wendal.net/wendal/gofly
+vcs  = git
+</code></pre>
+
+<p>What? 当使用git进行clone的时候,其实就执行了</p>
+
+<pre><code>git clone $repo $GOPATH/src/$root
+#展开之后(假设GOPATH=/opt/gopath)
+git clone git.wendal.net/wendal/gofly /opt/gopath/src/git.wendal.net/wendal/gofly
+</code></pre>
+
+<p>git库的地址当成本地路径了,不出错才怪呢</p>
+
+<h1>怎么解决呢? 添加自定义的库地址,跟github类似</h1>
+
+<p>首先,拷贝一份github的配置</p>
+
+<pre><code>    // Github
+    {
+        prefix: &quot;github.com/&quot;,
+        re:     `^(?P&lt;root&gt;github\.com/[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+)(/[A-Za-z0-9_.\-]+)*$`,
+        vcs:    &quot;git&quot;,
+        repo:   &quot;https://{root}&quot;,
+        check:  noVCSSuffix,
+    },
+</code></pre>
+
+<p>改成</p>
+
+<pre><code>    // git.xwoods.org
+    {
+        prefix: &quot;git.wendal.net/&quot;,
+        re:   `^(?P&lt;root&gt;git\.wendal\.net/(?P&lt;p&gt;.[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+))(/[A-Za-z0-9_.\-]+)*))$`,
+        ping:   false,
+        repo:   &quot;git@git.wendal.net:{p}.git&quot;,
+        vcs :   &quot;git&quot;,
+    },
+</code></pre>
+
+<p>注意 re和repo,做了特别处理哦,多一个p变量, 这样repo就把凑成标准的ssh式git地址,自动使用密钥(哈哈,私有库嘛)</p>
+
+<p>最后,还需要把golang编译</p>
+
+<pre><code># linux/mac 下
+$GOROOT/src/make.bash
+
+#windows下
+cd %GOROOT%\src\cmd\go
+go install
+</code></pre>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/314.html" title="NutzMole -- Nutz的代码生成器">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/309.html" title="数据库连接长时间空闲后,爆连接已经关闭的解决方法">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/08/23.html" title="再说Ioc">Next &rarr;</a></li>
           
           
         </ul>
@@ -145,13 +211,13 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2011-08-20 11:34:53</span></div>
+    <div class="date"><span>2013-08-28</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+  <a href="/categories/#golang-ref">golang <span>1</span></a>
 </li>
     
     </ul>
@@ -160,31 +226,11 @@
     <ul class="tag_box">
     
       <li>
+  <a href="/tags/#linux-ref">linux <span>4</span></a>
+</li>
+    
+      <li>
   <a href="/tags/#git-ref">git <span>21</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#nginx-ref">nginx <span>23</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#python-ref">python <span>10</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#Tomcat-ref">Tomcat <span>6</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#VPS-ref">VPS <span>3</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E8%BF%81%E7%A7%BB-ref">迁移 <span>8</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
 </li>
     
     </ul>
