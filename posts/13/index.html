@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/307.html">Nutz的Scans类,你用过没?</a> <span class="date">2011-08-04 08:40:25</span></h3>
+  <p>你是否想得到某个package下的全部类呢?
+你是否想得到某个文件夹下全部的配置文件?</p>
+
+<p>你还在自己写这种的实现? 你还在拼命地问谷哥?</p>
+
+<p>好吧,不吹水了,正式介绍Scans类:
+org.nutz.resource.Scans</p>
+
+<p>首先,必须先强调一点,在J2EE环境中,如果你没有使用NutzMVC的话,请在Filter/Servlet中加入这一句:</p>
+
+<pre><code>Scans.me().init(config.getServletContext());
+</code></pre>
+
+<p>这个语句必须优先于其他任何Nutz相关语句</p>
+
+<p>好,如何得到某个文件夹下全部的配置文件呢?即使打包成jar也无需改代码呢?</p>
+
+<pre><code>//第一个参数是需要扫描的文件夹,第二个是文件名需要匹配正则表达式,可以为null
+List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.ini&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/307.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/305.html">鸣鸣半岁了,今天第一次吃辅食!!</a> <span class="date">2011-08-01 22:00:58</span></h3>
   <p><strong>经过6个月的纯母乳喂养,鸣鸣今天迈入新的阶段&ndash;添加辅食</strong></p>
 
@@ -297,38 +325,6 @@ Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值�
 
   <div class="more">
     <a href="/287.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/285.html">宝宝快100天了,记录一下经验</a> <span class="date">2011-05-04 19:12:41</span></h3>
-  <p>嘻嘻,鸣鸣诞生快100天,每天都如此充实.</p>
-
-<p>好,记录一下: <strong>13斤,63厘米</strong></p>
-
-<p>一些经验:
-<strong>1. 母乳喂养</strong>
-除非有生理/心理疾病,母乳都是足够的.
-首先,母乳是按需生产,宝宝喝得多,就产得多
-其次,认为母乳不足,添加奶粉,是非常错误的,BB少吮吸,奶自然就少
-最后,母乳如何才多? 1.怀孕期要按摩 2.喂奶前喝牛奶,吃鸡蛋,喂奶期间可以适当喝点水</p>
-
-<p><strong>2. 补钙</strong>
-千万被直接让BB吃钙片/液体钙!!
-如果宝宝晚上突然哭,不肯睡,可能就是缺钙.
-那么,妈妈就应该补钙了!! 我老婆每天补充400~500mg的钙,嘻嘻</p>
-
-<p><strong>3. 晚上喂奶</strong>
-晚上尽量不要喂奶!!
-临睡觉,让宝宝多喝点
-如果宝宝晚上醒了,先判断是否为纸尿裤湿了,不要急着喂奶.
-宝宝是需要调教的,除了第一个月,晚上基本上可以不用喂奶的
-如何调教? 临睡那一餐,多喂点,宝宝醒来的时候,慢一点喂,逐渐逐渐的,间隔时间就长起来了&hellip; 最后过渡到晚上不喂,或晚上只喂一点点
-我现在做的是,晚上不需要喂,或者只需要喂一两口(其实宝宝还是睡着的,眼睛都没睁开过), 整个晚上都不醒.
-睡得好,宝宝才能长得快,而非吃得好哦</p>
-
-  <div class="more">
-    <a href="/285.html" class="btn">read more..</a>
   </div>
 </div>
 

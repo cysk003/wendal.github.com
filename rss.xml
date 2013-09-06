@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>28 Aug 13 20:31 +0800</pubDate>
+    <pubDate>06 Sep 13 11:37 +0800</pubDate>
+    <item>
+      <title>记录一下jetty的异步请求</title>
+      <link>http://wendal.net/2013/09/06.html</link>
+      <pubDate>2013-08-28 12:00:00 +0800</pubDate>
+      <description>&lt;h1&gt;nutz加jetty 的测试代码&lt;/h1&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;    @At&#xA;    @Ok(&amp;quot;void&amp;quot;) //不要视图啊... 因为多次进入&#xA;    @Fail(&amp;quot;void&amp;quot;)// 一样不需要...&#xA;    public void async(final @Param(&amp;quot;wait&amp;quot;)long wait, @Attr(&amp;quot;obj&amp;quot;)Object obj, final HttpServletRequest req) {&#xA;        System.out.println(&amp;quot;async IN&amp;quot;);&#xA;        if (obj == null) { // 第一次进入时,必然是null, 第二次,如果是线程唤醒的,那就有值了,呵呵&#xA;            System.out.println(&amp;quot;OBJ NULL&amp;quot;);&#xA;            // 获取这个关键的对象,哈哈哈&#xA;            final Continuation continuation = ContinuationSupport.getContinuation(req);&#xA;            if (continuation.isExpired()) { // 往下的代码设置了超时,so,这样判断一下咯&#xA;                System.out.println(&amp;quot;async TIMEOUT&amp;quot;);&#xA;                return;&#xA;            }&#xA;            continuation.setTimeout(15*1000); //设置超时哦&#xA;            continuation.suspend(); // 非阻塞的方法... 仅仅是设置一个状态&#xA;            new Thread() { //我在这启动一个线程,休眠一定时间之后唤醒这个异步请求&#xA;                public void run() {&#xA;                    System.out.println(&amp;quot;async Thread Start&amp;quot;);&#xA;                    if (wait &amp;lt; 1) {&#xA;                        Lang.quiteSleep(10 * 1000);&#xA;                    } else {&#xA;                        Lang.quiteSleep(wait * 1000);&#xA;                    }&#xA;                    System.out.println(&amp;quot;async Thread wakeup&amp;quot;);&#xA;                    req.setAttribute(&amp;quot;obj&amp;quot;, &amp;quot;I do it!&amp;quot;);&#xA;                    continuation.resume();&#xA;                };&#xA;            }.start();&#xA;        } else {&#xA;            System.out.println(&amp;quot;async GET OBJ --&amp;gt; &amp;quot; + obj);&#xA;        }&#xA;        &#xA;        System.out.println(&amp;quot;async OUT&amp;quot;);&#xA;    }&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;简单来说,就是多次进入入口方法.通过&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>让golang的get命令兼容gitlab</title>
       <link>http://wendal.net/2013/08/28.html</link>

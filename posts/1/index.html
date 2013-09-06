@@ -80,6 +80,51 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-08-28</span></h3>
+  <h1>nutz加jetty 的测试代码</h1>
+
+<pre><code>    @At
+    @Ok(&quot;void&quot;) //不要视图啊... 因为多次进入
+    @Fail(&quot;void&quot;)// 一样不需要...
+    public void async(final @Param(&quot;wait&quot;)long wait, @Attr(&quot;obj&quot;)Object obj, final HttpServletRequest req) {
+        System.out.println(&quot;async IN&quot;);
+        if (obj == null) { // 第一次进入时,必然是null, 第二次,如果是线程唤醒的,那就有值了,呵呵
+            System.out.println(&quot;OBJ NULL&quot;);
+            // 获取这个关键的对象,哈哈哈
+            final Continuation continuation = ContinuationSupport.getContinuation(req);
+            if (continuation.isExpired()) { // 往下的代码设置了超时,so,这样判断一下咯
+                System.out.println(&quot;async TIMEOUT&quot;);
+                return;
+            }
+            continuation.setTimeout(15*1000); //设置超时哦
+            continuation.suspend(); // 非阻塞的方法... 仅仅是设置一个状态
+            new Thread() { //我在这启动一个线程,休眠一定时间之后唤醒这个异步请求
+                public void run() {
+                    System.out.println(&quot;async Thread Start&quot;);
+                    if (wait &lt; 1) {
+                        Lang.quiteSleep(10 * 1000);
+                    } else {
+                        Lang.quiteSleep(wait * 1000);
+                    }
+                    System.out.println(&quot;async Thread wakeup&quot;);
+                    req.setAttribute(&quot;obj&quot;, &quot;I do it!&quot;);
+                    continuation.resume();
+                };
+            }.start();
+        } else {
+            System.out.println(&quot;async GET OBJ --&gt; &quot; + obj);
+        }
+        
+        System.out.println(&quot;async OUT&quot;);
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/09/06.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/08/28.html">让golang的get命令兼容gitlab</a> <span class="date">2013-08-28</span></h3>
   <h1>我们有些什么呢?</h1>
 
@@ -331,40 +376,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
 
   <div class="more">
     <a href="/2013/06/14.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/05/23.html">X11的xcb库卡死</a> <span class="date">2013-05-23</span></h3>
-  <p>一个多月没写blog,郁闷了&hellip;</p>
-
-<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
-
-<p>操作系统: opensuse 11.4 x86
-语言:     Qt 4.8.4,vdpau + Nv卡</p>
-
-<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
-
-<p>堆栈:</p>
-
-<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
-#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
-#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
-#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
-#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
-#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
-
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/05/23.html" class="btn">read more..</a>
   </div>
 </div>
 
