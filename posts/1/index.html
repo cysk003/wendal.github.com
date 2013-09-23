@@ -80,7 +80,96 @@
         
 
 <div class="post">
-  <h3 class="title"><a href="/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-08-28</span></h3>
+  <h3 class="title"><a href="/2013/09/23.html">Android系统配置数据库注释(settings.db)</a> <span class="date">2013-09-23</span></h3>
+  <h1>system表</h1>
+
+<p>参考: <a href="http://developer.android.com/reference/android/provider/Settings.System.html">http://developer.android.com/reference/android/provider/Settings.System.html</a></p>
+
+<pre><code>1|volume_music|11               // 媒体音量
+2|volume_ring|5                 // 闹钟音量
+3|volume_system|7               // 系统音量
+4|volume_voice|4                // 通话音量
+5|volume_alarm|6                // 警报音量
+6|volume_notification|5         // 提示音的音量
+7|volume_bluetooth_sco|7        // 蓝牙耳机的音量
+8|mode_ringer|2                 // 情景模式. 0=静音,1=震动,2=普通
+9|vibrate_on|10                 // 震动的基本
+10|mode_ringer_streams_affected|166 // ...
+11|mute_streams_affected|46     // ...
+12|power_on_able|false          // 不清楚
+13|default_screen_orientation|0 //默认屏幕方向, 0=横向,1=竖向
+14|dim_screen|1                 // 自动调暗屏幕, 1自然就是开启咯
+15|stay_on_while_plugged_in|0   // 插入电源时保持屏幕开启,不锁屏
+16|screen_off_timeout|-1        // 屏幕超时,进入锁屏的耗时, -1自然是不启用咯
+17|emergency_tone|0             // 
+18|call_auto_retry|0            // 呼叫失败后自动重拨
+19|dtmf_tone_type|0             // 
+20|hearing_aid|0                //
+21|tty_mode|0                   //
+22|airplane_mode_on|0           // 飞行模式
+23|airplane_mode_radios|cell,bluetooth,wifi,nfc,wimax // 飞行模式下,需要关闭的设备
+24|airplane_mode_toggleable_radios|bluetooth,wifi,nfc //
+25|auto_time|1                  // 从移动网络自动获取时间, 据说中国移动和中国联通均不支持
+26|auto_time_zone|1             // 从移动网络自动获取时区
+27|screen_brightness|102        // 屏幕亮度
+28|screen_brightness_mode|0     // 屏幕亮点自动调节
+29|window_animation_scale|1.0   // 窗口动画-缩放
+30|transition_animation_scale|1.0 // 依然是窗口动画
+31|accelerometer_rotation|1     // 屏幕自动旋转
+32|haptic_feedback_enabled|1    // 虚拟按键的反馈
+33|notification_light_pulse|1   // 提示灯
+34|set_install_location|0       // 允许设置安装位置
+35|default_install_location|0   // 允许设置缺省的安装位置
+36|power_sounds_enabled|1       // 开机关机的声音
+37|low_battery_sound|/system/media/audio/ui/LowBattery.ogg // 低电量的警告语,极其恶心那个
+38|dtmf_tone|1
+39|sound_effects_enabled|1      // 声音效果
+41|dock_sounds_enabled|0        // 插入或移除设备的时候,&quot;叫&quot;~~
+42|desk_dock_sound|/system/media/audio/ui/Dock.ogg // 插入时的叫声
+43|desk_undock_sound|/system/media/audio/ui/Undock.ogg // 拔出时的叫声
+44|car_dock_sound|/system/media/audio/ui/Dock.ogg  //车载模式下,插入的叫声
+45|car_undock_sound|/system/media/audio/ui/Undock.ogg //车载模式下,拔出的叫声
+46|lockscreen_sounds_enabled|0  // 屏幕加锁解锁的声音
+47|lock_sound|/system/media/audio/ui/Lock.ogg // 加锁的声音
+48|unlock_sound|/system/media/audio/ui/Unlock.ogg //解锁的声音
+49|vibrate_in_silent|1          // 静音时启用震动
+50|pointer_speed|0              // 不知道...
+51|accelerometer_coordinate|default
+52|is_scan_tf_card|1            // 是否扫描sdcard
+53|hidden_google_application|0  // 隐藏google应用
+54|time_12_24|24                // 时间按12小时制还是24小时制
+55|display_adaption_mode|center // 屏幕适配模式
+56|is_scan_usb_host|1           // 扫描U盘不?
+57|shortcut_key_0|website--split--http://tv.sohu.com // 快捷键0, 我XX
+58|shortcut_key_1|website--split--http://v.qq.com/   // 快捷键1, 我XX
+59|shortcut_key_2|app--split--com.android.settings--split--com.android.settings.Settings // 快捷键2, 我XX
+60|shortcut_key_3|app--split--com.softwinner.TvdFileManager--split--com.softwinner.TvdFileManager.MainUI // 快捷键3, 我XX
+61|display_adapter_enable|1     // 自动适配显示设备
+62|display_area_ratio|100       // 显示的区域
+63|smart_brightness_enable|0    // 自动调整屏幕亮度
+66|mouse_advance|30             // USB鼠标的设置? 不清楚
+67|color_brightness|50          // RGB的调色
+68|color_contrast|50            // RGB的调色
+69|color_saturation|50          // RGB的调色
+70|audio_output_type|NORMAL     // 音频输出类型
+71|audio_output_channel|HDMI    // 音频输出的通道 -- 可以查audiomode表, 见过: HDMI VGA LVDS
+72|directly_power_off|1         // 直接关闭电源,无需再次确认
+73|bd_folder_play_mode|1        // 蓝光目录模式, 当打开蓝光光盘格式的目录时,自动开始播放 -- XX
+74|hdmi_output_mode|255         // hdmi的输出模式,无解中
+75|display_output_format|HDMI 1080P 60HZ // 显示输出的模式,这个太重要了,可选模式? 因机器而异的...
+76|first_boot_system|true       // 是否为第一次启动, 不准确的值
+77|alarm_alert|content://media/internal/audio/media/9 //警告音
+78|notification_sound|content://media/internal/audio/media/50 // 提示音
+79|ringtone|content://media/internal/audio/media/124 // 闹钟
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/09/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-09-06</span></h3>
   <h1>nutz加jetty 的测试代码</h1>
 
 <pre><code>    @At
@@ -353,29 +442,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
 
   <div class="more">
     <a href="/2013/06/25.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/06/14.html">马来西亚,闲游</a> <span class="date">2013-06-14</span></h3>
-  <h1>严重声明</h1>
-
-<h2>很多图,慎入!!</h2>
-
-<h2>超级啰嗦,慎入!!</h2>
-
-<p>你还是想看?好吧&hellip; 不同情你</p>
-
-<h1>旅游是最好的投资</h1>
-
-<p>4天的马来西亚之行,是首次真正的出国之行,而且还真的是自由行了</p>
-
-<p>出发: 2013-06-10 10:20 亚航 AK1013 白云机场</p>
-
-<p>返航: 2013-06-13 16:05 亚航 AK1016 马来西亚LCCT机场</p>
-
-  <div class="more">
-    <a href="/2013/06/14.html" class="btn">read more..</a>
   </div>
 </div>
 

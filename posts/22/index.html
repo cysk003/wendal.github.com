@@ -80,6 +80,30 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/43.html">VeryCD的标题–变化中的警示语</a> <span class="date">2010-08-09 22:13:26</span></h3>
+  <p>很久以前就留意到VeryCD主页的标题栏是一句警示语,而且,刷新一下就会变成新的. 算不上非常惊人的举动,但成为以前经常访问其网站的原因.</p>
+
+<p>实现的关键:
+<a href="view-source:http://www.verycd.com/statics/title.saying">http://www.verycd.com/statics/title.saying</a>
+内容为一个js文件, 定义一个数组,包含几条警示语,然后产生一个随机数,抽取出一句警示语,与原有的标题成新标题,然后再设置为页面的标题.
+今天的内容:</p>
+
+<pre><code>_VC_DocumentTitles = new Array('每一天都是一个全新的开始', 
+'你希望掌握永恒，那你必须控制现在',
+ '心是最大的骗子，别人能骗你一时，而它却能骗你一辈子',
+ '你的谦逊会使别人感到高兴', '自知不自见，自爱不自贵',
+ '最艰苦之时，便是胜利将到之日', '拳不离手，曲不离口', '百艺通，不如一艺精',
+ '只要功夫深，铁杵磨成绣花针', '如果一个人很慷慨，那他就必须把自己的慷慨表现得充满感情');
+ _VC_DocumentTitleIndex = Math.floor(Math.random() * _VC_DocumentTitles.length);
+document.title = 'VeryCD - '+ _VC_DocumentTitles[_VC_DocumentTitleIndex];
+</code></pre>
+
+  <div class="more">
+    <a href="/43.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/41.html">InputStream与OutputStream的read/write陷阱–实际是byte</a> <span class="date">2010-08-09 22:05:45</span></h3>
   <p>先不要说这是标题党,我觉得这是很多人都已经在使用的误区,即误以为InputStream.read()返回的值真的是int,而OutputStream.write()接受的参数的确为int. 事实上,它们返回或接受的参数是 byte, 即一个字节, 务必仔细读清楚其JavaDoc, 明确说明是读出一个字节,而非int</p>
 
@@ -284,23 +308,6 @@ void write(int data);
 
   <div class="more">
     <a href="/14.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/11.html">被Alfresco的工作流搞崩溃了</a> <span class="date">2010-07-28 20:15:00</span></h3>
-  <p>我实在不行了,投降了!!</p>
-
-<p>想了一天,还是没找到什么方法来满足以下需求:</p>
-
-<p>在启动一个工作流的时候,列出当前用户尚未完成的工作流,并供其选择,而且是在WCM模块内</p>
-
-<p>难点: 1. 无法获取myTask 2. 即使获取了,无法以列表方式展示给用户以选择</p>
-
-<p>崩溃了,我交不了差了,哎&hellip;&hellip;&hellip;</p>
-
-  <div class="more">
-    <a href="/11.html" class="btn">read more..</a>
   </div>
 </div>
 

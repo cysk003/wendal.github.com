@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/257.html">总结一下最近Nginx模块开发走过的弯路</a> <span class="date">2011-03-22 20:42:00</span></h3>
+  <p>整了快一个月了,是时候总结一下:</p>
+
+<p>教训:
+1. 在虚拟机下编译Nginx
+算是犯的第一个错误, 环境如下: Window + 虚拟机中的Ubuntu, nginx等文件放在windows的一个文件夹中, Ubuntu使用vbox的数据空间进行访问.</p>
+
+<ul>
+<li><p>一开始并未察觉,因为觉得编译个东西, 几分钟,很正常吧.</p></li>
+
+<li><p>后来,做出一部分功能,开始测试. 用ab压, 总是几百req/s ,非常不爽,不应该是这种性能!!</p></li>
+
+<li><p>无意中,改为单worker进程, 竟然效果更好, 而且ab占用的cpu比nginx还高!!</p></li>
+
+<li><p>开始怀疑虚拟机的性能,决定用wubi安装一个</p></li>
+
+<li><p>安装好,例行编译,靠!! 咋一会就搞定了?! 用ab压,晕死,直接上10k req/s了,而且依旧ab的cpu比nginx高!!</p></li>
+
+<li><p>在Lua中习惯性写分号,习惯性忘记写end</p></li>
+
+<li><p>开头,基本上每行都不自觉地敲上分号</p></li>
+</ul>
+
+  <div class="more">
+    <a href="/257.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/256.html">想不到还有这种SSH客户端- FireSSH</a> <span class="date">2011-03-22 18:56:44</span></h3>
   <p>在oschina中无意中看到的, 在Firefox里面使用ssh!!</p>
 
@@ -306,34 +335,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
   <div class="more">
     <a href="/246.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/245.html">JDiff 使用与改进</a> <span class="date">2011-02-24 15:45:02</span></h3>
-  <p>不久前为Nutz的构建服务添加JDiff报告. 报告查看地址: <a href="http://build.sunfarms.net/nutz/lastest/jdiff/">http://build.sunfarms.net/nutz/lastest/jdiff/</a> 以后都可以知道不同的nutz版本API有何不同了.</p>
-
-<p>JDiff报告,就是描述不同版本的代码之间的API差异, 如某某public类被删除了,某某接口改变了</p>
-
-<p>感兴趣的可以先访问<a href="http://www.jdiff.org">官网</a>,以了解基本使用.</p>
-
-<p>但,原本的JDiff有一个很大的问题,对中文支持不好.故,我改进了一下,放出一个版本(原版已经很久没用更新了)
-添加了一个配置,用于设置源码的编码encoding. 另外,我移除了对xerces.jar的依赖.</p>
-
-<p>现在可以在old或者new节点添加encoding=&ldquo;UTF-8&rdquo;之类的设置. 实例配置,请查看Nutz项目的build2.xml文件,地址: <a href="http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml">http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml</a></p>
-
-<p>我已经上传到Google Doc,需要的童鞋就下载吧.
-地址: <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hMjViMjBlMGEtMDlkMi00NjllLWE0MjctNmUxNWI3N2QzZjE2&amp;hl=zh_CN">jdiff-1.1.1-Modify-by-Wendal.zip</a></p>
-
-<p>附上对原版的修改:</p>
-
-<ol>
-<li>移除对xerces.jar的依赖,
-将XML2API中的代码:</li>
-</ol>
-
-  <div class="more">
-    <a href="/245.html" class="btn">read more..</a>
   </div>
 </div>
 
