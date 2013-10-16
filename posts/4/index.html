@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2012/1223.html">在Golang中获取func的名称</a> <span class="date">2012-12-23</span></h3>
+  <p>这个问题源之于群友SeanWu的一个提问</p>
+
+<h2>期望的效果</h2>
+
+<pre><code>func ABC() {
+}
+
+func GetFuncName(fn func()) string {
+    return //返回ABC
+}
+</code></pre>
+
+<h2>stackoverflow上的方法</h2>
+
+<p><a href="http://stackoverflow.com/questions/7052693/how-to-get-the-name-of-a-function-in-go">链接</a></p>
+
+<pre><code>func GetFunctionName(i interface{}) string {
+    return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1223.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2012/1221.html">Android中以root权限调用本地程序</a> <span class="date">2012-12-21</span></h3>
   <p>最近用到Android,需要执行一些本地程序,以前root机做过不少,但还没真正用Java代码调用过</p>
 
@@ -330,31 +358,6 @@ func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
 
   <div class="more">
     <a href="/linux/%E4%BB%8EWordPress%E8%BF%81%E7%A7%BB%E5%88%B0Ruhoh%E7%9A%84%E7%BB%8F%E9%AA%8C/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/linux/Ruhoh%2CNow%21/">Ruhoh,Now!</a> <span class="date">2012-11-06</span></h3>
-  <h2>正式转用Ruhoh静态博客引擎</h2>
-
-<ul>
-<li>wordpress贴code实在太痛苦,还要排版</li>
-<li>由于生成的是静态html,再也不必用神马php,世界清净了</li>
-</ul>
-
-<h2>博客内容完整迁移</h2>
-
-<ul>
-<li>很早就转用DISQUS,所以全部评论都完整保留</li>
-<li>博客文章,转为markdown格式后,使用fix_wp_id_permalink.go和cleanup_blank_line.go修正为原链接及清理空行</li>
-<li>本网站的源码存在github的<a href="http://github.com/wendal/wendal.net">wendal.net库</a></li>
-<li>前端使用nginx 1.2.4, 配合git hook实现自动更新(待完成)</li>
-</ul>
-
-<h2>启用80vps的香港机房,弃用vpsee</h2>
-
-  <div class="more">
-    <a href="/linux/Ruhoh%2CNow%21/" class="btn">read more..</a>
   </div>
 </div>
 

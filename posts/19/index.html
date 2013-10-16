@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/212.html">让Nginx的SSI支持相对路径--更安全的方法</a> <span class="date">2010-12-14 14:04:24</span></h3>
+  <p>这个比较老生长谈的问题,例如 文章 <a href="http://bbs.linuxtone.org/thread-6515-1-1.html">关于nginx的ssi</a>
+但,这种改法,实在不安全.毕竟全局的函数都被改了,任意的../../../都能被访问
+故,基于我对nginx的了解,使用另外一种改法,仅仅修改SSI模块,安全性相对较高
+修改src/http/modules/ngx_http_ssi_filter_module.c
+找到以下代码(以nginx 0.9.3版为例):</p>
+
+<pre><code>    if (ngx_http_parse_unsafe_uri(r, uri, &amp;args;, &amp;flags;) != NGX_OK) {
+        return NGX_HTTP_SSI_ERROR;
+    }
+</code></pre>
+
+<p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
+测试代码:
+文件1 &mdash; index.html</p>
+
+<pre><code>测试导入
+</code></pre>
+
+<p>文件2 &ndash; subdir/index.html</p>
+
+<p>访问subdir/index.html,测试通过!</p>
+
+  <div class="more">
+    <a href="/212.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/211.html">Jxl与WPS的一点点不兼容</a> <span class="date">2010-12-10 14:18:56</span></h3>
   <p>今天与同事探讨了一个诡异的问题,用Jxl处理一个空的excel文件,<strong>第二次</strong>运行就报错,代码如下:</p>
 
@@ -287,24 +316,6 @@ cp objs/nginx /usr/local/nginx/sbin/
 
   <div class="more">
     <a href="/138.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/135.html">一次不算太久的破解</a> <span class="date">2010-11-21 15:47:46</span></h3>
-  <p>经友人推荐,发现XMind的确很好用. 不过部分功能需要收费,忽然就感觉有点不爽,毕竟这号称开源软件啊!
-故今早动手破解,下午2点成功!
-但无意放出破解版,毕竟是优秀的商业软件,会阻碍其发展. <strong>仅本人使用!!</strong>
-这里仅简单说说我用到的工具软件:
-1. XMind 3.1.1破解版 &ndash; 这是国外破解的版本,给了我很大的启发!
-2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> &ndash; 反编译出源码,软件逻辑一目了然!
-3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> &ndash; 这软件堪称神器,直接改字节码!</p>
-
-<p>其实,我只是刚刚开始用XMind,还没使用其Pro的功能.但将近300元/year,实在是高!!
-我已经捐款给不少免费/开源项目,分别是我心目中的价位. 希望经过一段时间的使用,会发现XMind真正的价值!!</p>
-
-  <div class="more">
-    <a href="/135.html" class="btn">read more..</a>
   </div>
 </div>
 
