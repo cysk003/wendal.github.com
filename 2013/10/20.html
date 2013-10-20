@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面</title>
+    <title>让redis支持动态库</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,79 +78,116 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>Linux下通过CiscoAnyConnectVPN访问Windows远程桌面 </h1>
+  <h1>让redis支持动态库 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>Cisco的AnyConnect产品,好多大公司都在用,但貌似木有官方的Linux客户端(如果你有,请提供链接,无比感谢)</p>
+    <h1>So, let&rsquo;s put some fun in redis</h1>
 
-<h2>首先,需要一个开源的客户端openconnect</h2>
+<p>redis的命令列表是写死在代码里面,编译后就没法修改(跟nginx一个德行)</p>
 
-<pre><code>#部分Linux发行版中有预编译版,但毕竟老
-#应该也能用,没试过  yum install openconnect
-
-wget ftp://ftp.infradead.org/pub/openconnect/openconnect-4.07.tar.gz
-tar xvf openconnect-4.07.tar.gz
-cd openconnect-4.07
-./configure
-make
+<pre><code>
 </code></pre>
 
-<h2>得到编译好的openconnect后, 连接服务器</h2>
+<h1>硬编码一些额外的方法到redis中</h1>
 
-<pre><code>#root权限哦, 或者能添加tun的帐户也行
-./openconnect vpn.wendal.net
-#提示如下:
-Attempting to connect to 124.99.99.99:443
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/
-Got HTTP response: HTTP/1.0 302 Object Moved
-SSL negotiation with vpn.wendal.net
-Connected to HTTPS on vpn.wendal.net
-GET https://vpn.wendal.net/+webvpn+/index.html
-Please enter your username and password.
-username: #输入帐户
-password: #输入密码
+<p>最初写的一个hello world级的测试命令</p>
 
-#当然,你可以先指定user和password咯
-./openconnect -u wendal -p wendal vpn.wendal.net
+<pre><code>void wendalCommand(redisClient *c) {
+    struct timeval tv;           // 从timeCommand拷贝的...
+    addReplyMultiBulkLen(c,3);   // 共返回3个结果
+    addReplyBulkCString(c, &quot;Hi,Wendal&quot;); // 输出个字符串啦
+    gettimeofday(&amp;tv,NULL);              // 获取时间, 也是从timeCommand拷贝的
+    addReplyBulkLongLong(c,tv.tv_sec);   // 不解释了
+    addReplyBulkLongLong(c,tv.tv_usec);  // 不解释了
+}
 </code></pre>
 
-<h2>登陆成功后, 查看本地地址</h2>
+<p>然后在redisCommandTable中声明一个新的命令,就搞定了</p>
 
-<pre><code>ifconfig tun0
+<pre><code>{&quot;wendal&quot;, wendalCommand,1,&quot;rR&quot;,0,NULL,0,0,0,0,0}
 </code></pre>
 
-<h2>接下来,就是远程桌面了</h2>
+<h1>做得更灵活?上动态库,哈哈</h1>
 
-<pre><code>#安装rdesktop
-yum install -y rdesktop
-./rdesktop -z win.wendal.net
-#哈哈,你能看到界面了吗? 输入帐户密码就可以登陆了
+<p>so,我声明了2个新的命令, 加载/卸载动态库</p>
 
-#-z是压缩参数
-#还可以指定用户名和密码实现自动登陆
+<pre><code>    {&quot;loadlib&quot;,loadlibCommand,2,&quot;wmaR&quot;,0,NULL,0,0,0,0,0},
+    {&quot;unloadlib&quot;,unloadlibCommand,2,&quot;wmaR&quot;,0,NULL,0,0,0,0,0}
 </code></pre>
 
-<h2>看看成果</h2>
+<p>其中, 加载动态库,就是接受一个路径,并执行其redis_lib_init方法</p>
 
-<p><img src="/assets/media/2012/12/vpn_remote_desktop.jpg"></p>
+<pre><code>// 简化版的loadlibCommand
+void loadlibCommand(redisClient *c) {
+    void *handle;
+    char *error;
+    int (*redis_lib_init)(redisClient*, dict*);
+    int re;
+    
+    handle = dlopen(c-&gt;argv[1]-&gt;ptr, RTLD_LAZY);
+    if (!handle) {
+        addReplyError(c, dlerror());
+        return;
+    }
+    redis_lib_init = dlsym(handle, &quot;redis_lib_init&quot;); // 查找redis_lib_init
+    if ((error = dlerror()) != NULL)  {
+        dlclose(handle);
+        addReplyError(c, error);
+        return;
+    }
+    re = redis_lib_init(c, server.commands); // 执行之, 返回0就成功
+    if (re) {
+        dlclose(handle);
+        addReplyError(c, &quot;lib init error&quot;);
+        return;
+    }
+    addReply(c,shared.ok);
+    server.dirty ++;                        // 使dirty自增,这样就能同步到slave了
+}
+</code></pre>
+
+<h1>redis动态库示例</h1>
+
+<p>禁用flushdb命令</p>
+
+<pre><code>#include &lt;redis.h&gt;
+
+static void* flushdb;
+
+extern int redis_lib_init(redisClient *c) {
+    flushdb = dictFetchValue(server.commands, sdsnew(&quot;FLUSHDB&quot;)); // 命令列表就是server.commands中,一个dict
+    if (!flushdb) return 1; // 找不到? 被其他库删掉了?
+    dictDeleteNoFree(server.commands, sdsnew(&quot;FLUSHDB&quot;)); // 删除但不要执行free
+    return 0;
+}
+
+extern void redis_lib_depose(redisClient *c) {
+    dictAdd(server.commands, sdsnew(&quot;FLUSHDB&quot;), flushdb); // 卸载的时候就赋值回去,呵呵
+    return;
+}
+</code></pre>
+
+<h1>项目地址</h1>
+
+<p><a href="https://raw.github.com/wendal/redis_plugins">https://raw.github.com/wendal/redis_plugins</a></p>
+
+<p><a href="https://raw.github.com/wendal/redis">https://raw.github.com/wendal/redis</a></p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2013/0108.html" title="Nutz福利之轻功">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2012/1224.html" title="在Golang中获取系统的磁盘空间内存占用">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/10/15.html" title="perth归来">Next &rarr;</a></li>
           
           
         </ul>
@@ -176,7 +213,7 @@ yum install -y rdesktop
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2012-12-24</span></div>
+    <div class="date"><span>2013-10-20</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -191,7 +228,7 @@ yum install -y rdesktop
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#AnyConnect-ref">AnyConnect <span>1</span></a>
+  <a href="/tags/#redis-ref">redis <span>2</span></a>
 </li>
     
     </ul>

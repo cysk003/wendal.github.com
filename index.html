@@ -91,6 +91,36 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2013/10/20.html">让redis支持动态库</a> <span class="date">2013-10-20</span></h3>
+
+  <h1>So, let&rsquo;s put some fun in redis</h1>
+
+<p>redis的命令列表是写死在代码里面,编译后就没法修改(跟nginx一个德行)</p>
+
+<pre><code>
+</code></pre>
+
+<h1>硬编码一些额外的方法到redis中</h1>
+
+<p>最初写的一个hello world级的测试命令</p>
+
+<pre><code>void wendalCommand(redisClient *c) {
+    struct timeval tv;           // 从timeCommand拷贝的...
+    addReplyMultiBulkLen(c,3);   // 共返回3个结果
+    addReplyBulkCString(c, &quot;Hi,Wendal&quot;); // 输出个字符串啦
+    gettimeofday(&amp;tv,NULL);              // 获取时间, 也是从timeCommand拷贝的
+    addReplyBulkLongLong(c,tv.tv_sec);   // 不解释了
+    addReplyBulkLongLong(c,tv.tv_usec);  // 不解释了
+}
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2013/10/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/10/15.html">perth归来</a> <span class="date">2013-10-15</span></h3>
 
   <h2>其实已经回国几天了,但群里的狼友依然很high</h2>
@@ -443,34 +473,6 @@ with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输�
 
   <div class="more">
     <a href="/2013/07/03.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/07/02.html">微信公众平台开发小结</a> <span class="date">2013-07-02</span></h3>
-
-  <p>只讨论低权限帐号,高端帐号请绕道&hellip;</p>
-
-<h2>能做什么?不能做什么?</h2>
-
-<p>应答机,自主查询机都能做,但由于没法主动推送(除非你能拿到很高的权限),所以呢,什么预警系统的,一时半刻做不了</p>
-
-<h2>机制</h2>
-
-<h1>基本流程</h1>
-
-<pre><code>用户发信息  --&gt;微信服务器--&gt;我们的服务器
-
-用户显示信息&lt;--微信服务器&lt;--
-
-#如果是图文信息,就有额外的通信
-
-用户访问图文--&gt;我们的服务器
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/07/02.html" class="btn">read more..</a>
   </div>
 </div>
 

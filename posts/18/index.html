@@ -80,6 +80,49 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/228.html">Nginx不同编译选项得到的二进制文件大小对比</a> <span class="date">2011-01-17 19:45:47</span></h3>
+  <p>Nginx信息:
+版本: 0.9.3
+对原版的修改, 将auto/cc/gcc的-g去掉,将-O改为-O2
+附上原始数据,比较长:</p>
+
+<pre><code>#默认编译
+./configure
+make
+ll objs/nginx
+make clean
+#File size 525556
+#--with-cc-opt=-g 2444312
+#--with-cc-opt=-g --with-debug 2513996
+
+#加载大部分可选模块
+./configure --with-http_ssl_module \
+        --with-http_realip_module \
+        --with-http_addition_module \
+        --with-http_xslt_module \
+        --with-http_sub_module \
+        --with-http_dav_module \
+        --with-http_flv_module \
+        --with-http_gzip_static_module \
+        --with-http_random_index_module \
+        --with-http_secure_link_module \
+        --with-http_degradation_module \
+        --with-http_stub_status_module \
+        --with-http_perl_module
+make &gt; /dev/null
+ll objs/nginx
+make clean
+#File size 642031
+#--with-cc-opt=-g 4557807
+#--with-cc-opt=-g --with-debug 4689478
+</code></pre>
+
+  <div class="more">
+    <a href="/228.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/227.html">WP-Codebox乱码问题</a> <span class="date">2011-01-10 22:05:52</span></h3>
   <p>以前就发现代码高亮插件WP-Codebox在IE下乱码,且行号会分行,可惜CSS水平一直有限,一直未能修正.</p>
 
@@ -295,26 +338,6 @@ cd mysql-5.5.8</p></li>
 
   <div class="more">
     <a href="/217.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
-  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug &ndash; <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
-
-<p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
-
-<p>找到以下代码:</p>
-
-<pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
-</code></pre>
-
-<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 &ndash; mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
-
-<p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
-
-  <div class="more">
-    <a href="/214.html" class="btn">read more..</a>
   </div>
 </div>
 

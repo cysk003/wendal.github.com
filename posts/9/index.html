@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/399.html">登录入口的一个小小的细节,HttpSession.setAttribute的调用顺序</a> <span class="date">2012-03-14 21:23:40</span></h3>
+  <p>今天与zozoh的交谈中,又把这个问题提了一下. 就是登录代码中,Session处于一个不可靠的状态.</p>
+
+<p>这里用NutzMVC的代码来演示,但并不代表是nutz的问题,而是J2EE都面对的问题(PS: 如果你使用了SpringSecurity等安全框架,则可能它已经帮你出来了这个问题)</p>
+
+<pre><code>//登录入口方法
+public View login(String userName, String passwd, HttpSession session) {
+    session.setAttribute(&quot;me&quot;, user); //当代码运行到这里,会话中已经存在me这个attr
+    session.setAttribute(&quot;rule&quot;, rule);
+    return new JspView(&quot;/index.jsp&quot;);
+}
+
+//登录后才能访问的入口方法
+@Filters(@By(type = CheckSession.class, args = {&quot;me&quot;, &quot;/&quot;})) //已经HttpSession中已经包含me这个attr,所以,这个过滤器会判定为已经登录
+public Object xxx(HttpSession session) {
+    Rule myRule = session.get(&quot;rule&quot;); //由于已经被@Filters标注,所以方法会认为会话是已经完整初始化的
+    // .... ... .. 
+}
+</code></pre>
+
+<p>也就是说, HttpSession在登录入口方法完成前,处于一个不可靠的状态 &ndash; 对于检测是否登录的代码来说,这个会话是已经登录的,但事实上这个会话并未完成逻辑上的初始化.
+当恶意进行类似的访问(多线程),那么其他入口方法要么报NPE,要么执行不可预测的逻辑.如果入口方法需要设置多个attr,那么HttpSession将处于多个不同的半初始化状态.</p>
+
+  <div class="more">
+    <a href="/399.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/397.html">图,是一种表态</a> <span class="date">2012-03-14 09:06:57</span></h3>
   <p><img src="/assets/media/2012/03/p_large_7rdv_2c51000037bc1263.jpg"></img></p>
 
@@ -304,37 +333,6 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 
   <div class="more">
     <a href="/372.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/371.html">JActor最简单试用</a> <span class="date">2012-02-12 23:59:41</span></h3>
-  <p>发现网上连一篇简单的入门都没有,我晕啊&hellip; 折腾了一下,终于变菜鸟了,把官方例子注释一下给大家了解一下</p>
-
-<p>共需要3个类</p>
-
-<pre><code>import org.agilewiki.jactor.bind.SynchronousRequest;
-public class Hi extends SynchronousRequest&lt;string&gt; {}
-// 我觉得就是一个消息对象, 传递给Greeter类里面的synchronousProcessRequest方法,可以携带任意信息啦
-
-//忽略import
-public class Greeter extends Component {
-
-    public void bindery() throws Exception {
-
-        //这里绑定Hi对象的处理逻辑
-        thisActor.bind(Hi.class.getName(), new SynchronousMethodBinding&lt;Hi, String&gt;() {
-            @Override
-            //一个处理方法,执行实际操作
-            public String synchronousProcessRequest(Internals internals, Hi request) throws Exception {
-                //这个request,就是外部传入的Hi实例
-                return &quot;Hello world!&quot;; //还有无返回值的形式
-            }
-        });
-</code></pre>
-
-  <div class="more">
-    <a href="/371.html" class="btn">read more..</a>
   </div>
 </div>
 
