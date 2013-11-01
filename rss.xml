@@ -2,7 +2,7 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>01 Nov 13 11:09 +0800</pubDate>
+    <pubDate>01 Nov 13 11:14 +0800</pubDate>
     <item>
       <title>让redis支持动态库</title>
       <link>http://wendal.net/2013/10/20.html</link>
