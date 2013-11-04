@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/10/28.html">北京几张图</a> <span class="date">2013-10-28</span></h3>
+  <p>飞机着陆</p>
+
+<p><img src="/assets/media/2013/10/28/IMG_0857.JPG" /></p>
+
+<p>北京第一餐 &ndash; 脑残酸菜撸肉面</p>
+
+<p><img src="/assets/media/2013/10/28/IMG_0935.JPG" /></p>
+
+<p>灰太狼大平卖 &ndash; 只要9毛9!!</p>
+
+<p><img src="/assets/media/2013/10/28/IMG_0954.JPG" /></p>
+
+<p>后海 &ndash; Three-Person</p>
+
+<p><img src="/assets/media/2013/10/28/IMG_1723.JPG" /></p>
+
+<p>离开北京那天, 灰霾爆表了</p>
+
+<p><img src="/assets/media/2013/10/28/IMG_2007.JPG" /></p>
+
+  <div class="more">
+    <a href="/2013/10/28.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/10/20.html">让redis支持动态库</a> <span class="date">2013-10-20</span></h3>
   <h1>So, let&rsquo;s put some fun in redis</h1>
 
@@ -399,46 +426,6 @@ plughw:CARD=I82801AAICH,DEV=0
 
   <div class="more">
     <a href="/2013/07/04.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/07/03.html">py2exe练手</a> <span class="date">2013-07-03</span></h3>
-  <p>受老同学所托,写了个字符串抽样的东西(就是N个字符串抽取固定的几个),代码如下:</p>
-
-<pre><code>#!python
-# -*- coding: UTF-8 -*-
-
-import os.path
-import time
-import sys
-import itertools 
-import random
-
-if not os.path.exists(&quot;numbers.txt&quot;) :
-    print u&quot;没找到数据文件 numbers.txt&quot;
-    time.sleep(5)
-    sys.exit()
-
-with open(&quot;numbers.txt&quot;) as f :
-    d = str(f.read())
-
-#print d
-numbs = d.split(&quot;,&quot;)
-#print numbs, u&quot;长度&quot; ,len(numbs)
-
-re = itertools.combinations(numbs, 5) #内置的一个库,so easy
-re = list(re)
-random.shuffle(re)                    #把顺序打乱,哈哈
-
-with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输出为csv文件
-    for p in re :
-        f.write(', '.join(str(x) for x in p))
-        f.write(&quot;\n&quot;)
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/07/03.html" class="btn">read more..</a>
   </div>
 </div>
 

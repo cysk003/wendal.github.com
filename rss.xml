@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>01 Nov 13 11:14 +0800</pubDate>
+    <pubDate>04 Nov 13 10:09 +0800</pubDate>
+    <item>
+      <title>北京几张图</title>
+      <link>http://wendal.net/2013/10/28.html</link>
+      <pubDate>2013-10-28 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;飞机着陆&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/10/28/IMG_0857.JPG&#34; /&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;北京第一餐 &amp;ndash; 脑残酸菜撸肉面&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/10/28/IMG_0935.JPG&#34; /&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;灰太狼大平卖 &amp;ndash; 只要9毛9!!&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/10/28/IMG_0954.JPG&#34; /&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;后海 &amp;ndash; Three-Person&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/10/28/IMG_1723.JPG&#34; /&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;离开北京那天, 灰霾爆表了&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/10/28/IMG_2007.JPG&#34; /&gt;&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>让redis支持动态库</title>
       <link>http://wendal.net/2013/10/20.html</link>

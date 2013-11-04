@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/400.html">如何阅读Nutz的源码</a> <span class="date">2012-03-19 22:50:37</span></h3>
+  <p>一直以来都有很多人问,我一直以来就有一个简单直接的回答:
+&ldquo;看你喜欢看的模块&rdquo;</p>
+
+<p>今天,我决定用长一点的篇幅及内容来解释一下</p>
+
+<p><strong>Nutz的基础设施 &ndash; Lang/Castor/Json/Log/Plugin</strong>
+所有模块都是无约束地使用这个几个package所提供的方法
+&ndash;Lang,提供的是帮助方法,各种各样的,其名字来源于对java.lang包的补充. 注意,其中的Mirror类封装了大量的反射,但请不要再以JDK1.2的思维去想象反射的性能!!
+&ndash;Castor,负责类型转换, 例如String&ndash;&gt;List
+&ndash;Json,一个基本完整(不解析科学计数),Json字符串与Java对象的互转实现
+&ndash;Log,日志接口,Nutz的代码,在运行时并不强制依赖具体的日志实现,这个package就是做了封装
+&ndash;Plugin,插件模块,最初的设计是为了一套简单的插件机制,现在仅Log模块在使用,意义已经不大
+建议重点关注的类/接口:
+Mirror Castors Json Lang Files Streams Log Log4jLogAdapter SimplePluginManager MultiLineProperties</p>
+
+<p><strong>反向注入/依赖注入 &ndash; Ioc</strong>
+由于Spring的横行,许多童鞋连Ioc的基本原理都已经忘掉了
+IocLoader负责加载配置信息(如js,注解)
+Ioc(NutIoc)按配置信息生成具体对象(bean)
+IocContext按配置信息管理bean的生命周期(create/fetch/depose)</p>
+
+  <div class="more">
+    <a href="/400.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/399.html">登录入口的一个小小的细节,HttpSession.setAttribute的调用顺序</a> <span class="date">2012-03-14 21:23:40</span></h3>
   <p>今天与zozoh的交谈中,又把这个问题提了一下. 就是登录代码中,Session处于一个不可靠的状态.</p>
 
@@ -297,42 +325,6 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 
   <div class="more">
     <a href="/375.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/372.html">Ngqa -- 不单单是一个QA系统</a> <span class="date">2012-02-19 13:34:02</span></h3>
-  <p>项目地址: <a href="https://github.com/howe/ngqa">https://github.com/howe/ngqa</a></p>
-
-<p>使用了 Nutz, Nutz-mongo, Nutz-web, Nutz-socialauth &hellip;</p>
-
-<p>这项目的最初目的是为Nutz搭建一个完整好玩的QA系统,现在的作用远大于此:</p>
-
-<ol>
-<li>Nutz-socialauth, 是本项目的其中一个亮点 &ndash; 支持30种以上的社会化登录(OpenId), 号称国内第一, 率先github这个专业程序员必备网站</li>
-<li>完整可用的Demo &ndash; Nutz长期被投诉的重点,没一个完整可运行的,持续更新并提供支持的demo. 这个项目就突破这个问题,将包含足够丰富的注释及使用范例</li>
-<li>作为一个QA系统,将有效积累Nutz的FAQ库</li>
-<li>激活Nutz社区 &ndash; 作为一个公开的项目,在开发的过程中,Nutzer们参与进来,动手把项目运行起来</li>
-</ol>
-
-<p>项目设计, 采用OpenAPI的思想, 网站页面,只是其中一个表现方式,开发完成后,将配备SDK,方便客户端扩展</p>
-
-<p>其中一个核心就是SmartView,根据访问地址的后缀来判断需要执行的视图,而非固定的配置为一种视图,示例代码:</p>
-
-<pre><code>    public void render(HttpServletRequest req, HttpServletResponse resp,
-            Object obj) throws Throwable {
-        String uri = req.getRequestURI();
-        if (uri.endsWith(&quot;.json&quot;))
-            new AjaxView().render(req, resp, obj);
-        else if (uri.endsWith(&quot;.rss&quot;))
-            new RssView().render(req, resp, obj);
-        else
-            new JspView(viewValue).render(req, resp, obj); //这里默认跑jsp
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/372.html" class="btn">read more..</a>
   </div>
 </div>
 
