@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>初试Jetty使用Mongodb作为Session管理器</title>
+    <title>pcduino报告</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,71 +78,57 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>初试Jetty使用Mongodb作为Session管理器 </h1>
+  <h1>pcduino报告 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>闲话少说,直接上代码:</p>
+    <h2>先上个图, 399大洋的货物</h2>
 
-<pre><code>package net.wendal.jetty.mongodb;
+<p><img src="/assets/media/2013/12/08/pcduino_1.jpg" /></p>
 
-import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
-import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.SessionManager;
-import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.webapp.WebAppContext;
+<p>5V2A供电, 带USB,hdmi,tf卡槽,wifi,及最有特殊的类arduino接口</p>
 
-public abstract class TestMongodb4Jetty {
+<h2>功能</h2>
 
-    public static void main(String[] args) throws Throwable {
-        Server server = new Server(9090);
-        WebAppContext webAppContext = new WebAppContext();
-        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
-        MongoSessionManager msm = new MongoSessionManager();
-        SessionHandler sessionHandler = new SessionHandler();
-        sessionHandler.setSessionManager(msm);
-        webAppContext.setSessionHandler(sessionHandler);
-        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
-        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
-        idMgr.setScavengeDelay(60);
-        msm.setSessionIdManager(idMgr);
-        server.setHandler(webAppContext);
-        server.start();
-    }
-}
-</code></pre>
+<p>抛开arduino接口,pcduino就是一个单纯的A10开发板,跑linux和Android都没任何问题,这是全志A10提供的基本功能了</p>
 
-<p>启动mongod,启动jetty,访问登录页面,登录,看到后台的log</p>
+<p>其arduino接口, 源于A10芯片自带的gpio/pwm等针脚,在linux层做了一个libarduino.so,适配arduino源码</p>
 
-<pre><code>2011-09-26 23:12:37,470 MongoSessionManager:save:org.eclipse.jetty.nosql.NoSqlSession:wendal-mongodb-worker426chatn2460pobw6a4a6m14@1179468258
-2011-09-26 23:12:37,473 MongoSessionManager:save:db.sessions.update({ &quot;id&quot; : &quot;wendal-mongodb-worker426chatn2460pobw6a4a6m14&quot; , &quot;valid&quot; : true},{ &quot;$inc&quot; : { &quot;context.::*.__metadata__.version&quot; : 1} , &quot;$set&quot; : { &quot;accessed&quot; : 1317049954912 , &quot;context.::*.org%2Enutz%2Equickstart%2Eauth%2Ebean%2EUser&quot; : &lt;Binary Data&gt;}},true)
-</code></pre>
+<p>通过其<a href="https://github.com/pcduino/c_enviroment">pcduino c_enviroment</a>,可兼容arduino源文件,本质上就是个普通的C库.
+使用其Makefile改造一下,可以实现跨平台编译,而不需要使用arduino ide(与eclipse相比真是烂得可以)</p>
 
-<p>可以看到,默认情况下,使用的是标准的Java序列化,效率当然是不太高的了,呵呵</p>
+<p>在QQ群中,很多人以为pcduino能直接跑编译好的arduino程序,而非把它当成linux+arduino库来看待.</p>
 
-<p>打开mongodb控制台,敲入下面的命令,也能看到登录后的session信息</p>
+<h2>arduino接口的细节</h2>
 
-<pre><code>use HttpSessions
-db.sessions.find()
-</code></pre>
+<ul>
+<li>提供一个UART接口。</li>
+<li>引出6个ADC。ADC0和ADC1是6bit的ADC分辨率，其余的都是10bit的ADC分辨率。</li>
+<li>提供2个硬件PWM，能支持最大24MHz的PWM。</li>
+<li>提供14个GPIO。</li>
+<li>提供一个I2C接口。</li>
+<li>提供一个SPI接口。</li>
+<li>有5V,3.3V输出</li>
+</ul>
 
-<p>So esay!! 不过,也用掉了我2个小时,呵呵!!</p>
+<h2>性价比</h2>
+
+<p>单单从板子的配置看,性价比不高, 其最大卖点就是提供了arduino库及对应的针脚</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/330.html" title="在Linux下编译Qt Libs -- 能不能快点呢?!">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/325.html" title="不走寻常路--NutzCP初版">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/10/28.html" title="北京几张图">Next &rarr;</a></li>
           
           
         </ul>
@@ -168,14 +154,10 @@ db.sessions.find()
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2011-09-26 23:03:32</span></div>
+    <div class="date"><span>2013-10-28</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
-    
-      <li>
-  <a href="/categories/#Java-ref">Java <span>95</span></a>
-</li>
     
       <li>
   <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>25</span></a>
@@ -187,31 +169,15 @@ db.sessions.find()
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#Eclipse-ref">Eclipse <span>12</span></a>
+  <a href="/tags/#linux-ref">linux <span>5</span></a>
 </li>
     
       <li>
-  <a href="/tags/#el-ref">el <span>68</span></a>
+  <a href="/tags/#pcduino-ref">pcduino <span>1</span></a>
 </li>
     
       <li>
-  <a href="/tags/#io-ref">io <span>80</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#Java-ref">Java <span>55</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#mongodb-ref">mongodb <span>4</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#Nutz-ref">Nutz <span>60</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+  <a href="/tags/#a10-ref">a10 <span>1</span></a>
 </li>
     
     </ul>

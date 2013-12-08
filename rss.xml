@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>04 Nov 13 11:01 +0800</pubDate>
+    <pubDate>08 Dec 13 20:55 +0800</pubDate>
+    <item>
+      <title>pcduino报告</title>
+      <link>http://wendal.net/2013/12/08.html</link>
+      <pubDate>2013-10-28 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;先上个图, 399大洋的货物&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2013/12/08/pcduino_1.jpg&#34; /&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;5V2A供电, 带USB,hdmi,tf卡槽,wifi,及最有特殊的类arduino接口&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;功能&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;抛开arduino接口,pcduino就是一个单纯的A10开发板,跑linux和Android都没任何问题,这是全志A10提供的基本功能了&lt;/p&gt;&#xA;&#xA;&lt;p&gt;其arduino接口, 源于A10芯片自带的gpio/pwm等针脚,在linux层做了一个libarduino.so,适配arduino源码&lt;/p&gt;&#xA;&#xA;&lt;p&gt;通过其&lt;a href=&#34;https://github.com/pcduino/c_enviroment&#34;&gt;pcduino c_enviroment&lt;/a&gt;,可兼容arduino源文件,本质上就是个普通的C库.&#xA;使用其Makefile改造一下,可以实现跨平台编译,而不需要使用arduino ide(与eclipse相比真是烂得可以)&lt;/p&gt;&#xA;&#xA;&lt;p&gt;在QQ群中,很多人以为pcduino能直接跑编译好的arduino程序,而非把它当成linux+arduino库来看待.&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;arduino接口的细节&lt;/h2&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;提供一个UART接口。&lt;/li&gt;&#xA;&lt;li&gt;引出6个ADC。ADC0和ADC1是6bit的ADC分辨率，其余的都是10bit的ADC分辨率。&lt;/li&gt;&#xA;&lt;li&gt;提供2个硬件PWM，能支持最大24MHz的PWM。&lt;/li&gt;&#xA;&lt;li&gt;提供14个GPIO。&lt;/li&gt;&#xA;&lt;li&gt;提供一个I2C接口。&lt;/li&gt;&#xA;&lt;li&gt;提供一个SPI接口。&lt;/li&gt;&#xA;&lt;li&gt;有5V,3.3V输出&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&lt;h2&gt;性价比&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;单单从板子的配置看,性价比不高, 其最大卖点就是提供了arduino库及对应的针脚&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>北京几张图</title>
       <link>http://wendal.net/2013/10/28.html</link>

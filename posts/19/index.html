@@ -80,6 +80,28 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/218.html">禁用/消除 MySQL客户端的报警声</a> <span class="date">2010-12-17 14:49:58</span></h3>
+  <p>有时候需要用MySQL客户端导入sql文件,一不小心就容易出错,然后就是一段刺耳的报警声,很是烦人!
+Google一下,发现2种方法</p>
+
+<ol>
+<li><p><a href="http://hi.baidu.com/abunchofgrape/blog/item/7211bd510a83485b1138c22c.html">直接在服务器端禁用</a></p>
+
+<p>[mysql]
+no-beep
+#&hellip;. other configure</p></li>
+
+<li><p>或者仅仅在本地使用mysql客户端时禁用,执行命令时多加一个参数 -b</p>
+
+<p>mysql -p -u root -b</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/218.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
   <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
 
@@ -269,35 +291,6 @@ No shared spaces configured.
 
   <div class="more">
     <a href="/197.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
-  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
-
-<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
-启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
-
-<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
-org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
-    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
-    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
-    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
-    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
-</code></pre>
-
-<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
-再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
-没办法，出我的绝招，看源码/反编译！
-研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
-最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
-
-<pre><code>hibernate.default_schema=ALFRESCO
-</code></pre>
-
-  <div class="more">
-    <a href="/191.html" class="btn">read more..</a>
   </div>
 </div>
 
