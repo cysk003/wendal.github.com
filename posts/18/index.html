@@ -80,6 +80,49 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/233.html">Hibernate的ConnectionProvider是怎么一回事?</a> <span class="date">2011-01-28 14:28:12</span></h3>
+  <p>这次讨论一下Hibernate的ConnectionProvider接口, 因为我看到某些Hibernate项目是这样配置的:</p>
+
+<pre><code>&lt;property name=&quot;c3p0.min_size&quot;&gt;5&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_size&quot;&gt;30&lt;/property&gt;
+&lt;property name=&quot;c3p0.time_out&quot;&gt;1800&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_statement&quot;&gt;50&lt;/property&gt;
+</code></pre>
+
+<p>问题是, 这样就配置好了吗? hibernate.connection.provider_class到底需不需要呢?
+来看看Hibernate 3.3.2 GA的源码
+ConnectionProviderFactory类的newConnectionProvider方法.</p>
+
+<pre><code>public static ConnectionProvider newConnectionProvider(Properties properties, Map connectionProviderInjectionData) throws HibernateException {
+    ConnectionProvider connections;
+    String providerClass = properties.getProperty(Environment.CONNECTION_PROVIDER);
+    if ( providerClass!=null ) {
+        try {
+            log.info(&quot;Initializing connection provider: &quot; + providerClass);
+            connections = (ConnectionProvider) ReflectHelper.classForName(providerClass).newInstance();
+        }
+        catch ( Exception e ) {
+            log.error( &quot;Could not instantiate connection provider&quot;, e );
+            throw new HibernateException(&quot;Could not instantiate connection provider: &quot; + providerClass);
+        }
+    }
+    else if ( properties.getProperty(Environment.DATASOURCE)!=null ) {
+        connections = new DatasourceConnectionProvider();
+    }
+    else if ( properties.getProperty(Environment.URL)!=null ) {
+        connections = new DriverManagerConnectionProvider();
+    }
+    else {
+        connections = new UserSuppliedConnectionProvider();
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/233.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/232.html">系统变量file.encoding对Java的运行影响有多大?</a> <span class="date">2011-01-27 20:06:27</span></h3>
   <p>这个话题来自: Nutz的<a href="http://code.google.com/p/nutz/issues/detail?id=361">issue 361</a></p>
 
@@ -323,34 +366,6 @@ additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot
 
   <div class="more">
     <a href="/220.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/219.html">Log4j 分级输出</a> <span class="date">2010-12-20 12:18:12</span></h3>
-  <p>一直以来,我都以为Log4j仅能配置输出日志的最低等级,不能限定只输出某一/某些特定等级,今天,无意中发现了其实是可以的.
-先上一份普通的log4j.properties</p>
-
-<pre><code>log4j.rootLogger=INFO, Console, File
-
-###### Console appender definition #######
-log4j.appender.Console=org.apache.log4j.ConsoleAppender
-log4j.appender.Console.layout=org.apache.log4j.PatternLayout
-log4j.appender.Console.layout.ConversionPattern=%d{ABSOLUTE} %x %-5p [%c{3}] %m%n
-
-###### File appender definition #######
-log4j.appender.File=org.apache.log4j.DailyRollingFileAppender
-log4j.appender.File.File=alfresco.log
-log4j.appender.File.Append=true
-log4j.appender.File.DatePattern='.'yyyy-MM-dd
-log4j.appender.File.layout=org.apache.log4j.PatternLayout
-log4j.appender.File.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c] %m%n
-</code></pre>
-
-<p>现在需要定义一个名为File2的appender ,仅记录INFO和ERROR,哈哈,有请Log4j的Filter</p>
-
-  <div class="more">
-    <a href="/219.html" class="btn">read more..</a>
   </div>
 </div>
 

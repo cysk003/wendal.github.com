@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/457.html">简单好用的sshfs -- 通过ssh映射远程路径</a> <span class="date">2012-09-26 08:52:25</span></h3>
+  <p>最近习惯性访问N个Linux机器,在不同机器间跳来跳去,很是麻烦,最终,找到了sshfs,可以把远程目录直接映射到本地,无需修改远程机器的设置,仅要求有ssh连接的权限(ssh都没有的话,还能干啥?!~!)</p>
+
+<p>官网地址: <a href="http://fuse.sourceforge.net/sshfs.html">http://fuse.sourceforge.net/sshfs.html</a></p>
+
+<p>安装:</p>
+
+<pre><code>#如果是ubuntu
+apt-get install sshfs
+#如果是Fedore
+yum install fuse-sshfs
+#如果是CentOS,貌似只能自己安装了
+wget http://nchc.dl.sourceforge.net/project/fuse/sshfs-fuse/2.4/sshfs-fuse-2.4.tar.gz
+tar xvf sshfs-fuse-2.4.tar.gz
+cd sshfs-fuse-2.4
+./configure
+#如果缺glib2什么的,就自行装上
+make install
+</code></pre>
+
+<p>先看看选项:</p>
+
+  <div class="more">
+    <a href="/457.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/454.html">在Android中运行go程序(Golang 1.0.2, ARM 6)</a> <span class="date">2012-08-31 22:14:37</span></h3>
   <p>原本以为很简单的,网上一堆什么5g啊5l啊, 下载go 1.0.2才发现, 我去,根本就没有5g和5l</p>
 
@@ -338,15 +366,6 @@ func main() {
 
   <div class="more">
     <a href="/434.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/429.html">北京之行,就上一张图吧</a> <span class="date">2012-06-01 10:19:17</span></h3>
-  <p><img src="/assets/media/2012/06/6f91c323jw1dtdb6o9986j.jpg">Nutz的代码就是这么来滴~~~~</img></p>
-
-  <div class="more">
-    <a href="/429.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -80,7 +80,31 @@
         
 
 <div class="post">
-  <h3 class="title"><a href="/2013/12/08.html">pcduino报告</a> <span class="date">2013-10-28</span></h3>
+  <h3 class="title"><a href="/2013/12/15.html">为pcduino编译内核</a> <span class="date">2013-12-15</span></h3>
+  <h2>软件环境</h2>
+
+<ul>
+<li>lubuntu 13.10 amd64版 / Ubuntu Server 13.10 amd64版</li>
+<li>虚拟机20G硬盘,1G内存</li>
+</ul>
+
+<p>为这篇教程,我全新安装多次lubuntu/ubuntu,验证过每个命令,保证能编译出一个能用的内核</p>
+
+<h2>安装依赖的库/工具</h2>
+
+<p>打开控制台,执行</p>
+
+<pre><code>sudo apt-get install -y g++-arm-linux-gnueabihf vim make u-boot-tools libusb-1.0-0-dev openssh-server pkg-config
+sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-dev lib32stdc++6 curl wget ncurses-dev
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/12/15.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/2013/12/08.html">pcduino报告</a> <span class="date">2013-12-08</span></h3>
   <h2>先上个图, 399大洋的货物</h2>
 
 <p><img src="/assets/media/2013/12/08/pcduino_1.jpg" /></p>
@@ -386,55 +410,6 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
   <div class="more">
     <a href="/2013/08/09.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/07/25.html">Ubuntu12.04下asoundrc不起效</a> <span class="date">2013-07-25</span></h3>
-  <p>因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子</p>
-
-<p>最后,终于发现这个痕迹</p>
-
-<pre><code>wendal@ubuntu:~$ aplay -L
-default
-    Playback/recording through the PulseAudio sound server
-sysdefault:CARD=I82801AAICH
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Default Audio Device
-front:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Front speakers
-surround40:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    4.0 Surround output to Front and Rear speakers
-surround41:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    4.1 Surround output to Front, Rear and Subwoofer speakers
-surround50:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    5.0 Surround output to Front, Center and Rear speakers
-surround51:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    5.1 Surround output to Front, Center, Rear and Subwoofer speakers
-iec958:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    IEC958 (S/PDIF) Digital Audio Output
-dmix:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Direct sample mixing device
-dsnoop:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Direct sample snooping device
-hw:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Direct hardware device without any conversions
-plughw:CARD=I82801AAICH,DEV=0
-    Intel 82801AA-ICH, Intel 82801AA-ICH
-    Hardware device with all software conversions
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/07/25.html" class="btn">read more..</a>
   </div>
 </div>
 

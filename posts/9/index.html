@@ -80,6 +80,25 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/403.html">学习Java字节码的一些提示</a> <span class="date">2012-03-23 20:49:14</span></h3>
+  <p>Java Class Format : <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html">http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html</a>
+Class文件格式定义,永远是最权威的</p>
+
+<p>jclasslib : <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">http://www.ej-technologies.com/products/jclasslib/overview.html</a>
+可视化查看/修改Class文件的工具,以树形结构显示Class文件,并列出具体方法的字节码数据</p>
+
+<p>asm : <a href="http://asm.ow2.org/">http://asm.ow2.org/</a>
+性能最强悍的读写class格式的类库,因为大部分写法都接近于直接写字节码
+其中的ASMifierClassVisitor类,能打印出构造一个完整class文件所需要的全部Java代码,非常方便</p>
+
+<p>Java字节码,跟汇编差不多,喜欢深入Java语法的童鞋不妨学学. 看清实际生成的字节码,你能更清晰的知道,哪些语法仅仅是编译器语法糖果.</p>
+
+  <div class="more">
+    <a href="/403.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/402.html">实用主义的Lisp方言 -- newLisp</a> <span class="date">2012-03-21 20:32:20</span></h3>
   <p>先引用newLisp的官方定义:
 <a href="http://www.newlisp.org/index.cgi?FAQ">newLISP is a LISP-like scripting language for doing things you typically do with scripting languages: programming for the internet, system administration, text processing, gluing other programs together, etc. newLISP is a scripting LISP for people who are fascinated by LISP&rsquo;s beauty and power of expression, but who need it stripped down to easy-to-learn essentials.</a>
@@ -295,35 +314,6 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 
   <div class="more">
     <a href="/379.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/376.html">Nutz-Socialauth 1.b.3 -- 支持国内社会化登录(OpenId)</a> <span class="date">2012-02-23 10:08:55</span></h3>
-  <p>作为<a href="https://github.com/howe/ngqa">Ngqa</a>的子项目之一,开发了2周,终于能拿得出手了</p>
-
-<p>这个项目算是<a href="http://code.google.com/p/socialauth/">socialauth</a>的一个插件项目,加上本项目的代码,将支持以下的社会化登录(打星号的是本项目添加的登录方式,<strong>率先支持github和BrowserID哦</strong>):</p>
-
-<ul>
-<li><p>google</p></li>
-
-<li><p>yahoo</p></li>
-
-<li><p>twitter</p></li>
-
-<li><p>facebook</p></li>
-
-<li><p>hotmail(msn)</p></li>
-
-<li><p>*<strong>QQ连接(qq)</strong></p></li>
-
-<li><p>*新浪微博(sina)</p></li>
-
-<li><p>*开心网(kaixin001)</p></li>
-</ul>
-
-  <div class="more">
-    <a href="/376.html" class="btn">read more..</a>
   </div>
 </div>
 

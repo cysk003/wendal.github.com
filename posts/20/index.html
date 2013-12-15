@@ -80,6 +80,22 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/197.html">Spket其实是兼容 jQuery 1.4.x的!</a> <span class="date">2010-12-04 12:02:19</span></h3>
+  <p>前几天,折腾Spket,安装好后,配置jQuery,死活不出提示!!
+翻阅Google,到处都说Spket不兼容jQuery 1.4.x .但经过我一番探索,终于发现 <a href="http://forums.spket.com/viewtopic.php?f=7&amp;t=1380&amp;start=0">官网一个论坛帖子</a> 上面附带的jar就能成功!!</p>
+
+<p>我自己打包好一个版本,放到Google Docs上了, <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hOGNjY2NkODAtNDliZC00NzkxLTllNDAtNjNlOGZkMTllNWEw&amp;hl=zh_CN&amp;authkey=CLiin-4F">Spket 1.6.18 兼容jQuery1.4.x</a>,是一个Eclipse插件版本</p>
+
+<p>如果你已经安装好原版的Spket 1.6.8 , 仅提取com.spket.js_1.6.18.jar覆盖原文件也就可以了.</p>
+
+<p>官方很久没更新了,哈哈!!</p>
+
+  <div class="more">
+    <a href="/197.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
   <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
 
@@ -310,45 +326,6 @@ Google源码截取:</p>
 
   <div class="more">
     <a href="/118.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/114.html">为Alfresco加速PDF文件索引速度</a> <span class="date">2010-11-01 17:14:41</span></h3>
-  <p>本文仅为 <a href="http://thinkalfresco.blogspot.com/2009/03/speeding-up-pdf-indexing-alfresco-hack.html">http://thinkalfresco.blogspot.com/2009/03/speeding-up-pdf-indexing-alfresco-hack.html</a> 的 Alfresco 3.2版. 因为原文中的代码,已经无法在3.2版上使用.</p>
-
-<p>新的代码:</p>
-
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE beans PUBLIC &quot;-//SPRING//DTD BEAN//EN&quot; &quot;http://www.springframework.org/dtd/spring-beans.dtd&quot;&gt;
-&lt;beans&gt;
-
-  &lt;bean id=&quot;transformer.PdfBox&quot; class=&quot;java.lang.String&quot;&gt;&lt;/bean&gt;
-
-  &lt;bean id=&quot;transformer.complex.OpenOffice.PdfBox&quot; class=&quot;java.lang.String&quot;&gt;&lt;/bean&gt;
-
-  &lt;bean id=&quot;transformer.PdfToTextTool&quot; class=&quot;org.alfresco.repo.content.transform.RuntimeExecutableContentTransformerWorker&quot;&gt;
-                &lt;property name=&quot;mimetypeService&quot;&gt;
-                &lt;ref bean=&quot;mimetypeService&quot;&gt;&lt;/ref&gt;
-            &lt;/property&gt;
-                &lt;property name=&quot;transformCommand&quot;&gt;
-                        &lt;bean name=&quot;transformer.pdftotext.Command&quot; class=&quot;org.alfresco.util.exec.RuntimeExec&quot;&gt;
-                                &lt;property name=&quot;commandMap&quot;&gt;
-                                        &lt;map&gt;
-                                                &lt;entry key=&quot;.*&quot;&gt;
-                                                        &lt;value&gt;/usr/bin/pdftotext -enc UTF-8 ${options} ${source} ${target}&lt;/value&gt;
-                                                &lt;/entry&gt;
-                                        &lt;/map&gt;
-                                &lt;/property&gt;
-                                &lt;property name=&quot;defaultProperties&quot;&gt;
-                                        &lt;props&gt;&lt;prop key=&quot;options&quot;&gt;&lt;/prop&gt;&lt;/props&gt;
-                                &lt;/property&gt;
-                        &lt;/bean&gt;
-                &lt;/property&gt;
-</code></pre>
-
-  <div class="more">
-    <a href="/114.html" class="btn">read more..</a>
   </div>
 </div>
 

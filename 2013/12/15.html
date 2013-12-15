@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>最近速成Lua了,简单记一下</title>
+    <title>为pcduino编译内核</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,82 +78,134 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>最近速成Lua了,简单记一下 </h1>
+  <h1>为pcduino编译内核 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>最近速成Lua,写篇文章mark一下, 参考了 <a href="http://luaforge.net/frs/download.php/4416/A_Quick_Start_Guide_On_Lua_For_C_C_Programmer_CN.pdf">Lua-Quick-Start-Guide-CN</a></p>
+    <h2>软件环境</h2>
 
-<p>Lua执行器, 官方当前最新5.1.4, 但我觉得LuaJIT 2.0 beta6 更好</p>
+<ul>
+<li>lubuntu 13.10 amd64版 / Ubuntu Server 13.10 amd64版</li>
+<li>虚拟机20G硬盘,1G内存</li>
+</ul>
 
-<p>我的考虑是这样的:
-1. 为了性能,把固定的处理逻辑用C写
-2. 为了灵活,与配置紧密相关的用Lua写</p>
+<p>为这篇教程,我全新安装多次lubuntu/ubuntu,验证过每个命令,保证能编译出一个能用的内核</p>
 
-<p>8种类型:
-数字(double), 字符串, 布尔值(true/false)
-函数(function)
-表(相当于HashMap+List,唯一的数据结构)
-用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) &ndash; 对我基本无用处
-协程(thread) &ndash; 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
-nil(空,啥都不是,一般就是标志物)</p>
+<h2>安装依赖的库/工具</h2>
 
-<p>语法:
-1. 变量无类型
-2. 无需;之类的语句终结符,最好一行一条语句, 语言本身对缩进不感冒.
-3. 函数可以返回多个值 (Java中我也想啊!)
-4. if语句, 除了false和nil外, 一律视为true (真的比较单纯的约定)
-5. 没有数组,只有table, 相当于HashMap+List
-6. 支持闭包,但我用不上,无视之
-7. 有假的多线程,直接无视</p>
+<p>打开控制台,执行</p>
 
-<p>好,上代码:</p>
-
-<pre><code>--这是注释
---定义一个本地变量
-local myx = 1
---变量没类型,随便赋值
-myx = &quot;Wendal's LUA&quot;
---定义一个方法
-function abc()
-    -- 返回多个值,爽,最后一个是表
-    return 1,&quot;2&quot;,{yyy=1.2,ab=&quot;z&quot;}
-end
---多个变量一起赋值
-x,y,z = abc()
---z变量保存的是table类型,故:
---索引值以1开始
-myx = z.yyy
-myx = z[2]
---if语句, then和end都是必须的,因为返回值不是nil和false,故abc()相当于true
-if abc() then
-    --内置方法,不是语法的一部分
-    print(&quot;cccccc&quot;)
-elseif
-    print(&quot;aaaaa&quot;)
-end
+<pre><code>sudo apt-get install -y g++-arm-linux-gnueabihf vim make u-boot-tools libusb-1.0-0-dev openssh-server pkg-config
+sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-dev lib32stdc++6 curl wget ncurses-dev
 </code></pre>
 
-<p>剩下的就是基础API了,没必要记,用用就知道了</p>
+<h2>下载内核源码</h2>
 
-<p>突然感觉到 编程语言就是 语法+API  &mdash;&gt; 有点废话</p>
+<p>推荐从百度网盘下载 <a href="http://pan.baidu.com/s/1lCgBr">pcduino内核源码打包下载</a></p>
 
-<p>另外提醒一下, Lua没有对象,不过可以通过table类型来模拟.</p>
+<p>里面的均为github官网代码库的打包, 非git版删掉了.git目录,源码内容完全一样</p>
+
+<p>从github下载(建议网速可以的才使用)</p>
+
+<pre><code>git clone https://github.com/pcduino/kernel.git
+cd kernel
+git submodule init
+git submodule update       #会下载全志的sun4i内核源码, 慢慢等吧
+</code></pre>
+
+<h2>开始编译</h2>
+
+<p>打开shell,开始耗cpu吧!!</p>
+
+<pre><code>tar xf pcduino_kernel_20131127_nogit.gz   #如果是百度网盘下载的,就需要先解压咯,git下载的就无视这句了
+
+cd kernel
+make clean
+
+cd sunxi-tools
+make clean
+cd ..
+
+./configure pcduino
+make hwpack
+</code></pre>
+
+<p>最后输出的信息类似</p>
+
+<pre><code>  INSTALL output/lib/firmware/mts_gsm.fw
+  INSTALL output/lib/firmware/mts_edge.fw
+  INSTALL output/lib/firmware/edgeport/boot.fw
+  INSTALL output/lib/firmware/edgeport/boot2.fw
+  INSTALL output/lib/firmware/edgeport/down.fw
+  INSTALL output/lib/firmware/edgeport/down2.fw
+  INSTALL output/lib/firmware/edgeport/down3.bin
+  INSTALL output/lib/firmware/whiteheat_loader.fw
+  INSTALL output/lib/firmware/whiteheat.fw
+  INSTALL output/lib/firmware/keyspan_pda/keyspan_pda.fw
+  INSTALL output/lib/firmware/keyspan_pda/xircom_pgs.fw
+  DEPMOD  3.4.29+
+make[1]: Leaving directory `/home/wendal/kernel/linux-sunxi'
+cd /home/wendal/kernel/build/sun4i_defconfig-linux &amp;&amp; arm-linux-gnueabihf-objcopy -R .note.gnu.build-id -S -O binary vmlinux bImage
+#git submodule init
+#git submodule update cedarx-libs
+scripts/mk_hwpack.sh /home/wendal/kernel/output/pcduino_a10_hwpack_20131215.tar.xz
+Debian/Ubuntu hwpack
+Done.
+</code></pre>
+
+<p>编译好的压缩包在output目录中,有日期标记,例如pcduino_a10_hwpack_20131215.tar.xz</p>
+
+<h2>自定义内核</h2>
+
+<p>跟大多数A10的板子一样,你可以修改2个配置文件(ps: android的话还有个分区文件)</p>
+
+<p>第一个是内核配置文件,也就是编译内核时常见的.config文件</p>
+
+<pre><code>#编译成功后可以找到,但编译之前是没有的,可见这不是真正的配置文件
+find -name .config
+&gt;&gt; ./build/sun4i_defconfig-linux/.config
+
+#真正的配置文件在
+find -name sun4i_defconfig
+&gt;&gt; ./patch/linux-sunxi/arch/arm/configs/sun4i_defconfig
+</code></pre>
+
+<p>所以,需要先在build/sun4i_defconfig-linux/执行</p>
+
+<pre><code>cd build/sun4i_defconfig-linux/
+make menuconfig
+# ... ... 配置你需要的选项
+#..........
+
+#然后把配置直接覆盖回去,不然下一次build的时候依然是老的
+cp .config ../../patch/linux-sunxi/arch/arm/configs/sun4i_defconfig
+</code></pre>
+
+<p>另外一个是uboot的配置,这个文件有很多很多好东西,看文档吧<a href="http://linux-sunxi.org/Fex_Guide">Fex指南</a></p>
+
+<pre><code>./sunxi-boards/sys_config/a10/pcduino.fex
+</code></pre>
+
+<h2>More?</h2>
+
+<p>我上传了一个ubuntu的vbox磁盘镜像, 用vbox新建一个虚拟机,选择这个文件作为主磁盘启动,即可拥有pcduino编译环境!</p>
+
+<p>镜像地址(还在上传中&hellip;)</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/253.html" title="累趴下了,就为了办出生证!!">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/251.html" title="[误报]难道我遇到lua-nginx-module的一个bug?">Next &rarr;</a></li>
+            <li class="next"><a href="/2013/12/08.html" title="pcduino报告">Next &rarr;</a></li>
           
           
         </ul>
@@ -179,14 +231,10 @@ end
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2011-03-10 19:56:26</span></div>
+    <div class="date"><span>2013-12-15</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
-    
-      <li>
-  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>43</span></a>
-</li>
     
       <li>
   <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>26</span></a>
@@ -198,27 +246,15 @@ end
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#el-ref">el <span>68</span></a>
+  <a href="/tags/#linux-ref">linux <span>6</span></a>
 </li>
     
       <li>
-  <a href="/tags/#io-ref">io <span>80</span></a>
+  <a href="/tags/#pcduino-ref">pcduino <span>2</span></a>
 </li>
     
       <li>
-  <a href="/tags/#Java-ref">Java <span>55</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#lua-ref">lua <span>12</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E7%B4%A2%E5%BC%95-ref">索引 <span>6</span></a>
-</li>
-    
-      <li>
-  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+  <a href="/tags/#a10-ref">a10 <span>2</span></a>
 </li>
     
     </ul>
