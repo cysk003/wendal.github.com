@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/08/09.html">用openresty做redis订阅发布</a> <span class="date">2013-08-09</span></h3>
+  <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
+
+<pre><code>    location =/subscribe {
+        send_timeout 365h; #很久很久很久,呵呵
+        content_by_lua &quot;
+        local redis = require \&quot;resty.redis\&quot;
+        local red = redis:new()
+        red:connect(\&quot;127.0.0.1\&quot;, 6379)
+        red:subscribe(ngx.var.arg_key) -- 严格来说,需要判断空值和url decode
+        local res, err = red:read_reply()
+        if res then 
+            ngx.say(res) -- 其实是个数组.. 第3个值才是publish的值
+        else
+            ngx.status = 500
+        end
+        red:close()
+        &quot;;
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/08/09.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/07/25.html">Ubuntu12.04下asoundrc不起效</a> <span class="date">2013-07-25</span></h3>
   <p>因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子</p>
 
@@ -337,45 +364,6 @@ syscall.Syscall15
 
   <div class="more">
     <a href="/2013/0406.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0325.html">Python还是很适合快速开发的</a> <span class="date">2013-03-25</span></h3>
-  <p>上周为了重写公司的其中一个关键进程,断然选用Python快速开发了一版</p>
-
-<h2>首先,是启动器</h2>
-
-<p>虽然python脚本可以直接启动,但为了兼容其他进程,需要封装成一个原命名的进程</p>
-
-<pre><code>#include &lt;Python.h&gt;
-#include &lt;sched.h&gt;
-
-int main(int argc, char *argv[]) {
-    //设置进程优先级,因为有其他更重要的进程
-    nice(10);
-    // 设置cpu亲和性,因为是4线程的机器,所以仅亲和后2个cpu
-    cpu_set_t  mask;
-    CPU_ZERO(&amp;mask);
-    CPU_SET(2, &amp;mask);//第3个
-    CPU_SET(3, &amp;mask);//第4个,其实就是第二个core
-    sched_setaffinity(0, sizeof(mask), &amp;mask);
-
-    Py_SetProgramName(argv[0]);
-    Py_Initialize(); //标准的啦,初始化Python环境
-    PySys_SetArgv(argc, argv);
-    FILE * fp = fopen(&quot;/home/xxx/yyy/zzz.py&quot;, &quot;r&quot;); //打开入口py脚本的句柄,准备打开
-    // 这里并没有去判断是否真的存放,因为必须存放,不然也什么都做不了
-    //PyRun_SimpleFile(fp, &quot;zzz.py&quot;);
-    PyRun_AnyFile(fp, &quot;zzz.py&quot;); //启动之,哈哈
-    Py_Finalize(); // 严格来说从不调用,哈哈,因为是守护进程,退出的话,都是直接退
-    return 0;//符合标准C嘛,哈哈
-}
-
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/0325.html" class="btn">read more..</a>
   </div>
 </div>
 

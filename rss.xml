@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>15 Dec 13 20:43 +0800</pubDate>
+    <pubDate>23 Feb 14 20:15 +0800</pubDate>
+    <item>
+      <title>cpdump加Wireshark抓包分析才是王道啊</title>
+      <link>http://wendal.net/2013/0223.html</link>
+      <pubDate>2014-02-23 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;最近折腾RTSP协议,焦头乱额.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;Receiver Report RTCP Packets (RR)&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;  Receiver Reports are structured in the same way as Sender Reports. Of course, they include no sender information block, and the packet type code is 201.&#xA; 0               1               2               3&#xA; 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|V=2|P|    RC   |   PT=RR=201   |            length L           |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|                     SSRC of packet sender                     |&#xA;+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+&#xA;|                 SSRC_1 (SSRC of first source)                 |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;| fraction lost |       cumulative number of packets lost       |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|           extended highest sequence number received           |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|                      inter-arrival jitter                     |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|                         last SR (LSR)                         |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;|                   delay since last SR (DLSR)                  |&#xA;+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+&#xA;|                 SSRC_2 (SSRC of second source)                |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;:                               ...                             :&#xA;+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+&#xA;|                  profile-specific extensions                  |&#xA;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;</description>
+    </item>
     <item>
       <title>为pcduino编译内核</title>
       <link>http://wendal.net/2013/12/15.html</link>
