@@ -80,6 +80,31 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/08/23.html">再说Ioc</a> <span class="date">2013-08-23</span></h3>
+  <p>很多人都没搞懂Ioc到底什么原理,搞不懂里面有什么魔术.</p>
+
+<p>注: 不讨论JavaAgent/JNI/动态类创建/自定义ClassLoader/自定义JVM下的行为</p>
+
+<p>这些gif我曾经在nutz群中发送多次,但多少人真的看懂了&hellip;</p>
+
+<h1>首先,看第一种理解 &ndash; 加几个注解,对象就能注入</h1>
+
+<p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not.gif"></p>
+
+<p>上面的@Inject是Nutz Ioc的注解,你可以替换成Spring之类的注解,完全没有区别.</p>
+
+<p>运行即可看到, 变量dao为null,但为什么呢? 已经加了@Inject注解了啊</p>
+
+<h1>再看第二种理解 &ndash; 加了注解,有Ioc容器,就能注入</h1>
+
+<p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not2.gif"></p>
+
+  <div class="more">
+    <a href="/2013/08/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/08/09.html">用openresty做redis订阅发布</a> <span class="date">2013-08-09</span></h3>
   <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
 
@@ -343,30 +368,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
-  <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
-
-<p>由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式</p>
-
-<h2>syscall.Syscall系列方法</h2>
-
-<p>当前共5个方法</p>
-
-<pre><code>syscall.Syscall
-syscall.Syscall6
-syscall.Syscall9
-syscall.Syscall12
-syscall.Syscall15
-</code></pre>
-
-<p>分别对应 3个/6个/9个/12个/15个参数或以下的调用</p>
-
-  <div class="more">
-    <a href="/2013/0406.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -460,6 +461,10 @@ syscall.Syscall15
 
   <li>
 	23
+  </li>
+
+  <li>
+	24
   </li>
 
 </ul>

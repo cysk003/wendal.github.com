@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/342.html">一波三折的一个月,鸣鸣的腹泻终于好了,我也恢复元气了</a> <span class="date">2011-11-13 22:04:57</span></h3>
+  <p>终于有心情,有闲情来写blog了</p>
+
+<p>鸣鸣的腹泻,终于告一段落,我自己也渐渐恢复元气 .. 几个安乐觉,几瓶白兰氏鸡精&hellip;. 最重要的,当然是鸣鸣玩耍的嬉笑声</p>
+
+<p>这一次腹泻,可以算是鸣鸣出生以来的第一次生病, 揪心啊&hellip;.</p>
+
+<p>起初,只是轻微的腹泻,水样, 鸣鸣也不哭,也不闹
+渐渐地,腹泻的次数不断增加,最高峰时,1~2小时一次,鸣鸣的精神状态也开始不佳
+恩,鸣鸣还是大哭了, 因为不断腹泻导致小屁股红肿,每次腹泻都让她很疼 &ndash; 呜呜&hellip;.</p>
+
+<p>首先是去了两次的区人民医院,第二次差点跟医生吵起来 &ndash; 叫我怎么说呢,事情就是发生了
+  由于我坚决反对吊针,那医生几乎发狂了,竟然向后推了一下鸣鸣的头,最后,打了一支屁股针,开了点冲剂
+  第二天,直奔省妇幼保健院,二话没说,验大便 &ndash; 肠炎+腺病毒感染, 接着一句: 还好,不严重 &hellip; 没去打针,没去吊针,只开了一次中药肚脐贴,一瓶氧化锌,3颗庆大霉素(医生说不入血,没事). 贴好肚脐,喂了一次庆大霉素,帮她涂氧化锌到小屁股,然后就睡觉了. 中午补涂氧化锌的时候,竟然还亲了一下妈妈,露出点点笑容 &ndash; hold不住啊&hellip; 精神状态明显好转啊!! 当天, 腹泻次数明显减少了, 也不哭闹了 &ndash; 我能不激动吗?!!
+  之后几天,复诊了两次,最后一次显示无发炎 &ndash; 俺是不是应该捐的钱给医院呢??</p>
+
+<p>Mark一下省妇幼的用药:
+1. 庆大霉素3颗,实际吃了1.5颗,因为每次仅吃半颗
+2. 3次肚脐贴,不知道什么成分
+3. 钙/B12冲剂
+4. 纽曼斯 &ndash; 一种复合益生菌,在医院之外买的,挪威进口, 大概10元/颗,一瓶30颗,每天1~2次 &ndash; 你觉得贵吗?病好了,啥都值!
+5. 自己买了一些丁桂儿脐贴, 感觉不错</p>
+
+  <div class="more">
+    <a href="/342.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/339.html">RK2918 内核源码 -- 想不到吧?!</a> <span class="date">2011-11-03 09:06:50</span></h3>
   <p>想不到, 我竟然找到了, 这都要感谢一位外国友人的提示!!</p>
 
@@ -352,33 +381,6 @@ public abstract class TestMongodb4Jetty {
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/320.html">实现Rk2918的System分区可写</a> <span class="date">2011-09-09 11:33:27</span></h3>
-  <p>这是2011-09-08,也就是前天顿悟出来的方法</p>
-
-<p><strong>核心原理</strong>:在data分区下建一个文件夹/data/sysrw存放system原本的数据,启动时,软连接/data/sysrw为system分区</p>
-
-<p><strong>解释</strong>:
-1. data分区,最终挂载为/data文件夹,默认情况下,这是ext3格式的分区,但禁用了suid
-2. system分区,为不可写的cramfs格式,默认挂载在/system文件夹</p>
-
-<p><strong>步骤</strong>:
-1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
-2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
-3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
-..A. 不再挂载system分区 &ndash; 注释掉 mount cramfs mtd@system /system &ndash; 也就是前面加#号
-..B. 不再建立system文件夹 &ndash; 注释掉 mkdir /system
-..C. 修改data分区的挂载方式,使其支持suid &ndash; 挂载语句改为 mount ext3 mtd@userdata /data
-..D. 修改data分区的权限 &ndash; chmod 0770 /data 改为 chmod 0777 /data
-..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su &ndash; 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
-..F. 为了提供更大自由度,修改根分区的权限 &ndash; 注释掉 mount rootfs rootfs / ro remount
-..G. 建立通往/system的软链接 &mdash; 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
-
-  <div class="more">
-    <a href="/320.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -472,6 +474,10 @@ public abstract class TestMongodb4Jetty {
 
   <li>
 	23
+  </li>
+
+  <li>
+	24
   </li>
 
 </ul>
