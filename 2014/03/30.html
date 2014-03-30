@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>tcpdump加Wireshark抓包分析才是王道啊</title>
+    <title>JDK8 Access to Parameter Names at Runtime</title>
   
     <meta name="author" content="Wendal Chen">
 
@@ -78,66 +78,99 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>tcpdump加Wireshark抓包分析才是王道啊 </h1>
+  <h1>JDK8 Access to Parameter Names at Runtime </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>最近折腾RTSP协议,焦头乱额.</p>
+    <h2>JDK 8的新特性之一, 运行时获取方法参数的名称</h2>
 
-<p>Receiver Report RTCP Packets (RR)</p>
+<p>JDK8之前, Eclipse自带的ECJ编译器,同本地变量表,把方法参数的名字,放在最前面,使其编译出来的class的名字看推测.</p>
 
-<pre><code>  Receiver Reports are structured in the same way as Sender Reports. Of course, they include no sender information block, and the packet type code is 201.
- 0               1               2               3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|V=2|P|    RC   |   PT=RR=201   |            length L           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     SSRC of packet sender                     |
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                 SSRC_1 (SSRC of first source)                 |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| fraction lost |       cumulative number of packets lost       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|           extended highest sequence number received           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      inter-arrival jitter                     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         last SR (LSR)                         |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   delay since last SR (DLSR)                  |
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                 SSRC_2 (SSRC of second source)                |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-:                               ...                             :
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                  profile-specific extensions                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<p>而 JDK8把这种行为规范化(终于&hellip;) <a href="http://openjdk.java.net/jeps/118">http://openjdk.java.net/jeps/118</a></p>
+
+<p>参考文章 <a href="http://www.java-allandsundry.com/2013/12/java-8-parameter-name-at-runtime.html">Java 8 parameter name at runtime</a></p>
+
+<h2>演示代码</h2>
+
+<pre><code>package nutz_jdk8;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
+
+public class Bot {
+    private final String name;
+    private final String author;
+    private final int rating;
+    private final int score;
+
+    public Bot(String name, String author, int rating, int score) {
+        this.rating = rating; // 注意这里的顺序,并非按参数顺序逐一调用
+        this.score = score;
+        this.name = name;
+        this.author = author;
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException, SecurityException {
+        Class&lt;Bot&gt; clazz = Bot.class;
+        Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
+        Parameter[] ctorParameters =ctor.getParameters();
+        for (Parameter param: ctorParameters) {
+            System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
+        }
+    }
+}
 </code></pre>
 
-<p>PS: github的pages默认使用Jekyll编译了,真是无语啊,必须自行加个文件才能发布成功了. 稍后要修正一下gor,默认产生这个文件才行</p>
+<p>输出的结果是:</p>
 
-<p><a href="https://help.github.com/articles/using-jekyll-with-pages#troubleshooting">https://help.github.com/articles/using-jekyll-with-pages#troubleshooting</a></p>
-
-<pre><code>touch .nojekyll
-git add .nojekyll
-git commit -m &quot;...&quot;
-git push
+<pre><code>true:name
+true:author
+true:rating
+true:score
 </code></pre>
+
+<p>然后, 这个特性并未默认启用,javac需要额外的参数&rdquo;-parameters&rdquo;</p>
+
+<pre><code>javac -parameters nutz_jdk8\Bot.java
+java -cp nutz_jdk8.Bot
+</code></pre>
+
+<p>如果是Eclipse 4.4 (正式支持JDK8的初始版本), 则需要手动在&rdquo;Java Compiler&rdquo;中启用之</p>
+
+<p><img src="/assets/media/2014/03/30/jep118_eclipse.jpg" /></p>
+
+<p>如果是maven,则需要这段</p>
+
+<pre><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.1&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;source&gt;1.8&lt;/source&gt;
+        &lt;target&gt;1.8&lt;/target&gt;
+        &lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<h2>JDK8 , 开始学习啦</h2>
+
+<p>开始学习新特性啦,哇哈哈</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2014/03/30.html" title="JDK8 Access to Parameter Names at Runtime">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2013/12/15.html" title="为pcduino编译内核">Next &rarr;</a></li>
+            <li class="next"><a href="/2014/0223.html" title="tcpdump加Wireshark抓包分析才是王道啊">Next &rarr;</a></li>
           
           
         </ul>
@@ -163,7 +196,7 @@ git push
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2014-02-23</span></div>
+    <div class="date"><span>2014-03-30</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -176,6 +209,14 @@ git push
     <br>
     <h4>Tags</h4>
     <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#java-ref">java <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#jdk8-ref">jdk8 <span>1</span></a>
+</li>
     
     </ul>
   </div>
