@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2014/04/02.html">为Golang程序打上编译标记</a> <span class="date">2014-04-02</span></h3>
+  <p>参考文章: <a href="http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning">http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning</a></p>
+
+<p>昨天在查询怎么生成一个小体积的golang程序的时候,无意中发现这个文章.</p>
+
+<p>对于固定的代码,及固定的golang版本,下面的命令总是得到一模一样的程序</p>
+
+<pre><code>go build
+</code></pre>
+
+<p>有时候需要为每个编译都打上标记,不然真的很乱啊</p>
+
+<p>演示用的golang代码</p>
+
+<pre><code>package main
+
+var _VERSION_ = &quot;unknown&quot;
+
+func main() {
+    print(&quot;http_su ver=&quot; + _VERSION_ + &quot;\n&quot;)
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2014/04/02.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/03/30.html">JDK8 Access to Parameter Names at Runtime</a> <span class="date">2014-03-30</span></h3>
   <h2>JDK 8的新特性之一, 运行时获取方法参数的名称</h2>
 
@@ -418,31 +447,6 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
   <div class="more">
     <a href="/2013/09/06.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/08/28.html">让golang的get命令兼容gitlab</a> <span class="date">2013-08-28</span></h3>
-  <h1>我们有些什么呢?</h1>
-
-<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
-
-<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
-
-<p>如果尝试执行下面的语句去获取这个库的话</p>
-
-<pre><code>go get git.wendal.net/wendal/gofly
-
-#会输出
-package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
-</code></pre>
-
-<p>然而,如果我们输入</p>
-
-<p></p>
-
-  <div class="more">
-    <a href="/2013/08/28.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>30 Mar 14 20:59 +0800</pubDate>
+    <pubDate>02 Apr 14 10:52 +0800</pubDate>
+    <item>
+      <title>为Golang程序打上编译标记</title>
+      <link>http://wendal.net/2014/04/02.html</link>
+      <pubDate>2014-04-02 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;参考文章: &lt;a href=&#34;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&#34;&gt;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;昨天在查询怎么生成一个小体积的golang程序的时候,无意中发现这个文章.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;对于固定的代码,及固定的golang版本,下面的命令总是得到一模一样的程序&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;go build&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;有时候需要为每个编译都打上标记,不然真的很乱啊&lt;/p&gt;&#xA;&#xA;&lt;p&gt;演示用的golang代码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;package main&#xA;&#xA;var _VERSION_ = &amp;quot;unknown&amp;quot;&#xA;&#xA;func main() {&#xA;    print(&amp;quot;http_su ver=&amp;quot; + _VERSION_ + &amp;quot;\n&amp;quot;)&#xA;}&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;编译时,加入需要的版本号信息,而不是直接去改main.go的源码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;export TAG=v1.b.50&#xA;go build -ldflags &amp;quot;-X main._VERSION &#39;$TAG&#39;&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;运行结果:&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;&amp;gt; go build&#xA;&amp;gt; ./demo&#xA;http_su ver=unknown&#xA;&amp;gt; export TAG=v.1.b.50&#xA;&amp;gt; go build -ldflags &amp;quot;-X main._VERSION_ &#39;$TAG&#39;&amp;quot;&#xA;&amp;gt; ./demo&#xA;http_su ver=v.1.b.50&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;可以看到, 版本号根据编译参数的变化而变化了. 关键点是, 必须是 $package.$varName&lt;/p&gt;&#xA;&#xA;&lt;p&gt;本demo在linux/macos/windows/arm下测试通过.&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>JDK8 Access to Parameter Names at Runtime</title>
       <link>http://wendal.net/2014/03/30.html</link>
