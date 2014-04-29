@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>23 Apr 14 12:42 +0800</pubDate>
+    <pubDate>29 Apr 14 21:19 +0800</pubDate>
+    <item>
+      <title>用NDK编译Live555</title>
+      <link>http://wendal.net/2014/04/29.html</link>
+      <pubDate>2014-04-29 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;针对 live555 2014.03.25和 live 2014.04.23 也就是当前最新咯.&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;准备工作&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;下载源码 &lt;a href=&#34;http://www.live555.com/liveMedia/public/&#34;&gt;http://www.live555.com/liveMedia/public/&lt;/a&gt; 该地址经常被X,请问候非圆校长&lt;/p&gt;&#xA;&#xA;&lt;p&gt;解压到一个空文件夹, 并将目录名从live改成jni&lt;/p&gt;&#xA;&#xA;&lt;p&gt;建一个文件, 叫 Android.mk&lt;/p&gt;&#xA;&#xA;&lt;p&gt;文件内容在 &lt;a href=&#34;https://gist.github.com/wendal/11399988&#34;&gt;https://gist.github.com/wendal/11399988&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;编译&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;在jni目录下执行&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;ndk-build&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;如无意外,在 libs/armeabi/ 生成一个so文件.&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>为Golang程序打上编译标记</title>
       <link>http://wendal.net/2014/04/02.html</link>

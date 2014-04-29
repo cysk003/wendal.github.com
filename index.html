@@ -91,6 +91,33 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2014/04/29.html">用NDK编译Live555</a> <span class="date">2014-04-29</span></h3>
+
+  <p>针对 live555 2014.03.25和 live 2014.04.23 也就是当前最新咯.</p>
+
+<h2>准备工作</h2>
+
+<p>下载源码 <a href="http://www.live555.com/liveMedia/public/">http://www.live555.com/liveMedia/public/</a> 该地址经常被X,请问候非圆校长</p>
+
+<p>解压到一个空文件夹, 并将目录名从live改成jni</p>
+
+<p>建一个文件, 叫 Android.mk</p>
+
+<p>文件内容在 <a href="https://gist.github.com/wendal/11399988">https://gist.github.com/wendal/11399988</a></p>
+
+<h2>编译</h2>
+
+<p>在jni目录下执行</p>
+
+<p></p>
+
+
+  <div class="more">
+    <a href="/2014/04/29.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/04/02.html">为Golang程序打上编译标记</a> <span class="date">2014-04-02</span></h3>
 
   <p>参考文章: <a href="http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning">http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning</a></p>
@@ -1060,70 +1087,6 @@ Fast-Json 500w次耗时: 3048
 
   <div class="more">
     <a href="/2013/0127.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0123.html">Golang的坑之DNS查询与系统线程</a> <span class="date">2013-01-23</span></h3>
-
-  <h2>这个问题源之于我3个月前开发的一个缓存服务</h2>
-
-<ol>
-<li>代理Http请求</li>
-<li>缓存部分请求,减少外网访问</li>
-</ol>
-
-<h2>但是,在不稳定的网络环境下(例如3G网络),不时出现崩溃的情况</h2>
-
-<p>纠结啊纠结啊&hellip;</p>
-
-<ol>
-<li>难道是因为我在32位系统下使用golang?</li>
-<li>难道是RP问题?</li>
-</ol>
-
-<p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
-
-<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
-SIGABRT: abort
-PC=0xffffe424
-
-
-goroutine 1 [chan receive]:
-net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
-    /opt/go/src/pkg/net/fd.go:268 +0x75
-net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
-    /opt/go/src/pkg/net/fd.go:622 +0x199
-net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
-    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
-net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
-    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
-net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
-    /opt/go/src/pkg/net/http/server.go:1029 +0x77
-net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
-    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
-net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
-    /opt/go/src/pkg/net/http/server.go:1091 +0x55
-    
-尾部
-eax     0x0
-ebx     0x231f
-ecx     0x2357
-edx     0x6
-edi     0xb77ceff4
-esi     0xb
-ebp     0xafa112f8
-esp     0xafa11050
-eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
-eflags  0x202
-cs      0x73
-fs      0x0
-gs      0x33
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/0123.html" class="btn">read more..</a>
   </div>
 </div>
 
