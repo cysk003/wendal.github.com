@@ -85,8 +85,9 @@
   <div class="span8">
     <h2>首先,需要准备一下环境</h2>
 
-<p>ubuntu 14.04 x86 版 &ndash; 当前最新啦,哈哈
-android ndk r9b     &ndash; 为啥用这个版本?因为我机器上有&hellip;</p>
+<p>ubuntu 14.04 x86 版 &ndash; 当前最新啦,哈哈</p>
+
+<p>android ndk r9b     &ndash; 为啥用这个版本?因为我机器上有&hellip;</p>
 
 <h2>编译环境准备</h2>
 
@@ -107,9 +108,11 @@ cd ssdb-android2
 
 <p>需要指定3个变量 CXX CC TARGET_OS, 以使用对应的编译器及源码</p>
 
-<p>CC 指定c源文件的编译器
-CXX 指定cpp源文件的编译器
-TARGET_OS 是ssdb的build.sh和leveldb构建脚本中,判断系统环境的属性,默认是通过uname -s获取,需要指定为OS_ANDROID_CROSSCOMPILE</p>
+<p>CC 指定c源文件的编译器</p>
+
+<p>CXX 指定cpp源文件的编译器</p>
+
+<p>TARGET_OS 是ssdb的build.sh和leveldb构建脚本中,判断系统环境的属性,默认是通过uname -s获取,需要指定为OS_ANDROID_CROSSCOMPILE</p>
 
 <pre><code>CC=/opt/ndk-armv7/bin/arm-linux-androideabi-gcc CXX=/opt/ndk-armv7/bin/arm-linux-androideabi-g++ TARGET_OS=OS_ANDROID_CROSSCOMPILE make
 </code></pre>
