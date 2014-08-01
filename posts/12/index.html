@@ -80,6 +80,37 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/353.html">新年了,开始写论文了~_~</a> <span class="date">2012-01-04 12:45:48</span></h3>
+  <p>拖了一年了,老婆也发话了&hellip; 看来是时候认认真真把论文搞定了</p>
+
+<p>文档啥的,一直都不是强项,宁愿写100行代码也想不出10行文档的我,要写出一份几十页的论文,真是情何以堪啊&hellip;</p>
+
+<ol>
+<li>文档格式</li>
+</ol>
+
+<p>说明一下,我这里说的不是文档的排版,而是文档的存储格式</p>
+
+<p>最初的想法,当然是传统的Work文档,直观易用,但,这玩意真不适合程序员使用,尤其是没有版本管理,转换成其他格式也非常不便
+昨晚学了一下传说中的Latex,这玩意强大得很,简直不是人用的&hellip;. 一眼看上去,都不知道最终文档长啥样</p>
+
+<p>所以呢,我决定尝试一把,用zDoc或者Markdown来写.现在主要是倾向于zDoc(即nutzdoc),理由很简单,自己参与的项目,如果有bug也立马修正.
+但保险起见,实现zDoc&ndash;&gt;MarkDown转换器也立马提上日程,这个需求最初是nutz迁移到github时提出的,后来发现github的wiki的不如google code做得好,这个需求也就沉寂下去了</p>
+
+<ol>
+<li>文档管理</li>
+</ol>
+
+<p>既然文档是zdoc格式,那么,版本管理和持续集成也就不成问题咯
+Git &ndash; 版本控制,话说我已经爱上这玩意,svn已经N久没有使用过
+Hudson &ndash; 不知道什么原因,我一直喜欢用这个进行持续集成,我也用过其他的啊,咋就还钟情于hudson呢</p>
+
+  <div class="more">
+    <a href="/353.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/351.html">Python: 为对象动态添加函数,且函数定义来自一个str</a> <span class="date">2011-12-03 20:24:42</span></h3>
   <p>在Python中,通常情况下,你只能为对象添加一个已经写好的方法</p>
 
@@ -344,44 +375,6 @@ gmake install
 
   <div class="more">
     <a href="/330.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/326.html">初试Jetty使用Mongodb作为Session管理器</a> <span class="date">2011-09-26 23:03:32</span></h3>
-  <p>闲话少说,直接上代码:</p>
-
-<pre><code>package net.wendal.jetty.mongodb;
-
-import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
-import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.SessionManager;
-import org.eclipse.jetty.server.session.SessionHandler;
-import org.eclipse.jetty.webapp.WebAppContext;
-
-public abstract class TestMongodb4Jetty {
-
-    public static void main(String[] args) throws Throwable {
-        Server server = new Server(9090);
-        WebAppContext webAppContext = new WebAppContext();
-        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
-        MongoSessionManager msm = new MongoSessionManager();
-        SessionHandler sessionHandler = new SessionHandler();
-        sessionHandler.setSessionManager(msm);
-        webAppContext.setSessionHandler(sessionHandler);
-        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
-        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
-        idMgr.setScavengeDelay(60);
-        msm.setSessionIdManager(idMgr);
-        server.setHandler(webAppContext);
-        server.start();
-    }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/326.html" class="btn">read more..</a>
   </div>
 </div>
 

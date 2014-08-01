@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>13 May 14 14:36 +0800</pubDate>
+    <pubDate>01 Aug 14 09:23 +0800</pubDate>
+    <item>
+      <title>探索yeelink</title>
+      <link>http://wendal.net/2014/07/31.html</link>
+      <pubDate>2014-07-31 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;yeelink官网&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.yeelink.net/index&#34;&gt;http://www.yeelink.net/index&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;yeelink的传感器&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;支持5种类型: 开关,数值,gps,图片,泛型&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;Yeelink API&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;支持v1和v1.1两个版本, 我是直接跳过v1,实现了v1.1的版本&lt;/p&gt;&#xA;&#xA;&lt;p&gt;不过v1.1依然是测试期,被我遇到几个bug,哈哈&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;最后弄了个java库&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;http://github.com/wendal/yeelink4j&#34;&gt;http://github.com/wendal/yeelink4j&lt;/a&gt;&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>用NDK编译ssdb</title>
       <link>http://wendal.net/2014/05/13.html</link>
@@ -19,7 +25,7 @@
       <title>为Golang程序打上编译标记</title>
       <link>http://wendal.net/2014/04/02.html</link>
       <pubDate>2014-04-02 12:00:00 +0800</pubDate>
-      <description>&lt;p&gt;参考文章: &lt;a href=&#34;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&#34;&gt;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;昨天在查询怎么生成一个小体积的golang程序的时候,无意中发现这个文章.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;对于固定的代码,及固定的golang版本,下面的命令总是得到一模一样的程序&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;go build&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;有时候需要为每个编译都打上标记,不然真的很乱啊&lt;/p&gt;&#xA;&#xA;&lt;p&gt;演示用的golang代码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;package main&#xA;&#xA;var _VERSION_ = &amp;quot;unknown&amp;quot;&#xA;&#xA;func main() {&#xA;    print(&amp;quot;http_su ver=&amp;quot; + _VERSION_ + &amp;quot;\n&amp;quot;)&#xA;}&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;编译时,加入需要的版本号信息,而不是直接去改main.go的源码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;export TAG=v1.b.50&#xA;go build -ldflags &amp;quot;-X main._VERSION &#39;$TAG&#39;&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;运行结果:&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;&amp;gt; go build&#xA;&amp;gt; ./demo&#xA;http_su ver=unknown&#xA;&amp;gt; export TAG=v.1.b.50&#xA;&amp;gt; go build -ldflags &amp;quot;-X main._VERSION_ &#39;$TAG&#39;&amp;quot;&#xA;&amp;gt; ./demo&#xA;http_su ver=v.1.b.50&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;可以看到, 版本号根据编译参数的变化而变化了. 关键点是, 必须是 $package.$varName&lt;/p&gt;&#xA;&#xA;&lt;p&gt;本demo在linux/macos/windows/arm下测试通过.&lt;/p&gt;&#xA;</description>
+      <description>&lt;p&gt;参考文章: &lt;a href=&#34;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&#34;&gt;http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;昨天在查询怎么生成一个小体积的golang程序的时候,无意中发现这个文章.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;对于固定的代码,及固定的golang版本,下面的命令总是得到一模一样的程序&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;go build&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;有时候需要为每个编译都打上标记,不然真的很乱啊&lt;/p&gt;&#xA;&#xA;&lt;p&gt;演示用的golang代码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;package main&#xA;&#xA;var _VERSION_ = &amp;quot;unknown&amp;quot;&#xA;&#xA;func main() {&#xA;    print(&amp;quot;http_su ver=&amp;quot; + _VERSION_ + &amp;quot;\n&amp;quot;)&#xA;}&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;编译时,加入需要的版本号信息,而不是直接去改main.go的源码&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;export TAG=v1.b.50&#xA;go build -ldflags &amp;quot;-X main._VERSION_ &#39;$TAG&#39;&amp;quot;&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;运行结果:&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;&amp;gt; go build&#xA;&amp;gt; ./demo&#xA;http_su ver=unknown&#xA;&amp;gt; export TAG=v.1.b.50&#xA;&amp;gt; go build -ldflags &amp;quot;-X main._VERSION_ &#39;$TAG&#39;&amp;quot;&#xA;&amp;gt; ./demo&#xA;http_su ver=v.1.b.50&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;可以看到, 版本号根据编译参数的变化而变化了. 关键点是, 必须是 $package.$varName&lt;/p&gt;&#xA;&#xA;&lt;p&gt;本demo在linux/macos/windows/arm下测试通过.&lt;/p&gt;&#xA;</description>
     </item>
     <item>
       <title>JDK8 Access to Parameter Names at Runtime</title>

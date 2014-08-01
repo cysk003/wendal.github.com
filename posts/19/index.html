@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/227.html">WP-Codebox乱码问题</a> <span class="date">2011-01-10 22:05:52</span></h3>
+  <p>以前就发现代码高亮插件WP-Codebox在IE下乱码,且行号会分行,可惜CSS水平一直有限,一直未能修正.</p>
+
+<p>今天人品爆发,加上最近CSS修炼(从无知到极度菜鸟),终于修改成功!!
+需要修改的文件:
+geshi.php 解决乱码:</p>
+
+<pre><code>var $overall_style = 'font-family:monospace;';
+//改为
+var $overall_style = '';
+</code></pre>
+
+<p>codebox.css 解决行号换行问题(仅解决了100行以内):</p>
+
+<pre><code>.line_numbers pre {
+        padding: 0px;
+        margin: 0px;
+        text-align: right;
+        width: 14px; //新加一句
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/227.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/226.html">Alfresco Virtual tomcat默认不解析EL</a> <span class="date">2011-01-06 10:17:32</span></h3>
   <p>我正在使用Alfresco 3.3 SP4 , 发现其Virtual tomcat竟然是构建在tomcat5.5上的.
 在jsp页面中写el表达式,死活不出来.最后才发现,是tomcat5.5默认不解析EL !!</p>
@@ -287,35 +315,6 @@ cd mysql-5.5.8</p></li>
 
   <div class="more">
     <a href="/214.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/212.html">让Nginx的SSI支持相对路径--更安全的方法</a> <span class="date">2010-12-14 14:04:24</span></h3>
-  <p>这个比较老生长谈的问题,例如 文章 <a href="http://bbs.linuxtone.org/thread-6515-1-1.html">关于nginx的ssi</a>
-但,这种改法,实在不安全.毕竟全局的函数都被改了,任意的../../../都能被访问
-故,基于我对nginx的了解,使用另外一种改法,仅仅修改SSI模块,安全性相对较高
-修改src/http/modules/ngx_http_ssi_filter_module.c
-找到以下代码(以nginx 0.9.3版为例):</p>
-
-<pre><code>    if (ngx_http_parse_unsafe_uri(r, uri, &amp;args;, &amp;flags;) != NGX_OK) {
-        return NGX_HTTP_SSI_ERROR;
-    }
-</code></pre>
-
-<p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
-测试代码:
-文件1 &mdash; index.html</p>
-
-<pre><code>测试导入
-</code></pre>
-
-<p>文件2 &ndash; subdir/index.html</p>
-
-<p>访问subdir/index.html,测试通过!</p>
-
-  <div class="more">
-    <a href="/212.html" class="btn">read more..</a>
   </div>
 </div>
 
