@@ -80,6 +80,37 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/0205.html">获取goroutine的id</a> <span class="date">2013-02-05</span></h3>
+  <h2>获取goroutine的id? 官方不支持的!!</h2>
+
+<p>人家官方说了:</p>
+
+<pre><code>&quot;This, among other reasons, to prevent programmers 
+for simulating thread local storage using the goroutine id as a key. &quot;
+</code></pre>
+
+<p>就为了避免咱们当成ThreadLocal的key!! 这是为了神马?为神马?!!</p>
+
+<h2>方法还是有的嘛,改动一下源码</h2>
+
+<p>神马?!改源码这么大件事?! 对的,但只是添加,不修改不覆盖,不影响其他功能</p>
+
+<p>文件一, $GOPATH/src/pkg/runtime/runtime.c, 在最后面添加一个方法</p>
+
+<pre><code>void
+runtime·GetGoId(int32 ret)
+{
+        ret = g-&gt;goid;
+        USED(&amp;ret);
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/0205.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/0130.html">在Linux下安装Cuda5</a> <span class="date">2013-01-30</span></h3>
   <p>所有操作均为root用户.</p>
 
@@ -359,39 +390,6 @@ password: #输入密码
 
   <div class="more">
     <a href="/2012/1228.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1224.html">在Golang中获取系统的磁盘空间内存占用</a> <span class="date">2012-12-24</span></h3>
-  <h2>获取磁盘占用情况(Linux/Mac下有效)</h2>
-
-<pre><code>import (
-    &quot;syscall&quot;
-)
-
-type DiskStatus struct {
-    All  uint64 `json:&quot;all&quot;`
-    Used uint64 `json:&quot;used&quot;`
-    Free uint64 `json:&quot;free&quot;`
-}
-
-// disk usage of path/disk
-func DiskUsage(path string) (disk DiskStatus) {
-    fs := syscall.Statfs_t{}
-    err := syscall.Statfs(path, &amp;fs)
-    if err != nil {
-        return
-    }
-    disk.All = fs.Blocks * uint64(fs.Bsize)
-    disk.Free = fs.Bfree * uint64(fs.Bsize)
-    disk.Used = disk.All - disk.Free
-    return
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1224.html" class="btn">read more..</a>
   </div>
 </div>
 

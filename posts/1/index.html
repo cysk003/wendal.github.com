@@ -80,6 +80,30 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2014/08/04.html">arduino pro mini的电压问</a> <span class="date">2014-08-04</span></h3>
+  <h2>arduino pro mini的MCU是 atmega328p</h2>
+
+<p><a href="http://www.atmel.com/devices/atmega328.aspx">http://www.atmel.com/devices/atmega328.aspx</a></p>
+
+<p>电压从 1.8-5.5</p>
+
+<p>工作频率最高20Mhz</p>
+
+<h2>电压与频率的关系</h2>
+
+<p>3.3v 安全频率 约12.5Mhz
+5v   安全频率 20Mhz</p>
+
+<p>淘宝上绝大多数都是5V 16Mhz的, 但我手上的几块均能工作在3.3V</p>
+
+<p>所以就很奇怪这5v和3.3v到底影响了什么.</p>
+
+  <div class="more">
+    <a href="/2014/08/04.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/07/31.html">探索yeelink</a> <span class="date">2014-07-31</span></h3>
   <h2>yeelink官网</h2>
 
@@ -337,31 +361,6 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
   <div class="more">
     <a href="/2013/10/28.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/10/20.html">让redis支持动态库</a> <span class="date">2013-10-20</span></h3>
-  <h1>So, let&rsquo;s put some fun in redis</h1>
-
-<p>redis的命令列表是写死在代码里面,编译后就没法修改(跟nginx一个德行)</p>
-
-<h1>硬编码一些额外的方法到redis中</h1>
-
-<p>最初写的一个hello world级的测试命令</p>
-
-<pre><code>void wendalCommand(redisClient *c) {
-    struct timeval tv;           // 从timeCommand拷贝的...
-    addReplyMultiBulkLen(c,3);   // 共返回3个结果
-    addReplyBulkCString(c, &quot;Hi,Wendal&quot;); // 输出个字符串啦
-    gettimeofday(&amp;tv,NULL);              // 获取时间, 也是从timeCommand拷贝的
-    addReplyBulkLongLong(c,tv.tv_sec);   // 不解释了
-    addReplyBulkLongLong(c,tv.tv_usec);  // 不解释了
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/10/20.html" class="btn">read more..</a>
   </div>
 </div>
 

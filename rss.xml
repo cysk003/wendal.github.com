@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>01 Aug 14 09:23 +0800</pubDate>
+    <pubDate>04 Aug 14 22:44 +0800</pubDate>
+    <item>
+      <title>arduino pro mini的电压问</title>
+      <link>http://wendal.net/2014/08/04.html</link>
+      <pubDate>2014-08-04 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;arduino pro mini的MCU是 atmega328p&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.atmel.com/devices/atmega328.aspx&#34;&gt;http://www.atmel.com/devices/atmega328.aspx&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;电压从 1.8-5.5&lt;/p&gt;&#xA;&#xA;&lt;p&gt;工作频率最高20Mhz&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;电压与频率的关系&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;3.3v 安全频率 约12.5Mhz&#xA;5v   安全频率 20Mhz&lt;/p&gt;&#xA;&#xA;&lt;p&gt;淘宝上绝大多数都是5V 16Mhz的, 但我手上的几块均能工作在3.3V&lt;/p&gt;&#xA;&#xA;&lt;p&gt;所以就很奇怪这5v和3.3v到底影响了什么.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;由于3.3v下, 16Mhz高于安全频率, 所以mcu事实上工作在&amp;rdquo;超频&amp;rdquo;的状态&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>探索yeelink</title>
       <link>http://wendal.net/2014/07/31.html</link>

@@ -80,6 +80,29 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/292.html">在几种编程语言中探索(Java/Python/Lua/C)</a> <span class="date">2011-06-10 12:15:42</span></h3>
+  <p>猛然发现自己已经快一个月没写blog,太懒惰了!!</p>
+
+<p>5月,先是脚受伤,接着过敏&hellip;</p>
+
+<p>Java &ndash; 为Nutz重写的Json解析器,最初的实现(zozoh)我看不懂,第二版(juqkai)改造得不够彻底,代码比较乱. 这次修改之后,解析将比之前严格,对于非法转义字符,不匹配的[}均直接抛出异常. 这将导致已经使用nutz的项目,其json文件可能会被报错. 然而,这并未100%的执行Json规范,主要是数字处理和map的key</p>
+
+<p>Python &ndash; 最近用得比较多,但至今未打动我. 很多情况下,Python依旧是Shell的替代品,呵呵. 不知道是不是习惯于一种思维: 编程语言=语法+API , 也许还没领会到Python的精髓与思维模式. 与Java相比, 多了些语法糖果,如in和缩进式的逻辑语句</p>
+
+<p>Lua &ndash; 呵呵,最近貌似很流行呢!! 最近玩的愤怒的小鸟,也是用Lua写的
+成果: <a href="http://www.teclast.com/bbs/forum.php?mod=viewthread&amp;tid=157140&amp;extra=">RK29xx固件解包打包工具_v1.1测试版</a> 当前唯一正确解包/打包RK2918方案固件的工具,完美解开台电T760的2.x固件,酷比1.x固件
+Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值得学习的一门语言</p>
+
+<p>C &ndash; 处理字符串,真是痛苦啊&hellip;</p>
+
+<p>刚刚把Nutz的代码迁移到Github了,准备写个简单教程,说说经验,呵呵</p>
+
+  <div class="more">
+    <a href="/292.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/288.html">鸣鸣满100天了!! 申领了身份证等重要证件,嘻嘻</a> <span class="date">2011-05-13 14:38:54</span></h3>
   <p>嘻嘻,一百天了</p>
 
@@ -328,34 +351,6 @@ public class Main {
 
   <div class="more">
     <a href="/274.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/273.html">EverBox Java API的非官方项目启动啦!</a> <span class="date">2011-04-21 18:21:51</span></h3>
-  <p>项目地址:
-<a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
-动机: EverBox没有公开的API(无论是Java还是Http API),Linux和Mac用户都无法使用其客户端!!</p>
-
-<p>=<strong>最低目标</strong>=
-    * 实现对指定文件夹的自动同步*</p>
-
-<p>=<strong>期望目标</strong>=
-  * 实现官方版大部分功能,如代理设置,同步模式设置,限速,等等
-  * 更漂亮的UI
-  * 更多实用功能,如可以过滤上传/下载的文件,多帐户多文件夹同步</p>
-
-<p>=<strong>需要解决的问题</strong>=
-  * 获取服务器端的已存在文件列表(已经实验出来了)
-  * 下载指定的文件
-  * 上传指定的文件</p>
-
-<p>=<strong>期待你的加入</strong>=
-  * 探索通信协议
-  * 设计UI,实现UI</p>
-
-  <div class="more">
-    <a href="/273.html" class="btn">read more..</a>
   </div>
 </div>
 

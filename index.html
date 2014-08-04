@@ -91,6 +91,32 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2014/08/04.html">arduino pro mini的电压问</a> <span class="date">2014-08-04</span></h3>
+
+  <h2>arduino pro mini的MCU是 atmega328p</h2>
+
+<p><a href="http://www.atmel.com/devices/atmega328.aspx">http://www.atmel.com/devices/atmega328.aspx</a></p>
+
+<p>电压从 1.8-5.5</p>
+
+<p>工作频率最高20Mhz</p>
+
+<h2>电压与频率的关系</h2>
+
+<p>3.3v 安全频率 约12.5Mhz
+5v   安全频率 20Mhz</p>
+
+<p>淘宝上绝大多数都是5V 16Mhz的, 但我手上的几块均能工作在3.3V</p>
+
+<p>所以就很奇怪这5v和3.3v到底影响了什么.</p>
+
+
+  <div class="more">
+    <a href="/2014/08/04.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/07/31.html">探索yeelink</a> <span class="date">2014-07-31</span></h3>
 
   <h2>yeelink官网</h2>
@@ -1048,39 +1074,6 @@ go install github.com/wendal/gor/gor
 
   <div class="more">
     <a href="/2013/0215.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0205.html">获取goroutine的id</a> <span class="date">2013-02-05</span></h3>
-
-  <h2>获取goroutine的id? 官方不支持的!!</h2>
-
-<p>人家官方说了:</p>
-
-<pre><code>&quot;This, among other reasons, to prevent programmers 
-for simulating thread local storage using the goroutine id as a key. &quot;
-</code></pre>
-
-<p>就为了避免咱们当成ThreadLocal的key!! 这是为了神马?为神马?!!</p>
-
-<h2>方法还是有的嘛,改动一下源码</h2>
-
-<p>神马?!改源码这么大件事?! 对的,但只是添加,不修改不覆盖,不影响其他功能</p>
-
-<p>文件一, $GOPATH/src/pkg/runtime/runtime.c, 在最后面添加一个方法</p>
-
-<pre><code>void
-runtime·GetGoId(int32 ret)
-{
-        ret = g-&gt;goid;
-        USED(&amp;ret);
-}
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/0205.html" class="btn">read more..</a>
   </div>
 </div>
 

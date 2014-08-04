@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/273.html">EverBox Java API的非官方项目启动啦!</a> <span class="date">2011-04-21 18:21:51</span></h3>
+  <p>项目地址:
+<a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
+动机: EverBox没有公开的API(无论是Java还是Http API),Linux和Mac用户都无法使用其客户端!!</p>
+
+<p>=<strong>最低目标</strong>=
+    * 实现对指定文件夹的自动同步*</p>
+
+<p>=<strong>期望目标</strong>=
+  * 实现官方版大部分功能,如代理设置,同步模式设置,限速,等等
+  * 更漂亮的UI
+  * 更多实用功能,如可以过滤上传/下载的文件,多帐户多文件夹同步</p>
+
+<p>=<strong>需要解决的问题</strong>=
+  * 获取服务器端的已存在文件列表(已经实验出来了)
+  * 下载指定的文件
+  * 上传指定的文件</p>
+
+<p>=<strong>期待你的加入</strong>=
+  * 探索通信协议
+  * 设计UI,实现UI</p>
+
+  <div class="more">
+    <a href="/273.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/272.html">Nginx与中文域名</a> <span class="date">2011-04-17 18:36:30</span></h3>
   <p>这个问题来自Nginx群</p>
 
@@ -321,34 +349,6 @@ GET_END = 'HTTPSQS_GET_END'
 
   <div class="more">
     <a href="/260.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/259.html">HTTPSQS源码初探</a> <span class="date">2011-03-28 21:34:39</span></h3>
-  <p>官网: <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a>
-一句话介绍: HTTPSQS is a Simple Queue Service based on HTTP GET/POST protocol
-               HTTPSQS（HTTP Simple Queue Service）是一款基于 HTTP GET/POST 协议的轻量级开源简单消息队列服务</p>
-
-<p>其实以前就安装过这款队列实现,也简单测试过,但今天第一次看源码,呵呵</p>
-
-<p>源码就一个C文件 httpsqs.c , 外加一个MakeFile文件</p>
-
-<p>代码大概800行,原本以为是个很复杂的东西,最后才发现,真的如其中文介绍一样:
-使用 Tokyo Cabinet 的 B+Tree Key/Value 数据库来做数据的持久化存储</p>
-
-<p>我的理解就是一个Key/Value服务器的Http界面</p>
-
-<p>原本打算写点代码分析的,但源码上的注解太详细,算了,不写了,把方法列一下:</p>
-
-<pre><code>/* 全局设置 */
-TCBDB *httpsqs_db_tcbdb; /* 数据表 */
-int httpsqs_settings_syncinterval; /* 同步更新内容到磁盘的间隔时间 */
-char *httpsqs_settings_pidfile; /* PID文件 */
-</code></pre>
-
-  <div class="more">
-    <a href="/259.html" class="btn">read more..</a>
   </div>
 </div>
 

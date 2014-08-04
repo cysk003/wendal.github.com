@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/424.html">在LuaJIT中通过FFI直接调用newlisp</a> <span class="date">2012-05-17 22:02:59</span></h3>
+  <ol>
+<li>首先,当然是编译newlisp,并拷贝到/usr/lib/libnewlisp.so</li>
+<li>编译luajit,启动之</li>
+</ol>
+
+<p>上代码</p>
+
+<pre><code>--载入ffi
+ffi = require(&quot;ffi&quot;)
+--载入newlisp
+newlisp = ffi.load(&quot;newlisp&quot;)
+--定义newlisp的公开API
+ffi.cdef[[
+char * newlispEvalStr(char * cmd);
+]]
+
+--接下来,就是调用过程了
+newlisp_str = &quot;()&quot;
+tmp = ffi.new(&quot;char[2]&quot;) -- 因为newlispEvalStr的参数是char*,而newlisp_str是string,需要转一下
+ffi.copy(tmp, newlisp_str)
+</code></pre>
+
+  <div class="more">
+    <a href="/424.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/423.html">将诺顿Ghost(诺顿克隆精灵)正版化了</a> <span class="date">2012-05-12 21:17:33</span></h3>
   <p><strong>不打算说其他的,就贴一下邮件内容吧:</strong></p>
 
@@ -374,38 +403,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/413.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/412.html">lua-newLISP 包装器</a> <span class="date">2012-04-10 22:48:51</span></h3>
-  <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
-
-<p>今天第一次写lua模块,就做了一个lua-newLISP包装器,即在lua中执行newLISP脚本</p>
-
-<p><strong>首先遇到的是newLISP的编译:</strong>
-1. 官方提供的configure智能化程度极低,估计是手写的
-2. 生成的Makefile,是Ubuntu下的配置, 在centos下编译无法通过
-虽然修改一下,还是顺利能pass,但还是觉得不爽
-故, 动手做了一个<a href="https://gist.github.com/2351735">cmake for newLISP</a>的脚本.</p>
-
-<p><strong>生成so文件后,默认是newlisp.so,改名为libnewlisp.so,并放入/usr/lib中</strong></p>
-
-<p>由于newLISP的对外API仅2个(其中一个还不能用&hellip;),且自带的h文件比较混乱,<strong>干脆自己写了一个h文件</strong><a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.h">newlisp.h</a>,就一行:</p>
-
-<pre><code>char * newlispEvalStr(char * cmd); //把传入的cmd当成newlisp脚本执行,并返回char*
-</code></pre>
-
-<p>然后,当然是主体c文件<a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.c">newLISP.c</a>啦</p>
-
-<pre><code>//载入lua的头文件
-#include &quot;lua.h&quot;
-#include &quot;lualib.h&quot;
-#include &quot;lauxlib.h&quot;
-</code></pre>
-
-  <div class="more">
-    <a href="/412.html" class="btn">read more..</a>
   </div>
 </div>
 
