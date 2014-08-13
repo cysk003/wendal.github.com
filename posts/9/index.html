@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/413.html">Nginx二级域名自动匹配到子文件夹(通过rewrite)</a> <span class="date">2012-04-11 20:32:23</span></h3>
+  <p>网站目录结构</p>
+
+<pre><code>html --
+       index.html
+       xxx.html
+       tuan --
+              index.html
+              tuan800.html
+       blog --
+              index.html
+              1.html
+              19.html
+       news --
+              index.html
+              how_to_XX.html
+              XX_XX_XX.html
+</code></pre>
+
+<p>分别对应主站(nutz.cn, www.nutz.cn), 团购子站(tuan.nutz.cn),博客子站(blog.nutz.cn),新闻子站(news.nutz.cn)</p>
+
+  <div class="more">
+    <a href="/413.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/412.html">lua-newLISP 包装器</a> <span class="date">2012-04-10 22:48:51</span></h3>
   <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
 
@@ -333,34 +360,6 @@ Class文件格式定义,永远是最权威的</p>
 
   <div class="more">
     <a href="/402.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/400.html">如何阅读Nutz的源码</a> <span class="date">2012-03-19 22:50:37</span></h3>
-  <p>一直以来都有很多人问,我一直以来就有一个简单直接的回答:
-&ldquo;看你喜欢看的模块&rdquo;</p>
-
-<p>今天,我决定用长一点的篇幅及内容来解释一下</p>
-
-<p><strong>Nutz的基础设施 &ndash; Lang/Castor/Json/Log/Plugin</strong>
-所有模块都是无约束地使用这个几个package所提供的方法
-&ndash;Lang,提供的是帮助方法,各种各样的,其名字来源于对java.lang包的补充. 注意,其中的Mirror类封装了大量的反射,但请不要再以JDK1.2的思维去想象反射的性能!!
-&ndash;Castor,负责类型转换, 例如String&ndash;&gt;List
-&ndash;Json,一个基本完整(不解析科学计数),Json字符串与Java对象的互转实现
-&ndash;Log,日志接口,Nutz的代码,在运行时并不强制依赖具体的日志实现,这个package就是做了封装
-&ndash;Plugin,插件模块,最初的设计是为了一套简单的插件机制,现在仅Log模块在使用,意义已经不大
-建议重点关注的类/接口:
-Mirror Castors Json Lang Files Streams Log Log4jLogAdapter SimplePluginManager MultiLineProperties</p>
-
-<p><strong>反向注入/依赖注入 &ndash; Ioc</strong>
-由于Spring的横行,许多童鞋连Ioc的基本原理都已经忘掉了
-IocLoader负责加载配置信息(如js,注解)
-Ioc(NutIoc)按配置信息生成具体对象(bean)
-IocContext按配置信息管理bean的生命周期(create/fetch/depose)</p>
-
-  <div class="more">
-    <a href="/400.html" class="btn">read more..</a>
   </div>
 </div>
 

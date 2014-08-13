@@ -80,6 +80,37 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/295.html">搭建Git服务器,真的很简单</a> <span class="date">2011-06-21 21:07:36</span></h3>
+  <p><strong>重要提醒, 本教材适用于gitolite v2,与当前最新版v3不兼容!!</strong>
+<strong>需要在checkout gitolite后,切换到v2版!!</strong></p>
+
+<p>最近都在玩Git, <a href="https://github.com/nutzam/nutz">Nutz也已经迁移到Github上</a></p>
+
+<p>原文地址: <a href="http://sitaramc.github.com/gitolite/doc/1-INSTALL.html">http://sitaramc.github.com/gitolite/doc/1-INSTALL.html</a></p>
+
+<p>其实真的只需要几句</p>
+
+<pre><code>#现在开始是root做的
+
+#安装Git
+apt-get install git
+#拷贝你自己的公钥
+cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
+git clone git://github.com/sitaramc/gitolite
+cd gitolite
+##################################
+#重要!! 切换到v2版!!
+git checkout g2
+##################################
+src/gl-system-install
+</code></pre>
+
+  <div class="more">
+    <a href="/295.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/292.html">在几种编程语言中探索(Java/Python/Lua/C)</a> <span class="date">2011-06-10 12:15:42</span></h3>
   <p>猛然发现自己已经快一个月没写blog,太懒惰了!!</p>
 
@@ -324,33 +355,6 @@ public class Main {
 
   <div class="more">
     <a href="/275.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/274.html">Everbox4j 当前进度(2011-04-26)</a> <span class="date">2011-04-26 09:23:12</span></h3>
-  <p>项目地址: <a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
-源码地址: <a href="http://code.google.com/p/everbox4j/source/browse/">http://code.google.com/p/everbox4j/source/browse/</a></p>
-
-<p>已经完成的功能:
-    <strong>上传指定文件(不限大小)</strong>
-    <strong>下载指定文件(支持断点续传)</strong>
-    新建文件夹(服务器端)
-    删除文件/文件夹(服务器端)
-    一个简单的管理UI界面,仅界面,功能还没做,呜呜</p>
-
-<p>学到不少东西:
-    上传的机制 &ndash; 分段上传,由服务器决定上传哪几段
-    下载机制 &ndash; 先发起一个下载请求,服务器分配一个下载地址</p>
-
-<p>Everbox用到的一些东西:
-    Json
-    Apache HttpClient
-    <strong>OAuth</strong>
-    SHA1</p>
-
-  <div class="more">
-    <a href="/274.html" class="btn">read more..</a>
   </div>
 </div>
 

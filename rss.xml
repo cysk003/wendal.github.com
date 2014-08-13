@@ -2,9 +2,15 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>04 Aug 14 22:44 +0800</pubDate>
+    <pubDate>13 Aug 14 22:33 +0800</pubDate>
     <item>
-      <title>arduino pro mini的电压问</title>
+      <title>YeelinkTester 总算弄好了</title>
+      <link>http://wendal.net/2014/08/13.html</link>
+      <pubDate>2014-08-13 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;直接上程序截图&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2014/08/13/ABC.png&#34;&gt;&lt;/img&gt;&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;源码:&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/wendal/yeelink_tester&#34;&gt;https://github.com/wendal/yeelink_tester&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;用到的东西&lt;/h2&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;python 2.7.8&lt;/li&gt;&#xA;&lt;li&gt;pyqt 4.11.1&lt;/li&gt;&#xA;&lt;li&gt;mqtt&lt;/li&gt;&#xA;&lt;li&gt;pyserial&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&lt;h2&gt;功能&lt;/h2&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;从串口读取数据,上传到yeelink&lt;/li&gt;&#xA;&lt;li&gt;从yeelink接收mqtt通知,写到串口&lt;/li&gt;&#xA;&lt;li&gt;从串口读取指令,然后会写数据(当前实现了查询最新的值)&lt;/li&gt;&#xA;&lt;li&gt;一个API测试对话框, 支持文件上传&lt;/li&gt;&#xA;&lt;li&gt;一个Yeelink Http API请求分析器(API虚拟服务器),用于排查api调用的错误&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>arduino pro mini的电压问题</title>
       <link>http://wendal.net/2014/08/04.html</link>
       <pubDate>2014-08-04 12:00:00 +0800</pubDate>
       <description>&lt;h2&gt;arduino pro mini的MCU是 atmega328p&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;&lt;a href=&#34;http://www.atmel.com/devices/atmega328.aspx&#34;&gt;http://www.atmel.com/devices/atmega328.aspx&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;电压从 1.8-5.5&lt;/p&gt;&#xA;&#xA;&lt;p&gt;工作频率最高20Mhz&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;电压与频率的关系&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;3.3v 安全频率 约12.5Mhz&#xA;5v   安全频率 20Mhz&lt;/p&gt;&#xA;&#xA;&lt;p&gt;淘宝上绝大多数都是5V 16Mhz的, 但我手上的几块均能工作在3.3V&lt;/p&gt;&#xA;&#xA;&lt;p&gt;所以就很奇怪这5v和3.3v到底影响了什么.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;由于3.3v下, 16Mhz高于安全频率, 所以mcu事实上工作在&amp;rdquo;超频&amp;rdquo;的状态&lt;/p&gt;&#xA;</description>

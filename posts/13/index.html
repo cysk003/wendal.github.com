@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/332.html">Nut.Test -- 使用Nutz一样能方便地进行单元测试</a> <span class="date">2011-10-16 22:22:36</span></h3>
+  <p>首先,感谢Jay提出一个需求.</p>
+
+<p>这个功能很有可能出现在1.b.40中</p>
+
+<p>当前Nut.Test代码,主要解决以下几个问题:
+1. 测试方法使用NutzDao操作数据库,希望在测试方法执行完成后进行回滚
+2. Ioc支持,方便获取与实际生产环境类似的Ioc注入功能,方便进行功能测试</p>
+
+<p>这个测试Runner, 很好地平衡了侵入性与灵活性, 让用户以很低的成本与耦合度测试Nutz代码</p>
+
+<p>所以,我新建org.nutz.test包, 核心类NutzJUnit4ClassRunner,这个类本身非常简单</p>
+
+<pre><code>public class NutzJUnit4ClassRunner extends TestClassRunner {
+    public NutzJUnit4ClassRunner(final Class klass) throws InitializationError {
+        super(klass, new NutTestClassMethodsRunner(klass));
+    }
+}
+</code></pre>
+
+<p>核心代码位于NutTestClassMethodsRunner</p>
+
+  <div class="more">
+    <a href="/332.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/330.html">在Linux下编译Qt Libs -- 能不能快点呢?!</a> <span class="date">2011-10-01 08:37:57</span></h3>
   <p>出于好玩,下载了Qt libs for linux, 发现是个源码包,好吧编译呗</p>
 
@@ -335,35 +363,6 @@ private String zIndex;
 
   <div class="more">
     <a href="/316.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/314.html">NutzMole -- Nutz的代码生成器</a> <span class="date">2011-08-21 11:39:55</span></h3>
-  <p>惯例,先上下载地址:
-<a href="http://nutz.googlecode.com/files/rapid-generator-for-nutzmole-1.1.zip">NutzMole 1.1 for rapid</a></p>
-
-<p>这个项目的原始地址,原本是nutzlab的一个实验项目:
-<a href="http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole">http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole</a></p>
-
-<p><strong>历史:</strong>
-最初的代码,是在2010年11月提交的,之后一直处于冻结状态 &ndash; 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
-直到几天前,我重启这个项目,并作了少量修正后,发布了NutzMole 1.0版,可独立运行,说白了,就是把旧代码清理一下,打包成一个独立运行包</p>
-
-<p>1.0发布后,意见/建议/批评纷纷袭来,很大的原因是这个版本并未严格测试,模板本身使用的一些代码在Nutz 1.b.39已经无法使用</p>
-
-<p>很快的, 1.1版发布了,更新了模板,并采用了rapid的代码生成器平台</p>
-
-<p><strong>对比一下最初的NutzMole和rapid代码生成器平台</strong>:
-    NutzMole使用多个配置文件,rapid仅一个配置文件
-    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板&ndash;&gt;文件的机制</p>
-
-<p>NutzMole以专用工具的思想设计, rapid是按平台的理念设计,我对其代码生成器的印象是:
-    1. 单一配置文件,对用户非常友好
-    2. 平等的文件模板机制 &ndash;&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
-
-  <div class="more">
-    <a href="/314.html" class="btn">read more..</a>
   </div>
 </div>
 
