@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/110.html">想不到服务器一下子就被击垮了</a> <span class="date">2010-11-01 12:11:04</span></h3>
+  <p>上周末, 从同事口中得知我休假期间,Jboss服务器曾<strong>无故自己关闭</strong>了一次.</p>
+
+<p>顿时非常惊讶,咋就会自己关闭自己呢?</p>
+
+<p>第一反应是OOM了,一问,没啊,内存还剩好多,而且log没提示OOM.</p>
+
+<p>难道是程序里面写了System.exit(X)之类? 扫描了一遍代码,没有啊!! 我们还不至于写这么的代码</p>
+
+<p>奇怪的是, JBoss是按照标准的流程顺序关闭各个应用后,再shutdown完成的,并无直接被kill掉或者异常退出,也没有找到JVM报错的log.</p>
+
+<p>由于关闭的时间点在11:37AM,故,追查nginx的access.log  , 翻翻翻, 在一堆502(Jboss已经关闭,nginx无法proxy_pass,报502)前面,有一些不寻常的请求,节选如下:</p>
+
+<pre><code>/acunetix-wvs-test-for-some-inexistent-file-second-try
+
+/console/j_security_check
+
+/_vti_pvt/authors.pwd
+
+/phpmyadmin/main.php
+</code></pre>
+
+  <div class="more">
+    <a href="/110.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/108.html">使用Nginx搭建Http代理服务器</a> <span class="date">2010-10-24 20:42:46</span></h3>
   <p>昨天, 折腾了一个下午,终于配好了.
 配置如下:</p>
@@ -341,19 +369,6 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
   <div class="more">
     <a href="/61.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/58.html">尝试PPTP和OpenVPN失败</a> <span class="date">2010-08-30 22:45:48</span></h3>
-  <p>尝试了两天,焦头烂额,还是没搞定,没办法,先放放</p>
-
-<p>昨天去了一趟华南植物园,附图:</p>
-
-<p><img src="/assets/media/uploads/2010/08/DSCF0189-1024x768.jpg"></img></p>
-
-  <div class="more">
-    <a href="/58.html" class="btn">read more..</a>
   </div>
 </div>
 

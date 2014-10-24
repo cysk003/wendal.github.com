@@ -91,6 +91,32 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2014/10/23.html">Http协议及Json格式简介(给yeelink使用者的)</a> <span class="date">2014-10-23</span></h3>
+
+  <p>高手,老鸟,请路过. 本说明忽略了Continue 100请求,代理,chunked等等高级话题.</p>
+
+<h2>Http协议基本:</h2>
+
+<p>分3部分, 请求行(request line), 头部键值对(header key-value), 请求体(body), 其中请求体是可选的, 尤其是GET/PUT请求</p>
+
+<p>简单的GET请求</p>
+
+<pre><code>GET /v1.1/device/12825/sensor/20956/datapoints HTTP/1.1\r\n
+Host: api.yeelink.net\r\n
+Content-Length: 0\r\n
+U-ApiKey: 121234132432143\r\n
+\r\n
+</code></pre>
+
+<h2>请求行</h2>
+
+
+  <div class="more">
+    <a href="/2014/10/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/08/13.html">YeelinkTester 总算弄好了</a> <span class="date">2014-08-13</span></h3>
 
   <h2>直接上程序截图</h2>
@@ -1041,32 +1067,6 @@ func main() {
 
   <div class="more">
     <a href="/2013/0316.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0216.html">天语T619也能Root</a> <span class="date">2013-02-16</span></h3>
-
-  <h2>昨天,小黄蜂终于到手 &ndash; 广东移动周销售1.4w台的299元廉价机</h2>
-
-<p>玩了一天,还是忍不住要root掉的. 实在无法忍受那些百度的app!!!</p>
-
-<h2>但,官方固件在哪里呢?</h2>
-
-<p>官网,木有
-常见论坛,木有</p>
-
-<p>最后,在592zn找到了
-<a href="http://www.592zn.com/thread-209732-1-1.html">天语T619官方固件+592zn带ROOT固件</a></p>
-
-<p>接下来,当然是root固件啦: 用<a href="http://yaffey.googlecode.com/files/yaffey-v0.2-win32.zip">yaffey</a>
-修改好,刷机,搞定!!</p>
-
-<p>接下来,就是各种删除,哈哈</p>
-
-
-  <div class="more">
-    <a href="/2013/0216.html" class="btn">read more..</a>
   </div>
 </div>
 
