@@ -91,16 +91,17 @@
 
 <p>简单的GET请求</p>
 
-<pre><code>GET /v1.1/device/12825/sensor/20956/datapoints HTTP/1.1\r\n
+<pre><code>POST /v1.1/device/12825/sensor/20956/datapoints HTTP/1.1\r\n
 Host: api.yeelink.net\r\n
-Content-Length: 0\r\n
+Content-Length: 14\r\n
 U-ApiKey: 121234132432143\r\n
 \r\n
+{&quot;value&quot;:30.1}
 </code></pre>
 
 <h2>请求行</h2>
 
-<pre><code>GET /index.html HTTP/1.1\r\n
+<pre><code>POST /v1.1/device/12825/sensor/20956/datapoints HTTP/1.1\r\n
 </code></pre>
 
 <p>格式为</p>
@@ -119,8 +120,8 @@ U-ApiKey: 121234132432143\r\n
 
 <h2>头部键值对(header key-value)</h2>
 
-<pre><code>Host: wendal.net\r\n
-Content-Length: 0\r\n
+<pre><code>Host: api.yeelink.net\r\n
+Content-Length: 14\r\n
 \r\n
 </code></pre>
 
@@ -145,12 +146,15 @@ Content-Length: 0\r\n
 
 <h2>请求体(body)</h2>
 
+<pre><code>{&quot;value&quot;:30.1}
+</code></pre>
+
 <p>约束:</p>
 
 <ul>
+<li>请求体可以是一个字符串,一个数字,一个图片,一个压缩包&hellip; http协议本身并不限制body里面的格式</li>
 <li>这部分对于GET/DELETE请求是不允许有的, 但对于POST/PUT,大部分情况下是必须的(不带body的POST请求在协议层面也是合法的)</li>
 <li>请求体,在header的空行之后算起, 总长度需要填入heaader的Content-Length键值对.</li>
-<li>请求体可以是一个字符串,一个数字,一个图片,一个压缩包&hellip; http协议本身并不限制body里面的格式</li>
 <li>在yeelink中, 非图片型传感器的上传数据, 是json字符串, 那么json字符串的字节长度,必须填入heaader的Content-Length键值对.
 而图片型传感器, 请求体是图片的二进制数据(别转成hex字符串了), 总字节数一样要heaader的Content-Length键值对.</li>
 <li>再强调一次, Content-Length算的是字节长度, 是header空行之后的总字节数!!</li>
