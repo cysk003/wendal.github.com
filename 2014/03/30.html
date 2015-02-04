@@ -112,13 +112,13 @@ public class Bot {
     }
 
     public static void main(String[] args) throws NoSuchMethodException, SecurityException {
-        Class&lt;Bot&gt; clazz = Bot.class;
-        Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
-        Parameter[] ctorParameters =ctor.getParameters();
-        for (Parameter param: ctorParameters) {
-            System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
-        }
-    }
+		Class&lt;Bot&gt; clazz = Bot.class;
+		Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
+		Parameter[] ctorParameters =ctor.getParameters();
+		for (Parameter param: ctorParameters) {
+		    System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
+		}
+	}
 }
 </code></pre>
 
@@ -143,14 +143,14 @@ java -cp nutz_jdk8.Bot
 <p>如果是maven,则需要这段</p>
 
 <pre><code>&lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
-    &lt;version&gt;3.1&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;source&gt;1.8&lt;/source&gt;
-        &lt;target&gt;1.8&lt;/target&gt;
-        &lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
-    &lt;/configuration&gt;
+	&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+	&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+	&lt;version&gt;3.1&lt;/version&gt;
+	&lt;configuration&gt;
+		&lt;source&gt;1.8&lt;/source&gt;
+		&lt;target&gt;1.8&lt;/target&gt;
+		&lt;compilerArgument&gt;-parameters&lt;/compilerArgument&gt;
+	&lt;/configuration&gt;
 &lt;/plugin&gt;
 </code></pre>
 
@@ -202,7 +202,7 @@ java -cp nutz_jdk8.Bot
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>50</span></a>
+  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>51</span></a>
 </li>
     
     </ul>

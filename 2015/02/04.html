@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>从源码编译Chrome(chromium)</title>
+  
+    <meta name="description" content="在windows下编译Chrome">
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>从源码编译Chrome(chromium) </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>官网描述</h2>
+
+<p><a href="http://www.chromium.org/developers/how-tos/build-instructions-windows">http://www.chromium.org/developers/how-tos/build-instructions-windows</a></p>
+
+<h2>为啥还要写这篇博客</h2>
+
+<ol>
+<li>太久没在这里写博客</li>
+<li>Chrome编译的教程,网上太多太多了,但各种错误(也许对他们当时的版本来说并不是错误)</li>
+<li>好多博客没有把问题说清楚</li>
+</ol>
+
+<h2>第一步,修改系统语言</h2>
+
+<p>切换系统语言为英文!!!!!!</p>
+
+<p>官网原文:</p>
+
+<pre><code>You must set your Windows system locale to English, or else you may get build errors about &quot;The file contains a character that cannot be represented in the current code page.&quot;
+</code></pre>
+
+<p>不改?绝对的坑!! 报各种编码错误,最后我重新安装win7旗舰版!!</p>
+
+<p>必须是x64系统!! 想想内存需求也应该明白!</p>
+
+<pre><code>You must have Windows 7 x64 or later. x86 OSs are unsupported.
+</code></pre>
+
+<p>再提醒一句, 安装所有重要的系统补丁, 用windows update服务安装!!! 里面包含IE11,必备. &ndash; 这一步只是为了保险起见.</p>
+
+<h2>第二步,安装VS2013</h2>
+
+<p>官网的要求是VS2013, 不是2008,不是2010,不是2012, 当前最新的要求是2013!!</p>
+
+<pre><code>You must build with Visual Studio 2013 Update 4, no other versions are supported.
+</code></pre>
+
+<p><a href="http://www.visualstudio.com/downloads/download-visual-studio-vs">http://www.visualstudio.com/downloads/download-visual-studio-vs</a></p>
+
+<p>网络安装或下载iso(6G左右) 均可, 只需要安装C++套装,其他一概取消.</p>
+
+<p>提示: 最后一步安装update4补丁包的时候(也就是最后的阶段),会很慢很慢,很慢,不知道为啥,反正很久,等吧.</p>
+
+<h2>第三步,科学上网</h2>
+
+<p>往下的步骤都需要科学上网,稳定的科学上网,可靠的科学上网,别怪我没提醒你git clone是不支持断点续传的!!!</p>
+
+<h2>第四步,添加环境变量</h2>
+
+<p>系统的环境变量加入 DEPOT_TOOLS_WIN_TOOLCHAIN 值为0</p>
+
+<h2>第五步,安装depot_tools</h2>
+
+<p>下载页面: <a href="http://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up">http://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html#_setting_up</a>
+下载地址: <a href="https://src.chromium.org/svn/trunk/tools/depot_tools.zip">https://src.chromium.org/svn/trunk/tools/depot_tools.zip</a></p>
+
+<p>解压到某个盘的根目录,别带中文,特殊字符等一切蛋疼的东西, 修改系统的环境变量, 把depot_tools的路径加入到PATH</p>
+
+<p>启动cmd, 随便找个目录,执行</p>
+
+<pre><code>gclient
+</code></pre>
+
+<p>会自行下载python,git,svn等等依赖工具, 系统已经安装的python,git是不认的!!!</p>
+
+<h2>第六步,下载源码</h2>
+
+<p>重新打开一个console(cmd或者ComEms均可)</p>
+
+<p>在一个剩余空间60G以上的盘, 严重建议是SSD, 起码是SSD加速盘或混合硬盘</p>
+
+<p>建一个文件夹,叫chrome_build, 或任何你喜欢的英文名,别中文啊啊啊啊,假设为 W:\chrome_build</p>
+
+<pre><code>W:
+mkdir chrome_build
+cd W:\chrome_build
+</code></pre>
+
+<p>经典做法, 直接fetch</p>
+
+<pre><code>fetch chromium #会很久很久
+</code></pre>
+
+<p>省流量的方法</p>
+
+<pre><code>fetch chromium # 出现sync字样后, 终止(ctrl+c)
+
+gclient sync --no-history --force # 需要比较长的时间了
+# 如果断开了,重新执行gclient语句就可以了,不需要再执行fetch.
+</code></pre>
+
+<h2>第6步补充说明, 关于下载Webkit</h2>
+
+<p>正常下载的话, 下载webkit会很久很久,因为是整个历史都下载下来.</p>
+
+<p>下面介绍的做法,需要修改DEPS文件, 比较折腾, 自行想象吧.</p>
+
+<p>看到</p>
+
+<pre><code>[0:13:08]   src/third_party/WebKit
+</code></pre>
+
+<p>的时候,可以终止gclient</p>
+
+<p>然后,执行:</p>
+
+<pre><code># 用notepad++ 打开src/DEPS,找到webkit_revision的配置
+cd src/third_party/
+git clone --depth=10 https://chromium.googlesource.com/chromium/blink.git WebKit
+#大概下载360mb
+
+Cloning into 'WebKit'...
+remote: Sending approximately 5.08 GiB ...
+remote: Counting objects: 123641, done
+remote: Finding sources: 100% (123641/123641)
+remote: Total 123641 (delta 37772), reused 78823 (delta 37772)
+Receiving objects: 100% (123641/123641), 360.61 MiB | 444.00 KiB/s, done.
+Resolving deltas: 100% (37772/37772), done.
+Checking connectivity... done.
+Checking out files: 100% (144812/144812), done.
+
+# 执行git rev-list找个可用的rev
+git rev-list  HEAD
+# 然后找出倒数第二个commit的sha1, 修改webkit_revision的值
+# 回到根目录,重新开始gclient
+gclient sync --no-history --force
+</code></pre>
+
+<p>继续长时间的等待, 真的很久很久, 洗洗睡觉吧.</p>
+
+<p>PS: v8也很慢, 见仁见智吧.</p>
+
+<h2>第七步, 编译</h2>
+
+<p>编译可以说是最简单的一步</p>
+
+<p>先生成各种文件(可以省略)</p>
+
+<pre><code>gclient runhooks
+</code></pre>
+
+<p>执行编译, out/Debug可以改成out/Release等等.</p>
+
+<pre><code>cd src
+ninja -C out/Debug chrome
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>ninja: Entering directory `out/Debug'
+[541/19418] RULE Assembling nacl_switch_unwind_win.asm to obj\native_client\sr...ice_runtime\arch\x86_64\service_runtime_x86_64.gen\nacl_switch_unwind_win.obj.
+ Assembling: nacl_switch_unwind_win.asm
+[19418/19418] STAMP obj\chrome\chrome.actions_rules_copies.stamp
+</code></pre>
+
+<p>19418个编译任务, 193xx的时候来开始链接,很慢, 我的笔记本电脑i7-3630, 8G内存, 32G SSD加速的普通机械硬盘, 编译了2小时.</p>
+
+<p>编译完成后可以到 out/Debug目录下找到chrome.exe, 启动一下就是你编译的Chrome了.</p>
+
+<p>具体怎么打包成安装文件,还没找到方法.</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+          
+            <li class="prev disabled"><a>&larr; Previous</a></li>
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/2014/10/23.html" title="Http协议及Json格式简介(给yeelink使用者的)">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2015-02-04</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>51</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#chrome-ref">chrome <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#chromium-ref">chromium <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

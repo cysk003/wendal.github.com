@@ -91,6 +91,33 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2015/02/04.html">从源码编译Chrome(chromium)</a> <span class="date">2015-02-04</span></h3>
+
+  <h2>官网描述</h2>
+
+<p><a href="http://www.chromium.org/developers/how-tos/build-instructions-windows">http://www.chromium.org/developers/how-tos/build-instructions-windows</a></p>
+
+<h2>为啥还要写这篇博客</h2>
+
+<ol>
+<li>太久没在这里写博客</li>
+<li>Chrome编译的教程,网上太多太多了,但各种错误(也许对他们当时的版本来说并不是错误)</li>
+<li>好多博客没有把问题说清楚</li>
+</ol>
+
+<h2>第一步,修改系统语言</h2>
+
+<p>切换系统语言为英文!!!!!!</p>
+
+<p>官网原文:</p>
+
+
+  <div class="more">
+    <a href="/2015/02/04.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2014/10/23.html">Http协议及Json格式简介(给yeelink使用者的)</a> <span class="date">2014-10-23</span></h3>
 
   <p>高手,老鸟,请路过. 本说明忽略了Continue 100请求,代理,chunked等等高级话题.</p>
@@ -213,7 +240,7 @@ U-ApiKey: 121234132432143\r\n
 
 <p>下载源码,暂时从我fork出来的库里面取吧,不知道ideawu会不会合并这个修改, who knows &hellip;</p>
 
-<p></p>
+<p>```</p>
 
 
   <div class="more">
@@ -240,7 +267,7 @@ U-ApiKey: 121234132432143\r\n
 
 <p>在jni目录下执行</p>
 
-<p></p>
+<p>```</p>
 
 
   <div class="more">
@@ -269,7 +296,7 @@ U-ApiKey: 121234132432143\r\n
 var _VERSION_ = &quot;unknown&quot;
 
 func main() {
-    print(&quot;http_su ver=&quot; + _VERSION_ + &quot;\n&quot;)
+	print(&quot;http_su ver=&quot; + _VERSION_ + &quot;\n&quot;)
 }
 </code></pre>
 
@@ -311,13 +338,13 @@ public class Bot {
     }
 
     public static void main(String[] args) throws NoSuchMethodException, SecurityException {
-        Class&lt;Bot&gt; clazz = Bot.class;
-        Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
-        Parameter[] ctorParameters =ctor.getParameters();
-        for (Parameter param: ctorParameters) {
-            System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
-        }
-    }
+		Class&lt;Bot&gt; clazz = Bot.class;
+		Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
+		Parameter[] ctorParameters =ctor.getParameters();
+		for (Parameter param: ctorParameters) {
+		    System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
+		}
+	}
 }
 </code></pre>
 
@@ -658,7 +685,7 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
 <p>然而,如果我们输入</p>
 
-<p></p>
+<p>```</p>
 
 
   <div class="more">
@@ -1039,34 +1066,6 @@ int main(int argc, char *argv[]) {
 
   <div class="more">
     <a href="/2013/0325.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0316.html">Golang的坑之http读取大文件必须读完</a> <span class="date">2013-03-16</span></h3>
-
-  <h2>先上代码</h2>
-
-<pre><code>package main
-
-import (
-    &quot;fmt&quot;
-    &quot;net/http&quot;
-)
-
-func main() {
-    resp, err := http.Get(&quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;)
-    if err != nil {
-        panic(err)
-    }
-    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
-    resp.Body.Close() // 注意,这里并不读取resp.Body, 而resp.Body有大概700mb未读取
-}
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/0316.html" class="btn">read more..</a>
   </div>
 </div>
 

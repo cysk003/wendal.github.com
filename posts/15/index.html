@@ -80,6 +80,39 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/299.html">JGit初试牛刀</a> <span class="date">2011-07-16 21:53:35</span></h3>
+  <p>最近爱上了Git,当然不能忽略jGit啦</p>
+
+<p>好吧废话少说,直接上代码先:</p>
+
+<pre><code>package net.wendal.jgit;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+public class JGit {
+
+    public static void main(String[] args) throws Throwable {
+        File root = new File(&quot;gitme&quot;);
+        if(!root.exists())
+            root.mkdir();
+        File gitF = new File(&quot;gitme/.git&quot;);
+        if(!gitF.exists()) {//如果已经初始化过,那肯定有.git文件夹
+                        //初始化git库,相当于命令行的 git init
+            Git.init().setDirectory(root).call();
+        }
+        Git git = Git.open(root); //打开git库
+</code></pre>
+
+  <div class="more">
+    <a href="/299.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/296.html">Rk2918固件新打包格式分析</a> <span class="date">2011-06-26 11:25:37</span></h3>
   <p>本文针对 台电T760的2.x固件,原道N10,酷比1.0.5等RK2918方案的新固件打包格式</p>
 
@@ -324,32 +357,6 @@ Everbox4j的下一版本打算使用一个自己定义的User-agent, 进一步�
 
   <div class="more">
     <a href="/279.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/276.html">Everbox4j 1.0 终于发布啦! Everbox也能在Linux/Mac上用!!</a> <span class="date">2011-04-27 22:10:03</span></h3>
-  <p>############################################################
-#<strong>这东西刚刚开发完,喜欢探险的童鞋欢迎使用</strong>
-#<strong>系统出现问题,文件被误删,帐号被封,本人一概不负责!!</strong>
-#<strong>胆小怕死者,老人小孩孕妇,心脏病,高血压,切勿尝试!!</strong>
-############################################################</p>
-
-<p>奋斗了几个晚上,终于做出来了!!!</p>
-
-<p>激动,终于可以安心睡个觉了!@!!</p>
-
-<p>下载地址: <a href="http://code.google.com/p/everbox4j/downloads/list">
-http://code.google.com/p/everbox4j/downloads/list</a></p>
-
-<p>已知限制:
-1. 如果同时开启上传和下载,只会进行上传
-2. 上传模式,只会上传服务器没有的本地文件,不会执行任何删除操作
-3. 下载模式,只会下载本地没有的服务器文件,不会进行任何删除操作
-4. 只支持盛大帐户</p>
-
-  <div class="more">
-    <a href="/276.html" class="btn">read more..</a>
   </div>
 </div>
 

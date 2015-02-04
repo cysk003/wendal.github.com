@@ -187,12 +187,12 @@ Content-Length: 14\r\n
 <li>这里演示的值是一个数值, 所以不需要双引号</li>
 </ul>
 
-<p>值也是字符串的时候, 那么也需要字符串包起来:
-<code>
-{
+<p>值也是字符串的时候, 那么也需要字符串包起来:</p>
+
+<pre><code>{
  &quot;value&quot; : &quot;I am ok&quot;
 }
-</code></p>
+</code></pre>
 
 <h2>代码怎么写?</h2>
 
@@ -222,10 +222,10 @@ Serial.print(&quot;}&quot;);// 注意看, 需要匹配哦, 键值对.
 delay(3000); //等待3秒, 网络畅顺的话几十毫秒就返回了
 
 while (Serial.available()) {
-    int c = Serial.read();
-    // 千万别写 Serial.write(c)
-    // 这时候我们需要把读出来的数据写入到另外一个串口(例如声明个软串口), 这样才不会透传模块冲突, 也方便调试.
-    MySoftSerial.write(c);
+	int c = Serial.read();
+	// 千万别写 Serial.write(c)
+	// 这时候我们需要把读出来的数据写入到另外一个串口(例如声明个软串口), 这样才不会透传模块冲突, 也方便调试.
+	MySoftSerial.write(c);
 }
 
 delay(10000); // yeelink的上传间隔是10s哦.
@@ -237,8 +237,8 @@ delay(10000); // yeelink的上传间隔是10s哦.
       <ul>
         <ul>
           
+            <li class="prev"><a href="/2015/02/04.html" title="从源码编译Chrome(chromium)">&larr; Previous</a></li>
           
-            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
@@ -276,7 +276,7 @@ delay(10000); // yeelink的上传间隔是10s哦.
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>50</span></a>
+  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>51</span></a>
 </li>
     
     </ul>
