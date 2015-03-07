@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 7</title>
   
+    <meta name="description" content="在windows下编译Chrome">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,31 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/459.html">Golang连接Oracle数据库(通过OCI库)</a> <span class="date">2012-10-06 11:17:54</span></h3>
+  <p>这是我对mattn/go-oci8的一个fork <a href="https://github.com/wendal/go-oci8">https://github.com/wendal/go-oci8</a></p>
+
+<p>在Linux下的安装,应该是没啥难度的了,唯独蛋疼的Windows需要介绍一下:</p>
+
+<pre><code>//假设的GOPATH指向C:\gohome
+0. 执行 go get github.com/wendal/go-oci8 ,然后肯定是报错了,没关系,代码会下载下来.
+1. 首先,你需要安装mingw到C:\mingw
+2. 然后,到Oracle官网,下载OCI及其SDK,解压到instantclient_11_2  -- 当前最新版
+3. 从我的go-oci8库的windows文件夹,拷贝pkg-config.exe到C:\mingw\bin\,拷贝oci8.pc到C:\mingw\lib\pkg-config\
+4. 设置环境变量 PATH           ,值为     原有PATH;C:\instantclient_11_2;C:\mingw\bin;
+5. 设置环境变量 PKG_CONFIG_PATH,值为     C:\mingw\lib\pkg-config
+6. 接下来,就最重要的,就是再执行一次,这次应该能成功的:  go get github.com/wendal/go-oci8
+7. 测试一下:
+    cd %GOPATH%/src/github.com/wendal/go-oci8/example
+    go run oracle.go
+    #提醒一句, oracle.go里面的写的密码是system/123456, 实例名XE  
+</code></pre>
+
+  <div class="more">
+    <a href="/459.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/457.html">简单好用的sshfs -- 通过ssh映射远程路径</a> <span class="date">2012-09-26 08:52:25</span></h3>
@@ -333,39 +360,6 @@ func main() {
 
   <div class="more">
     <a href="/436.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/434.html">NutIoc的执行过程</a> <span class="date">2012-06-23 19:05:17</span></h3>
-  <p>越来越多人阅读Nutz的源码,很是欣慰.</p>
-
-<p>首先,什么是Ioc呢? Ioc本质上就是一个有状态的Map<String,Object>, 其中bean就是用户通过各种形式的配置信息所定义的对象</p>
-
-<p>先上一段代码,通过一个js配置一个Ioc容器,并获取一个bean</p>
-
-<pre><code>public static void main(String[] args) {
-    IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
-    Ioc ioc = new NutIoc(loader);
-    Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
-    System.out.println(pet.getName());
-}
-</code></pre>
-
-<p>ioc的js配置文件(ioc.js,名字是随意的)</p>
-
-<pre><code>var ioc = {
-    pet : {
-        type : &quot;net.wendal.test.Pet&quot;,
-        fields : {
-            name : &quot;wendal&quot;
-        }
-    }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/434.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>04 Feb 15 12:10 CST</pubDate>
+    <pubDate>07 Mar 15 22:33 CST</pubDate>
+    <item>
+      <title>总算实践了一次Linux From Scratch</title>
+      <link>http://wendal.net/2015/03/07.html</link>
+      <pubDate>2015-03-07 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;Linux From Scratch&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;第一次接触linux应该是当年的sun推广的unix远程实验室. 之后安装Linux无数次,编译内核N百次,&#xA;但一直没有把&amp;rdquo;Linux From Scratch&amp;rdquo;实践一次.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;编译LFS,并不是为了使用它,是为了看看linux到底是怎么编译,组织起来,运行起来的.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;编译的过程, 并未太多阻碍&lt;/p&gt;&#xA;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;开头部分,下载依赖的源码包, 耗了点时间,没有直接下载整体压缩包(当时也不知道),然后根据wget-list下载&lt;/li&gt;&#xA;&lt;li&gt;在chroot之后,逐一编译期间,无意中按了exit,退出了chroot环境, 以为前功尽弃,结果chroot回去发现一切正常如旧&lt;/li&gt;&#xA;&lt;li&gt;最后,真正启动系统时,报无法挂载根目录, 原因是我用2台虚拟机来跑,第一台做编译host,有sda和sdab,第二台虚拟机是运行环境,只有sda,改一下grub.conf搞定.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&#xA;&lt;p&gt;早上10点左右开工,下午5点启动成功, 约8小时的样子, 敲了近千条命令, 中后期的make check基本上跳过.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;在编译内核之前,我一直很奇怪为啥内核还没编译,而只是输出的ABI的header,现在想来, 还是挺有道理的.&#xA;因为前面的部分是编译rootfs, 这部分跟具体的内核并无关联.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;事后,我看了tinycore linux的编译脚本, 那跟lfs里面的命令简直就是拷贝, 也许就是lfs的自动编译版本alfs修改而来.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;编译完成的rootfs&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;5.8M&#x9;./bin&#xA;288K&#x9;./var&#xA;4.0K&#x9;./home&#xA;16K&#x9;./lost+found&#xA;24K&#x9;./root&#xA;20K&#x9;./tmp&#xA;4.0K&#x9;./proc&#xA;713M&#x9;./usr&#xA;4.0K&#x9;./opt&#xA;7.7M&#x9;./lib&#xA;4.0K&#x9;./srv&#xA;14M&#x9;./boot&#xA;4.0K&#x9;./sys&#xA;13M&#x9;./etc&#xA;4.0K&#x9;./dev&#xA;4.0K&#x9;./run&#xA;12K&#x9;./media&#xA;4.0K&#x9;./mnt&#xA;12M&#x9;./sbin&#xA;764M&#x9;.&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;最后,附上一张图吧,哈哈&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2015/03/07/lfs_wendal.png&#34;&gt;&lt;/img&gt;&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>从源码编译Chrome(chromium)</title>
       <link>http://wendal.net/2015/02/04.html</link>

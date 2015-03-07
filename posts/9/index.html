@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 9</title>
   
+    <meta name="description" content="在windows下编译Chrome">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,46 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/417.html">Nutz编年史--简单图表版</a> <span class="date">2012-05-01 00:14:01</span></h3>
+  <p><strong>先上干货,纯数据</strong>:</p>
+
+<pre><code>|版本   |构建日期|文件总数|文件大小|
+|1.a.15|2009-09-20| 505| 524|
+|1.a.16|2009-10-18| 524| 544|
+|1.a.17|2009-11-03| 542| 559|
+|1.a.18|2009-11-15| 534| 544|
+|1.a.20|2009-11-19| 535| 544|
+|1.a.21|2009-11-26| 550| 566|
+|1.a.22|2009-11-29| 550| 568|
+|1.a.23|2009-11-30| 550| 568|
+|1.a.24|2009-12-20| 586| 636|
+|1.a.25|2009-12-29| 587| 640|
+|1.a.26|2010-03-01| 598| 638|
+|1.a.27|2010-04-26| 631| 712|
+|1.a.28|2010-05-30| 655| 737|
+|1.a.29|2010-06-13| 665| 752|
+|1.a.30|2010-07-13| 674| 759|
+|1.a.31|2010-08-12| 689| 775|
+|1.a.32|2010-10-13| 720| 816|
+|1.a.33|2010-11-11| 729| 825|
+|1.b.34|2010-12-24| 729| 828|
+|1.b.35|2011-02-14| 829| 877|
+|1.b.36|2011-03-25| 845| 933|
+|1.b.37|2011-04-25| 858| 945|
+|1.b.38|2011-07-15| 878| 994|
+|1.b.39|2011-08-13| 880| 999|
+|1.b.40|2011-10-21| 892|1019|
+|1.b.41|2012-01-18| 896|1042|
+|1.b.42|2012-02-14| 902|1053|
+|1.b.43|2012-04-01| 918|1082|
+</code></pre>
+
+  <div class="more">
+    <a href="/417.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/416.html">在Ant/Maven中使用ecj编译器(Eclipse内置的Java编译器)</a> <span class="date">2012-04-30 16:10:55</span></h3>
@@ -348,35 +390,6 @@ dis.dis(w) #对应的是while 1,下面是输出
 
   <div class="more">
     <a href="/405.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/404.html">Java匿名内部类的传值</a> <span class="date">2012-03-24 21:37:42</span></h3>
-  <p>在Nutz中,存在大量需要使用匿名内部类的情况,很多童鞋都对传值很困惑,所以我这里说明一下</p>
-
-<p><strong>传入:</strong></p>
-
-<pre><code>//匿名内部类,只能访问final的本地变量及方法参数
-public void addUser(final String name, String passwd, final String userType) {
-    User user = null;
-    if (&quot;admin&quot;.equal(userType))
-        user = new AdminUser(name, passwd); //仅作演示.
-    else
-        user = new User(name, passwd);
-    final User _user = user; //因为user变量不能设置为final,所以需要新加一个变量来中转
-    Trans.run(new Atom(){
-        public void run() {
-            dao.insert(_user);
-            if (log.isDebugEnable())
-                log.debugf(&quot;Add user id=%d, name=%s , type=%s&quot;, _user.getId(), name, userType);
-        }
-    });
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/404.html" class="btn">read more..</a>
   </div>
 </div>
 

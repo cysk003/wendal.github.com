@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 8</title>
   
+    <meta name="description" content="在windows下编译Chrome">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,39 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/434.html">NutIoc的执行过程</a> <span class="date">2012-06-23 19:05:17</span></h3>
+  <p>越来越多人阅读Nutz的源码,很是欣慰.</p>
+
+<p>首先,什么是Ioc呢? Ioc本质上就是一个有状态的Map<String,Object>, 其中bean就是用户通过各种形式的配置信息所定义的对象</p>
+
+<p>先上一段代码,通过一个js配置一个Ioc容器,并获取一个bean</p>
+
+<pre><code>public static void main(String[] args) {
+    IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
+    Ioc ioc = new NutIoc(loader);
+    Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
+    System.out.println(pet.getName());
+}
+</code></pre>
+
+<p>ioc的js配置文件(ioc.js,名字是随意的)</p>
+
+<pre><code>var ioc = {
+    pet : {
+        type : &quot;net.wendal.test.Pet&quot;,
+        fields : {
+            name : &quot;wendal&quot;
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/434.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/429.html">北京之行,就上一张图吧</a> <span class="date">2012-06-01 10:19:17</span></h3>
@@ -320,46 +355,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/418.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/417.html">Nutz编年史--简单图表版</a> <span class="date">2012-05-01 00:14:01</span></h3>
-  <p><strong>先上干货,纯数据</strong>:</p>
-
-<pre><code>|版本   |构建日期|文件总数|文件大小|
-|1.a.15|2009-09-20| 505| 524|
-|1.a.16|2009-10-18| 524| 544|
-|1.a.17|2009-11-03| 542| 559|
-|1.a.18|2009-11-15| 534| 544|
-|1.a.20|2009-11-19| 535| 544|
-|1.a.21|2009-11-26| 550| 566|
-|1.a.22|2009-11-29| 550| 568|
-|1.a.23|2009-11-30| 550| 568|
-|1.a.24|2009-12-20| 586| 636|
-|1.a.25|2009-12-29| 587| 640|
-|1.a.26|2010-03-01| 598| 638|
-|1.a.27|2010-04-26| 631| 712|
-|1.a.28|2010-05-30| 655| 737|
-|1.a.29|2010-06-13| 665| 752|
-|1.a.30|2010-07-13| 674| 759|
-|1.a.31|2010-08-12| 689| 775|
-|1.a.32|2010-10-13| 720| 816|
-|1.a.33|2010-11-11| 729| 825|
-|1.b.34|2010-12-24| 729| 828|
-|1.b.35|2011-02-14| 829| 877|
-|1.b.36|2011-03-25| 845| 933|
-|1.b.37|2011-04-25| 858| 945|
-|1.b.38|2011-07-15| 878| 994|
-|1.b.39|2011-08-13| 880| 999|
-|1.b.40|2011-10-21| 892|1019|
-|1.b.41|2012-01-18| 896|1042|
-|1.b.42|2012-02-14| 902|1053|
-|1.b.43|2012-04-01| 918|1082|
-</code></pre>
-
-  <div class="more">
-    <a href="/417.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 1</title>
   
+    <meta name="description" content="在windows下编译Chrome">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2015/03/07.html">总算实践了一次Linux From Scratch</a> <span class="date">2015-03-07</span></h3>
+  <h2>Linux From Scratch</h2>
+
+<p>第一次接触linux应该是当年的sun推广的unix远程实验室. 之后安装Linux无数次,编译内核N百次,
+但一直没有把&rdquo;Linux From Scratch&rdquo;实践一次.</p>
+
+<p>编译LFS,并不是为了使用它,是为了看看linux到底是怎么编译,组织起来,运行起来的.</p>
+
+<p>编译的过程, 并未太多阻碍</p>
+
+<ul>
+<li>开头部分,下载依赖的源码包, 耗了点时间,没有直接下载整体压缩包(当时也不知道),然后根据wget-list下载</li>
+<li>在chroot之后,逐一编译期间,无意中按了exit,退出了chroot环境, 以为前功尽弃,结果chroot回去发现一切正常如旧</li>
+<li>最后,真正启动系统时,报无法挂载根目录, 原因是我用2台虚拟机来跑,第一台做编译host,有sda和sdab,第二台虚拟机是运行环境,只有sda,改一下grub.conf搞定.</li>
+</ul>
+
+<p>早上10点左右开工,下午5点启动成功, 约8小时的样子, 敲了近千条命令, 中后期的make check基本上跳过.</p>
+
+<p>在编译内核之前,我一直很奇怪为啥内核还没编译,而只是输出的ABI的header,现在想来, 还是挺有道理的.
+因为前面的部分是编译rootfs, 这部分跟具体的内核并无关联.</p>
+
+  <div class="more">
+    <a href="/2015/03/07.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2015/02/04.html">从源码编译Chrome(chromium)</a> <span class="date">2015-02-04</span></h3>
@@ -322,45 +351,6 @@ public class Bot {
 
   <div class="more">
     <a href="/2014/03/30.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2014/0223.html">tcpdump加Wireshark抓包分析才是王道啊</a> <span class="date">2014-02-23</span></h3>
-  <p>最近折腾RTSP协议,焦头乱额.</p>
-
-<p>Receiver Report RTCP Packets (RR)</p>
-
-<pre><code>  Receiver Reports are structured in the same way as Sender Reports. Of course, they include no sender information block, and the packet type code is 201.
- 0               1               2               3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|V=2|P|    RC   |   PT=RR=201   |            length L           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     SSRC of packet sender                     |
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                 SSRC_1 (SSRC of first source)                 |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| fraction lost |       cumulative number of packets lost       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|           extended highest sequence number received           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      inter-arrival jitter                     |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         last SR (LSR)                         |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                   delay since last SR (DLSR)                  |
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                 SSRC_2 (SSRC of second source)                |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-:                               ...                             :
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-|                  profile-specific extensions                  |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</code></pre>
-
-  <div class="more">
-    <a href="/2014/0223.html" class="btn">read more..</a>
   </div>
 </div>
 
