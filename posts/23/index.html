@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 23</title>
   
-    <meta name="description" content="在windows下编译Chrome">
-  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +78,32 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/68.html">Eclipse能够启动得快些</a> <span class="date">2010-09-08 21:18:44</span></h3>
+  <p>昨天在Javaeye上看到一篇关于Eclipse调优的文件,真是当头一棒,之前咋就没想到呢?!!</p>
+
+<p>自己调整了一下,得到以下参数:</p>
+
+<pre><code>-Xms40m
+-Xmx256m
+-XX:MaxPermSize=128m
+-XX:ReservedCodeCacheSize=128m
+-Dfile.encoding=utf8
+-Xverify:none
+-XX:+DisableExplicitGC
+-XX:+UseParNewGC
+-Xnoclassgc
+-XX:+UseBiasedLocking
+-XX:+UseFastAccessorMethods
+</code></pre>
+
+<p>感觉上快了不少哦</p>
+
+  <div class="more">
+    <a href="/68.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/65.html">遇到一个关于ClassPath的奇怪问题 Classpath只认jar文件?No!</a> <span class="date">2010-09-07 16:24:43</span></h3>
@@ -280,35 +304,6 @@ void write(int data);
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/33.html">Alfresco配置 — 第三节</a> <span class="date">2010-08-04 22:14:25</span></h3>
-  <p>今天打算说说Alfresco里面的工作流,这个是我折腾了好几个星期的事.</p>
-
-<p>Alfresco的工作流分为3部分, Define/Model/UI</p>
-
-<p>其中Define就是普通的jBpm3.2工作流引擎,你可以使用Alfresco提供的AlfrescoScriptAction直接调用Alfresco的服务,最基本的就是logger</p>
-
-<p>Model,其实不单单是工作流的配置,它使用你定义的命名空间,声明需要用户输入的属性,和需要显示的属性</p>
-
-<p>UI, 属于web-client-config.xml的自定义版本 web-client-config-custom.xml,用于定义各Model中的type如何显示在页面上.</p>
-
-<p>具体的工作流我就不打算详细说了,也许以后会贴出示例.</p>
-
-<p>说说几个技巧:</p>
-
-<ol>
-<li><p>如果无法用AlfrescoScriptAction解决你遇到的问题,请毫不犹豫地使用自定义的ActionHandler,不过最好继承JBPMSpringActionHandler,以便获取Alfresco相应服务的bean, 而且,bean的name一般就是接口的首字母小写,例如节点服务 nodeService, 用户服务 personService,操作服务actionService(可以创建mail action).</p></li>
-
-<li><p>流程意外停止,无法继续正常流下去,咋办? 使用 admin/workflow-console.jsp , 然后使用相关的命令对付该流程.例如signal, delete, cancel</p></li>
-
-<li><p>开发工作流时,请先确保工作流本身是正确的,然后再调试Model/UI</p></li>
-</ol>
-
-  <div class="more">
-    <a href="/33.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -406,6 +401,10 @@ void write(int data);
 
   <li>
 	24
+  </li>
+
+  <li>
+	25
   </li>
 
 </ul>

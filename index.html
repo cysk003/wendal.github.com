@@ -91,6 +91,37 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/其他/%E5%9C%A8windows%E4%B8%8A%E7%BC%96%E8%AF%91memcached-v1.4.24-%28%E7%94%A8cygwin%29/">在windows上编译memcached v1.4.24 (用cygwin)</a> <span class="date">2015-04-27</span></h3>
+
+  <h1>编译环境</h1>
+
+<p>cygwin x86 当前最新
+win7 x64 sp1</p>
+
+<h1>成品的依赖关系(ldd输出)</h1>
+
+<pre><code>$ ldd /usr/local/bin/memcached
+        ntdll.dll =&gt; /cygdrive/c/Windows/SysWOW64/ntdll.dll (0x77780000)
+        kernel32.dll =&gt; /cygdrive/c/Windows/syswow64/kernel32.dll (0x76fa0000)
+        KERNELBASE.dll =&gt; /cygdrive/c/Windows/syswow64/KERNELBASE.dll (0x76b30000)
+        ADVAPI32.DLL =&gt; /cygdrive/c/Windows/syswow64/ADVAPI32.DLL (0x75770000)
+        msvcrt.dll =&gt; /cygdrive/c/Windows/syswow64/msvcrt.dll (0x75810000)
+        sechost.dll =&gt; /cygdrive/c/Windows/SysWOW64/sechost.dll (0x769e0000)
+        RPCRT4.dll =&gt; /cygdrive/c/Windows/syswow64/RPCRT4.dll (0x770d0000)
+        SspiCli.dll =&gt; /cygdrive/c/Windows/syswow64/SspiCli.dll (0x75110000)
+        CRYPTBASE.dll =&gt; /cygdrive/c/Windows/syswow64/CRYPTBASE.dll (0x75100000)
+        cygwin1.dll =&gt; /usr/bin/cygwin1.dll (0x61000000)
+        cyggcc_s-1.dll =&gt; /usr/bin/cyggcc_s-1.dll (0x6fdb0000)
+        cygevent-2-0-5.dll =&gt; /usr/local/bin/cygevent-2-0-5.dll (0x63ec0000)
+</code></pre>
+
+
+  <div class="more">
+    <a href="/其他/%E5%9C%A8windows%E4%B8%8A%E7%BC%96%E8%AF%91memcached-v1.4.24-%28%E7%94%A8cygwin%29/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/03/07.html">总算实践了一次Linux From Scratch</a> <span class="date">2015-03-07</span></h3>
 
   <h2>Linux From Scratch</h2>
@@ -1028,32 +1059,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
 
   <div class="more">
     <a href="/2013/0412.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
-
-  <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
-
-<p>由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式</p>
-
-<h2>syscall.Syscall系列方法</h2>
-
-<p>当前共5个方法</p>
-
-<pre><code>syscall.Syscall
-syscall.Syscall6
-syscall.Syscall9
-syscall.Syscall12
-syscall.Syscall15
-</code></pre>
-
-<p>分别对应 3个/6个/9个/12个/15个参数或以下的调用</p>
-
-
-  <div class="more">
-    <a href="/2013/0406.html" class="btn">read more..</a>
   </div>
 </div>
 

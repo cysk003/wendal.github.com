@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 4</title>
   
-    <meta name="description" content="在windows下编译Chrome">
-  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +78,30 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
+  <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
+
+<p>由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式</p>
+
+<h2>syscall.Syscall系列方法</h2>
+
+<p>当前共5个方法</p>
+
+<pre><code>syscall.Syscall
+syscall.Syscall6
+syscall.Syscall9
+syscall.Syscall12
+syscall.Syscall15
+</code></pre>
+
+<p>分别对应 3个/6个/9个/12个/15个参数或以下的调用</p>
+
+  <div class="more">
+    <a href="/2013/0406.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0325.html">Python还是很适合快速开发的</a> <span class="date">2013-03-25</span></h3>
@@ -372,42 +394,6 @@ gs      0x33
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/2013/0115.html">Golang下进行字符集转换</a> <span class="date">2013-01-15</span></h3>
-  <h1>演示一下gb2312转UTF8</h1>
-
-<p>源网页是国家地震局的一周内地震统计,编码是gb2312</p>
-
-<pre><code>package main
-
-import (
-    iconv &quot;github.com/djimenez/iconv-go&quot;
-    &quot;io/ioutil&quot;
-    &quot;log&quot;
-    &quot;net/http&quot; 
-)
-
-func main() {
-    log.SetFlags(log.LstdFlags | log.Lshortfile)
-    resp, err := http.Get(&quot;http://data.earthquake.cn/datashare/globeEarthquake_csn.html&quot;)
-    if err != nil {
-        log.Fatal(err)
-    }
- 
-    defer resp.Body.Close()
-    input, err := ioutil.ReadAll(resp.Body)
-    out := make([]byte, len(input))
-    out = out[:]
-    iconv.Convert(input, out, &quot;gb2312&quot;, &quot;utf-8&quot;)
-    ioutil.WriteFile(&quot;out.html&quot;, out, 0644)
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/0115.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -505,6 +491,10 @@ func main() {
 
   <li>
 	24
+  </li>
+
+  <li>
+	25
   </li>
 
 </ul>
