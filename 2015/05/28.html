@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在windows上编译memcached v1.4.24 (用cygwin)</title>
+    <title>在android上运行iojs</title>
   
-    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+    <meta name="description" content="在android上运行iojs">
   
     <meta name="author" content="Wendal Chen">
 
@@ -80,91 +80,113 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>在windows上编译memcached v1.4.24 (用cygwin) </h1>
+  <h1>在android上运行iojs </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h1>编译环境</h1>
+    <p>无意中看到io.js在4月份开始已经支持android编译,果断弄一个</p>
 
-<p>cygwin x86 当前最新
-win7 x64 sp1</p>
+<h2>环境</h2>
 
-<h1>成品的依赖关系(ldd输出)</h1>
+<p>opensuse 11.4 x86</p>
 
-<pre><code>$ ldd /usr/local/bin/memcached
-        ntdll.dll =&gt; /cygdrive/c/Windows/SysWOW64/ntdll.dll (0x77780000)
-        kernel32.dll =&gt; /cygdrive/c/Windows/syswow64/kernel32.dll (0x76fa0000)
-        KERNELBASE.dll =&gt; /cygdrive/c/Windows/syswow64/KERNELBASE.dll (0x76b30000)
-        ADVAPI32.DLL =&gt; /cygdrive/c/Windows/syswow64/ADVAPI32.DLL (0x75770000)
-        msvcrt.dll =&gt; /cygdrive/c/Windows/syswow64/msvcrt.dll (0x75810000)
-        sechost.dll =&gt; /cygdrive/c/Windows/SysWOW64/sechost.dll (0x769e0000)
-        RPCRT4.dll =&gt; /cygdrive/c/Windows/syswow64/RPCRT4.dll (0x770d0000)
-        SspiCli.dll =&gt; /cygdrive/c/Windows/syswow64/SspiCli.dll (0x75110000)
-        CRYPTBASE.dll =&gt; /cygdrive/c/Windows/syswow64/CRYPTBASE.dll (0x75100000)
-        cygwin1.dll =&gt; /usr/bin/cygwin1.dll (0x61000000)
-        cyggcc_s-1.dll =&gt; /usr/bin/cyggcc_s-1.dll (0x6fdb0000)
-        cygevent-2-0-5.dll =&gt; /usr/local/bin/cygevent-2-0-5.dll (0x63ec0000)
+<p>android 4.2.2 linux 3.2, 已root</p>
+
+<h2>下载并安装NDK r10e</h2>
+
+<p><a href="http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86.bin">http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86.bin</a></p>
+
+<p>直接下载挺慢的,走百度云就很快</p>
+
+<p>在opensuse切换到root,然后运行</p>
+
+<pre><code>cd /opt
+./android-ndk-r10e-linux-x86.bin
 </code></pre>
 
-<p>可以看到依赖了libevent</p>
+<p>即可自行解压出ndk</p>
 
-<h1>编译libevent</h1>
+<h2>下载并编译io.js</h2>
 
-<pre><code>cd /tmp
-wget https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz
-tar xf libevent-2.0.22-stable.tar.gz
-cd libevent-2.0.22-stable
-./configure --prefix=/usr/local
-make all
-make  install
+<pre><code>cd /opt
+# 或者百度云下载也可以,更快
+wget https://iojs.org/dist/v2.1.0/iojs-v2.1.0.tar.gz
+tar xf iojs-v2.1.0.tar.gz
+cd iojs-v2.1.0
+./android-configure /opt/android-ndk-r10e
+make -j8
 </code></pre>
 
-<p>全程无异常通过</p>
+<p>无异常,无Error,顺利编译完成</p>
 
-<h1>编译memcached</h1>
+<h2>传输到android上</h2>
 
-<pre><code>cd /tmp
-wget wget http://memcached.org/latest
-tar xf latest
-cd memcached-1.4.24/
-chmod 777 configure
-./configure
+<pre><code>adb remount
+adb shell mkdir /system/iojs
+adb push out/Release/iojs /system/iojs/iojs
+adb push lib /system/iojs/iojs
+adb shell chmod 777 /system/iojs/iojs
 </code></pre>
 
-<p>configure 执行完毕后,需要修改Makefile,不然编译会失败</p>
+<h2>尝试运行一下</h2>
 
-<p>大概是326行,删掉-Werror, 结果如下</p>
+<p>先弄个官网demo, 存为example.js</p>
 
-<pre><code>CFLAGS = -g -O2 -pthread -pthread -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
+<pre><code>var http = require('http');
+
+http.createServer(function (request, response) {
+  response.writeHead(200, {'Content-Type': 'text/plain'});
+  response.end('Hello World\n');
+}).listen(8124);
+
+console.log('Server running at http://127.0.0.1:8124/');
 </code></pre>
 
-<p>继续执行剩余的编译</p>
+<p>传到android上</p>
 
-<pre><code>make
-make install
+<pre><code>adb shell mkdir /sdcard/iojs/
+adb push example.js /sdcard/iojs/
+adb shell /system/iojs/iojs /sdcard/iojs/example.js
 </code></pre>
 
-<h1>完成,启动一下</h1>
+<p>访问一下android设备上的服务,哈哈</p>
 
-<pre><code>memcached -vv
+<pre><code>curl -v http://192.168.72.107:8124/
 </code></pre>
 
-<p>输出一堆log,然后用telnet访问一下,正常,搞定.</p>
+<p>输出如下内容,搞定</p>
+
+<pre><code>*   Trying 192.168.72.107...
+* Connected to 192.168.72.107 (192.168.72.107) port 8124 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: 192.168.72.107:8124
+&gt; User-Agent: curl/7.42.1
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/plain
+&lt; Date: Thu, 28 May 2015 02:13:18 GMT
+&lt; Connection: keep-alive
+&lt; Transfer-Encoding: chunked
+&lt; 
+Hello World
+* Connection #0 to host 192.168.72.107 left intact
+</code></pre>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2015/05/28.html" title="在android上运行iojs">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2015/03/07.html" title="总算实践了一次Linux From Scratch">Next &rarr;</a></li>
+            <li class="next"><a href="/2015/04/27.html" title="在windows上编译memcached v1.4.24 (用cygwin)">Next &rarr;</a></li>
           
           
         </ul>
@@ -190,7 +212,7 @@ make install
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-04-27</span></div>
+    <div class="date"><span>2015-05-28</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -205,7 +227,7 @@ make install
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#memcache-ref">memcache <span>1</span></a>
+  <a href="/tags/#iojs-ref">iojs <span>1</span></a>
 </li>
     
     </ul>

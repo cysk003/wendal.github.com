@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/70.html">iText锚点的一个小陷阱 目标地锚点必须有字符串</a> <span class="date">2010-09-08 21:27:32</span></h3>
+  <p>昨晚折腾了一下zDoc的PDF生成功能, 不过,一听闻锚点功能失效,顿时不爽,马上研究!!</p>
+
+<p>首先发现 锚点无法对应起来,  触发锚点的编号,与锚点目的地无法对应起来! 这个通过查找实际对应的文件的绝对地址的hashcode生成</p>
+
+<p>然后发现锚点总是失效,无法跳转, 最后才发现,锚点的目标地anchor, 使用 Anchor anchor = new Anchor(); 生成, 页面上无显示!!</p>
+
+<p>实例:</p>
+
+<pre><code>Anchor anchorDest = new Anchor(); anchorDest.setName(&quot;dest&quot;);
+Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#dest&quot;);
+</code></pre>
+
+<p>无法跳转! 即使写成</p>
+
+<pre><code>Anchor anchorDest = new Anchor(&quot; &quot;);
+</code></pre>
+
+<p>一样无法跳转, 必须写成:</p>
+
+<pre><code>Anchor anchorDest = new Anchor(&quot;To here&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/70.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/68.html">Eclipse能够启动得快些</a> <span class="date">2010-09-08 21:18:44</span></h3>
   <p>昨天在Javaeye上看到一篇关于Eclipse调优的文件,真是当头一棒,之前咋就没想到呢?!!</p>
 
@@ -267,40 +296,6 @@ void write(int data);
 
   <div class="more">
     <a href="/41.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/35.html">Alfresco配置 — 第四节</a> <span class="date">2010-08-05 22:57:29</span></h3>
-  <h4>讲讲如何在WebLogic上部署Alfresco 3.2, 以EAR方式</h4>
-
-<p><strong>创建一个文件夹, 名为 WL_Alfresco</strong></p>
-
-<p><strong>将alfresco.war解压到WL_Alfresco/alfresco.war</strong></p>
-
-<p><strong>创建WL_Alfresco/META-INF, 放入两个文件: application.xml 和 weblogic-application.xml, 内容分别是:</strong></p>
-
-<pre><code>    &lt;application&gt;
-        &lt;display -name&gt;Alfresco&lt;/display&gt;
-        &lt;description&gt;Alfresco&lt;/description&gt;
-        &lt;module&gt;
-            &lt;web&gt;&lt;/web&gt;
-            &lt;web-uri&gt;alfresco.war&lt;/web-uri&gt;
-            &lt;context-root&gt;alfresco&lt;/context-root&gt;
-        &lt;/module&gt;
-    &lt;/application&gt;
-
-    &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-    &lt;weblogic -application xmlns=&quot;http://www.bea.com/ns/weblogic/90&quot;&gt;
-        &lt;prefer-application-packages&gt;
-            &lt;package-name&gt;org.mozilla.*&lt;/package-name&gt;
-            &lt;package-name&gt;antlr.*&lt;/package-name&gt;
-        &lt;/prefer-application-packages&gt;
-    &lt;/weblogic&gt;
-</code></pre>
-
-  <div class="more">
-    <a href="/35.html" class="btn">read more..</a>
   </div>
 </div>
 
