@@ -123,10 +123,8 @@ make -j8
 <h2>传输到android上</h2>
 
 <pre><code>adb remount
-adb shell mkdir /system/iojs
-adb push out/Release/iojs /system/iojs/iojs
-adb push lib /system/iojs/iojs
-adb shell chmod 777 /system/iojs/iojs
+adb push out/Release/iojs /system/bin/iojs
+adb shell chmod 777 /system/bin/iojs
 </code></pre>
 
 <h2>尝试运行一下</h2>
@@ -147,7 +145,7 @@ console.log('Server running at http://127.0.0.1:8124/');
 
 <pre><code>adb shell mkdir /sdcard/iojs/
 adb push example.js /sdcard/iojs/
-adb shell /system/iojs/iojs /sdcard/iojs/example.js
+adb shell /system/bin/iojs /sdcard/iojs/example.js
 </code></pre>
 
 <p>访问一下android设备上的服务,哈哈</p>
