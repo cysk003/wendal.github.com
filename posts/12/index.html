@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/364.html">初探Mongodb的Java驱动</a> <span class="date">2012-01-31 21:26:08</span></h3>
+  <p><strong>1. 数据格式传递</strong>
+上个自己画的图
+<a href="/assets/media/2012/01/Mongodb-Java.png">Mongodb-Java驱动基本流程</a></p>
+
+<p>驱动里面操作的,是DBObject(用户提供的和已经转为Command格式的DBObject),OutMessage(可以转为byte[]写入Socket),Response,WriteResult(用户真正拿到的返回值)</p>
+
+<p>层层封装,绕得我头都晕</p>
+
+<p><strong>2. 日志与Debug信息</strong>
+日志采用JDK Logging,有1个比较关键的环境变量配置DB.TRACE,设置为true时,log的日志level会改变 &hellip; 我汗啊&hellip;.
+原本以为另外一个配置DEBUG.DB也控制了什么东西,后来才发现,这配置完全没人调用,应该是历史遗留下来的</p>
+
+<p>还有一些比较诡异的环境变量设置
+MONGO-TRACKLEAKS &ndash; SimplePool里面的设置,同样作用于连接池
+DEBUG.MONGO
+DEBUG.DBPOINTER &ndash; 已经废弃的类,直接无视吧
+com.mongodb.cleanerIntervalMS &ndash; 定期轮询DB实例,执行 db.cleanCursors(true);</p>
+
+<p><strong>3. 切勿使用的类</strong>
+com.mongodb.util.TestCase和com.mongodb.util.TestNGListener属于坑爹类,依赖TestNG,却不放在test文件夹中,MyAsserts也好不到哪里去
+com.mongodb.util和com.mongodb.io包里面的类也不要用,很多类连驱动本身也没有使用!!</p>
+
+  <div class="more">
+    <a href="/364.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/363.html">2011年回顾</a> <span class="date">2012-01-29 13:32:36</span></h3>
   <p>2011年,<a href="http://wendal.net/224.html">换了一家公司</a> &ndash; 号称第5家公司
 2011年,接受了一份神奇的offer,神奇到我以为是去传销
@@ -330,34 +359,6 @@ obj.say('wendal') #打印出My name is wendal
 
   <div class="more">
     <a href="/351.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/350.html">编译RK2918源码 -- 简单说明</a> <span class="date">2011-11-18 13:23:23</span></h3>
-  <p>自从公布RK29的源码地址,各种模块都成为可能</p>
-
-<p>我也说说如何编译吧, 环境 Ubuntu 10.10 server x86版</p>
-
-<ol>
-<li><p>第一步当然是下载源码并解压啦, 以andy pad的源码为例</p>
-
-<p>cd ~/
-mkdir android
-cd ~/android
-wget <a href="https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip">https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip</a>
-unzip 4c6b4f4c48d1.zip
-mv paulobrien-android_kernel_andypad-4c6b4f4c48d1/ rk29</p></li>
-
-<li><p>安装依赖包</p>
-
-<p>sudo apt-get install lzop sharutils libncurses5-dev vim</p></li>
-
-<li><p>下载交叉编译器(我个人认为是错误翻译,应该叫跨平台编译器) arm 4.4.0</p></li>
-</ol>
-
-  <div class="more">
-    <a href="/350.html" class="btn">read more..</a>
   </div>
 </div>
 

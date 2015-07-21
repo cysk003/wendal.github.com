@@ -91,6 +91,39 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2015/07/21.html">搬瓦工换机房换ip之后不能连外网</a> <span class="date">2015-07-21</span></h3>
+
+  <p>昨晚把(nutzbook)[<a href="http://nutzbook.wendal.net]所在的vps换了机房">http://nutzbook.wendal.net]所在的vps换了机房</a>, 自然ip也更换了</p>
+
+<p>然后,突然发现怎么不能ping外网呢?</p>
+
+<pre><code>[root@nutzbook ~]# ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+^C
+--- 8.8.8.8 ping statistics ---
+74 packets transmitted, 0 received, 100% packet loss, time 74016ms
+
+[root@nutzbook ~]# ping 114.114.114.114
+PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.
+^C
+--- 114.114.114.114 ping statistics ---
+11 packets transmitted, 0 received, 100% packet loss, time 10547ms
+
+
+[root@nutzbook ~]# route -n
+Kernel IP routing table
+Destination Gateway Genmask Flags Metric Ref Use Iface
+169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0
+0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2015/07/21.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/05/28.html">在android上运行io.js</a> <span class="date">2015-05-28</span></h3>
 
   <p>无意中看到io.js在4月份开始已经支持android编译,果断弄一个</p>
@@ -1027,42 +1060,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
 
   <div class="more">
     <a href="/2013/06/14.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/05/23.html">X11的xcb库卡死</a> <span class="date">2013-05-23</span></h3>
-
-  <p>一个多月没写blog,郁闷了&hellip;</p>
-
-<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
-
-<p>操作系统: opensuse 11.4 x86
-语言:     Qt 4.8.4,vdpau + Nv卡</p>
-
-<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
-
-<p>堆栈:</p>
-
-<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
-#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
-#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
-#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
-#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
-#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
-#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
-
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/05/23.html" class="btn">read more..</a>
   </div>
 </div>
 

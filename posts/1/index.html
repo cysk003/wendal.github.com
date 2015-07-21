@@ -80,6 +80,37 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2015/07/21.html">搬瓦工换机房换ip之后不能连外网</a> <span class="date">2015-07-21</span></h3>
+  <p>昨晚把(nutzbook)[<a href="http://nutzbook.wendal.net]所在的vps换了机房">http://nutzbook.wendal.net]所在的vps换了机房</a>, 自然ip也更换了</p>
+
+<p>然后,突然发现怎么不能ping外网呢?</p>
+
+<pre><code>[root@nutzbook ~]# ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+^C
+--- 8.8.8.8 ping statistics ---
+74 packets transmitted, 0 received, 100% packet loss, time 74016ms
+
+[root@nutzbook ~]# ping 114.114.114.114
+PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.
+^C
+--- 114.114.114.114 ping statistics ---
+11 packets transmitted, 0 received, 100% packet loss, time 10547ms
+
+
+[root@nutzbook ~]# route -n
+Kernel IP routing table
+Destination Gateway Genmask Flags Metric Ref Use Iface
+169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0
+0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0
+</code></pre>
+
+  <div class="more">
+    <a href="/2015/07/21.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/05/28.html">在android上运行io.js</a> <span class="date">2015-05-28</span></h3>
   <p>无意中看到io.js在4月份开始已经支持android编译,果断弄一个</p>
 
@@ -307,31 +338,6 @@ U-ApiKey: 121234132432143\r\n
 
   <div class="more">
     <a href="/2014/05/13.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2014/04/29.html">用NDK编译Live555</a> <span class="date">2014-04-29</span></h3>
-  <p>针对 live555 2014.03.25和 live 2014.04.23 也就是当前最新咯.</p>
-
-<h2>准备工作</h2>
-
-<p>下载源码 <a href="http://www.live555.com/liveMedia/public/">http://www.live555.com/liveMedia/public/</a> 该地址经常被X,请问候非圆校长</p>
-
-<p>解压到一个空文件夹, 并将目录名从live改成jni</p>
-
-<p>建一个文件, 叫 Android.mk</p>
-
-<p>文件内容在 <a href="https://gist.github.com/wendal/11399988">https://gist.github.com/wendal/11399988</a></p>
-
-<h2>编译</h2>
-
-<p>在jni目录下执行</p>
-
-<p>```</p>
-
-  <div class="more">
-    <a href="/2014/04/29.html" class="btn">read more..</a>
   </div>
 </div>
 

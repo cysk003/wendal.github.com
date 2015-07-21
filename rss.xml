@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>26 Jun 15 15:53 CST</pubDate>
+    <pubDate>21 Jul 15 13:27 CST</pubDate>
+    <item>
+      <title>搬瓦工换机房换ip之后不能连外网</title>
+      <link>http://wendal.net/2015/07/21.html</link>
+      <pubDate>2015-07-21 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;昨晚把(nutzbook)[&lt;a href=&#34;http://nutzbook.wendal.net]所在的vps换了机房&#34;&gt;http://nutzbook.wendal.net]所在的vps换了机房&lt;/a&gt;, 自然ip也更换了&lt;/p&gt;&#xA;&#xA;&lt;p&gt;然后,突然发现怎么不能ping外网呢?&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;[root@nutzbook ~]# ping 8.8.8.8&#xA;PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.&#xA;^C&#xA;--- 8.8.8.8 ping statistics ---&#xA;74 packets transmitted, 0 received, 100% packet loss, time 74016ms&#xA;&#xA;[root@nutzbook ~]# ping 114.114.114.114&#xA;PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.&#xA;^C&#xA;--- 114.114.114.114 ping statistics ---&#xA;11 packets transmitted, 0 received, 100% packet loss, time 10547ms&#xA;&#xA;&#xA;[root@nutzbook ~]# route -n&#xA;Kernel IP routing table&#xA;Destination Gateway Genmask Flags Metric Ref Use Iface&#xA;169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0&#xA;0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;百思不得其解, 唯有找客服, 答复的核心就是一句iptables命令&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;iptables -F; iptables -t nat -F; iptables-save &amp;gt; /etc/sysconfig/iptables&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;即清除老的转发规则,神奇了,为啥会有呢, 搞不清楚了&amp;hellip;&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>在android上运行io.js</title>
       <link>http://wendal.net/2015/05/28.html</link>

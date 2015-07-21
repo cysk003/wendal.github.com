@@ -80,6 +80,15 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/441.html">Nutz T恤与小鸣鸣</a> <span class="date">2012-07-21 21:29:48</span></h3>
+  <p><img src="/assets/media/2012/07/DSCF06572.jpg"></img></p>
+
+  <div class="more">
+    <a href="/441.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/438.html">45分钟的Nutz敲门砖,高清无码 -- [视频教程] Nutz详解-基础框架的搭建</a> <span class="date">2012-07-20 09:47:17</span></h3>
   <p>Nutz入门教程, 高清无码哦</p>
 
@@ -311,48 +320,6 @@ end
 
   <div class="more">
     <a href="/422.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/421.html">bfr-非阻塞的管道缓存器,解决Linux管道缓冲区过小的问题!!</a> <span class="date">2012-05-07 23:34:03</span></h3>
-  <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank"><a href="http://glines.org/software/bfr">http://glines.org/software/bfr</a></a></p>
-
-<p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
-Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
-
-<p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
-
-<p>终于,问题还是回来了, 而且,很巧的,我找到了bfr,一个古老的管道缓冲器(2004年之后就没有更新了&hellip;),So, 为其建立一个github的库 <a href="https://github.com/wendal/bfr" target="_blank"><a href="https://github.com/wendal/bfr">https://github.com/wendal/bfr</a></a></p>
-
-<p>使用说明,简单翻译:</p>
-
-<pre><code>bfr v1.6 (c) 1999-2003 Mark Glines &lt;mark@glines.org&gt;
-Usage follows:
-
-bfr [-v|--verbose] [-t0|--threshold=0] [-T0|--timeout=0]
-    [-b100|--bufsize=100] [-p&lt;arg&gt;|--progress=&lt;arg&gt;] [-m0|--minimum=0]
-    [-T90|--throttle=90] [-C0|--speedcap=0] [&lt;input file or -&gt; ...]
-
-short --long       default desc
--h    --help       -       display this (hopefully) helpful message.(帮助信息)
--v    --verbose            enable verbosity (use twice for pedantic verbosity) (详尽信息,除非你遇到bug!!)
--p    --progress   k1k     Enables &quot;progress mode&quot; (see manpage) (进度显示, 强烈建议无视这个选项)
--m    --minimum    600k    set the amount of buffer to reach before output
-                       begins (to ensure a full stream even at start).(低于多少缓冲,就先不输出)
--i    --initial    minimum Special case of --minimum to preload at the start
-                       of operation.  If unset, --mimumum value is used.(真正输出前,先接收多少数据)
--t    --timeout    0       time, in seconds, to wait before aborting if both
-                       input and output are locked.  0 = wait forever.(输入输出被阻塞的超时设置,基本上是用不上的)
--T    --throttle   90      after filling the buffer, the percentage to let the
-                       amount of onhand data to go down to before accepting
-                       more input. (缓冲区接近满的时候,停止接收数据,直至缓冲区的占有率下降)
--C    --speedcap   0       If set to a non-zero value, bfr will allow only
-                       this many bytes to be output per second. (限制流出的速率,基本上没用)
-</code></pre>
-
-  <div class="more">
-    <a href="/421.html" class="btn">read more..</a>
   </div>
 </div>
 

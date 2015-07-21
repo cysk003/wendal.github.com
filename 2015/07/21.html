@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>在windows上编译memcached v1.4.24 (用cygwin)</title>
+    <title>搬瓦工换机房换ip之后不能连外网</title>
   
-    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+    <meta name="description" content="搬瓦工换机房换ip之后不能连外网">
   
     <meta name="author" content="Wendal Chen">
 
@@ -80,95 +80,55 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>在windows上编译memcached v1.4.24 (用cygwin) </h1>
+  <h1>搬瓦工换机房换ip之后不能连外网 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h1>成品下载地址</h1>
+    <p>昨晚把(nutzbook)[<a href="http://nutzbook.wendal.net]所在的vps换了机房">http://nutzbook.wendal.net]所在的vps换了机房</a>, 自然ip也更换了</p>
 
-<p><a href="http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip">http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip</a></p>
+<p>然后,突然发现怎么不能ping外网呢?</p>
 
-<h1>编译环境</h1>
+<pre><code>[root@nutzbook ~]# ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+^C
+--- 8.8.8.8 ping statistics ---
+74 packets transmitted, 0 received, 100% packet loss, time 74016ms
 
-<p>cygwin x86 当前最新
-win7 x64 sp1</p>
+[root@nutzbook ~]# ping 114.114.114.114
+PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.
+^C
+--- 114.114.114.114 ping statistics ---
+11 packets transmitted, 0 received, 100% packet loss, time 10547ms
 
-<h1>成品的依赖关系(ldd输出)</h1>
 
-<pre><code>$ ldd /usr/local/bin/memcached
-        ntdll.dll =&gt; /cygdrive/c/Windows/SysWOW64/ntdll.dll (0x77780000)
-        kernel32.dll =&gt; /cygdrive/c/Windows/syswow64/kernel32.dll (0x76fa0000)
-        KERNELBASE.dll =&gt; /cygdrive/c/Windows/syswow64/KERNELBASE.dll (0x76b30000)
-        ADVAPI32.DLL =&gt; /cygdrive/c/Windows/syswow64/ADVAPI32.DLL (0x75770000)
-        msvcrt.dll =&gt; /cygdrive/c/Windows/syswow64/msvcrt.dll (0x75810000)
-        sechost.dll =&gt; /cygdrive/c/Windows/SysWOW64/sechost.dll (0x769e0000)
-        RPCRT4.dll =&gt; /cygdrive/c/Windows/syswow64/RPCRT4.dll (0x770d0000)
-        SspiCli.dll =&gt; /cygdrive/c/Windows/syswow64/SspiCli.dll (0x75110000)
-        CRYPTBASE.dll =&gt; /cygdrive/c/Windows/syswow64/CRYPTBASE.dll (0x75100000)
-        cygwin1.dll =&gt; /usr/bin/cygwin1.dll (0x61000000)
-        cyggcc_s-1.dll =&gt; /usr/bin/cyggcc_s-1.dll (0x6fdb0000)
-        cygevent-2-0-5.dll =&gt; /usr/local/bin/cygevent-2-0-5.dll (0x63ec0000)
+[root@nutzbook ~]# route -n
+Kernel IP routing table
+Destination Gateway Genmask Flags Metric Ref Use Iface
+169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0
+0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0
 </code></pre>
 
-<p>可以看到依赖了libevent</p>
+<p>百思不得其解, 唯有找客服, 答复的核心就是一句iptables命令</p>
 
-<h1>编译libevent</h1>
-
-<pre><code>cd /tmp
-wget https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz
-tar xf libevent-2.0.22-stable.tar.gz
-cd libevent-2.0.22-stable
-./configure --prefix=/usr/local
-make all
-make  install
+<pre><code>iptables -F; iptables -t nat -F; iptables-save &gt; /etc/sysconfig/iptables
 </code></pre>
 
-<p>全程无异常通过</p>
-
-<h1>编译memcached</h1>
-
-<pre><code>cd /tmp
-wget wget http://memcached.org/latest
-tar xf latest
-cd memcached-1.4.24/
-chmod 777 configure
-./configure
-</code></pre>
-
-<p>configure 执行完毕后,需要修改Makefile,不然编译会失败</p>
-
-<p>大概是326行,删掉-Werror, 结果如下</p>
-
-<pre><code>CFLAGS = -g -O2 -pthread -pthread -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
-</code></pre>
-
-<p>继续执行剩余的编译</p>
-
-<pre><code>make
-make install
-</code></pre>
-
-<h1>完成,启动一下</h1>
-
-<pre><code>memcached -vv
-</code></pre>
-
-<p>输出一堆log,然后用telnet访问一下,正常,搞定.</p>
+<p>即清除老的转发规则,神奇了,为啥会有呢, 搞不清楚了&hellip;</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2015/05/28.html" title="在android上运行io.js">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2015/03/07.html" title="总算实践了一次Linux From Scratch">Next &rarr;</a></li>
+            <li class="next"><a href="/2015/05/28.html" title="在android上运行io.js">Next &rarr;</a></li>
           
           
         </ul>
@@ -194,7 +154,7 @@ make install
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-04-27</span></div>
+    <div class="date"><span>2015-07-21</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -209,7 +169,7 @@ make install
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#memcache-ref">memcache <span>1</span></a>
+  <a href="/tags/#linux-ref">linux <span>8</span></a>
 </li>
     
     </ul>
