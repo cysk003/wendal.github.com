@@ -2,12 +2,18 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>09 Sep 15 02:39 CST</pubDate>
+    <pubDate>09 Sep 15 02:48 CST</pubDate>
     <item>
       <title>这半年的事</title>
       <link>http://wendal.net/2015/09/09.html</link>
       <pubDate>2015-09-09 12:00:00 +0800</pubDate>
       <description>&lt;p&gt;不知道何时开始,不敢动笔写博客&lt;/p&gt;&#xA;&#xA;&lt;p&gt;2015年, 写了&lt;a href=&#34;http://nutzbook.wendal.net/&#34;&gt;nutzbook&lt;/a&gt; ^_^&lt;/p&gt;&#xA;&#xA;&lt;p&gt;公司平日的工作大多就是修修补补,填各种的坑,没啥起色&lt;/p&gt;&#xA;&#xA;&lt;p&gt;nutz方面, 在nutzbook的推动下, 为nutzmore加了不少插件&lt;/p&gt;&#xA;&#xA;&lt;p&gt;zozoh主导的walnut进展好快 ^_^&lt;/p&gt;&#xA;&#xA;&lt;p&gt;docker最近很火&lt;/p&gt;&#xA;</description>
+    </item>
+    <item>
+      <title>ffmpeg编译一个仅带h264解码功能的库</title>
+      <link>http://wendal.net/2015/09/08.html</link>
+      <pubDate>2015-09-08 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;用的是ffmpeg当前最新的2.7.2&lt;/p&gt;&#xA;&#xA;&lt;p&gt;支持软解和vdpau硬解&#xA;支持解码文件和rstp&lt;/p&gt;&#xA;&#xA;&lt;p&gt;足够了, 静态链接之后,strip之后,目标程序小于4mb,压缩后不到2mb&lt;/p&gt;&#xA;&#xA;&lt;p&gt;一如既往上代码:&lt;/p&gt;&#xA;&#xA;&lt;pre&gt;&lt;code&gt;./configure --enable-nonfree --enable-vdpau --enable-gpl --enable-static \&#xA;&#x9;--disable-everything --enable-decoder=h264 --enable-decoder=aac  --enable-decoder=h264_vdpau \&#xA;&#x9;--prefix=/home/wendal/build --enable-parser=aac --enable-parser=h264 --enable-protocol=rstp \&#xA;&#x9;--enable-demuxer=h264 --enable-demuxer=aac --enable-vdpau --enable-protocol=file --enable-outdevs&#xA;&lt;/code&gt;&lt;/pre&gt;&#xA;&#xA;&lt;p&gt;因为不需要压缩h264, 所以无需x264&lt;/p&gt;&#xA;&#xA;&lt;p&gt;因为ffmpeg已经内置aac, 所以不需要额外添加&lt;/p&gt;&#xA;</description>
     </item>
     <item>
       <title>搬瓦工换机房换ip之后不能连外网</title>

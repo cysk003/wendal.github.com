@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/272.html">Nginx与中文域名</a> <span class="date">2011-04-17 18:36:30</span></h3>
+  <p>这个问题来自Nginx群</p>
+
+<p>Google了一轮,发现其实很简单</p>
+
+<p>直接写中文域名是无法解析到正确的Server的
+中文域名其实就是一个英文域名!!
+中文域名 &mdash;(Punycode编码) &ndash;&gt; 英文域名
+而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn&ndash;fiq228c.com 进行访问,仅此而已!!</p>
+
+<p>那Punycode编码是什么呢? 先看看Python如何调用:
+尝试编码  www.坚果.com</p>
+
+<pre><code>'坚果'.decode('gbk').encode('punycode')
+</code></pre>
+
+<p>得到jfs419a,然后合成真正的URL www.xn&ndash;jfs419a.com &ndash; 这个域名还没启用的.</p>
+
+<p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
+
+<p>当然还得说说中文实现, 在Apache的HttpClient 4.x系列中就有,<a href="http://www.docjar.com/html/api/org/apache/http/client/utils/Rfc3492Idn.java.html">看源码</a></p>
+
+  <div class="more">
+    <a href="/272.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/270.html">学习Java时需要掌握的一些技能</a> <span class="date">2011-04-16 21:45:20</span></h3>
   <p>本文并不涉及语法/具体API,就是一些学习方法</p>
 
@@ -321,27 +349,6 @@ char *httpsqs_settings_pidfile; /* PID文件 */
 
   <div class="more">
     <a href="/259.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/258.html">[求助]CHM文件的格式,我疑惑了!!!</a> <span class="date">2011-03-28 12:39:57</span></h3>
-  <p>这几天想做一个CHM文件的Java读写库,困困研读这种非公开的文件格式.
-参考了一篇外国人写的文档 <a href="http://www.russotto.net/chm/chmformat.html">Microsoft&rsquo;s HTML Help (.chm) format</a></p>
-
-<p>按照其规律一步步构建POJO, 结果被一个ENCINT类型难住了,实在搞不懂如何解析,呜呜:</p>
-
-<p>原文:
-`
-Encoded Integers</p>
-
-<p>An ENCINT is a variable-length integer. The high bit of each byte indicates &ldquo;continued to the next byte&rdquo;. Bytes are stored most significant to least significant. So, for example, $EA $15 is (((0xEA&amp;0x7F)&lt; &lt;7)|0x15) = 0x3515.
-`</p>
-
-<p>严重崩溃中, 求帮助啊!!`</p>
-
-  <div class="more">
-    <a href="/258.html" class="btn">read more..</a>
   </div>
 </div>
 

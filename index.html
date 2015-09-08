@@ -112,6 +112,34 @@
 </div>
 
 <div class="post">
+  <h3 class="title"><a href="/2015/09/08.html">ffmpeg编译一个仅带h264解码功能的库</a> <span class="date">2015-09-08</span></h3>
+
+  <p>用的是ffmpeg当前最新的2.7.2</p>
+
+<p>支持软解和vdpau硬解
+支持解码文件和rstp</p>
+
+<p>足够了, 静态链接之后,strip之后,目标程序小于4mb,压缩后不到2mb</p>
+
+<p>一如既往上代码:</p>
+
+<pre><code>./configure --enable-nonfree --enable-vdpau --enable-gpl --enable-static \
+	--disable-everything --enable-decoder=h264 --enable-decoder=aac  --enable-decoder=h264_vdpau \
+	--prefix=/home/wendal/build --enable-parser=aac --enable-parser=h264 --enable-protocol=rstp \
+	--enable-demuxer=h264 --enable-demuxer=aac --enable-vdpau --enable-protocol=file --enable-outdevs
+</code></pre>
+
+<p>因为不需要压缩h264, 所以无需x264</p>
+
+<p>因为ffmpeg已经内置aac, 所以不需要额外添加</p>
+
+
+  <div class="more">
+    <a href="/2015/09/08.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/07/21.html">搬瓦工换机房换ip之后不能连外网</a> <span class="date">2015-07-21</span></h3>
 
   <p>昨晚把<a href="http://nutzbook.wendal.net">nutzbook</a>所在的vps换了机房, 自然ip也更换了</p>
@@ -1029,33 +1057,6 @@ with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输�
 
   <div class="more">
     <a href="/2013/07/02.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/06/25.html">在windows下编译OpenResty</a> <span class="date">2013-06-25</span></h3>
-
-  <p>折腾了一天,终于解决了</p>
-
-<h1>首先,准备cygwin环境</h1>
-
-<p>cygwin下载setup.exe,启动并开始安装,建议选163源或者日本的源,速度较快</p>
-
-<p>需要的安装的包及其devel包:
-openssl zlib pcre</p>
-
-<p>还有就是一些编译需要的工具:
-gcc4 make perl lua  (不使用openresty内置的lua)</p>
-
-<p><img src="/assets/media/2013/06/25/cygwin_install.jpg"></img></p>
-
-<p><img src="/assets/media/2013/06/25/cygwin_install2.jpg"></img></p>
-
-<p>下载openresty, <a href="http://openresty.org/">openresty官网</a></p>
-
-
-  <div class="more">
-    <a href="/2013/06/25.html" class="btn">read more..</a>
   </div>
 </div>
 
