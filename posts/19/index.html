@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/245.html">JDiff 使用与改进</a> <span class="date">2011-02-24 15:45:02</span></h3>
+  <p>不久前为Nutz的构建服务添加JDiff报告. 报告查看地址: <a href="http://build.sunfarms.net/nutz/lastest/jdiff/">http://build.sunfarms.net/nutz/lastest/jdiff/</a> 以后都可以知道不同的nutz版本API有何不同了.</p>
+
+<p>JDiff报告,就是描述不同版本的代码之间的API差异, 如某某public类被删除了,某某接口改变了</p>
+
+<p>感兴趣的可以先访问<a href="http://www.jdiff.org">官网</a>,以了解基本使用.</p>
+
+<p>但,原本的JDiff有一个很大的问题,对中文支持不好.故,我改进了一下,放出一个版本(原版已经很久没用更新了)
+添加了一个配置,用于设置源码的编码encoding. 另外,我移除了对xerces.jar的依赖.</p>
+
+<p>现在可以在old或者new节点添加encoding=&ldquo;UTF-8&rdquo;之类的设置. 实例配置,请查看Nutz项目的build2.xml文件,地址: <a href="http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml">http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml</a></p>
+
+<p>我已经上传到Google Doc,需要的童鞋就下载吧.
+地址: <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hMjViMjBlMGEtMDlkMi00NjllLWE0MjctNmUxNWI3N2QzZjE2&amp;hl=zh_CN">jdiff-1.1.1-Modify-by-Wendal.zip</a></p>
+
+<p>附上对原版的修改:</p>
+
+<ol>
+<li>移除对xerces.jar的依赖,
+将XML2API中的代码:</li>
+</ol>
+
+  <div class="more">
+    <a href="/245.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
   <p>先放出下载地址:
 <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
@@ -363,35 +391,6 @@ var $overall_style = '';
 
   <div class="more">
     <a href="/227.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/226.html">Alfresco Virtual tomcat默认不解析EL</a> <span class="date">2011-01-06 10:17:32</span></h3>
-  <p>我正在使用Alfresco 3.3 SP4 , 发现其Virtual tomcat竟然是构建在tomcat5.5上的.
-在jsp页面中写el表达式,死活不出来.最后才发现,是tomcat5.5默认不解析EL !!</p>
-
-<p>查原因, 在tomcat5.5.31的源码中:
-1. 类名: org.apache.jasper.compiler.JspConfig
-2. 代码:</p>
-
-<pre><code>if (webApp == null
-     || !&quot;2.4&quot;.equals(webApp.findAttribute(&quot;version&quot;))) {//直接字符串判断,晕!
-     defaultIsELIgnored = &quot;true&quot;;
-     return;
-}
-//如果version不是2.4,那根本不走这里!
-TreeNode jspConfig = webApp.findChild(&quot;jsp-config&quot;);
-if (jspConfig == null) {
-     return;
-}
-</code></pre>
-
-<p>解决方法: :
-第一种,在JSP页面头部加入指令:</p>
-
-  <div class="more">
-    <a href="/226.html" class="btn">read more..</a>
   </div>
 </div>
 

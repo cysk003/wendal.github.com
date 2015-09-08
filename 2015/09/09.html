@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>搬瓦工换机房换ip之后不能连外网</title>
+    <title>这半年的事</title>
   
-    <meta name="description" content="搬瓦工换机房换ip之后不能连外网">
+    <meta name="description" content="胡写一些呗">
   
     <meta name="author" content="Wendal Chen">
 
@@ -80,55 +80,36 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>搬瓦工换机房换ip之后不能连外网 </h1>
+  <h1>这半年的事 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>昨晚把<a href="http://nutzbook.wendal.net">nutzbook</a>所在的vps换了机房, 自然ip也更换了</p>
+    <p>不知道何时开始,不敢动笔写博客</p>
 
-<p>然后,突然发现怎么不能ping外网呢?</p>
+<p>2015年, 写了<a href="http://nutzbook.wendal.net/">nutzbook</a> ^_^</p>
 
-<pre><code>[root@nutzbook ~]# ping 8.8.8.8
-PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-^C
---- 8.8.8.8 ping statistics ---
-74 packets transmitted, 0 received, 100% packet loss, time 74016ms
+<p>公司平日的工作大多就是修修补补,填各种的坑,没啥起色</p>
 
-[root@nutzbook ~]# ping 114.114.114.114
-PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.
-^C
---- 114.114.114.114 ping statistics ---
-11 packets transmitted, 0 received, 100% packet loss, time 10547ms
+<p>nutz方面, 在nutzbook的推动下, 为nutzmore加了不少插件</p>
 
+<p>zozoh主导的walnut进展好快 ^_^</p>
 
-[root@nutzbook ~]# route -n
-Kernel IP routing table
-Destination Gateway Genmask Flags Metric Ref Use Iface
-169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0
-0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0
-</code></pre>
-
-<p>百思不得其解, 唯有找客服, 答复的核心就是一句iptables命令</p>
-
-<pre><code>iptables -F; iptables -t nat -F; iptables-save &gt; /etc/sysconfig/iptables
-</code></pre>
-
-<p>即清除老的转发规则,神奇了,为啥会有呢, 搞不清楚了&hellip;</p>
+<p>docker最近很火</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2015/09/09.html" title="这半年的事">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2015/05/28.html" title="在android上运行io.js">Next &rarr;</a></li>
+            <li class="next"><a href="/2015/07/21.html" title="搬瓦工换机房换ip之后不能连外网">Next &rarr;</a></li>
           
           
         </ul>
@@ -154,13 +135,13 @@ Destination Gateway Genmask Flags Metric Ref Use Iface
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-07-21</span></div>
+    <div class="date"><span>2015-09-09</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>55</span></a>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
 </li>
     
     </ul>
@@ -169,7 +150,11 @@ Destination Gateway Genmask Flags Metric Ref Use Iface
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#linux-ref">linux <span>8</span></a>
+  <a href="/tags/#nutzbook-ref">nutzbook <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#walnut-ref">walnut <span>1</span></a>
 </li>
     
     </ul>

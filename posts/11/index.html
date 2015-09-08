@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/394.html">获得方法形参名称列表 -- 哦也,搞定!!</a> <span class="date">2012-03-10 22:46:33</span></h3>
+  <p>JAVA获取类的方法的参数名 &ndash; 老话题,新方法!!</p>
+
+<p>折腾了一天,终于搞定了.测试了nutz所有的类,均读取正常!! 完美读取任何class的变量名信息! 呵呵,当前,前提是编译时含debug信息.</p>
+
+<p><strong>无任何依赖</strong>,不需要asm,不要其他任何字节码工具,纯标准JDK API实现. 核心代码,仅一个方法,130行,哦也!!</p>
+
+<p>终于完成这个一直想做到的功能 &ndash; 在Java中,获取方法的形参(参数)的名字.由于这个类只做需要做的事,所以,我非常确信它比asm的vistor更快,更可靠.</p>
+
+<pre><code>public void list(int page , int pageSize) { //这个类的作用,就是拿到page和pageSize这两个名字,是的,是名字.
+   //...
+}
+</code></pre>
+
+<p><strong>实现关键点:</strong>:
+1. 跳过一切不需要的数据结构,如版本号,接口信息,字段信息
+2. 只解析常量池中UTF8_String,因为只用到这个,其他都是多余的常量
+3. 实现方法到descriptor的转换函数,因为字节码中的方法签名,是descriptor格式的</p>
+
+<p>代码中含义泛型,直接贴这里的话,页面显示比较麻烦,就上个截图吧.
+<img src="/assets/media/2012/03/method_param.jpg"></img></p>
+
+  <div class="more">
+    <a href="/394.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/393.html">NutzMongoSession -- 轻便的分布式Session实现</a> <span class="date">2012-03-06 15:20:40</span></h3>
   <p>作为Ngqa项目的其中一个功能, NutzMongoSession已经开发完成,并迁入zTask项目中,与NutzMongo的代码整合.</p>
 
@@ -323,19 +351,6 @@ dsmart-30buy
 
   <div class="more">
     <a href="/369.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/366.html">鸣鸣满一个太阳年了</a> <span class="date">2012-02-02 22:11:36</span></h3>
-  <p>一年了, 很充实</p>
-
-<p>上一张鸣鸣的小照片, 2个月的时候</p>
-
-<p><a href="/assets/media/2012/02/20110329564-768x1024.jpg">鸣鸣2个月的小照片</a></p>
-
-  <div class="more">
-    <a href="/366.html" class="btn">read more..</a>
   </div>
 </div>
 
