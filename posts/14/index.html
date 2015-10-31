@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/330.html">在Linux下编译Qt Libs -- 能不能快点呢?!</a> <span class="date">2011-10-01 08:37:57</span></h3>
+  <p>出于好玩,下载了Qt libs for linux, 发现是个源码包,好吧编译呗</p>
+
+<p>敲入:</p>
+
+<pre><code>./configure -qt-sql-sqlite
+gmake
+gmake install
+</code></pre>
+
+<p>原本以为半个小时就万事,结果花了2个多小时!! 我吐血啊&hellip;</p>
+
+<p>难道就不能快点吗? demo examples docs 能不能编译啊!!</p>
+
+<p>好吧,谷哥告诉我,能这样:</p>
+
+<pre><code>./configure -qt-sql-sqlite -opensource -fast -no-qt3support -nomake demos -nomake docs -nomake examples -optimized-qmake -nomake tools
+gmake -j4
+gmake install
+</code></pre>
+
+<p>呵呵,半个小时搞定!!!</p>
+
+  <div class="more">
+    <a href="/330.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/326.html">初试Jetty使用Mongodb作为Session管理器</a> <span class="date">2011-09-26 23:03:32</span></h3>
   <p>闲话少说,直接上代码:</p>
 
@@ -335,35 +364,6 @@ private String zIndex;
 
   <div class="more">
     <a href="/314.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/312.html">把VPS翻新了一下</a> <span class="date">2011-08-20 11:34:53</span></h3>
-  <p>话说在vpsess的这个vps,用了一年了,感觉一直不错,昨天到期,干脆要了一个新的VPS,把数据迁移过去</p>
-
-<p>旧的VPS,是20G空间,用了10G,其实我也不清楚到底为何用了10G,删来删去,还是这么多</p>
-
-<p>步骤:</p>
-
-<ol>
-<li><p>拷贝.ssh文件夹 &ndash; scp就不需要密码了</p></li>
-
-<li><p>新vps装lnmp,旧vps导出数据库,打包/opt和nginx的配置</p></li>
-
-<li><p>新vps导入数据库sql,覆盖nginx设置</p></li>
-
-<li><p>拷贝hudson历史数据,拷贝博客的文件</p></li>
-
-<li><p>还有就是一些杂七杂八的数据,也迁移过去</p></li>
-</ol>
-
-<p>哦也,重启lnmp服务,启动tomcat,验证一下,搞定!!</p>
-
-<p>接着,当然是安装python和git,不过vps上的ubuntu是10.04,找不到现成的python3.2和git,二话不说,直接下源码编译咯</p>
-
-  <div class="more">
-    <a href="/312.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>11 Sep 15 06:50 CST</pubDate>
+    <pubDate>01 Nov 15 03:21 CST</pubDate>
+    <item>
+      <title>nutzcn</title>
+      <link>http://wendal.net/Nutz/nutzcn/</link>
+      <pubDate>2015-11-01 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;上一篇博客是9月9号,那时候&lt;a href=&#34;https://nutz.cn&#34;&gt;Nutz社区&lt;/a&gt;还没开始coding,现在有累计235个&amp;rdquo;问答&amp;rdquo;的帖子,甚为欣慰&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;为啥有这种想法&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;为Nutz弄个社区,或者叫论坛, 这事老早就想了, 例如早就失败告终的 &lt;a href=&#34;https://github.com/howe/ngqa&#34;&gt;ngqa&lt;/a&gt;&lt;/p&gt;&#xA;&#xA;&lt;p&gt;长期以来都是QQ群里解答,效果就是&amp;rdquo;答完就消失&amp;rdquo;, 不会传播,不可索引, 重复的问题几十次几百次地问&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;怎样写起来的&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;nutzbook完成后, nutz-book-project已经有个框, 要不就加上模块叫YvrModule吧(只有胖五问过Yvr是啥意思,哈哈)&lt;/p&gt;&#xA;&#xA;&lt;p&gt;然后逐步加上了论坛该有的基本功能, 同时加上一些特色(例如推送到手机,跨屏二维码,U2F登陆)&lt;/p&gt;&#xA;&#xA;&lt;p&gt;至于界面(一直的痛&amp;hellip;),直接拿cnodejs.org的页面模板改, 毕竟现在还是看脸的时代(真的很坑)&lt;/p&gt;&#xA;&#xA;&lt;p&gt;至于怎么让大家去发帖,这个就比较暴力了,QQ一概不回答Nutz相关的问题!!! 虽然偶尔破例,但效果还是可以的&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;自己用起来很爽&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;Nutz社区, 我自己用起来很爽,至于其他人怎么想, 没多少反馈, 当前注册用户150人,日均1000pv(最近已经关了统计)&lt;/p&gt;&#xA;&#xA;&lt;p&gt;至于&lt;a href=&#34;http://fir.im/nutzcn&#34;&gt;NutzCN客户端&lt;/a&gt;, 自然也是除了我自己之外没有深度使用者,根本不需要考虑装机量,使用量,&#xA;毕竟这种客户端谁会安装,安装了也不会天天开,总下载量100不到(全部版本哦),日活跃用户小于5人&lt;/p&gt;&#xA;&#xA;&lt;p&gt;为啥我是深度使用者? 我需要及时回帖,客户端有推送功能, 发帖/回帖/@一下,都能收到通知.&lt;/p&gt;&#xA;&#xA;&lt;p&gt;大家上社区的目的,无非就是找个答案什么的(灌水区纯粹搞笑,不可能真的有人灌水的), 及时回复应该能提高&amp;rdquo;上论坛提问&amp;rdquo;的收益,&#xA;当这种收益大于在QQ群里提问的收益,才会形成真正的吸引力.&lt;/p&gt;&#xA;&#xA;&lt;h2&gt;带了的收益&lt;/h2&gt;&#xA;&#xA;&lt;p&gt;钱?不是我考虑的东西, 明显就是亏钱的买卖.也不是为了什么PV/UV, 我认为内容为王, 有大家想看想找的东西,自然有人来&lt;/p&gt;&#xA;&#xA;&lt;p&gt;Nutz社区带来的主要影响,体现在搜索引擎上, 之前搜索 nutz集成XXX 这种信息,基本上就是荒漠, 现在社区里的帖子被索引了&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>这半年的事</title>
       <link>http://wendal.net/2015/09/09.html</link>

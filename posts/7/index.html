@@ -80,6 +80,38 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/linux/%E4%BB%8EWordPress%E8%BF%81%E7%A7%BB%E5%88%B0Ruhoh%E7%9A%84%E7%BB%8F%E9%AA%8C/">从WordPress迁移到Ruhoh的经验</a> <span class="date">2012-11-07</span></h3>
+  <h2>预备工作</h2>
+
+<h3>备份旧博客</h3>
+
+<ul>
+<li>备份mysql数据库中的wordpress数据</li>
+<li>备份wordpress所在的目录</li>
+</ul>
+
+<h3>迁移评论</h3>
+
+<ul>
+<li>由于ruhoh是静态博客引擎,只能使用社会化评论系统了</li>
+<li>wordpress的评论转到DISQUS最为方便, 到DISQUS注册好,wordpress安装插件,等待导入完成即可</li>
+</ul>
+
+<h3>导出并转换旧博客的文章</h3>
+
+<ul>
+<li>由于ruhoh只认markdown格式,需要将进行转换</li>
+<li>在wordpress控制界面导出wordpress.xml</li>
+</ul>
+
+<h2>转换老文章</h2>
+
+  <div class="more">
+    <a href="/linux/%E4%BB%8EWordPress%E8%BF%81%E7%A7%BB%E5%88%B0Ruhoh%E7%9A%84%E7%BB%8F%E9%AA%8C/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/linux/Ruhoh%2CNow%21/">Ruhoh,Now!</a> <span class="date">2012-11-06</span></h3>
   <h2>正式转用Ruhoh静态博客引擎</h2>
 
@@ -302,51 +334,6 @@ CGO_ENABLED=0 GOARCH=arm GOOS=linux ./make.bash
 
   <div class="more">
     <a href="/453.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/450.html">fql改造记录 -- fql is a tool that use SQL like query to manipulate files</a> <span class="date">2012-08-13 16:52:41</span></h3>
-  <p>fql is a tool that use SQL like query to manipulate files</p>
-
-<p>挺好玩的一个小工具, 用SQL语法来find文件,官网 <a href="https://github.com/dccmx/fql" title="fql is a tool that use SQL like query to manipulate files." target="_blank"><a href="https://github.com/dccmx/fql">https://github.com/dccmx/fql</a></a></p>
-
-<ol>
-<li><p>添加readline支持, 原本是极其简单的fgets读取输入,那叫一个简陋啊</p>
-
-<p>//添加headers
-#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1</p>
-
-<h1>include <readline/readline.h></h1>
-
-<h1>include <readline/history.h></h1>
-
-<p>#endif</p>
-
-<p>//改造其获取输入的代码:
-#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1
-  if (isatty(STDIN_FILENO)) { //如果是控制台输入,则输出提示符
-      str = readline(&ldquo;&gt; &ldquo;);
-      if( str &amp;&amp; *str )
-          add_history(str); //加入到readline历史记录
-      else
-          continue;
-  } else {
-      str = readline(&ldquo;&rdquo;);
-      if (! str) break;
-  }
-#else
-  //老的,直接读取的方法, 不带历史记录,无法读取多行文本
-  if (isatty(STDIN_FILENO)) printf(&ldquo;&gt; &ldquo;);
-  char str[1024];
-  fgets(str, 1024, stdin);
-  if (feof(stdin)) break;
-  if (!str || !strcmp(&rdquo;\n&rdquo;, str) || !strcmp(&rdquo;\r\n&rdquo;, str)) continue;
-#endif</p></li>
-</ol>
-
-  <div class="more">
-    <a href="/450.html" class="btn">read more..</a>
   </div>
 </div>
 

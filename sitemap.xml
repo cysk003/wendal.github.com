@@ -4,6 +4,11 @@
 		<loc>http://wendal.net/</loc>
 	</url>
 	<url>
+		<loc>http://wendal.net/Nutz/nutzcn/</loc>
+		<lastmod>2015-11-01</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
 		<loc>http://wendal.net/2015/09/09.html</loc>
 		<lastmod>2015-09-09</lastmod>
 		<changefreq>weekly</changefreq>
