@@ -91,6 +91,27 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2015/12/02.html">answer to life everything and the universe</a> <span class="date">2015-12-02</span></h3>
+
+  <p>这是一篇胡言乱语,异想天开的文章,请跳过.</p>
+
+<h3>终极答案</h3>
+
+<p>&ldquo;The Hitchhiker&rsquo;s Guide to the Galaxy&rdquo;中给出的答案是42.恩, yes or no.</p>
+
+<p>若不知道问题是什么,那答案有何意义? 42是不是终极答案,完全取决与你是否认可它是不是终极答案(就是你想要的答案,起码看起来像那么一回事的答案)</p>
+
+<h3>人类的延续</h3>
+
+<p>有时候,我会想, 人类最终会怎样, 是不是会延续下去,或者被AI所灭, 但如果该AI就是人类创造的,那这是不是人类的延续呢??</p>
+
+
+  <div class="more">
+    <a href="/2015/12/02.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/11/01.html">nutzcn</a> <span class="date">2015-11-01</span></h3>
 
   <p>上一篇博客是9月9号,那时候<a href="https://nutz.cn">Nutz社区</a>还没开始coding,现在有累计235个&rdquo;问答&rdquo;的帖子,甚为欣慰</p>
@@ -1016,48 +1037,6 @@ plughw:CARD=I82801AAICH,DEV=0
 
   <div class="more">
     <a href="/2013/07/04.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/07/03.html">py2exe练手</a> <span class="date">2013-07-03</span></h3>
-
-  <p>受老同学所托,写了个字符串抽样的东西(就是N个字符串抽取固定的几个),代码如下:</p>
-
-<pre><code>#!python
-# -*- coding: UTF-8 -*-
-
-import os.path
-import time
-import sys
-import itertools 
-import random
-
-if not os.path.exists(&quot;numbers.txt&quot;) :
-    print u&quot;没找到数据文件 numbers.txt&quot;
-    time.sleep(5)
-    sys.exit()
-
-with open(&quot;numbers.txt&quot;) as f :
-    d = str(f.read())
-
-#print d
-numbs = d.split(&quot;,&quot;)
-#print numbs, u&quot;长度&quot; ,len(numbs)
-
-re = itertools.combinations(numbs, 5) #内置的一个库,so easy
-re = list(re)
-random.shuffle(re)                    #把顺序打乱,哈哈
-
-with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输出为csv文件
-    for p in re :
-        f.write(', '.join(str(x) for x in p))
-        f.write(&quot;\n&quot;)
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/07/03.html" class="btn">read more..</a>
   </div>
 </div>
 

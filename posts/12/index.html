@@ -80,6 +80,42 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/372.html">Ngqa -- 不单单是一个QA系统</a> <span class="date">2012-02-19 13:34:02</span></h3>
+  <p>项目地址: <a href="https://github.com/howe/ngqa">https://github.com/howe/ngqa</a></p>
+
+<p>使用了 Nutz, Nutz-mongo, Nutz-web, Nutz-socialauth &hellip;</p>
+
+<p>这项目的最初目的是为Nutz搭建一个完整好玩的QA系统,现在的作用远大于此:</p>
+
+<ol>
+<li>Nutz-socialauth, 是本项目的其中一个亮点 &ndash; 支持30种以上的社会化登录(OpenId), 号称国内第一, 率先github这个专业程序员必备网站</li>
+<li>完整可用的Demo &ndash; Nutz长期被投诉的重点,没一个完整可运行的,持续更新并提供支持的demo. 这个项目就突破这个问题,将包含足够丰富的注释及使用范例</li>
+<li>作为一个QA系统,将有效积累Nutz的FAQ库</li>
+<li>激活Nutz社区 &ndash; 作为一个公开的项目,在开发的过程中,Nutzer们参与进来,动手把项目运行起来</li>
+</ol>
+
+<p>项目设计, 采用OpenAPI的思想, 网站页面,只是其中一个表现方式,开发完成后,将配备SDK,方便客户端扩展</p>
+
+<p>其中一个核心就是SmartView,根据访问地址的后缀来判断需要执行的视图,而非固定的配置为一种视图,示例代码:</p>
+
+<pre><code>    public void render(HttpServletRequest req, HttpServletResponse resp,
+            Object obj) throws Throwable {
+        String uri = req.getRequestURI();
+        if (uri.endsWith(&quot;.json&quot;))
+            new AjaxView().render(req, resp, obj);
+        else if (uri.endsWith(&quot;.rss&quot;))
+            new RssView().render(req, resp, obj);
+        else
+            new JspView(viewValue).render(req, resp, obj); //这里默认跑jsp
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/372.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/371.html">JActor最简单试用</a> <span class="date">2012-02-12 23:59:41</span></h3>
   <p>发现网上连一篇简单的入门都没有,我晕啊&hellip; 折腾了一下,终于变菜鸟了,把官方例子注释一下给大家了解一下</p>
 
@@ -304,42 +340,6 @@ db.getCollection().update(query, update);
 
   <div class="more">
     <a href="/357.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/356.html">NutDao配置多数据源</a> <span class="date">2012-01-06 22:20:11</span></h3>
-  <p>首先,我必须声明,这是一个非常简单的方法,很多小菜没做出来,是因为把nutz想得太复杂</p>
-
-<p>数据源(或者是数据库连接池),在Nutz.Ioc看来,是一个普通的Bean,没任何特别之处. 再强调一点,除了$aop命名的bean用于配置Aop之外,其他所有的bean都是一视同仁的,没有任何特别关照!!</p>
-
-<p>先看看标准的单数据源配置方法:</p>
-
-<pre><code>var ioc = {
-    dataSource : {
-                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
-                events : {
-                        depose : 'close'
-                },
-                fields : {
-                        driverClassName : 'org.h2.Driver',
-                        url : 'jdbc:h2:quick3;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
-                        username : 'sa',
-                        password : ''
-                }
-        },
-        /*定义NutDao*/
-        dao : {
-            type : &quot;org.nutz.dao.impl.NutDao&quot;,
-            fields : {
-                dataSource : {refer : 'dataSource'}
-            }
-        }
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/356.html" class="btn">read more..</a>
   </div>
 </div>
 
