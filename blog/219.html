@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Log4j 分级输出</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Log4j 分级输出 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>一直以来,我都以为Log4j仅能配置输出日志的最低等级,不能限定只输出某一/某些特定等级,今天,无意中发现了其实是可以的.
+先上一份普通的log4j.properties</p>
+
+<pre><code>log4j.rootLogger=INFO, Console, File
+
+###### Console appender definition #######
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=%d{ABSOLUTE} %x %-5p [%c{3}] %m%n
+
+###### File appender definition #######
+log4j.appender.File=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.File.File=alfresco.log
+log4j.appender.File.Append=true
+log4j.appender.File.DatePattern='.'yyyy-MM-dd
+log4j.appender.File.layout=org.apache.log4j.PatternLayout
+log4j.appender.File.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c] %m%n
+</code></pre>
+
+<p>现在需要定义一个名为File2的appender ,仅记录INFO和ERROR,哈哈,有请Log4j的Filter</p>
+
+<pre><code>log4j.appender.File2=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.File2.File=alfresco2.log
+log4j.appender.File2.Append=true
+log4j.appender.File2.DatePattern='.'yyyy-MM-dd
+log4j.appender.File2.layout=org.apache.log4j.PatternLayout
+log4j.appender.File2.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c] %m%n
+
+#配置Filter
+#定义id为F1的拦截器,只接受INFO到ERROR
+log4j.appender.File2.filter.F1=org.apache.log4j.varia.LevelRangeFilter
+log4j.appender.File2.filter.F1.LevelMin=INFO
+log4j.appender.File2.filter.F1.LevelMax=ERROR
+#定义id为F2的拦截器,不接受WARN
+log4j.appender.File2.filter.F2=org.apache.log4j.varia.LevelMatchFilter
+log4j.appender.File2.filter.F2.levelToMatch=WARN
+log4j.appender.File2.filter.F2.acceptOnMatch=false
+#可以继续定义你需要的拦截器F3/F4.....
+</code></pre>
+
+<p>通过定义不同组合的LevelRangeFilter/LevelMatchFilter,让特定的appender只记录你需要的log等级,非常方便的!</p>
+
+<p>详细参考,请查阅Log4j:</p>
+
+<p><a href="http://logging.apache.org/log4j/1.2/apidocs/">JavaDoc</a>
+<a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/spi/Filter.html">Filter</a>
+<a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PropertyConfigurator.html">PropertyConfigurator</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/220.html" title="Nutz终于beta版了!!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/218.html" title="禁用/消除 MySQL客户端的报警声">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2010-12-20 12:18:12</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#alfresco-ref">alfresco <span>17</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Javadoc-ref">Javadoc <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#log4j-ref">log4j <span>3</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#logger-ref">logger <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

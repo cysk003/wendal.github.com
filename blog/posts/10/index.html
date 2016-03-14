@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 10</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/413.html">Nginx二级域名自动匹配到子文件夹(通过rewrite)</a> <span class="date">2012-04-11 20:32:23</span></h3>
+  <p>网站目录结构</p>
+
+<pre><code>html --
+       index.html
+       xxx.html
+       tuan --
+              index.html
+              tuan800.html
+       blog --
+              index.html
+              1.html
+              19.html
+       news --
+              index.html
+              how_to_XX.html
+              XX_XX_XX.html
+</code></pre>
+
+<p>分别对应主站(nutz.cn, www.nutz.cn), 团购子站(tuan.nutz.cn),博客子站(blog.nutz.cn),新闻子站(news.nutz.cn)</p>
+
+  <div class="more">
+    <a href="/blog/413.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/412.html">lua-newLISP 包装器</a> <span class="date">2012-04-10 22:48:51</span></h3>
+  <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
+
+<p>今天第一次写lua模块,就做了一个lua-newLISP包装器,即在lua中执行newLISP脚本</p>
+
+<p><strong>首先遇到的是newLISP的编译:</strong>
+1. 官方提供的configure智能化程度极低,估计是手写的
+2. 生成的Makefile,是Ubuntu下的配置, 在centos下编译无法通过
+虽然修改一下,还是顺利能pass,但还是觉得不爽
+故, 动手做了一个<a href="https://gist.github.com/2351735">cmake for newLISP</a>的脚本.</p>
+
+<p><strong>生成so文件后,默认是newlisp.so,改名为libnewlisp.so,并放入/usr/lib中</strong></p>
+
+<p>由于newLISP的对外API仅2个(其中一个还不能用&hellip;),且自带的h文件比较混乱,<strong>干脆自己写了一个h文件</strong><a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.h">newlisp.h</a>,就一行:</p>
+
+<pre><code>char * newlispEvalStr(char * cmd); //把传入的cmd当成newlisp脚本执行,并返回char*
+</code></pre>
+
+<p>然后,当然是主体c文件<a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.c">newLISP.c</a>啦</p>
+
+<pre><code>//载入lua的头文件
+#include &quot;lua.h&quot;
+#include &quot;lualib.h&quot;
+#include &quot;lauxlib.h&quot;
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/412.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/411.html">Nutz是一个轮子吗?</a> <span class="date">2012-04-06 22:59:30</span></h3>
+  <p>不要重复发明轮子(Don&rsquo;t Reinvent the Wheel.) -- 在开源社区经常都能看到的论调.</p>
+
+<p>问: Nutz是SSH的轮子吗?
+答: 飞机轮子与单车轮子,是同一种轮子吗?
+问: Nutz的Ioc,Aop,Dao,MVC,在SSH都有,这难道不是重复发明轮子吗?
+答: 你确定这是发明轮子吗? Nutz发明了Ioc?Nutz发明了Aop?
+&hellip; &hellip;
+&hellip; &hellip;</p>
+
+<p>&ldquo;不要重复发明轮子&rdquo;,其实是有后半句的,&ldquo;学会制造轮子,改进轮子&rdquo;.</p>
+
+<p>你可以批评他人的轮子做得不好,做得有多烂,但不可否定制造轮子的权利及付出的努力.</p>
+
+<p>如果中国的JavaWeb工程师,都能做一个Spring轮子,或者Hibernate轮子,或者Struts轮子,那么,Java也能强国了.
+可惜, 由于SSH/SSH2已经成为国内的JavaWeb的事实标准,以至于很大一部分人只会使用SSH, 而Ioc容器这种基本的概念都弄不清楚. 有多少号称&rdquo;精通SSH&rdquo;的工程师研读过其源码呢?</p>
+
+<p>的确,国内的程序员太忙了,天天加班,以至于&rdquo;怎么可能有空参与开源项目?!&ldquo;.</p>
+
+  <div class="more">
+    <a href="/blog/411.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/409.html">用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load)</a> <span class="date">2012-04-05 22:45:56</span></h3>
+  <p>一直以来, NutDao的懒加载问题,都无数次被提起,我也曾经在另外一篇博客中提及其可行性: <a href="http://wendal.net/317.html">NutDao实现Lazy加载的可行性</a></p>
+
+<p>为了回应广大Nutzer的呼声,我花了点时间完成了一个<a href="https://github.com/nutzam/nutz/commit/a6e1d49f6e883aa75edc2938f36a475ab314d3ac">LazyNutDao</a>,如果你需要这个功能,那么只需要把NutDao简单换成LazyNutDao</p>
+
+<p>整个实现,算上空行及注释,大概200行,并修改了另外3个类(就是把部分属性改成protected)</p>
+
+<ol>
+<li><p>POJO的属性,必须带setter/getter,否则无法进行懒加载注入</p></li>
+
+<li><p>setter/getter应当是无逻辑的,不应加入业务逻辑.</p></li>
+</ol>
+
+<p>需要注意的问题:</p>
+
+<ol>
+<li><p>无Session控制,自行处理事务问题 -- 对象在事务模板包裹下取出,但在事务模板外调用getter以获取属性值,那么,这部分的调用是在事务之外的</p></li>
+
+<li><p>多线程问题,LazyMethodInterceptor并非线程安全的,因为其中的代码并未锁定当前对象</p></li>
+</ol>
+
+<p><strong>实现思路:</strong>
+1. POJO的实例化,是由NutEntity完成的,由于懒加载是通过AOP实现的,所以需要接管其实例化过程
+2. NutEntity是由AnnotationEntityMaker创建,有NutDao持有,所以,通过覆写setDataSource方法,接管EntityHolder实例
+3. LazyNutEntity继承于NutEntity,通过生成Aop拦截链,生成Aoped类,以便拦截@One/@Many字段的setter/getter
+4. 懒加载状态管理: 当setter被调用,那么懒加载机制结束使命,回退为普通机制.</p>
+
+  <div class="more">
+    <a href="/blog/409.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/408.html">Nutz 1.b.43 发行后记</a> <span class="date">2012-04-01 22:43:22</span></h3>
+  <p>折腾了半天,终于把1.b.43发布出去了.</p>
+
+<p>简单介绍修正的Bug及新功能,毕竟&rdquo;发行注记&rdquo;比较少涉及这些.</p>
+
+<p>Bug修正:
+1. #177 NutFilter关闭时,报NPE,原因是销毁NutFilter时,没有设置ThreadLocal的属性,导致获取IOC容器失败
+2. #177 PropertiesProxy只认最后一个配置文件,原因是加载新配置文件时,把旧数据clear了
+3. #170 高并发的情况下,当数据库连接池的连接耗尽,NutDao抛出NPE, 原因是处理连接池异常的代码,没有考虑到获取连接也会失败
+4. #155 入口方法如果包含Date参数,当页面不传值,会抛出NPE,原因是String2Datetime类没有把&rdquo;&ldquo;当初null来处理
+5. #172 nutz + Oracle JDBC 10.1.0.2.0 分页会出错,原因是这驱动有BUG!!
+6. #75  NutDao动态实体解析报错,原因是默认会以为动态实体也有主键,但实际上用户执行的是update,并不包含主键.
+7. Json.fromJson(Set.class, &ldquo;[1,2,3]&ldquo;)会报错,原因是没对Set进行特别处理,直接当成List返回了</p>
+
+<p>需求:
+1. #187 支持JarInJar,即eclipse打包输出Runnable Jar的第二项.
+2. #130 自定义SQL也支持Pager分页
+3. #158 Dao支持Set存入数据库,字段类型为varchar
+4. #120 JSON循环引用的序列化与反序列化, 以及EL支持Json需求
+5. MVC中,如果入口方法的参数没有@Param注解,且不被适配器所识别,那么,按@Param(&ldquo;参数名&rdquo;)进行处理
+6. 添加内置的fetchBoolean回调函数
+7. 新增@SessionBy注解,允许自定义Session的获取方式
+8. 新增SimpleDataSource,内置的DataSource实现</p>
+
+  <div class="more">
+    <a href="/blog/408.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/406.html">newLISP的ShellGame配套lsp源文件</a> <span class="date">2012-03-27 22:08:44</span></h3>
+  <p><a href="http://www.newlisp.org/">newLISP</a>官方提供的<a href="http://www.neglook.com/?Shell_Games">ShellGame</a>系列视频,并未提供lsp源文件,我看完了整个系列,顺便把源文件补了一部分,地址:
+<a href="https://github.com/wendal/learn-newLISP/tree/master/ShellGame">https://github.com/wendal/learn-newLISP/tree/master/ShellGame</a></p>
+
+<p>总共有23个视频,当前我完成了17个配套的lsp文件,剩下6个视频,没看懂,所以lsp文件还没写出来 -- 难道是比较高阶的?</p>
+
+<p>附上第一个视频的lsp文件</p>
+
+<pre><code>;;视频原地址: http://www.neglook.com/
+;;lsp文件由wendal创建 http://wendal.net
+
+;; 用默认的context方法,创建数值生成器 -- 类似于自增
+
+(setq generator:acc 0)  ; 创建一个名叫generator的上下文,并添加一个符号acc
+
+(define (generator:generator) (inc generator:acc)) ;缺省的context方法(即与context同名的方法),其中的inc是方法,等同于++
+
+(generator)   ;;分号是单行注释的开始,而非语句的结束符
+
+(generator) 
+(generator)
+(generator)   ;;连续调用几次后,现在的值应该是acc应当等于4
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/406.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/405.html">Python的while 1跟while True到底有什么区别?</a> <span class="date">2012-03-26 14:41:59</span></h3>
+  <p>定义两个方法,分别使用while循环</p>
+
+<pre><code>def w() :
+  while 1 :
+    pass
+
+def w2() :
+  while True:
+    pass
+</code></pre>
+
+<p>单从功能上说,两种无任何区别,那么,来看看字节码上的区别:</p>
+
+<pre><code>import dis  #载入反编译模块,Python内置的
+
+dis.dis(w) #对应的是while 1,下面是输出
+  2           0 SETUP_LOOP               3 (to 6)
+
+  3     &gt;&gt;    3 JUMP_ABSOLUTE            3
+        &gt;&gt;    6 LOAD_CONST               0 (None)
+              9 RETURN_VALUE
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/405.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/404.html">Java匿名内部类的传值</a> <span class="date">2012-03-24 21:37:42</span></h3>
+  <p>在Nutz中,存在大量需要使用匿名内部类的情况,很多童鞋都对传值很困惑,所以我这里说明一下</p>
+
+<p><strong>传入:</strong></p>
+
+<pre><code>//匿名内部类,只能访问final的本地变量及方法参数
+public void addUser(final String name, String passwd, final String userType) {
+    User user = null;
+    if (&quot;admin&quot;.equal(userType))
+        user = new AdminUser(name, passwd); //仅作演示.
+    else
+        user = new User(name, passwd);
+    final User _user = user; //因为user变量不能设置为final,所以需要新加一个变量来中转
+    Trans.run(new Atom(){
+        public void run() {
+            dao.insert(_user);
+            if (log.isDebugEnable())
+                log.debugf(&quot;Add user id=%d, name=%s , type=%s&quot;, _user.getId(), name, userType);
+        }
+    });
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/404.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/403.html">学习Java字节码的一些提示</a> <span class="date">2012-03-23 20:49:14</span></h3>
+  <p>Java Class Format : <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html">http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html</a>
+Class文件格式定义,永远是最权威的</p>
+
+<p>jclasslib : <a href="http://www.ej-technologies.com/products/jclasslib/overview.html">http://www.ej-technologies.com/products/jclasslib/overview.html</a>
+可视化查看/修改Class文件的工具,以树形结构显示Class文件,并列出具体方法的字节码数据</p>
+
+<p>asm : <a href="http://asm.ow2.org/">http://asm.ow2.org/</a>
+性能最强悍的读写class格式的类库,因为大部分写法都接近于直接写字节码
+其中的ASMifierClassVisitor类,能打印出构造一个完整class文件所需要的全部Java代码,非常方便</p>
+
+<p>Java字节码,跟汇编差不多,喜欢深入Java语法的童鞋不妨学学. 看清实际生成的字节码,你能更清晰的知道,哪些语法仅仅是编译器语法糖果.</p>
+
+  <div class="more">
+    <a href="/blog/403.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/402.html">实用主义的Lisp方言 -- newLisp</a> <span class="date">2012-03-21 20:32:20</span></h3>
+  <p>先引用newLisp的官方定义:
+<a href="http://www.newlisp.org/index.cgi?FAQ">newLISP is a LISP-like scripting language for doing things you typically do with scripting languages: programming for the internet, system administration, text processing, gluing other programs together, etc. newLISP is a scripting LISP for people who are fascinated by LISP&rsquo;s beauty and power of expression, but who need it stripped down to easy-to-learn essentials.</a>
+<strong>newLISP is LISP reborn as a scripting language</strong>: pragmatic and casual, simple to learn without requiring you to know advanced computer science concepts.</p>
+
+<p>自称是Lisp的重生,对自己的期望非常高.</p>
+
+<p>我是在<a href="http://my.opera.com/freewinger/blog/">天国之翼</a>的解释下接触newLisp,这人高人独自翻译了<a href="http://www.newlisp.org/CodePatterns-cn.html">newLisp的代码模式</a></p>
+
+<p>之前看了实用Lisp编程,对Lisp了解了不少,但发现Lisp世界的很大特点就是一上来就吹嘘括号和宏,在无尽的不理解,不明白,我的热情很快退去&hellip;</p>
+
+<p><strong>而newLisp,起码,我跑通了一个http服务器!! 我跑通了mysql的demo!!</strong>
+安装文件非常小巧,安装过程只需几秒,启动极快 -- 主程序仅280kb!!
+没有一味推荐Emacs(事实上我很讨厌这玩意),所以我用notepad++进行编辑,感觉也不错嘛</p>
+
+<p><strong>现在,我把两个小demo列一下</strong>:
+<strong>1. 小小的静态文件http服务器,无需写代码,一条命令就能启动,最起码做个能用的http服务</strong></p>
+
+<pre><code>newlisp -L log.txt -http -w E:/htmls
+#-L 日志,可省略
+#-w 工作目录,可省略
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/402.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

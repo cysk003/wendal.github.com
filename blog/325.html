@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>不走寻常路--NutzCP初版</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>不走寻常路--NutzCP初版 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>想了一个晚上,用了一个早上完成编码 -- 效率还是很高的嘛</p>
+
+<p>项目地址: <a href="https://github.com/nutzam/nutzcp">https://github.com/nutzam/nutzcp</a></p>
+
+<p>很久之前,我也写过另外一个<a href="http://wendal.net/243.html">简单的连接池实现</a>,这次我认真地实现了另一个实现,也就是现在这个</p>
+
+<p><strong>这个连接池,基于一些假设:</strong>
+1. 数据库可接纳的总连接数是固定的
+2. 使用者是自律的,总是显式调用commit()/rollback(),然后调用close()</p>
+
+<p><strong>不走寻常路:</strong>
+1. 固定的连接池大小
+2. 超过固定连接数后,不允许再创建新连接,除非旧连接被返还</p>
+
+<p><strong>为何要固定的连接池大小呢?!</strong>
+以MySQL为例,server端可接纳的连接数是固件的,写在配置文件里面的,就是说,实际上server-client之间的可用连接数总数是稳定的,固定的,所以,维持一个固定大小的连接池比维持一个可变大小的连接池要简洁,更快,其实也更实用</p>
+
+<p>**为什么不允许overflow(连接池里面已经没有空余连接,那就创建不受管理的连接)呢? **
+因为不应该由数据库告诉程序: 我是MySQL数据库服务器,我已经没有可用的新连接啦!!
+客户端本身就能知道是否已经无法创建新连接,这样直接抛出异常,比服务器告知要快速得多</p>
+
+<p>现在这个实现还是使用synchronized,但效率还是很不错的,使用这个实现,通过Nutz项目的TestAll完全没鸭梨!! 呵呵,心情好的时候再改为JDK5的lock吧</p>
+
+<p><strong>Be fun !!</strong></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/326.html" title="初试Jetty使用Mongodb作为Session管理器">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/324.html" title="Nutz事务模板值得注意的细节">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-09-18 14:41:17</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#git-ref">git <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#MySQL-ref">MySQL <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E7%BC%96%E7%A0%81-ref">编码 <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%BF%9E%E6%8E%A5%E6%B1%A0-ref">连接池 <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

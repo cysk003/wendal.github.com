@@ -138,7 +138,7 @@
 <p>这时候, 具体的Pet实例要准备生成了</p>
 
 <ol>
-<li><p>首先,需要生成IocLoading &ndash;&gt; createLoading()</p></li>
+<li><p>首先,需要生成IocLoading --&gt; createLoading()</p></li>
 
 <li><p>然后通过 iocloader的load方法,拿到IocObject, 即bean的配置信息</p></li>
 
@@ -146,9 +146,9 @@
 
 <li><p>下一步,就是为刚刚生成的bean注入字段, 因为当前的bean对象,仅仅是new之后的全新状态</p></li>
 
-<li><p>收尾的一步, 看看这个bean,是否为单例,是否需要保存到app作用域&ndash;大部分的bean都是单例的</p>
+<li><p>收尾的一步, 看看这个bean,是否为单例,是否需要保存到app作用域--大部分的bean都是单例的</p>
 
-<p>// 每一作用域(IocContext),都管理着符合其生命周期的bean &ndash; 默认情况下,bean都是app作用域的,单例的</p>
+<p>// 每一作用域(IocContext),都管理着符合其生命周期的bean -- 默认情况下,bean都是app作用域的,单例的</p>
 
 <p>// 如果bean还定义了create/fetch等IocEvent的话,那么,这时候也会触发</p></li>
 
@@ -175,7 +175,7 @@ public class Pet {
 }
 </code></pre>
 
-<p>就是注解&ndash;&gt;IocObject这一步</p>
+<p>就是注解--&gt;IocObject这一步</p>
 
 <p><strong>2. MVC中的Ioc</strong>
 是通过IocProvider提供的. 不妨看看JsonIocProvider的代码:</p>
@@ -239,7 +239,7 @@ else
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

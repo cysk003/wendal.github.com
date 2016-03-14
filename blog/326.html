@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>初试Jetty使用Mongodb作为Session管理器</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>初试Jetty使用Mongodb作为Session管理器 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>闲话少说,直接上代码:</p>
+
+<pre><code>package net.wendal.jetty.mongodb;
+
+import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
+import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+public abstract class TestMongodb4Jetty {
+
+    public static void main(String[] args) throws Throwable {
+        Server server = new Server(9090);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
+        MongoSessionManager msm = new MongoSessionManager();
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.setSessionManager(msm);
+        webAppContext.setSessionHandler(sessionHandler);
+        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
+        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
+        idMgr.setScavengeDelay(60);
+        msm.setSessionIdManager(idMgr);
+        server.setHandler(webAppContext);
+        server.start();
+    }
+}
+</code></pre>
+
+<p>启动mongod,启动jetty,访问登录页面,登录,看到后台的log</p>
+
+<pre><code>2011-09-26 23:12:37,470 MongoSessionManager:save:org.eclipse.jetty.nosql.NoSqlSession:wendal-mongodb-worker426chatn2460pobw6a4a6m14@1179468258
+2011-09-26 23:12:37,473 MongoSessionManager:save:db.sessions.update({ &quot;id&quot; : &quot;wendal-mongodb-worker426chatn2460pobw6a4a6m14&quot; , &quot;valid&quot; : true},{ &quot;$inc&quot; : { &quot;context.::*.__metadata__.version&quot; : 1} , &quot;$set&quot; : { &quot;accessed&quot; : 1317049954912 , &quot;context.::*.org%2Enutz%2Equickstart%2Eauth%2Ebean%2EUser&quot; : &lt;Binary Data&gt;}},true)
+</code></pre>
+
+<p>可以看到,默认情况下,使用的是标准的Java序列化,效率当然是不太高的了,呵呵</p>
+
+<p>打开mongodb控制台,敲入下面的命令,也能看到登录后的session信息</p>
+
+<pre><code>use HttpSessions
+db.sessions.find()
+</code></pre>
+
+<p>So esay!! 不过,也用掉了我2个小时,呵呵!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/330.html" title="在Linux下编译Qt Libs -- 能不能快点呢?!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/325.html" title="不走寻常路--NutzCP初版">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-09-26 23:03:32</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+      <li>
+  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>28</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#Eclipse-ref">Eclipse <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#mongodb-ref">mongodb <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

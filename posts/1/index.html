@@ -80,6 +80,46 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2016/03/14.html">python fuse 记录</a> <span class="date">2016-03-14</span></h3>
+  <p>[FUSE <a href="https://zh.wikipedia.org/wiki/FUSE">https://zh.wikipedia.org/wiki/FUSE</a>]</p>
+
+<p>常用fuse api方法</p>
+
+<pre><code>struct fuse_operations {
+    int (*getattr) (const char *, struct stat *);
+    int (*readlink) (const char *, char *, size_t);
+    int (*getdir) (const char *, fuse_dirh_t, fuse_dirfil_t);
+    int (*mknod) (const char *, mode_t, dev_t);
+    int (*mkdir) (const char *, mode_t);
+    int (*unlink) (const char *);
+    int (*rmdir) (const char *);
+    int (*symlink) (const char *, const char *);
+    int (*rename) (const char *, const char *);
+    int (*link) (const char *, const char *);
+    int (*chmod) (const char *, mode_t);
+    int (*chown) (const char *, uid_t, gid_t);
+    int (*truncate) (const char *, off_t);
+    int (*utime) (const char *, struct utimbuf *);
+    int (*open) (const char *, struct fuse_file_info *);
+    int (*read) (const char *, char *, size_t, off_t, struct fuse_file_info *);
+    int (*write) (const char *, const char *, size_t, off_t,struct fuse_file_info *);
+    int (*statfs) (const char *, struct statfs *);
+    int (*flush) (const char *, struct fuse_file_info *);
+    int (*release) (const char *, struct fuse_file_info *);
+    int (*fsync) (const char *, int, struct fuse_file_info *);
+    int (*setxattr) (const char *, const char *, const char *, size_t, int);
+    int (*getxattr) (const char *, const char *, char *, size_t);
+    int (*listxattr) (const char *, char *, size_t);
+    int (*removexattr) (const char *, const char *);
+};
+</code></pre>
+
+  <div class="more">
+    <a href="/2016/03/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/12/02.html">answer to life everything and the universe</a> <span class="date">2015-12-02</span></h3>
   <p>这是一篇胡言乱语,异想天开的文章,请跳过.</p>
 
@@ -308,30 +348,6 @@ win7 x64 sp1</p>
 
   <div class="more">
     <a href="/2015/02/04.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2014/10/23.html">Http协议及Json格式简介(给yeelink使用者的)</a> <span class="date">2014-10-23</span></h3>
-  <p>高手,老鸟,请路过. 本说明忽略了Continue 100请求,代理,chunked等等高级话题.</p>
-
-<h2>Http协议基本:</h2>
-
-<p>分3部分, 请求行(request line), 头部键值对(header key-value), 请求体(body), 其中请求体是可选的, 尤其是GET/PUT请求</p>
-
-<p>简单的GET请求</p>
-
-<pre><code>GET /v1.1/device/12825/sensor/20956/datapoints HTTP/1.1\r\n
-Host: api.yeelink.net\r\n
-Content-Length: 0\r\n
-U-ApiKey: 121234132432143\r\n
-\r\n
-</code></pre>
-
-<p>简单的POST请求</p>
-
-  <div class="more">
-    <a href="/2014/10/23.html" class="btn">read more..</a>
   </div>
 </div>
 

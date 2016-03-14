@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>X11的xcb库卡死</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>X11的xcb库卡死 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>一个多月没写blog,郁闷了&hellip;</p>
+
+<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
+
+<p>操作系统: opensuse 11.4 x86
+语言:     Qt 4.8.4,vdpau + Nv卡</p>
+
+<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
+
+<p>堆栈:</p>
+
+<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
+#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
+#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
+#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
+#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
+#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
+
+</code></pre>
+
+<h2>最初,我猜是这个bug的原因</h2>
+
+<p>(Thread hangs in xcb_wait_for_reply() if another thread calls xcb_poll_for_event())[<a href="https://bugs.freedesktop.org/show_bug.cgi?id=40372">https://bugs.freedesktop.org/show_bug.cgi?id=40372</a>]</p>
+
+<p>看着bug的意思,是不正确的使用xcb库,但,我XXX, 那是驱动调用的,我哪知道呢&hellip;</p>
+
+<p>按部就班修改了一下,测试,继续死&hellip; 我XXXX!!</p>
+
+<h2>好吧,换驱动</h2>
+
+<p>换最新的310系列,依然死,我XXXXXX</p>
+
+<h2>看来是bug,但怎么解决呢?</h2>
+
+<p>还是回到堆栈去, 卡死在xcb_wait_for_reply方法上,而这个方法有这样一句</p>
+
+<pre><code>378         while(!poll_for_reply(c, request, &amp;ret, e)) {
+379             if(!_xcb_conn_wait(c, &amp;cond, 0, 0)) {
+380                 break;
+381             }
+382             count ++; // 所以我加上下面几个逻辑,强制break,看看死不死
+383             if ( count &gt; 1000 ) {
+384                 printf(&quot;Loop more than 1000 times, break&quot;);
+385                 break;
+386             }
+387         }
+</code></pre>
+
+<p>结果,还是死&hellip;.</p>
+
+<h2>看来要釜底抽薪啦,从最底层的api给跳出来</h2>
+
+<p>从第1帧来灭掉它</p>
+
+<pre><code>#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
+</code></pre>
+
+<p>这一帧调用linux标准的poll方法,但timeout传入的是-1,即永久等待.</p>
+
+<p>反正不知道神马原因,就是没等到触发条件,卡住了, SO,妹的,改成1秒吧!!</p>
+
+<p>代码如下:</p>
+
+<pre><code>312 #if USE_POLL
+313         ret = poll(&amp;fd, 1, 1000);
+314 #else
+315         ret = select(c-&gt;fd + 1, &amp;rfds, &amp;wfds, 0, 0);
+316 #endif
+</code></pre>
+
+<p>编译,重启, 测试, 竟然好了,我XXX,但为什么呢? 不知道呢&hellip; 反正没再死了&hellip;</p>
+
+<h2>mark一下gdb常用命令</h2>
+
+<pre><code>gdb -p $pid        直接attach到正在运行的程序中
+
+set height 0       显示时,不分页
+info threads       显示所有线程
+thread 3           切换到3号线程
+bt                 显示当前线程的堆栈
+f 2                调到第二帧
+c                  继续运行
+Ctrl+C             中断运行,进行gdb交互模式
+info locals        打印全部本地变量
+print fd           打印名为fd的变量的值
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2013/06/14.html" title="马来西亚,闲游">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/2013/0412.html" title="在windows下编译nginx">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-05-23</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#nginx-ref">nginx <span>4</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#X11-ref">X11 <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

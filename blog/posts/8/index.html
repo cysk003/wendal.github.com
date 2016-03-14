@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 8</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/453.html">换种顺序来执行TestCase(Junit适用)</a> <span class="date">2012-08-26 22:18:26</span></h3>
+  <p>Junit的TestCase,总是按固定的顺序执行的. 正如你在Eclipse中跑Run As Junit Test, 无论你跑多少次, TestCase的执行顺序都是一致的,可重复的. 这就导致一个问题, TestCase之间的独立性无法保证.</p>
+
+<p>例如下面一个Test类中的2个TestCase:</p>
+
+<pre><code>public class DaoTest {
+
+    @Test
+    public void test_count() {
+        dao.insert(new User(&quot;root&quot;, &quot;123456&quot;));
+        assertEquals(1, dao.count(User.class));
+    }
+
+    @Test
+    public void test_insert() {
+        dao.clear(User.class, null);
+        dao.insert(new User(&quot;admin&quot;, &quot;123456&quot;));
+        assertEquals(1, dao.count(User.class));
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/453.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/450.html">fql改造记录 -- fql is a tool that use SQL like query to manipulate files</a> <span class="date">2012-08-13 16:52:41</span></h3>
+  <p>fql is a tool that use SQL like query to manipulate files</p>
+
+<p>挺好玩的一个小工具, 用SQL语法来find文件,官网 <a href="https://github.com/dccmx/fql" title="fql is a tool that use SQL like query to manipulate files." target="_blank"><a href="https://github.com/dccmx/fql">https://github.com/dccmx/fql</a></a></p>
+
+<ol>
+<li><p>添加readline支持, 原本是极其简单的fgets读取输入,那叫一个简陋啊</p>
+
+<p>//添加headers
+#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1</p>
+
+<h1>include <readline/readline.h></h1>
+
+<h1>include <readline/history.h></h1>
+
+<p>#endif</p>
+
+<p>//改造其获取输入的代码:
+#if defined(HAVE_LIBREADLINE) &amp;&amp; HAVE_LIBREADLINE==1
+  if (isatty(STDIN_FILENO)) { //如果是控制台输入,则输出提示符
+      str = readline(&ldquo;&gt; &ldquo;);
+      if( str &amp;&amp; *str )
+          add_history(str); //加入到readline历史记录
+      else
+          continue;
+  } else {
+      str = readline(&ldquo;&rdquo;);
+      if (! str) break;
+  }
+#else
+  //老的,直接读取的方法, 不带历史记录,无法读取多行文本
+  if (isatty(STDIN_FILENO)) printf(&ldquo;&gt; &ldquo;);
+  char str[1024];
+  fgets(str, 1024, stdin);
+  if (feof(stdin)) break;
+  if (!str || !strcmp(&rdquo;\n&rdquo;, str) || !strcmp(&rdquo;\r\n&rdquo;, str)) continue;
+#endif</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/450.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/448.html">Golang连接Mysql</a> <span class="date">2012-07-31 19:33:39</span></h3>
+  <p>首先,安装golang-mysql库, 我这里选用是google上的<a href="http://code.google.com/p/go-mysql-driver/">go-mysql-driver</a></p>
+
+<pre><code>go get code.google.com/p/go-mysql-driver/mysql
+#如果访问失败,请翻墙吧!! 需要mysql 4.1以上哦
+</code></pre>
+
+<p>然后,当然是我的最爱 -- 代码</p>
+
+<pre><code>package main
+
+// 导入sql包, 跟java.sql类似的
+import &quot;database/sql&quot;
+import _ &quot;code.google.com/p/go-mysql-driver/mysql&quot;
+import &quot;encoding/json&quot;
+import &quot;fmt&quot;
+
+// 定义一个结构体, 需要大写开头哦, 字段名也需要大写开头哦, 否则json模块会识别不了
+// 结构体成员仅大写开头外界才能访问
+type User struct {
+    User      string    `json:&quot;user&quot;`
+    Password string `json:&quot;password&quot;`
+    Host   string `json:&quot;host&quot;`
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/448.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/446.html">在Golang中,Log打印行号等信息</a> <span class="date">2012-07-24 19:11:08</span></h3>
+  <p>做个小笔记, 默认情况下,log模块的只打印日期和时间, 没具体行号,比较不爽,嘿嘿</p>
+
+<pre><code>package main
+/*
+#include &lt;stdlib.h&gt;
+*/
+import &quot;C&quot;
+import &quot;log&quot;
+
+func main() {
+    log.SetFlags(log.Lshortfile | log.LstdFlags)
+    log.Println( C.random())
+}
+</code></pre>
+
+<p>打印结果:</p>
+
+<pre><code>2012/07/24 19:27:55 X.cgo1.go:14: 1804289383
+</code></pre>
+
+<p>其中, log.Lshortfile 还可以设置为log.Llongfile 即完整文件路径</p>
+
+  <div class="more">
+    <a href="/blog/446.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/441.html">Nutz T恤与小鸣鸣</a> <span class="date">2012-07-21 21:29:48</span></h3>
+  <p><img src="/blog/assets/media/2012/07/DSCF06572.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/441.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/438.html">45分钟的Nutz敲门砖,高清无码 -- [视频教程] Nutz详解-基础框架的搭建</a> <span class="date">2012-07-20 09:47:17</span></h3>
+  <p>Nutz入门教程, 高清无码哦</p>
+
+<p>下载地址:
+<a href="http://code.google.com/p/nutz/downloads/list">http://code.google.com/p/nutz/downloads/list</a></p>
+
+<p>长达45分钟,让你一次性体会Nutz的3大块: Mvc Ioc Dao</p>
+
+<p><img src="/blog/assets/media/2012/07/A.jpg"></img></p>
+
+<p><img src="/blog/assets/media/2012/07/B.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/438.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/436.html">NutMVC的View怎么玩?</a> <span class="date">2012-06-29 23:24:44</span></h3>
+  <p><strong>撒手不管 VoidView:</strong></p>
+
+<pre><code>@Ok(&quot;void&quot;) //不做任何操作,不理会任何返回值,不碰resp对象!!
+
+//适合控制欲极强的童鞋,或有特别需要的
+</code></pre>
+
+<p><strong>ajax好基友 UTF8JsonView:</strong></p>
+
+<pre><code>@Ok(&quot;json&quot;) // 将任何返回值转换为json字符串,后面可以加jsonFormat参数
+//注意,使用这个视图,你就不要自己拼json字符串了!! 返回map/list/pojo吧!!
+</code></pre>
+
+<p>示例页面js调用:</p>
+
+<pre><code>$.ajax({
+  url: &quot;${base}/login&quot;,
+  dataType : &quot;json&quot;,
+  data : {&quot;user&quot; : &quot;wendal&quot;, &quot;passwd&quot; : &quot;123456&quot;}, //或者 表单数据
+  //如果是复杂的对象,建议使用$.toJSON(obj) 然后后台使用@Adpter(JsonAdpter.class)
+  success : function(re) {
+    if (re.ok) {
+      alert('登陆成功');
+      windows.location = &quot;${base}/home&quot;; //跳转到某个URL去, 多嘴一句,ajax是不能自动识别302的!!
+    } else {
+      alert('登陆失败,请检查用户名及密码!!');
+    };
+  },
+  fail : function(err) {
+    alert(&quot;服务器错误: &quot;+ err);
+  }
+});
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/436.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/434.html">NutIoc的执行过程</a> <span class="date">2012-06-23 19:05:17</span></h3>
+  <p>越来越多人阅读Nutz的源码,很是欣慰.</p>
+
+<p>首先,什么是Ioc呢? Ioc本质上就是一个有状态的Map<String,Object>, 其中bean就是用户通过各种形式的配置信息所定义的对象</p>
+
+<p>先上一段代码,通过一个js配置一个Ioc容器,并获取一个bean</p>
+
+<pre><code>public static void main(String[] args) {
+    IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
+    Ioc ioc = new NutIoc(loader);
+    Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
+    System.out.println(pet.getName());
+}
+</code></pre>
+
+<p>ioc的js配置文件(ioc.js,名字是随意的)</p>
+
+<pre><code>var ioc = {
+    pet : {
+        type : &quot;net.wendal.test.Pet&quot;,
+        fields : {
+            name : &quot;wendal&quot;
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/434.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/429.html">北京之行,就上一张图吧</a> <span class="date">2012-06-01 10:19:17</span></h3>
+  <p><img src="/blog/assets/media/2012/06/6f91c323jw1dtdb6o9986j.jpg">Nutz的代码就是这么来滴~~~~</img></p>
+
+  <div class="more">
+    <a href="/blog/429.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/427.html">今天生日,上一张图!</a> <span class="date">2012-05-24 21:58:24</span></h3>
+  <p><img src="/blog/assets/media/2012/05/psb.jpg">鸣鸣玩电脑</img></p>
+
+<p>明天去帝都: 机票OK,酒店OK,保险OK</p>
+
+  <div class="more">
+    <a href="/blog/427.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

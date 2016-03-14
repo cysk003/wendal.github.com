@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 16</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/295.html">搭建Git服务器,真的很简单</a> <span class="date">2011-06-21 21:07:36</span></h3>
+  <p><strong>重要提醒, 本教材适用于gitolite v2,与当前最新版v3不兼容!!</strong>
+<strong>需要在checkout gitolite后,切换到v2版!!</strong></p>
+
+<p>最近都在玩Git, <a href="https://github.com/nutzam/nutz">Nutz也已经迁移到Github上</a></p>
+
+<p>原文地址: <a href="http://sitaramc.github.com/gitolite/doc/1-INSTALL.html">http://sitaramc.github.com/gitolite/doc/1-INSTALL.html</a></p>
+
+<p>其实真的只需要几句</p>
+
+<pre><code>#现在开始是root做的
+
+#安装Git
+apt-get install git
+#拷贝你自己的公钥
+cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
+git clone git://github.com/sitaramc/gitolite
+cd gitolite
+##################################
+#重要!! 切换到v2版!!
+git checkout g2
+##################################
+src/gl-system-install
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/295.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/292.html">在几种编程语言中探索(Java/Python/Lua/C)</a> <span class="date">2011-06-10 12:15:42</span></h3>
+  <p>猛然发现自己已经快一个月没写blog,太懒惰了!!</p>
+
+<p>5月,先是脚受伤,接着过敏&hellip;</p>
+
+<p>Java -- 为Nutz重写的Json解析器,最初的实现(zozoh)我看不懂,第二版(juqkai)改造得不够彻底,代码比较乱. 这次修改之后,解析将比之前严格,对于非法转义字符,不匹配的[}均直接抛出异常. 这将导致已经使用nutz的项目,其json文件可能会被报错. 然而,这并未100%的执行Json规范,主要是数字处理和map的key</p>
+
+<p>Python -- 最近用得比较多,但至今未打动我. 很多情况下,Python依旧是Shell的替代品,呵呵. 不知道是不是习惯于一种思维: 编程语言=语法+API , 也许还没领会到Python的精髓与思维模式. 与Java相比, 多了些语法糖果,如in和缩进式的逻辑语句</p>
+
+<p>Lua -- 呵呵,最近貌似很流行呢!! 最近玩的愤怒的小鸟,也是用Lua写的
+成果: <a href="http://www.teclast.com/bbs/forum.php?mod=viewthread&amp;tid=157140&amp;extra=">RK29xx固件解包打包工具_v1.1测试版</a> 当前唯一正确解包/打包RK2918方案固件的工具,完美解开台电T760的2.x固件,酷比1.x固件
+Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值得学习的一门语言</p>
+
+<p>C -- 处理字符串,真是痛苦啊&hellip;</p>
+
+<p>刚刚把Nutz的代码迁移到Github了,准备写个简单教程,说说经验,呵呵</p>
+
+  <div class="more">
+    <a href="/blog/292.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/288.html">鸣鸣满100天了!! 申领了身份证等重要证件,嘻嘻</a> <span class="date">2011-05-13 14:38:54</span></h3>
+  <p>嘻嘻,一百天了</p>
+
+<p>花了一个上午,办:
+身份证    40个工作日可取?!
+港澳通行证 15天
+护照        15天</p>
+
+<p>恩,还挺顺利的</p>
+
+<p>工作耽误了一些,明后两天加班,呵呵</p>
+
+<p>附回执,嘻嘻,关键信息都已经涂黑:
+<a href="/blog/assets/media/2011/05/MM_SF.jpg">MM_SF-300x225.jpg</a></p>
+
+  <div class="more">
+    <a href="/blog/288.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/287.html">不跟你玩,玩不起!!</a> <span class="date">2011-05-10 15:37:08</span></h3>
+  <p>认认真真地把robot.txt写好了,国内的百度,Soso,搜狗,一概屏蔽!!</p>
+
+<p>不跟你们玩了!!</p>
+
+  <div class="more">
+    <a href="/blog/287.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/285.html">宝宝快100天了,记录一下经验</a> <span class="date">2011-05-04 19:12:41</span></h3>
+  <p>嘻嘻,鸣鸣诞生快100天,每天都如此充实.</p>
+
+<p>好,记录一下: <strong>13斤,63厘米</strong></p>
+
+<p>一些经验:
+<strong>1. 母乳喂养</strong>
+除非有生理/心理疾病,母乳都是足够的.
+首先,母乳是按需生产,宝宝喝得多,就产得多
+其次,认为母乳不足,添加奶粉,是非常错误的,BB少吮吸,奶自然就少
+最后,母乳如何才多? 1.怀孕期要按摩 2.喂奶前喝牛奶,吃鸡蛋,喂奶期间可以适当喝点水</p>
+
+<p><strong>2. 补钙</strong>
+千万被直接让BB吃钙片/液体钙!!
+如果宝宝晚上突然哭,不肯睡,可能就是缺钙.
+那么,妈妈就应该补钙了!! 我老婆每天补充400~500mg的钙,嘻嘻</p>
+
+<p><strong>3. 晚上喂奶</strong>
+晚上尽量不要喂奶!!
+临睡觉,让宝宝多喝点
+如果宝宝晚上醒了,先判断是否为纸尿裤湿了,不要急着喂奶.
+宝宝是需要调教的,除了第一个月,晚上基本上可以不用喂奶的
+如何调教? 临睡那一餐,多喂点,宝宝醒来的时候,慢一点喂,逐渐逐渐的,间隔时间就长起来了&hellip; 最后过渡到晚上不喂,或晚上只喂一点点
+我现在做的是,晚上不需要喂,或者只需要喂一两口(其实宝宝还是睡着的,眼睛都没睁开过), 整个晚上都不醒.
+睡得好,宝宝才能长得快,而非吃得好哦</p>
+
+  <div class="more">
+    <a href="/blog/285.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/282.html">评价一下Everbox和微盘</a> <span class="date">2011-04-30 20:38:53</span></h3>
+  <p><strong>两者的官方:</strong>
+Everbox <a href="http://everbox.com">http://everbox.com</a>
+微盘 <a href="http://vdisk.me">http://vdisk.me</a></p>
+
+<p><strong>容量:</strong>
+Everbox 上限15G,单一文件大小仅受限于空间大小
+微盘      上限10G,单一文件大小未知(API也没说,页面也没提及&hellip;)</p>
+
+<p><strong>运行平台:</strong>
+两者的前端都是nginx,我喜欢!! 而且盛大的版本比较新,嘻嘻
+微盘肯定是php应用,跑在SAE上,估计是特权应用,因为SAE默认每个应用只允许存放10G数据
+Everbox猜不出来, session_id的名字也隐藏了,不知道什么语言写的</p>
+
+<p><strong>两者API的优缺点:</strong>
+1. Everbox,请求一个文件的信息,响应体没有文件的指纹!!单单给edit time,受不了!! 微盘好歹也给个MD5啊!!
+2. 微盘有公开的API;Everbox暂时没有(官方答复是很快就会公开,呵呵)
+3. Everbox的上传机制比微盘好,起码能分段能续传;微盘对于大文件的上传还没给出API,乏力啊
+4. 微盘有个dolog机制, Everbox有ver标志,估计都能做些东西,但ver标志的含义至今没搞明白,纠结!!!</p>
+
+  <div class="more">
+    <a href="/blog/282.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/280.html">Nutz中你未必知道的用法</a> <span class="date">2011-04-28 10:30:11</span></h3>
+  <p>========================================================================</p>
+
+<h1><strong>Ioc篇</strong></h1>
+
+<p><strong>1. 使用properties文件</strong></p>
+
+<pre><code>var ioc = {
+    config : {
+        type : &quot;org.nutz.ioc.impl.PropertiesProxy&quot;, /*1.b.37内置的一个代理类*/
+        fields : {
+            paths : [&quot;conf/jdbc.properties&quot;] /*可以写多个文件或文件夹*/
+        }
+    },
+// Data source
+    dataSource : {
+        type :&quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+        events : {
+            depose :&quot;close&quot;
+        },
+        fields : {
+            driverClassName : {
+                java :&quot;$config.get('driver')&quot;
+            },
+            url : {
+                java :&quot;$config.get('url')&quot;
+            },
+            username : {
+                java :&quot;$config.get('username')&quot;
+            },
+            password : {
+                java :&quot;$config.get('password')&quot;
+            }
+        }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/280.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/279.html">声明一下Everbox4j的相关事项</a> <span class="date">2011-04-28 09:38:56</span></h3>
+  <p><strong>1. 你是盛大的前员工/现员工吗?</strong>
+不是,我只是盛大Everbox的用户,最近也没打算去盛大求职,我有一份满意的工作</p>
+
+<p><strong>2. Everbox4j是盛大官方发布的吗?</strong>
+不是, everbox4j是非官方的</p>
+
+<p><strong>3. Everbox4j收费吗?有广告吗?</strong>
+免费,开源,无广告</p>
+
+<p><strong>4. Everbox4j能在公司里使用吗?</strong>
+可以免费使用,但不得用于任何非法用途</p>
+
+<p><strong>5. Everbox4j基于官方的公开API吗?</strong>
+官方没有公开的API文档,至今没有公开发布可操作的接口</p>
+
+<p><strong>6. Everbox4j有任何盈利方式吗?</strong>
+无,没有广告,顶多为我的博客增加点流量,但我的博客一样没有广告</p>
+
+<p><strong>7. Everbox4j能被官方接受吗?</strong>
+这个很难说,毕竟盛大有自己的研发团队
+Everbox4j使用固定的User-Agent, 如有必要, 官方可以随时封掉.
+Everbox4j的下一版本打算使用一个自己定义的User-agent, 进一步降低官方封杀的难度.
+但是,我觉得,有这样一款能在Linux/Mac上跑的客户端,应该是对Everbox的发展有好处的</p>
+
+  <div class="more">
+    <a href="/blog/279.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/276.html">Everbox4j 1.0 终于发布啦! Everbox也能在Linux/Mac上用!!</a> <span class="date">2011-04-27 22:10:03</span></h3>
+  <p>############################################################
+#<strong>这东西刚刚开发完,喜欢探险的童鞋欢迎使用</strong>
+#<strong>系统出现问题,文件被误删,帐号被封,本人一概不负责!!</strong>
+#<strong>胆小怕死者,老人小孩孕妇,心脏病,高血压,切勿尝试!!</strong>
+############################################################</p>
+
+<p>奋斗了几个晚上,终于做出来了!!!</p>
+
+<p>激动,终于可以安心睡个觉了!@!!</p>
+
+<p>下载地址: <a href="http://code.google.com/p/everbox4j/downloads/list">
+http://code.google.com/p/everbox4j/downloads/list</a></p>
+
+<p>已知限制:
+1. 如果同时开启上传和下载,只会进行上传
+2. 上传模式,只会上传服务器没有的本地文件,不会执行任何删除操作
+3. 下载模式,只会下载本地没有的服务器文件,不会进行任何删除操作
+4. 只支持盛大帐户</p>
+
+  <div class="more">
+    <a href="/blog/276.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/275.html">用Jsoup查台电的固件更新情况</a> <span class="date">2011-04-26 18:13:57</span></h3>
+  <p>最近入手台电T720 Wifi,便宜货,不要跟iPad比.</p>
+
+<p>T720用的是 Android 2.1 , 比较旧, 但官方已经说了很久会出2.2的固件,哎&hellip; 何年何月啊?!</p>
+
+<p>每次都上台电查,烦,决定用Jsoup写一个检查的,上代码:</p>
+
+<pre><code>import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class Main {
+
+    public static void main(String[] args) throws Throwable {
+        Document doc = Jsoup.connect(&quot;http://www.teclast.com/topic.php?channelID=78&amp;topicID;=148&quot;).get();
+        Elements es = doc.select(&quot;font[color$=003399]&quot;);
+        String type = &quot;T720&quot;;//机器型号
+        for (Element e : es) {
+            if(!e.ownText().startsWith(type))
+                continue;
+            Element f = e.parent().parent().select(&quot;font[color$=0000CC]&quot;).first();
+            if(f!= null)
+                System.out.println(e.ownText() + &quot; &quot; + f.ownText());
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/275.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

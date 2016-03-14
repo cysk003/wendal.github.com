@@ -97,26 +97,26 @@
 <strong>1. 视图插件</strong>
     要求: 实现View接口和ViewMarker接口
     能做什么?
-        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
-        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+        -- 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        -- Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
 
 <p><strong>2. 适配器插件</strong>
     要求: 实现HttpAdaptor接口
     能做什么?
-        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
-        &ndash; 请求是加密的? 需要解码才能读取
-        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+        -- 你的请求的格式未被nutz识别? 例如WebService请求
+        -- 请求是加密的? 需要解码才能读取
+        -- 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
 
-<p><strong>3. 处理器插件 &ndash; 新版的MVC使用动作链模型,你可以介入请求处理的任何阶段</strong>
+<p><strong>3. 处理器插件 -- 新版的MVC使用动作链模型,你可以介入请求处理的任何阶段</strong>
     要求: 实现Processor接口
     能做什么?
-        &ndash; 权限处理,过滤URL或者具体的方法调用
-        &ndash; 数据校验
+        -- 权限处理,过滤URL或者具体的方法调用
+        -- 数据校验
 **
 4. UrlMapping插件**
     要求: 实现UrlMapping
     能做什么?
-        &ndash; REST控? 这个适合你!! 你会找到不少志同道合的童鞋</p>
+        -- REST控? 这个适合你!! 你会找到不少志同道合的童鞋</p>
 
 <p>简单介绍完, 看看有无时间写篇 &ldquo;Nutz插件编写指南&rdquo; 哈哈, 期待吧</p>
 
@@ -147,7 +147,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

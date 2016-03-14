@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/250.html">兼容FireFox 4的AutoProxy</a> <span class="date">2011-03-09 07:50:52</span></h3>
+  <p>#########################################
+##官方已经发布兼容FF4 版本!! <a href="https://addons.mozilla.org/zh-CN/firefox/addon/autoproxy/versions/">马上去下载安装吧!!</a>
+#########################################</p>
+
+<p>前几天, FF4 RC1 放出, 作为FF粉丝怎么可以不升级?</p>
+
+<p>安装后,启动,检查附件组件兼容性, 什么?!! Autoproxy不兼容?!! 这可不行,这是必备的!!!</p>
+
+<p>到处查找更新版,官方发布的0.4b1也不支持FF4 RC1 !!!</p>
+
+<p>好吧,根据其<a href="http://code.google.com/p/autoproxy/issues/detail?id=147">issue 174</a>,其实已经修改,只是还没有发布,只好直接跑到Autoproxy的官网下载源码进行编译(为此下载了Git For Windows,Perl,MS-DOS Zip)</p>
+
+<p>经过简单试用,恩,一切正常!!</p>
+
+<p>好东西不能独享,放出我自己的编译的版本给大家救急</p>
+
+<p>如有更新,我也会及时跟进(前提是官方还未放出)
+<strong>下载:
+---&gt; autoproxy-0.4.0+.2011030823.xpi
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hY2JhMTZjNjUtODE2ZC00ODE0LThjMjYtZTZmNmNhMDNlOGJl&amp;sort=name&amp;layout=list&amp;num=50">Google Docs 下载</a> , <a href="http://build.sunfarms.net/download/autoproxy-0.4.0+.2011030823.xpi"> 本地下载</a></strong></p>
+
+  <div class="more">
+    <a href="/250.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/248.html">一个简单XML工具类,支持简单的路径求值</a> <span class="date">2011-03-06 19:57:55</span></h3>
   <p>估计是个轮子,因为一说起XML,自然想到的是JDom/dom4j等老牌/强大的工具.</p>
 
@@ -125,15 +153,15 @@ import javax.xml.parsers.ParserConfigurationException;
 <strong>1. 视图插件</strong>
     要求: 实现View接口和ViewMarker接口
     能做什么?
-        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
-        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+        -- 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        -- Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
 
 <p><strong>2. 适配器插件</strong>
     要求: 实现HttpAdaptor接口
     能做什么?
-        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
-        &ndash; 请求是加密的? 需要解码才能读取
-        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+        -- 你的请求的格式未被nutz识别? 例如WebService请求
+        -- 请求是加密的? 需要解码才能读取
+        -- 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
 
   <div class="more">
     <a href="/247.html" class="btn">read more..</a>
@@ -249,7 +277,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 <li><p>Nutz.Aop与Spring.Aop相比,无法拦截构造方法,静态方法</p></li>
 
-<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; &ndash;&gt;POJO转换工具</p></li>
+<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; --&gt;POJO转换工具</p></li>
 
 <li><p>Nutz.MVC 没有校验功能,没有配置方式的URL映射</p></li>
 
@@ -280,7 +308,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 . 香港有卖一种仿乳头的奶瓶,英国产,淘宝也有代购,150ml的,其实完全足够了.
 . 奶粉我觉得明治最好,为黄种人设计,不热气,虽然有人提到会缺锌,但相比欧美的产品,还是明治好!! 买明治,一定要买日本本土产的,买其他的话,还不如买美赞臣/牛栏牌
 . 怀孕后,继续正常饮食,补充叶酸/维生素就可以了,不要经常进补!! 经常散步,即使顶着大肚子. 手术前,老婆走得比我还快呢!
-. 防辐射服 &ndash; 没用的,骗钱的     仅仅是心理安慰,我就没有买
+. 防辐射服 -- 没用的,骗钱的     仅仅是心理安慰,我就没有买
 . 怀孕后,上Q/看电影,一切照旧! 我们周围最强的电磁波辐射,其实是光线,除非你住在黑暗的屏蔽室内,否则啥都挡不住!
 . 宝宝够暖就可以了,偶尔打个喷嚏其实很好很正常的. 衣服太多,会出红疹,严重的话要住院的!!</p>
 
@@ -329,39 +357,6 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 
   <div class="more">
     <a href="/233.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/232.html">系统变量file.encoding对Java的运行影响有多大?</a> <span class="date">2011-01-27 20:06:27</span></h3>
-  <p>这个话题来自: Nutz的<a href="http://code.google.com/p/nutz/issues/detail?id=361">issue 361</a></p>
-
-<p>在考虑这个issue时, 我一直倾向于使用系统变量file.encoding来改变JVM的默认编码.</p>
-
-<p>今天,我想到, 这个系统变量,对JVM的影响到底有多大呢?
-我使用最简单的方法看看这个变量的影响&ndash;在JDK 1.6.0_20的src.zip文件中,查找包含file.encoding字眼的文件.
-共找到4个, 分别是:
-先上重头戏 java.nio.Charset类:</p>
-
-<pre><code>    public static Charset defaultCharset() {
-        if (defaultCharset == null) {
-        synchronized (Charset.class) {
-        java.security.PrivilegedAction pa =
-            new GetPropertyAction(&quot;file.encoding&quot;);
-        String csn = (String)AccessController.doPrivileged(pa);
-        Charset cs = lookup(csn);
-        if (cs != null)
-            defaultCharset = cs;
-                else 
-            defaultCharset = forName(&quot;UTF-8&quot;);
-            }
-    }
-    return defaultCharset;
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/232.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load)</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>用简单的方式,实现NutDao的懒加载(延迟加载, Lazy Load) </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>一直以来, NutDao的懒加载问题,都无数次被提起,我也曾经在另外一篇博客中提及其可行性: <a href="http://wendal.net/317.html">NutDao实现Lazy加载的可行性</a></p>
+
+<p>为了回应广大Nutzer的呼声,我花了点时间完成了一个<a href="https://github.com/nutzam/nutz/commit/a6e1d49f6e883aa75edc2938f36a475ab314d3ac">LazyNutDao</a>,如果你需要这个功能,那么只需要把NutDao简单换成LazyNutDao</p>
+
+<p>整个实现,算上空行及注释,大概200行,并修改了另外3个类(就是把部分属性改成protected)</p>
+
+<ol>
+<li><p>POJO的属性,必须带setter/getter,否则无法进行懒加载注入</p></li>
+
+<li><p>setter/getter应当是无逻辑的,不应加入业务逻辑.</p></li>
+</ol>
+
+<p>需要注意的问题:</p>
+
+<ol>
+<li><p>无Session控制,自行处理事务问题 -- 对象在事务模板包裹下取出,但在事务模板外调用getter以获取属性值,那么,这部分的调用是在事务之外的</p></li>
+
+<li><p>多线程问题,LazyMethodInterceptor并非线程安全的,因为其中的代码并未锁定当前对象</p></li>
+</ol>
+
+<p><strong>实现思路:</strong>
+1. POJO的实例化,是由NutEntity完成的,由于懒加载是通过AOP实现的,所以需要接管其实例化过程
+2. NutEntity是由AnnotationEntityMaker创建,有NutDao持有,所以,通过覆写setDataSource方法,接管EntityHolder实例
+3. LazyNutEntity继承于NutEntity,通过生成Aop拦截链,生成Aoped类,以便拦截@One/@Many字段的setter/getter
+4. 懒加载状态管理: 当setter被调用,那么懒加载机制结束使命,回退为普通机制.</p>
+
+<p>整个实现,最难抉择的是&rdquo;<strong>懒加载状态管理</strong>&rdquo;,如果引入Hibernate形式的Session机制,必然导致大幅膨胀.而且,Session机制也是Hibernate中非常容易导致错误的机制之一. 最后简化为简单的2步式控制:</p>
+
+<pre><code>public void filter(InterceptorChain chain) throws Throwable {
+  if (status == LazyStatus.CAN_FETCH) {
+    if (chain.getCallingMethod() != setter) {
+      dao.fetchLinks(chain.getCallingObj(), fieldName);// 这里会触发setter被调用
+      status = LazyStatus.FETCHED;
+    } else
+      status = LazyStatus.NO_NEED; // 如果setter被调用,那么也就不再需要懒加载了
+  }
+  chain.doChain();
+}
+</code></pre>
+
+<p><strong>200行的代价,实现NutDao的懒加载,应该算不上膨胀吧? 呵呵</strong></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/411.html" title="Nutz是一个轮子吗?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/408.html" title="Nutz 1.b.43 发行后记">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-04-05 22:45:56</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Hibernate-ref">Hibernate <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%AE%89%E5%85%A8-ref">安全 <span>10</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

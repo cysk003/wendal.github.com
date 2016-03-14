@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
+  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
+
+<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
+启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
+
+<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
+org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
+    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
+    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
+    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
+    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
+</code></pre>
+
+<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
+再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
+没办法，出我的绝招，看源码/反编译！
+研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
+最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
+
+<pre><code>hibernate.default_schema=ALFRESCO
+</code></pre>
+
+  <div class="more">
+    <a href="/191.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/186.html">升级到Nginx 0.9.0</a> <span class="date">2010-11-30 08:36:52</span></h3>
   <p>今早一开邮箱,发现Nginx 0.9开发分支已经发布!!
 对于我这种喜欢尝鲜的人,怎么错过!!
@@ -118,7 +147,7 @@ cp objs/nginx /usr/local/nginx/sbin/
 2008年9月,改革项目.废弃沿用2年Excel式的任务管理,启用组内bugzilla;改变工作方式,强调分工,对Mac的依赖降低.(新官上任3把火?)
 2008年10月,开发JLint,极大地提高项目组的工作效率,进一步降低对Mac的依赖
 2008年10月,参加GCT考试,3小时回答185条题目,好在我答题是出了名的快!
-2008年12月,顺利获得暨南大学的工程硕士入学资格,专业&ndash;软件工程
+2008年12月,顺利获得暨南大学的工程硕士入学资格,专业--软件工程
 2009年1月,私下改造公司第一个Android项目XRace,改进其启动性能90%以上,但未获公司的注意
 2009年1月,开始组内学习计划,先后学习Ruby/ror/Perl
 2009年5月,开发一个Android Dex文件反编译器,后来发现其他项目做得更好,放弃之
@@ -137,7 +166,7 @@ cp objs/nginx /usr/local/nginx/sbin/
 2010年6月,实现了一个改资源URL的工具,因为实际部署时, 图片等静态资源放在另外域名/机器上.
 2010年7月,开发基于Alfresco的工作流定制,天啊,我之前还没搞过工作流
 2010年9月,二期上线,部署到全球的3个站点,客户有钱嘛
-2010年11月,获颁&rdquo;季度最佳员工&rdquo; &ndash; 经过好几次提名后
+2010年11月,获颁&rdquo;季度最佳员工&rdquo; -- 经过好几次提名后
 &hellip; 人生还在继续</p>
 
   <div class="more">
@@ -151,9 +180,9 @@ cp objs/nginx /usr/local/nginx/sbin/
 故今早动手破解,下午2点成功!
 但无意放出破解版,毕竟是优秀的商业软件,会阻碍其发展. <strong>仅本人使用!!</strong>
 这里仅简单说说我用到的工具软件:
-1. XMind 3.1.1破解版 &ndash; 这是国外破解的版本,给了我很大的启发!
-2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> &ndash; 反编译出源码,软件逻辑一目了然!
-3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> &ndash; 这软件堪称神器,直接改字节码!</p>
+1. XMind 3.1.1破解版 -- 这是国外破解的版本,给了我很大的启发!
+2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> -- 反编译出源码,软件逻辑一目了然!
+3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> -- 这软件堪称神器,直接改字节码!</p>
 
 <p>其实,我只是刚刚开始用XMind,还没使用其Pro的功能.但将近300元/year,实在是高!!
 我已经捐款给不少免费/开源项目,分别是我心目中的价位. 希望经过一段时间的使用,会发现XMind真正的价值!!</p>
@@ -320,34 +349,6 @@ Google源码截取:</p>
 
   <div class="more">
     <a href="/114.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/110.html">想不到服务器一下子就被击垮了</a> <span class="date">2010-11-01 12:11:04</span></h3>
-  <p>上周末, 从同事口中得知我休假期间,Jboss服务器曾<strong>无故自己关闭</strong>了一次.</p>
-
-<p>顿时非常惊讶,咋就会自己关闭自己呢?</p>
-
-<p>第一反应是OOM了,一问,没啊,内存还剩好多,而且log没提示OOM.</p>
-
-<p>难道是程序里面写了System.exit(X)之类? 扫描了一遍代码,没有啊!! 我们还不至于写这么的代码</p>
-
-<p>奇怪的是, JBoss是按照标准的流程顺序关闭各个应用后,再shutdown完成的,并无直接被kill掉或者异常退出,也没有找到JVM报错的log.</p>
-
-<p>由于关闭的时间点在11:37AM,故,追查nginx的access.log  , 翻翻翻, 在一堆502(Jboss已经关闭,nginx无法proxy_pass,报502)前面,有一些不寻常的请求,节选如下:</p>
-
-<pre><code>/acunetix-wvs-test-for-some-inexistent-file-second-try
-
-/console/j_security_check
-
-/_vti_pvt/authors.pwd
-
-/phpmyadmin/main.php
-</code></pre>
-
-  <div class="more">
-    <a href="/110.html" class="btn">read more..</a>
   </div>
 </div>
 

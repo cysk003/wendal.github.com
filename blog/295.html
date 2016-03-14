@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>搭建Git服务器,真的很简单</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>搭建Git服务器,真的很简单 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p><strong>重要提醒, 本教材适用于gitolite v2,与当前最新版v3不兼容!!</strong>
+<strong>需要在checkout gitolite后,切换到v2版!!</strong></p>
+
+<p>最近都在玩Git, <a href="https://github.com/nutzam/nutz">Nutz也已经迁移到Github上</a></p>
+
+<p>原文地址: <a href="http://sitaramc.github.com/gitolite/doc/1-INSTALL.html">http://sitaramc.github.com/gitolite/doc/1-INSTALL.html</a></p>
+
+<p>其实真的只需要几句</p>
+
+<pre><code>#现在开始是root做的
+
+#安装Git
+apt-get install git
+#拷贝你自己的公钥
+cp ~/.ssh/id_rsa.pub /tmp/wendal.pub
+git clone git://github.com/sitaramc/gitolite
+cd gitolite
+##################################
+#重要!! 切换到v2版!!
+git checkout g2
+##################################
+src/gl-system-install
+
+#添加git用户,并切换到git用户
+adduser git
+su - git
+
+#现在开始要变成git用户了
+gl-setup /tmp/wendal.pub
+</code></pre>
+
+<p>大功告成!! 搭建完成!!</p>
+
+<p>下面说说简单的管理</p>
+
+<pre><code>#同样需要用git进行管理,任何一台机器,能访问服务器(sshd是必须的啦)就行,并持有wendal.pub对应的私钥
+#首先git clone出管理项目
+git clone git@wendal.net:gitolite-admin
+cd gitolite-admin
+ls -l
+</code></pre>
+
+<p>你会看到两个文件夹conf 和keydir
+keydir 是 存放用户的公钥的, 用户名.pub , 可以建子文件夹
+conf下只有一个文件,gitolite.conf,默认内容如下:</p>
+
+<pre><code>repo    gitolite-admin
+        RW+     =   wendal
+
+repo    testing
+        RW+     =   @all
+</code></pre>
+
+<p>一目了然的吧,你可能问: 如何添加新的库啊? 简单
+往这个文件添加一个库的配置,就会自动帮你建好,例如添加:</p>
+
+<pre><code>repo    GGG
+        RW+     =   wendal,zozoh
+</code></pre>
+
+<p>就会帮你生成一个名为GGG的库</p>
+
+<p>当然,以上配置,还要push到服务器才行.</p>
+
+<p>下面是简单的git指南
+在我看来就几个命令:</p>
+
+<pre><code>#克隆一个库,相当于svn的check out
+git clone git@wendal.net:gitolite-admin
+
+#设置本地信息,非常重要!!
+git config --global user.name &quot;wendal&quot;
+git config --global user.email &quot;admin@wendal.net&quot;
+git config core.quotepath false
+
+#更新本地的库,相当于svn的update
+git pull
+
+#上传本地的修改到远程的库,其中origin是默认远程库,也就是你clone的库, master是分支名
+git push origin master
+
+#提交修改到本地仓库
+git add XXX/XXX  vabc/afda/Abc.java
+git commit -a #将包含全部修改过的文件,但新增的会忽略
+</code></pre>
+
+<p>就这样,呵呵,最后,附上一些链接:
+<a href="http://gitref.org/">http://gitref.org/</a> 英文,Git指南
+<a href="http://gitbook.liuhui998.com/">http://gitbook.liuhui998.com/</a> 中文,呵呵,我参与过校对工作</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/296.html" title="Rk2918固件新打包格式分析">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/292.html" title="在几种编程语言中探索(Java/Python/Lua/C)">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-06-21 21:07:36</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#git-ref">git <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%85%BC%E5%AE%B9-ref">兼容 <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>18</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%BF%81%E7%A7%BB-ref">迁移 <span>8</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

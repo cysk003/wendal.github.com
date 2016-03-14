@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 17</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/274.html">Everbox4j 当前进度(2011-04-26)</a> <span class="date">2011-04-26 09:23:12</span></h3>
+  <p>项目地址: <a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
+源码地址: <a href="http://code.google.com/p/everbox4j/source/browse/">http://code.google.com/p/everbox4j/source/browse/</a></p>
+
+<p>已经完成的功能:
+    <strong>上传指定文件(不限大小)</strong>
+    <strong>下载指定文件(支持断点续传)</strong>
+    新建文件夹(服务器端)
+    删除文件/文件夹(服务器端)
+    一个简单的管理UI界面,仅界面,功能还没做,呜呜</p>
+
+<p>学到不少东西:
+    上传的机制 -- 分段上传,由服务器决定上传哪几段
+    下载机制 -- 先发起一个下载请求,服务器分配一个下载地址</p>
+
+<p>Everbox用到的一些东西:
+    Json
+    Apache HttpClient
+    <strong>OAuth</strong>
+    SHA1</p>
+
+  <div class="more">
+    <a href="/blog/274.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/273.html">EverBox Java API的非官方项目启动啦!</a> <span class="date">2011-04-21 18:21:51</span></h3>
+  <p>项目地址:
+<a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
+动机: EverBox没有公开的API(无论是Java还是Http API),Linux和Mac用户都无法使用其客户端!!</p>
+
+<p>=<strong>最低目标</strong>=
+    * 实现对指定文件夹的自动同步*</p>
+
+<p>=<strong>期望目标</strong>=
+  * 实现官方版大部分功能,如代理设置,同步模式设置,限速,等等
+  * 更漂亮的UI
+  * 更多实用功能,如可以过滤上传/下载的文件,多帐户多文件夹同步</p>
+
+<p>=<strong>需要解决的问题</strong>=
+  * 获取服务器端的已存在文件列表(已经实验出来了)
+  * 下载指定的文件
+  * 上传指定的文件</p>
+
+<p>=<strong>期待你的加入</strong>=
+  * 探索通信协议
+  * 设计UI,实现UI</p>
+
+  <div class="more">
+    <a href="/blog/273.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/272.html">Nginx与中文域名</a> <span class="date">2011-04-17 18:36:30</span></h3>
+  <p>这个问题来自Nginx群</p>
+
+<p>Google了一轮,发现其实很简单</p>
+
+<p>直接写中文域名是无法解析到正确的Server的
+中文域名其实就是一个英文域名!!
+中文域名 ---(Punycode编码) --&gt; 英文域名
+而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn--fiq228c.com 进行访问,仅此而已!!</p>
+
+<p>那Punycode编码是什么呢? 先看看Python如何调用:
+尝试编码  www.坚果.com</p>
+
+<pre><code>'坚果'.decode('gbk').encode('punycode')
+</code></pre>
+
+<p>得到jfs419a,然后合成真正的URL www.xn--jfs419a.com -- 这个域名还没启用的.</p>
+
+<p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
+
+<p>当然还得说说中文实现, 在Apache的HttpClient 4.x系列中就有,<a href="http://www.docjar.com/html/api/org/apache/http/client/utils/Rfc3492Idn.java.html">看源码</a></p>
+
+  <div class="more">
+    <a href="/blog/272.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/270.html">学习Java时需要掌握的一些技能</a> <span class="date">2011-04-16 21:45:20</span></h3>
+  <p>本文并不涉及语法/具体API,就是一些学习方法</p>
+
+<p><strong>1. 找不到XXX类</strong>
+学习Java的路上,找不到类简直就是家常便饭,故,快速找到需要的类非常关键
+<a href="http://www.findjar.com">Findjar</a> 输入类名,一般都能找到
+<a href="http://repo1.maven.org/maven2/">Maven repo</a> 如果能猜到大概的项目,通过Maven中央库肯定是最权威的</p>
+
+<p><strong>2. 学习XXX框架</strong>
+在这个框架满天飞的时代,不懂几个框架都不好意思说是玩Java的
+但是,以下事情你是否做过呢:
+A. 从源码编译过
+B. 跑过官方测试
+C. 瞄过源码</p>
+
+<p>找一个好的社区,一起看源码,是很开心的事哦
+知其然,也要知其所以然</p>
+
+<p><strong>3. 找Bug的方法</strong>
+你马上就开始debug了? No! No! 请把debug放到最后,当成无计可施的最后手段
+System.out.println()才是真正的利器!!
+你马上会反驳,println很耗时间的 -- 是的,但帮你理清思路
+通过println,打印变量的值/应该经过的分支,帮你一步步理清思路
+使用Debug往往是最快解决问题的,但也是最容易让你无法找到问题的根源
+良好的Log,是生产环境中必不可少的信息</p>
+
+  <div class="more">
+    <a href="/blog/270.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/268.html">启用新的域名 wendal.net</a> <span class="date">2011-04-14 11:39:26</span></h3>
+  <p>为了XXXXX
+为了XXXXX
+为了XXXXX</p>
+
+<p>我昨晚在godaddy购买了wendal.net,并指向我的博客,花了72.04元,还不错,呵呵</p>
+
+<p>另外,开始进行sunfarms.net的域名外迁工作,万网已经在审核</p>
+
+<p>呵呵,常出去走走,身体健康哦</p>
+
+  <div class="more">
+    <a href="/blog/268.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/267.html">Json格式的ngx_http_stub_status_module</a> <span class="date">2011-04-13 07:07:47</span></h3>
+  <p>原版的ngx_http_stub_status_module,查看到的状态信息是一个无格式文本,非常不好解析.</p>
+
+<p>网上有另外一些实现,例如<a href="https://github.com/drmingdrmer/nginx-json-status-module">nginx-json-status-module</a>,但实现得极其垃圾,竟然直接调用malloc. 另外为了庆贺一下Nginx 1.0.0版本的发布,我做了一些修改,使其以Json格式返回.</p>
+
+<p>上代码:</p>
+
+<pre><code>/*
+ * Copyright (C) Igor Sysoev
+ * Modify by Wendal Chen
+ */
+
+#include &lt;ngx_config.h&gt;
+#include &lt;ngx_core.h&gt;
+#include &lt;ngx_http.h&gt;
+
+static char *ngx_http_set_status(ngx_conf_t *cf, ngx_command_t *cmd,
+                                 void *conf);
+
+static ngx_command_t  ngx_http_status_commands[] = {
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/267.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/266.html">再一次搞定UTF-8的BOM</a> <span class="date">2011-04-12 18:55:43</span></h3>
+  <p>一年前的某天,我觉察到BOM的问题 -- 一个Java源文件死活无法编译
+今天,我狠狠地为 Nutz的Streams类添加了一个方法,用于自动过滤掉BOM头!!
+代码如下:</p>
+
+<pre><code>private static final byte[] UTF_BOM = new byte[]{(byte) 0xEF,(byte) 0xBB,(byte) 0xBF};
+
+/**
+ * 判断并移除UTF-8的BOM头
+*/
+public static InputStream utf8filte(InputStream in) {
+    try {
+        PushbackInputStream pis = new PushbackInputStream(in,3);
+        byte[] header = new byte[3];
+        pis.read(header,0,3);
+        if(header[0] != UTF_BOM[0] || header[1] != UTF_BOM[1] || header[2] != UTF_BOM[2]) {
+            pis.unread(header,0,3);
+        }
+        return pis;
+    } catch (IOException e) {
+        throw Lang.wrapThrow(e);
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/266.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/263.html">Logger对象是否会重复创建呢? (以Log4j为例)</a> <span class="date">2011-04-05 20:51:34</span></h3>
+  <p>不久前有人问及 重复调用Logger.getLogger之类的语句,是否会拿到不同的Logger对象呢?
+起初我并未在意,但现在觉得是应该探究一下.</p>
+
+<p>故,先是设计这样的代码:</p>
+
+<pre><code>import org.apache.log4j.Logger;
+public class LogTest {
+
+    public static void main(String[] args) {
+        Logger log = Logger.getLogger(LogTest.class);
+        Logger log2 = Logger.getLogger(LogTest.class);
+        System.out.println(log == log2);
+    }
+}
+</code></pre>
+
+<p>log4j.properties文件的内容:</p>
+
+<pre><code>log4j.rootLogger=DEBUG,Console
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/263.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/262.html">神奇的Slf4J-API版本 - 2.0.99</a> <span class="date">2011-04-03 12:29:03</span></h3>
+  <p>今天,一位群友&rdquo;我思&rdquo;,在组合使用slf4j和logback时报一下错误:</p>
+
+<pre><code>Exception in thread &quot;main&quot; java.lang.NoSuchMethodError: org.slf4j.helpers.MessageFormatter.arrayFormat(Ljava/lang/String;[Ljava/lang/Object;)Lorg/slf4j/helpers/FormattingTuple;
+</code></pre>
+
+<p>最后发现是slf4j的版本不对, 他使用的是slf4j-api-2.0.99.jar</p>
+
+<p>但是,但是,官方正式版只有1.6.1,而且至今我都没发现有2.0.x系列的计划呢!!
+我的神啊,哪里来的版本? 经提醒,这个jar就在 1.6.1版的发行包中!!  slf4j-1.6.1.zip\slf4j-1.6.1\integration\lib</p>
+
+<p>神奇啊,为啥呢?? 找不到其源码jar,好吧,上JD-GUI,看看报错的类MessageFormatter.arrayFormat
+2.0.99版的方法声明:</p>
+
+<pre><code>public static final String arrayFormat(String messagePattern, Object[] argArray)
+</code></pre>
+
+<p>1.6.1版的方法声明:</p>
+
+<pre><code>public static final FormattingTuple arrayFormat(String messagePattern, Object[] argArray)
+</code></pre>
+
+<p>看到区别了吧,返回值的类型不同了!!! 同样的,还有一个1.6.99版的API,内容与2.0.99版一致</p>
+
+  <div class="more">
+    <a href="/blog/262.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/261.html">发布一个Httpsqs的Python客户端</a> <span class="date">2011-04-01 21:04:15</span></h3>
+  <p>Httpsqs是张宴的一款开源队列服务器,项目首页 <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a></p>
+
+<p>这款软件有几种客户端, Java/Perl/C,却没有Python的客户端.</p>
+
+<p>故,本人奉上一个实现,欢迎指正!!</p>
+
+<p>直接去下载 <a href="http://wendal-common.googlecode.com/files/httpsqs-python-client-v1.zip">httpsqs-python-client-v1.zip</a></p>
+
+<p>代码:</p>
+
+<pre><code>#Verion 1.0
+#Author wendal(wendal1985@gmail.com)
+#If you find a bug, pls mail me
+
+import sys,httplib
+
+ERROR = 'HTTPSQS_ERROR'
+
+GET_END = 'HTTPSQS_GET_END'
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/261.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

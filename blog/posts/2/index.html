@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 2</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/08/13.html">YeelinkTester 总算弄好了</a> <span class="date">2014-08-13</span></h3>
+  <h2>直接上程序截图</h2>
+
+<p><img src="/blog/assets/media/2014/08/13/ABC.png"></img></p>
+
+<h2>源码:</h2>
+
+<p><a href="https://github.com/wendal/yeelink_tester">https://github.com/wendal/yeelink_tester</a></p>
+
+<h2>用到的东西</h2>
+
+<ul>
+<li>python 2.7.8</li>
+<li>pyqt 4.11.1</li>
+<li>mqtt</li>
+<li>pyserial</li>
+</ul>
+
+<h2>功能</h2>
+
+  <div class="more">
+    <a href="/blog/2014/08/13.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/08/04.html">arduino pro mini的电压问题</a> <span class="date">2014-08-04</span></h3>
+  <h2>arduino pro mini的MCU是 atmega328p</h2>
+
+<p><a href="http://www.atmel.com/devices/atmega328.aspx">http://www.atmel.com/devices/atmega328.aspx</a></p>
+
+<p>电压从 1.8-5.5</p>
+
+<p>工作频率最高20Mhz</p>
+
+<h2>电压与频率的关系</h2>
+
+<p>3.3v 安全频率 约12.5Mhz
+5v   安全频率 20Mhz</p>
+
+<p>淘宝上绝大多数都是5V 16Mhz的, 但我手上的几块均能工作在3.3V</p>
+
+<p>所以就很奇怪这5v和3.3v到底影响了什么.</p>
+
+  <div class="more">
+    <a href="/blog/2014/08/04.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/07/31.html">探索yeelink</a> <span class="date">2014-07-31</span></h3>
+  <h2>yeelink官网</h2>
+
+<p><a href="http://www.yeelink.net/index">http://www.yeelink.net/index</a></p>
+
+<h2>yeelink的传感器</h2>
+
+<p>支持5种类型: 开关,数值,gps,图片,泛型</p>
+
+<h2>Yeelink API</h2>
+
+<p>支持v1和v1.1两个版本, 我是直接跳过v1,实现了v1.1的版本</p>
+
+<p>不过v1.1依然是测试期,被我遇到几个bug,哈哈</p>
+
+<h2>最后弄了个java库</h2>
+
+  <div class="more">
+    <a href="/blog/2014/07/31.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/05/13.html">用NDK编译ssdb</a> <span class="date">2014-05-13</span></h3>
+  <h2>首先,需要准备一下环境</h2>
+
+<p>ubuntu 14.04 x86 版 -- 当前最新啦,哈哈</p>
+
+<p>android ndk r9b     -- 为啥用这个版本?因为我机器上有&hellip;</p>
+
+<h2>编译环境准备</h2>
+
+<p>把ndk转为独立工具链, 这是今天获取的新技能,呵呵,以后不写Android.mk也能编译部分软件了.</p>
+
+<pre><code>/opt/android-ndk-r9b/build/tools/make-standalone-toolchain.sh --install-dir=/opt/ndk-armv7 --arch=armv7
+</code></pre>
+
+<p>下载源码,暂时从我fork出来的库里面取吧,不知道ideawu会不会合并这个修改, who knows &hellip;</p>
+
+<p>```</p>
+
+  <div class="more">
+    <a href="/blog/2014/05/13.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/04/29.html">用NDK编译Live555</a> <span class="date">2014-04-29</span></h3>
+  <p>针对 live555 2014.03.25和 live 2014.04.23 也就是当前最新咯.</p>
+
+<h2>准备工作</h2>
+
+<p>下载源码 <a href="http://www.live555.com/liveMedia/public/">http://www.live555.com/liveMedia/public/</a> 该地址经常被X,请问候非圆校长</p>
+
+<p>解压到一个空文件夹, 并将目录名从live改成jni</p>
+
+<p>建一个文件, 叫 Android.mk</p>
+
+<p>文件内容在 <a href="https://gist.github.com/wendal/11399988">https://gist.github.com/wendal/11399988</a></p>
+
+<h2>编译</h2>
+
+<p>在jni目录下执行</p>
+
+<p>```</p>
+
+  <div class="more">
+    <a href="/blog/2014/04/29.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/04/02.html">为Golang程序打上编译标记</a> <span class="date">2014-04-02</span></h3>
+  <p>参考文章: <a href="http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning">http://stackoverflow.com/questions/11354518/golang-application-auto-build-versioning</a></p>
+
+<p>昨天在查询怎么生成一个小体积的golang程序的时候,无意中发现这个文章.</p>
+
+<p>对于固定的代码,及固定的golang版本,下面的命令总是得到一模一样的程序</p>
+
+<pre><code>go build
+</code></pre>
+
+<p>有时候需要为每个编译都打上标记,不然真的很乱啊</p>
+
+<p>演示用的golang代码</p>
+
+<pre><code>package main
+
+var _VERSION_ = &quot;unknown&quot;
+
+func main() {
+	print(&quot;http_su ver=&quot; + _VERSION_ + &quot;\n&quot;)
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2014/04/02.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/03/30.html">JDK8 Access to Parameter Names at Runtime</a> <span class="date">2014-03-30</span></h3>
+  <h2>JDK 8的新特性之一, 运行时获取方法参数的名称</h2>
+
+<p>JDK8之前, Eclipse自带的ECJ编译器,同本地变量表,把方法参数的名字,放在最前面,使其编译出来的class的名字看推测.</p>
+
+<p>而 JDK8把这种行为规范化(终于&hellip;) <a href="http://openjdk.java.net/jeps/118">http://openjdk.java.net/jeps/118</a></p>
+
+<p>参考文章 <a href="http://www.java-allandsundry.com/2013/12/java-8-parameter-name-at-runtime.html">Java 8 parameter name at runtime</a></p>
+
+<h2>演示代码</h2>
+
+<pre><code>package nutz_jdk8;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
+
+public class Bot {
+    private final String name;
+    private final String author;
+    private final int rating;
+    private final int score;
+
+    public Bot(String name, String author, int rating, int score) {
+        this.rating = rating; // 注意这里的顺序,并非按参数顺序逐一调用
+        this.score = score;
+        this.name = name;
+        this.author = author;
+    }
+
+    public static void main(String[] args) throws NoSuchMethodException, SecurityException {
+		Class&lt;Bot&gt; clazz = Bot.class;
+		Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
+		Parameter[] ctorParameters =ctor.getParameters();
+		for (Parameter param: ctorParameters) {
+		    System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
+		}
+	}
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2014/03/30.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2014/0223.html">tcpdump加Wireshark抓包分析才是王道啊</a> <span class="date">2014-02-23</span></h3>
+  <p>最近折腾RTSP协议,焦头乱额.</p>
+
+<p>Receiver Report RTCP Packets (RR)</p>
+
+<pre><code>  Receiver Reports are structured in the same way as Sender Reports. Of course, they include no sender information block, and the packet type code is 201.
+ 0               1               2               3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|V=2|P|    RC   |   PT=RR=201   |            length L           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     SSRC of packet sender                     |
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                 SSRC_1 (SSRC of first source)                 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| fraction lost |       cumulative number of packets lost       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           extended highest sequence number received           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      inter-arrival jitter                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         last SR (LSR)                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   delay since last SR (DLSR)                  |
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                 SSRC_2 (SSRC of second source)                |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+:                               ...                             :
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                  profile-specific extensions                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2014/0223.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/12/15.html">为pcduino编译内核</a> <span class="date">2013-12-15</span></h3>
+  <h2>软件环境</h2>
+
+<ul>
+<li>lubuntu 13.10 amd64版 / Ubuntu Server 13.10 amd64版</li>
+<li>虚拟机20G硬盘,1G内存</li>
+</ul>
+
+<p>为这篇教程,我全新安装多次lubuntu/ubuntu,验证过每个命令,保证能编译出一个能用的内核</p>
+
+<h2>安装依赖的库/工具</h2>
+
+<p>打开控制台,执行</p>
+
+<pre><code>sudo apt-get install -y g++-arm-linux-gnueabihf vim make u-boot-tools libusb-1.0-0-dev openssh-server pkg-config
+sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-dev lib32stdc++6 curl wget ncurses-dev
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/12/15.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/12/08.html">pcduino报告</a> <span class="date">2013-12-08</span></h3>
+  <h2>先上个图, 399大洋的货物</h2>
+
+<p><img src="/blog/assets/media/2013/12/08/pcduino_1.jpg" /></p>
+
+<p>5V2A供电, 带USB,hdmi,tf卡槽,wifi,及最有特殊的类arduino接口</p>
+
+<h2>功能</h2>
+
+<p>抛开arduino接口,pcduino就是一个单纯的A10开发板,跑linux和Android都没任何问题,这是全志A10提供的基本功能了</p>
+
+<p>其arduino接口, 源于A10芯片自带的gpio/pwm等针脚,在linux层做了一个libarduino.so,适配arduino源码</p>
+
+<p>通过其<a href="https://github.com/pcduino/c_enviroment">pcduino c_enviroment</a>,可兼容arduino源文件,本质上就是个普通的C库.
+使用其Makefile改造一下,可以实现跨平台编译,而不需要使用arduino ide(与eclipse相比真是烂得可以)</p>
+
+<p>在QQ群中,很多人以为pcduino能直接跑编译好的arduino程序,而非把它当成linux+arduino库来看待.</p>
+
+  <div class="more">
+    <a href="/blog/2013/12/08.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>发布一个Httpsqs的Python客户端</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>发布一个Httpsqs的Python客户端 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>Httpsqs是张宴的一款开源队列服务器,项目首页 <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a></p>
+
+<p>这款软件有几种客户端, Java/Perl/C,却没有Python的客户端.</p>
+
+<p>故,本人奉上一个实现,欢迎指正!!</p>
+
+<p>直接去下载 <a href="http://wendal-common.googlecode.com/files/httpsqs-python-client-v1.zip">httpsqs-python-client-v1.zip</a></p>
+
+<p>代码:</p>
+
+<pre><code>#Verion 1.0
+#Author wendal(wendal1985@gmail.com)
+#If you find a bug, pls mail me
+
+import sys,httplib
+
+ERROR = 'HTTPSQS_ERROR'
+
+GET_END = 'HTTPSQS_GET_END'
+
+PUT_OK = 'HTTPSQS_PUT_OK'
+PUT_ERROR = 'HTTPSQS_PUT_ERROR'
+PUT_END = 'HTTPSQS_PUT_END'
+
+RESET_OK = 'HTTPSQS_RESET_OK'
+RESET_ERROR = 'HTTPSQS_RESET_ERROR'
+
+MAXQUEUE_OK = 'HTTPSQS_MAXQUEUE_OK'
+MAXQUEUE_CANCEL = 'HTTPSQS_MAXQUEUE_CANCEL'
+
+SYNCTIME_OK = 'HTTPSQS_SYNCTIME_OK'
+SYNCTIME_CANCEL = 'HTTPSQS_SYNCTIME_CANCEL'
+
+class Httpsqs(object):
+    def __init__(self,host,port=1218):
+        self.host = host
+        self.port = port
+
+    def get(self,poolName):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=get&amp;name;=&quot; + poolName)
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            conn.close()
+            return data
+        return ''
+
+    def put(self,poolName,data):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;POST&quot;, &quot;/?opt=put&amp;name;=&quot;+poolName,data)
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+    def status(self,poolName):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=status&amp;name;=&quot;+poolName)
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+    def status_json(self,poolName):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=status_json&amp;name;=&quot;+poolName)
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+    def reset(self,poolName):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=reset&amp;name;=&quot;+poolName)
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+    def maxlen(self,poolName,num):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=maxqueue&amp;name;=&quot;+poolName+&quot;&amp;num;=&quot;+str(num))
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+    def synctime(self,poolName,num):
+        conn = httplib.HTTPConnection(self.host,self.port)
+        conn.request(&quot;GET&quot;, &quot;/?opt=synctime&amp;name;=&quot;+poolName+&quot;&amp;num;=&quot;+str(num))
+        r = conn.getresponse()
+        if r.status == httplib.OK :
+            data = r.read()
+            return data
+        return ''
+
+def isOK(data):
+    if data is '' :
+        return False
+    if data is ERROR :
+        return False
+    if data is GET_END :
+        return False
+    if data is PUT_ERROR :
+        return False
+    if data is RESET_ERROR :
+        return False
+    if data is MAXQUEUE_CANCEL :
+        return False
+    if data is SYNCTIME_CANCEL :
+        return False
+    return True
+</code></pre>
+
+<p>测试代码就不贴,需要的话就下载zip包吧.</p>
+
+<p>因为Httpsqs本身就是基于Http协议的,故各种客户端实现都只是封装一下,本python客户端也不例外.</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/262.html" title="神奇的Slf4J-API版本 - 2.0.99">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/260.html" title="TMD美赞臣,竟敢打电话过来推销奶粉!!">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-04-01 21:04:15</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+      <li>
+  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>28</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#httpsqs-ref">httpsqs <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#python-ref">python <span>10</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

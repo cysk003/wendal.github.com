@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ngqa -- 不单单是一个QA系统</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Ngqa -- 不单单是一个QA系统 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>项目地址: <a href="https://github.com/howe/ngqa">https://github.com/howe/ngqa</a></p>
+
+<p>使用了 Nutz, Nutz-mongo, Nutz-web, Nutz-socialauth &hellip;</p>
+
+<p>这项目的最初目的是为Nutz搭建一个完整好玩的QA系统,现在的作用远大于此:</p>
+
+<ol>
+<li>Nutz-socialauth, 是本项目的其中一个亮点 -- 支持30种以上的社会化登录(OpenId), 号称国内第一, 率先github这个专业程序员必备网站</li>
+<li>完整可用的Demo -- Nutz长期被投诉的重点,没一个完整可运行的,持续更新并提供支持的demo. 这个项目就突破这个问题,将包含足够丰富的注释及使用范例</li>
+<li>作为一个QA系统,将有效积累Nutz的FAQ库</li>
+<li>激活Nutz社区 -- 作为一个公开的项目,在开发的过程中,Nutzer们参与进来,动手把项目运行起来</li>
+</ol>
+
+<p>项目设计, 采用OpenAPI的思想, 网站页面,只是其中一个表现方式,开发完成后,将配备SDK,方便客户端扩展</p>
+
+<p>其中一个核心就是SmartView,根据访问地址的后缀来判断需要执行的视图,而非固定的配置为一种视图,示例代码:</p>
+
+<pre><code>    public void render(HttpServletRequest req, HttpServletResponse resp,
+            Object obj) throws Throwable {
+        String uri = req.getRequestURI();
+        if (uri.endsWith(&quot;.json&quot;))
+            new AjaxView().render(req, resp, obj);
+        else if (uri.endsWith(&quot;.rss&quot;))
+            new RssView().render(req, resp, obj);
+        else
+            new JspView(viewValue).render(req, resp, obj); //这里默认跑jsp
+    }
+</code></pre>
+
+<p>同时,这个项目也使用了即将发布的Nutz-Mongo, 是nutz与nosql数据库的首个结合,很多非常酷的功能哦</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/375.html" title="海淘 -- 地球绕一圈,价格反而便宜了">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/371.html" title="JActor最简单试用">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-02-19 13:34:02</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+      <li>
+  <a href="/categories/#mongodb-ref">mongodb <span>6</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#Demo-ref">Demo <span>5</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#git-ref">git <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#OpenID-ref">OpenID <span>5</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%A7%86%E5%9B%BE-ref">视图 <span>7</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

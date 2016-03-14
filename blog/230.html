@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>动手做一个Nginx Module-简洁版</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>动手做一个Nginx Module-简洁版 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>如果在google上搜索Nginx Module,会得到17万条结果,但是,基本上都是千篇一律.
+结合我这段时间的尝试,我决定自己写一篇非常非常简单的入门,仅描述如何做出一个最简单的Hello模块</p>
+
+<ol>
+<li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
+----------------------------------------------------</li>
+</ol>
+
+<pre><code>    #进入主文件夹
+    cd ~
+    wget http://nginx.org/download/nginx-0.9.4.tar.gz
+    tar xvf nginx-0.9.4.tar.gz
+    cd nginx-0.9.4
+    mkdir ngx_http_hello_module
+</code></pre>
+
+<ol>
+<li>创建config文件,注意,切记要在Linux下创建这个文件!!
+-----------------------------------------------</li>
+</ol>
+
+<pre><code>    vim config
+    #敲入以下内容
+    ngx_addon_name=ngx_http_hello_module
+    HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_hello_module&quot;
+    NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_hello_module.c&quot;
+</code></pre>
+
+<ol>
+<li>创建ngx_http_hello_module.c文件(请使用本文结尾提供的附件中的文件)
+--------------------------------------------------------------</li>
+</ol>
+
+<pre><code>    //通过vim ngx_http_hello_module.c 创建文件并录入下面的内容
+
+    //这3个文件必须导入,很多有用的方法都定义在里面.
+    #include &lt;ngx_config.h&gt;
+    #include &lt;ngx_core.h&gt;
+    #include &lt;ngx_http.h&gt;
+
+    //声明配置方法
+    static char *ngx_http_hello(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
+
+    //声明这个模块能够识别的配置信息
+    static ngx_command_t  ngx_http_hello_commands[] = {
+    { ngx_string(&quot;hello&quot;),
+      NGX_HTTP_LOC_CONF|NGX_CONF_NOARGS, //仅位于Location里,没有额外参数
+      ngx_http_hello,                                       //指向配置方法
+      NGX_HTTP_LOC_CONF_OFFSET,
+      0,
+      NULL }
+    };
+
+    //定义模块模块上下文,即在nginx解释配置信息时的行为,这里全部为NULL
+    static ngx_http_module_t  ngx_http_hello_module_ctx = {
+        NULL,                               /* preconfiguration */
+        NULL,                               /* postconfiguration */
+
+        NULL,                               /* create main configuration */
+        NULL,                               /* init main configuration */
+
+        NULL,                               /* create server configuration */
+        NULL,                               /* merge server configuration */
+
+        NULL,                   /* create location configuration */
+        NULL                                /* merge location configuration */
+    };
+
+    //定义本模块
+    ngx_module_t  ngx_http_hello_module = {
+        NGX_MODULE_V1,
+        &amp;ngx_http_hello_module_ctx,      /* module context 模块上下文*/
+        ngx_http_hello_commands,         /* module directives  这个模块能够识别的配置信息*/
+        NGX_HTTP_MODULE,               /* module type 一般都是HTTP模块的啦*/ 
+        NULL,                          /* init master */
+        NULL,                          /* init module */
+        NULL,                          /* init process */
+        NULL,                          /* init thread */
+        NULL,                          /* exit thread */
+        NULL,                          /* exit process */
+        NULL,                          /* exit master */
+        NGX_MODULE_V1_PADDING
+    };
+
+    //请求处理器,由ngx_http_hello方法向nginx登记
+    static ngx_int_t
+    ngx_http_hello_handler(ngx_http_request_t *r){
+        ngx_int_t                  rc;
+        size_t             size;
+        ngx_chain_t        out;
+        ngx_buf_t         *b;
+
+        ngx_str_set(&amp;r-&gt;headers_out.content_type, &quot;text/plain&quot;);//设置响应的类型为纯文本
+        size = sizeof(&quot;It is OK&quot;);
+        b = ngx_create_temp_buf(r-&gt;pool, size); //获取内存空间
+        if (b == NULL) {
+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
+        }
+        b-&gt;last = ngx_sprintf(b-&gt;last, &quot;It is OK!&quot;); //写入内容到缓存
+        out.buf = b;                                        //将响应体的内容指向b缓存
+        out.next = NULL;
+
+        r-&gt;headers_out.status = NGX_HTTP_OK; //响应码,200
+        r-&gt;headers_out.content_length_n = b-&gt;last - b-&gt;pos;//设置响应体的长度
+
+        b-&gt;last_buf = 1;
+ 
+        ngx_http_send_header(r);           //发送响应头,如Content-Type    text/plain
+
+        return ngx_http_output_filter(r, &amp;out);//继续其他过滤器
+    };
+
+    //将本模块的处理方法ngx_http_hello_handler登记到nginx配置上下文.
+    static char *ngx_http_hello(ngx_conf_t *cf, ngx_command_t *cmd, void *conf){
+        ngx_http_core_loc_conf_t  *clcf;
+
+        clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
+        clcf-&gt;handler = ngx_http_hello_handler;
+
+        return NGX_CONF_OK;
+    };
+</code></pre>
+
+<ol>
+<li><h2>开始编译</h2>
+
+<p>#返回到 ~/nginx-0.9.4
+cd ..
+#执行configure
+./configure --add-module=ngx_http_hello_module
+#编译 &amp; 安装
+make &amp; make install</p></li>
+
+<li><h2>测试</h2>
+
+<p>vim /etc/nginx/nginx.conf
+#在server中键入:
+location =/hello {
+    hello;
+}</p>
+
+<p>#启动nginx
+/usr/local/nginx/sbin/nginx</p></li>
+
+<li><h2>通过浏览器访问 <a href="http://your_ip/hello">http://your_ip/hello</a> 就能看到 It is OK!</h2></li>
+</ol>
+
+<p>本文用的的文件: <a href="/blog/assets/media/2011/01/nginx_http_hello_module.zip">nginx_http_hello_module.zip</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/232.html" title="系统变量file.encoding对Java的运行影响有多大?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/228.html" title="Nginx不同编译选项得到的二进制文件大小对比">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-01-24 13:57:22</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Nginx-ref">Nginx <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#nginx-ref">nginx <span>23</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

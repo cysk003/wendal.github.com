@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alfresco配置 — 第二节</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Alfresco配置 — 第二节 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>如何关闭/调整部分功能(通过添加选项到alfresco-global.properties):</p>
+
+<p><strong>1. 关闭OpenOffice连接 ooo.enabled=false</strong></p>
+
+<p>Alfresco默认安装OpenOffice进行文件转换,不过,大部分时间是无需的,这部分功能会占用超过100M的内存,而且是JVM之外的内容</p>
+
+<p><strong>2. 关闭CIFS和FTP cifs.enabled=false  ftp.enabled=false</strong></p>
+
+<p>当你启动Alfresco后,你也许能通过 \你的ip 访问到Alfresco的资源库,这对开发非常有用,但是一般情况下不太需要, ftp也是.</p>
+
+<p><strong>3. 关闭用户空间配额限制 system.usages.enabled=false</strong></p>
+
+<p>Alfresco允许你配置每个用户的空间占用,一般使用都是无需的,而且,要真正启用这个功能,你需要逐一配置每个用户的配额.</p>
+
+<p><strong>4. 关闭自动创建用户空间 home.folder.creation.eager=false</strong></p>
+
+<p>这个选项,是我在配置LDAP信息同步的时候遇到的,由于有好几千的用户信息同步到Alfresco,结果在User Space中对应地产生了好几千个子空间,虽然无害,但毕竟非常不雅!!</p>
+
+<p><strong>5. 将索引恢复模式设置为自动 index.recovery.mode=AUTO</strong></p>
+
+<p>其实这是默认值,但我仍然要单独提出来. 当你放了成千上万的文档时,你如果设置为FULL,启动Alfresco将非常漫长.如果你配置Alfresco集群,AUTO也绝对是最佳选项.除非你的索引已经被破坏,以致启动失败,那FULL才是你的选择.另外,我建议你每周做一次FULL,能提供索引的可靠性和减少体积.</p>
+
+<p><strong>6. 调整连接池或者使用自定义的数据源</strong></p>
+
+<p>先看看 <a href="http://wiki.alfresco.com/wiki/Database_Configuration">http://wiki.alfresco.com/wiki/Database_Configuration</a></p>
+
+<p>当你使用WebLogic来部署Alfresco,那么请加上db.pool.statements.enable=false</p>
+
+<p>我建议你使用自定义的数据源,替代Alfresco默认的DBCP,例如C3P0,Proxool,BoneCP</p>
+
+<p>在Tomcat的server.xml添加一个全局的数据源,然后在content.xml引用它,并确保名字为jdbc/dataSource</p>
+
+<h3>某些故障排除</h3>
+
+<p>1.<strong>曾经遇到一个情况,Alfresco启动时,读取完配置后就停住,cpu为0,假死, 后来发现是数据库服务器的内存耗尽,导致HibernateSessionFastory创建时一直等待</strong></p>
+
+<p>2.<strong>务必修改/etc/hosts文件,使其与当前ip匹配</strong></p>
+
+<p>当服务器换ip后,没有改/etc/hosts文件里面的ip,导致启动是查找RMI端口时,长时间等待, 超时后报错停止.</p>
+
+<p>如果使用默认的127.0.0.1, 当你把vtomcat放到其他机器上,启动连接到Alfresco时就会报127.0.0.2出错, windows下无此问题.</p>
+
+<p>3.<strong>无法添加新文件或文件夹</strong></p>
+
+<p>这个问题表现为页面上提示无法添加,后台提示无法创建XX资源. 原因是磁盘已满,用df看看磁盘占用情况,清理不需要的文件.</p>
+
+<p>有个小小技巧</p>
+
+<p>删除了重要文件,而且提交了修改,咋办??</p>
+
+<p>不要惊慌,Alfresco并没有真正删除你的文件, 点击用户属性(上方第二个按钮),可以看到最下面有&rdquo;已删除的资源&rdquo; 点开,哈哈,看到你想找的文件没?</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/33.html" title="Alfresco配置 — 第三节">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/24.html" title="Alfresco配置 — 第一节">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2010-08-03 22:49:31</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Alfresco-ref">Alfresco <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#alfresco-ref">alfresco <span>17</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Hibernate-ref">Hibernate <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Tomcat-ref">Tomcat <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Wiki-ref">Wiki <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#XML-ref">XML <span>15</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E7%B4%A2%E5%BC%95-ref">索引 <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%BF%9E%E6%8E%A5%E6%B1%A0-ref">连接池 <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%83%A8%E7%BD%B2-ref">部署 <span>7</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

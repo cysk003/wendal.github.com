@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 15</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/314.html">NutzMole -- Nutz的代码生成器</a> <span class="date">2011-08-21 11:39:55</span></h3>
+  <p>惯例,先上下载地址:
+<a href="http://nutz.googlecode.com/files/rapid-generator-for-nutzmole-1.1.zip">NutzMole 1.1 for rapid</a></p>
+
+<p>这个项目的原始地址,原本是nutzlab的一个实验项目:
+<a href="http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole">http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole</a></p>
+
+<p><strong>历史:</strong>
+最初的代码,是在2010年11月提交的,之后一直处于冻结状态 -- 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
+直到几天前,我重启这个项目,并作了少量修正后,发布了NutzMole 1.0版,可独立运行,说白了,就是把旧代码清理一下,打包成一个独立运行包</p>
+
+<p>1.0发布后,意见/建议/批评纷纷袭来,很大的原因是这个版本并未严格测试,模板本身使用的一些代码在Nutz 1.b.39已经无法使用</p>
+
+<p>很快的, 1.1版发布了,更新了模板,并采用了rapid的代码生成器平台</p>
+
+<p><strong>对比一下最初的NutzMole和rapid代码生成器平台</strong>:
+    NutzMole使用多个配置文件,rapid仅一个配置文件
+    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板--&gt;文件的机制</p>
+
+<p>NutzMole以专用工具的思想设计, rapid是按平台的理念设计,我对其代码生成器的印象是:
+    1. 单一配置文件,对用户非常友好
+    2. 平等的文件模板机制 --&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
+
+  <div class="more">
+    <a href="/blog/314.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/312.html">把VPS翻新了一下</a> <span class="date">2011-08-20 11:34:53</span></h3>
+  <p>话说在vpsess的这个vps,用了一年了,感觉一直不错,昨天到期,干脆要了一个新的VPS,把数据迁移过去</p>
+
+<p>旧的VPS,是20G空间,用了10G,其实我也不清楚到底为何用了10G,删来删去,还是这么多</p>
+
+<p>步骤:</p>
+
+<ol>
+<li><p>拷贝.ssh文件夹 -- scp就不需要密码了</p></li>
+
+<li><p>新vps装lnmp,旧vps导出数据库,打包/opt和nginx的配置</p></li>
+
+<li><p>新vps导入数据库sql,覆盖nginx设置</p></li>
+
+<li><p>拷贝hudson历史数据,拷贝博客的文件</p></li>
+
+<li><p>还有就是一些杂七杂八的数据,也迁移过去</p></li>
+</ol>
+
+<p>哦也,重启lnmp服务,启动tomcat,验证一下,搞定!!</p>
+
+<p>接着,当然是安装python和git,不过vps上的ubuntu是10.04,找不到现成的python3.2和git,二话不说,直接下源码编译咯</p>
+
+  <div class="more">
+    <a href="/blog/312.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/309.html">数据库连接长时间空闲后,爆连接已经关闭的解决方法</a> <span class="date">2011-08-13 21:31:59</span></h3>
+  <p>本文仅讨论使用连接池的情况:</p>
+
+<p>在很多场合都碰到有人提问: 第二天第一次访问应用,总是报连接已经关闭(Connection Close)</p>
+
+<p>其实,数据库连接池大都已经考虑了这个问题,进行设置一下即可:</p>
+
+<p><a href="http://commons.apache.org/dbcp/api-1.4/org/apache/commons/dbcp/BasicDataSource.html">Apache DBCP</a>:</p>
+
+<pre><code>dataSource.setValidationQuery('select 1');
+</code></pre>
+
+<p><a href="http://sourceforge.net/projects/c3p0/">C3po</a>:</p>
+
+<pre><code>dataSource.setTestConnectionOnCheckout(true);
+dataSource.setPreferredTestQuery('select 1')
+</code></pre>
+
+<p><a href="http://proxool.sourceforge.net/api-dev/org/logicalcobwebs/proxool/ProxoolDataSource.html">Proxool</a>:</p>
+
+<pre><code>dataSource.setTestBeforeUse(true);
+dataSource.setHouseKeepingTestSql('select 1')
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/309.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/308.html">鸣鸣第一次出境, Mark一下</a> <span class="date">2011-08-07 19:44:14</span></h3>
+  <p>嘻嘻, 鸣鸣第一次去香港了,行程如下:
+第一天
+广州--&gt;深圳,游深圳夜景
+深圳--&gt;香港--&gt;深圳,通过深圳湾口岸,坐B2到元朗,买1天地铁通票,到湾仔会展中心,进&rdquo;第19界婴幼儿用品展览会&rdquo;购物,游香港街景,然后到太子坐车会深圳湾过关
+深圳--&gt;广州,深圳红树林,深圳街景,回广州</p>
+
+<p>这次购买了不少的用品,但最打动我但有无法购买的是&rdquo;轮状病毒疫苗&rdquo;
+我咨询到的轮状病毒疫苗 仅限6~24周的婴儿使用,呜呜,我女儿已经半岁了,能预防/减轻5岁以下儿童的轮状病毒腹泻,非常非常有用</p>
+
+<p>另外一个,就是2700港元的&rdquo;子宫颈癌疫苗&rdquo;,香港刚刚推出的,适用于45岁以下的女性,分3次肌肉注射,6个月内完成 -- 积极考虑中,呵呵</p>
+
+  <div class="more">
+    <a href="/blog/308.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/307.html">Nutz的Scans类,你用过没?</a> <span class="date">2011-08-04 08:40:25</span></h3>
+  <p>你是否想得到某个package下的全部类呢?
+你是否想得到某个文件夹下全部的配置文件?</p>
+
+<p>你还在自己写这种的实现? 你还在拼命地问谷哥?</p>
+
+<p>好吧,不吹水了,正式介绍Scans类:
+org.nutz.resource.Scans</p>
+
+<p>首先,必须先强调一点,在J2EE环境中,如果你没有使用NutzMVC的话,请在Filter/Servlet中加入这一句:</p>
+
+<pre><code>Scans.me().init(config.getServletContext());
+</code></pre>
+
+<p>这个语句必须优先于其他任何Nutz相关语句</p>
+
+<p>好,如何得到某个文件夹下全部的配置文件呢?即使打包成jar也无需改代码呢?</p>
+
+<pre><code>//第一个参数是需要扫描的文件夹,第二个是文件名需要匹配正则表达式,可以为null
+List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.ini&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/307.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/305.html">鸣鸣半岁了,今天第一次吃辅食!!</a> <span class="date">2011-08-01 22:00:58</span></h3>
+  <p><strong>经过6个月的纯母乳喂养,鸣鸣今天迈入新的阶段--添加辅食</strong></p>
+
+<p>鸣鸣一天天成长,每天都很踏实 -- 我很反对用&rdquo;眨眼就过去了&hellip;&ldquo;,因为那代表着空虚和不作为</p>
+
+<p>鸣鸣现在的体重是出生时的3倍--15斤,长高了17厘米
+双眼同步正常,已经能够自己坐着玩玩具 -- 认真玩玩具的时候,平衡力明显减弱</p>
+
+<p>值得一提的是鸣鸣最喜欢的玩具--塑料玩具桶,呵呵,前身是我们刚买不久的垃圾桶!! 由于鸣鸣的不懈努力,以其鲜艳的颜色,终于纳入玩具行列</p>
+
+<p>周围的人,无一例外地反对我如此&rdquo;迟&rdquo;地添加辅食:
+1. XX出世没几天就吃米糊啦?!
+2. 都4/5/6月了,还不吃米糊/辅食?!
+3. 儿童保健医生:4个月开始要喂辅食啦</p>
+
+<p><strong>恩,我坚持自己的观点,顶住鸭梨,终于让鸣鸣顺顺利利地吃了6个月的纯母乳</strong></p>
+
+<p>国内很多人都认为,应该4个月开始喂辅食,但又有多少人知道, WHO的推荐做法是6个月的纯母乳喂养</p>
+
+<p>据我的观察,鸣鸣是在满5月后才开始关注其他食物,开始留意我们吃饭的动作</p>
+
+  <div class="more">
+    <a href="/blog/305.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/303.html">Autoproxy Forever!!</a> <span class="date">2011-07-24 08:54:14</span></h3>
+  <p>看到不少帖子又在找兼容 Firefox 5 Firefox 6 Firefox 7 Firefox 8的Autoproxy,我鸭梨很大啊,因为官方的动作还是很慢!!</p>
+
+<p>我现在用Firefox 8.0a1 , Autoproxy也很正常</p>
+
+<p>好吧,放出我自己的版本,兼容至Firefox9!!:
+<a href="http://dl.dbank.com/c0cluqlrqw">http://dl.dbank.com/c0cluqlrqw</a></p>
+
+  <div class="more">
+    <a href="/blog/303.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/302.html">Nutz 1.b.38发布了,将来怎么走呢?</a> <span class="date">2011-07-17 19:17:19</span></h3>
+  <p>经过马拉松式的开发,在1.b.37发布之后的3个月,1.b.38终于正式发布</p>
+
+<p>在我看来,这是个里程碑式的版本,截至到1.b.38,Nutz的每一部分都至少重构了一次</p>
+
+<p>Ioc很久以前就重构过,大概是1.a.27,zozoh操刀
+Aop,1.a.29进行重构,我操刀
+Json,1.b.38历经两次重构,先是jukai,后面是我
+Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
+
+<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 -- 在不停的fix bug中完善</p>
+
+<p>然而,Nutz还需要些什么呢?或者说,用户还需要些什么呢?
+1. 代码生成器 -- 很多很多用户要求这个,但是,真的能提供生产效率吗??
+2. IDE -- 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
+3. 支持NoSQL -- 貌似没啥意义
+4. 还有一些零碎的功能增强,一时半刻没想起来</p>
+
+<p>我觉得Nutz还有一些设计欠佳的地方:
+1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 -- 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
+2. Ioc的单例 -- NutIoc中的单例的概念,我依旧觉得很怪,呵呵
+3. Dao的Pojo实例的生成机制 -- 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
+4. Json反序列化的定制性 -- 1.b.38引入的JsonField注解,恩,应该得到一些改善
+5. Castor的扩展机制 -- 这东西到底有没有人用过呢??</p>
+
+  <div class="more">
+    <a href="/blog/302.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/299.html">JGit初试牛刀</a> <span class="date">2011-07-16 21:53:35</span></h3>
+  <p>最近爱上了Git,当然不能忽略jGit啦</p>
+
+<p>好吧废话少说,直接上代码先:</p>
+
+<pre><code>package net.wendal.jgit;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+public class JGit {
+
+    public static void main(String[] args) throws Throwable {
+        File root = new File(&quot;gitme&quot;);
+        if(!root.exists())
+            root.mkdir();
+        File gitF = new File(&quot;gitme/.git&quot;);
+        if(!gitF.exists()) {//如果已经初始化过,那肯定有.git文件夹
+                        //初始化git库,相当于命令行的 git init
+            Git.init().setDirectory(root).call();
+        }
+        Git git = Git.open(root); //打开git库
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/299.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/296.html">Rk2918固件新打包格式分析</a> <span class="date">2011-06-26 11:25:37</span></h3>
+  <p>本文针对 台电T760的2.x固件,原道N10,酷比1.0.5等RK2918方案的新固件打包格式</p>
+
+<p>文件总体结构:
+文件内容描述块 0x00 ~ 0x65
+Loader程序 0x66 ~ 0x66+Loader的长度
+update.img 0x66+Loader的长度+1 ~ 文件结束前32个字节
+MD5 文件的最后32个字节为文件其余部分的MD5码--ASCII形式</p>
+
+<p>文件内容描述块:
+文件头 0x00~0x04 共5个字节,固定为RKFWf
+固件版本号 0x05~0x09 共5个字节, 例如 00 03 00 02 00 代表 0.2.03, 00 09 00 02 08 代表 8.2.09
+芯片型号 0x15 一个字节, 50代表RK29,40代表RKCROWN,30代表RKNANO,20代表RK28,10代表RK27
+loader信息 0x19~0x20 共8个字节,前4个字节是偏移量,后4个字节是长度.例如66 00 00 00代表0x66,5A 55 02 00代表0x02555A
+update.img信息0x22~0x29 共8个字节,与loader信息含义一致</p>
+
+<p>附图片:
+<a href="/blog/assets/media/2011/06/RK2918_IMG_Format.jpg">RK2918_IMG_Format.jpg</a></p>
+
+<p>我已经实现的版本:
+<a href="https://github.com/wendal/teclast_tools">https://github.com/wendal/teclast_tools</a> 源码
+下载:
+<a href="http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o">http://www.everbox.com/f/kl3FWPQ7W6yvCyVKWmsLCWcf2o</a></p>
+
+  <div class="more">
+    <a href="/blog/296.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

@@ -98,31 +98,31 @@
 
 <p>下面,当然要列一下到底集成了什么模块(已经根据agentzh的微博提醒进行修正):</p>
 
-<p>LuaJIT &ndash; 极速版Lua实现
-ArrayVarNginxModule &ndash; 数组类型的Nginx变量
-AuthRequestNginxModule &ndash; 鉴权,想象一下以C代码的速度判断一个请求是否合法,是不是很有快感呢?!
-DrizzleNginxModule &ndash; Nginx-MySQL桥,非阻塞的哦,我又爱又恨的一个模块,值得注意的是,其响应是RDS流
-EchoNginxModule &ndash; 以非常直观的方式在Nginx配置文件中编写简单的处理逻辑,源码包含大量注释,绝对是入门好例子!!
-EncryptedSessionNginxModule &ndash; 加密会话
-FormInputNginxModule &ndash; 解析post请求中的参数,这下子,简单请求根本不需要PHP/Java来处理啦
-HeadersMoreNginxModule &ndash; Nginx默认的header模块只能添加或忽略,这个给你CRUD全套的!!
-IconvNginxModule &ndash; 编码转换,不多说,也不懂
-StandardLuaInterpreter &ndash; 与Lua官方实现所匹配,一般用不上,因为我们用LuaJIT!!
-MemcNginxModule &ndash; 与Memcached的绝配,谁用谁知道!! 与upstram_keepalive一起用,你能更High!!
+<p>LuaJIT -- 极速版Lua实现
+ArrayVarNginxModule -- 数组类型的Nginx变量
+AuthRequestNginxModule -- 鉴权,想象一下以C代码的速度判断一个请求是否合法,是不是很有快感呢?!
+DrizzleNginxModule -- Nginx-MySQL桥,非阻塞的哦,我又爱又恨的一个模块,值得注意的是,其响应是RDS流
+EchoNginxModule -- 以非常直观的方式在Nginx配置文件中编写简单的处理逻辑,源码包含大量注释,绝对是入门好例子!!
+EncryptedSessionNginxModule -- 加密会话
+FormInputNginxModule -- 解析post请求中的参数,这下子,简单请求根本不需要PHP/Java来处理啦
+HeadersMoreNginxModule -- Nginx默认的header模块只能添加或忽略,这个给你CRUD全套的!!
+IconvNginxModule -- 编码转换,不多说,也不懂
+StandardLuaInterpreter -- 与Lua官方实现所匹配,一般用不上,因为我们用LuaJIT!!
+MemcNginxModule -- 与Memcached的绝配,谁用谁知道!! 与upstram_keepalive一起用,你能更High!!
 Nginx
-NginxDevelKit &ndash; N多第三方插件都依赖的东西,<del>不知道为啥</del> 提供一些方便使用的基础API封装
-LuaCjsonLibrary &ndash; Lua版的Json处理库实在太慢,这个才叫速度!!
-LuaNginxModule &ndash; 我的最爱,一般逻辑,完全没必要用Java/PHP啦
-LuaRdsParserLibrary &ndash; 在Lua中直接处理RDS流,速度杠杠的!
-LuaRedisParserLibrary &ndash; 在Lua中处理Redia模块的响应,暂时我还没用上
-PostgresNginxModule &ndash; Nginx-Postgres桥,输出的也是RDS流
-RdsCsvNginxModule &ndash; RDS流转CVS格式,不知道能干啥,报表?
-RdsJsonNginxModule &ndash; RDS流转JSON字符串,之前经常用这个
-Redis2NginxModule &ndash; Nginx-Redis2桥
-SetMiscNginxModule &ndash; 提供很多很实用的方法,例如base64编解码,URL编解码,SQL防注入等等
-SrcacheNginxModule &ndash; 缓存模块,据说跟Memc模块一起用比较爽
-UpstreamKeepaliveNginxModule &ndash; 与Memc模块的标配,号称性能提升几倍呢
-XssNginxModule &ndash; <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax编程</p>
+NginxDevelKit -- N多第三方插件都依赖的东西,<del>不知道为啥</del> 提供一些方便使用的基础API封装
+LuaCjsonLibrary -- Lua版的Json处理库实在太慢,这个才叫速度!!
+LuaNginxModule -- 我的最爱,一般逻辑,完全没必要用Java/PHP啦
+LuaRdsParserLibrary -- 在Lua中直接处理RDS流,速度杠杠的!
+LuaRedisParserLibrary -- 在Lua中处理Redia模块的响应,暂时我还没用上
+PostgresNginxModule -- Nginx-Postgres桥,输出的也是RDS流
+RdsCsvNginxModule -- RDS流转CVS格式,不知道能干啥,报表?
+RdsJsonNginxModule -- RDS流转JSON字符串,之前经常用这个
+Redis2NginxModule -- Nginx-Redis2桥
+SetMiscNginxModule -- 提供很多很实用的方法,例如base64编解码,URL编解码,SQL防注入等等
+SrcacheNginxModule -- 缓存模块,据说跟Memc模块一起用比较爽
+UpstreamKeepaliveNginxModule -- 与Memc模块的标配,号称性能提升几倍呢
+XssNginxModule -- <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax编程</p>
 
 <p>OpenResty的最大的好处是帮你弄清楚各个模块的编译顺序,别小看,学问大大的呢</p>
 
@@ -157,7 +157,7 @@ XssNginxModule &ndash; <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

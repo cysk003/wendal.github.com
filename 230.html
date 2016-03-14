@@ -88,7 +88,7 @@
 
 <ol>
 <li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-</li>
+----------------------------------------------------</li>
 </ol>
 
 <pre><code>    #进入主文件夹
@@ -101,7 +101,7 @@
 
 <ol>
 <li>创建config文件,注意,切记要在Linux下创建这个文件!!
-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
+-----------------------------------------------</li>
 </ol>
 
 <pre><code>    vim config
@@ -113,7 +113,7 @@
 
 <ol>
 <li>创建ngx_http_hello_module.c文件(请使用本文结尾提供的附件中的文件)
-&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
+--------------------------------------------------------------</li>
 </ol>
 
 <pre><code>    //通过vim ngx_http_hello_module.c 创建文件并录入下面的内容
@@ -212,7 +212,7 @@
 <p>#返回到 ~/nginx-0.9.4
 cd ..
 #执行configure
-./configure &ndash;add-module=ngx_http_hello_module
+./configure --add-module=ngx_http_hello_module
 #编译 &amp; 安装
 make &amp; make install</p></li>
 
@@ -259,7 +259,7 @@ location =/hello {
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

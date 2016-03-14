@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>lua-newLISP 包装器</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>lua-newLISP 包装器 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p><strong>更新: 新实现的eval只返回最后的表达式的值,并添加新的eval_file方法</strong></p>
+
+<p>今天第一次写lua模块,就做了一个lua-newLISP包装器,即在lua中执行newLISP脚本</p>
+
+<p><strong>首先遇到的是newLISP的编译:</strong>
+1. 官方提供的configure智能化程度极低,估计是手写的
+2. 生成的Makefile,是Ubuntu下的配置, 在centos下编译无法通过
+虽然修改一下,还是顺利能pass,但还是觉得不爽
+故, 动手做了一个<a href="https://gist.github.com/2351735">cmake for newLISP</a>的脚本.</p>
+
+<p><strong>生成so文件后,默认是newlisp.so,改名为libnewlisp.so,并放入/usr/lib中</strong></p>
+
+<p>由于newLISP的对外API仅2个(其中一个还不能用&hellip;),且自带的h文件比较混乱,<strong>干脆自己写了一个h文件</strong><a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.h">newlisp.h</a>,就一行:</p>
+
+<pre><code>char * newlispEvalStr(char * cmd); //把传入的cmd当成newlisp脚本执行,并返回char*
+</code></pre>
+
+<p>然后,当然是主体c文件<a href="https://github.com/wendal/lua-newlisp/blob/master/newLISP.c">newLISP.c</a>啦</p>
+
+<pre><code>//载入lua的头文件
+#include &quot;lua.h&quot;
+#include &quot;lualib.h&quot;
+#include &quot;lauxlib.h&quot;
+
+//载入我自己写的newlisp头文件
+#include &quot;newLISP.h&quot;
+
+//lua中require语法将调用这个方法  lisp = require &quot;newLISP&quot;
+//最终生成的名字,必须全部一致,库的名字叫newLISP,文件叫newLISP.so,luaopen方法也得叫luaopen_newLISP
+int luaopen_newLISP(lua_State *L);
+
+static int newLISP_eval(lua_State *L) {
+   char * str = lua_tostring(L, 1);     //获取第一个方法参数, lua中数组下标以1开始
+   char * result = newlispEvalStr(str); //调用newLISP库执行脚本
+   lua_pushstring(L, result); //将返回值压入堆栈
+   return 1; //返回值的数量; 因为lua支持同时返回多个值
+}
+
+//定义lua中方法与方法名的映射表
+static const luaL_reg newLISP_lib[] = {
+   {&quot;eval&quot;, newLISP_eval},
+   {0,0}
+};
+
+//模块注册入口方法
+int luaopen_newLISP(lua_State *L) {
+   luaL_register(L, &quot;newLISP&quot;, newLISP_lib);
+   return 1;
+}
+</code></pre>
+
+<p><strong>编译:</strong></p>
+
+<pre><code>gcc -O3 -Wall -shared -o newLISP.so -lnewlisp -llua newLISP.c
+</code></pre>
+
+<p><strong>测试:</strong></p>
+
+<pre><code>$&gt; lua
+Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio
+&gt; lisp = require &quot;newLISP&quot;
+&gt; print(lisp.eval(&quot;(* 1 100)&quot;))
+100
+
+&gt; print(lisp.eval(&quot;(setq lst '(1 2 3))&quot;))
+(1 2 3)
+
+&gt; print(lisp.eval(&quot;(define (abc x y) (+ (* x x) (* y y)) )  (abc 3 4)&quot;))
+(lambda (x y) (+ (* x x) (* y y)))
+25
+
+&gt; 
+</code></pre>
+
+<p><del><strong>可以看到, 这个方法有2个很明显的问题:</strong>
+1. 总是多一个换行
+2. 会把执行过程中的所有output都作为返回值 .. 汗&hellip;</del></p>
+
+<p>恩, 起码能用上了</p>
+
+<p>代码所在项目 <a href="https://github.com/wendal/lua-newlisp">lua-newLISP</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/413.html" title="Nginx二级域名自动匹配到子文件夹(通过rewrite)">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/411.html" title="Nutz是一个轮子吗?">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-04-10 22:48:51</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#lisp-ref">lisp <span>4</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#cmake-ref">cmake <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#lua-ref">lua <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

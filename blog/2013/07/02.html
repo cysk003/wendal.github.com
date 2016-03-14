@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>微信公众平台开发小结</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>微信公众平台开发小结 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>只讨论低权限帐号,高端帐号请绕道&hellip;</p>
+
+<h2>能做什么?不能做什么?</h2>
+
+<p>应答机,自主查询机都能做,但由于没法主动推送(除非你能拿到很高的权限),所以呢,什么预警系统的,一时半刻做不了</p>
+
+<h2>机制</h2>
+
+<h1>基本流程</h1>
+
+<pre><code>用户发信息  --&gt;微信服务器--&gt;我们的服务器
+
+用户显示信息&lt;--微信服务器&lt;--
+
+#如果是图文信息,就有额外的通信
+
+用户访问图文--&gt;我们的服务器
+</code></pre>
+
+<h1>基本限制</h1>
+
+<p><a href="http://mp.weixin.qq.com/wiki/index.php">开发文档</a></p>
+
+<ul>
+<li>所有都是基于http,服务器发给你的是xml,你响应的也是xml</li>
+<li>必须在5秒内响应,必须是合法格式</li>
+<li>xml的节点名与文档必须完全一样</li>
+<li>文本信息必须小于2k字节</li>
+<li>图文信息每次最多10个&rdquo;作品&rdquo;,每个都有标题,简单描述,图片链接,链接</li>
+<li>图文信息的图,是直接访问你的服务器然后显示</li>
+<li>注意图片的缓存问题,同一个URL在多次响应中,是不会重复访问</li>
+</ul>
+
+<h1>goweixin的那些代码</h1>
+
+<p><a href="https://github.com/wendal/goweixin">项目地址https://github.com/wendal/goweixin</a></p>
+
+<p>核心代码之一,签名校验</p>
+
+<pre><code>func Verify(token string, timestamp string, nonce string, signature string) bool {
+    if DevMode {
+        return true
+    }
+    strs := []string{token, timestamp, nonce}
+    sort.Strings(strs)                 //需要按值进行排序,蛋疼不?
+    key := strs[0] + strs[1] + strs[2] //接着拼起来 
+    if _Debug {
+        log.Println(&quot;Verify key=&quot;, key)
+    }
+    h := sha1.New()                    //然后算sha1
+    h.Write([]byte(key))
+    re := fmt.Sprintf(&quot;%x&quot;, h.Sum(nil))
+    if _Debug {
+        log.Println(&quot;Verify&quot;, signature, re)
+    }
+    return signature == re            // golang嘛,字符串直接比较值
+}
+</code></pre>
+
+<h1>一点提醒</h1>
+
+<ol>
+<li>使用<a href="http://www.bluestacks.com/">bluestacks</a>在电脑上安装微信,可以抛开手机进行调试</li>
+<li>一定一定要把生成的xml打印出来检测哦,错误的响应,微信不会有任何提示!!</li>
+</ol>
+
+<h1>实例消息</h1>
+
+<h2>订阅通知</h2>
+
+<pre><code>&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[gh_2dc74cccf555]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[oSmHgjqYZN7zD4pOjsb_jK88wKFs]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;1372736407&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[event]]&gt;&lt;/MsgType&gt;
+&lt;Event&gt;&lt;![CDATA[subscribe]]&gt;&lt;/Event&gt;
+&lt;EventKey&gt;&lt;![CDATA[]]&gt;&lt;/EventKey&gt;
+&lt;/xml&gt;
+</code></pre>
+
+<h2>文本信息</h2>
+
+<pre><code>&lt;xml&gt;&lt;ToUserName&gt;&lt;![CDATA[gh_2dc74cccf555]]&gt;&lt;/ToUserName&gt;
+&lt;FromUserName&gt;&lt;![CDATA[oSmHgjqYZN7zD4pOjsb_jK88wKFs]]&gt;&lt;/FromUserName&gt;
+&lt;CreateTime&gt;1372736658&lt;/CreateTime&gt;
+&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;
+&lt;Content&gt;&lt;![CDATA[演示信息]]&gt;&lt;/Content&gt;
+&lt;MsgId&gt;5895859052130344107&lt;/MsgId&gt;
+&lt;/xml&gt;
+</code></pre>
+
+<h2>文本响应</h2>
+
+<pre><code>&lt;Content&gt;&lt;![CDATA[Hi,
+你好啊
+]]&gt;&lt;/Content&gt;
+&lt;xml&gt;
+&lt;FromUserName&gt;&lt;![CDATA[gh_2dc74cccf555]]&gt;&lt;/FromUserName&gt;
+&lt;ToUserName&gt;&lt;![CDATA[oSmHgjqYZN7zD4pOjsb_jK88wKFs]]&gt;&lt;/ToUserName&gt;
+&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;
+&lt;CreateTime&gt;1372736571&lt;/CreateTime&gt;
+&lt;FuncFlag&gt;0&lt;/FuncFlag&gt;
+&lt;/xml&gt;
+</code></pre>
+
+<h2>图文响应</h2>
+
+<pre><code>&lt;xml&gt;
+&lt;MsgType&gt;&lt;![CDATA[news]]&gt;&lt;/MsgType&gt;
+&lt;ArticleCount&gt;&lt;![CDATA[6]]&gt;&lt;/ArticleCount&gt;
+&lt;Articles&gt;&lt;item&gt;&lt;Title&gt;&lt;![CDATA[北京达诺视通]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://www.danoonetworks.com/css/imgs/logo.png]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://www.danoonetworks.net]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;&lt;Title&gt;&lt;![CDATA[V1 2013-07-02 11:42:03]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/1372737416.jpg?id=8589943729]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/index.html?id=8589943729]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;&lt;Title&gt;&lt;![CDATA[VZ 2013-07-02 11:56:01]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/1372737416.jpg?id=8589943893]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/index.html?id=8589943893]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;&lt;Title&gt;&lt;![CDATA[V2 2013-06-26 10:47:08]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/1372737416.jpg?id=8589941622]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/index.html?id=8589941622]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;&lt;Title&gt;&lt;![CDATA[V3 2013-07-02 11:56:04]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/1372737416.jpg?id=8589935214]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/index.html?id=8589935214]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;item&gt;&lt;Title&gt;&lt;![CDATA[V4 2013-07-02 11:42:23]]&gt;&lt;/Title&gt;
+&lt;PicUrl&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/1372737416.jpg?id=8589956309]]&gt;&lt;/PicUrl&gt;
+&lt;Url&gt;&lt;![CDATA[http://wx.wendal.net/snap/zhaoxun/index.html?id=8589956309]]&gt;&lt;/Url&gt;
+&lt;/item&gt;
+&lt;/Articles&gt;
+&lt;FromUserName&gt;&lt;![CDATA[gh_2dc74cccf555]]&gt;&lt;/FromUserName&gt;
+&lt;ToUserName&gt;&lt;![CDATA[oSmHgjqYZN7zD4pOjsb_jK88wKFs]]&gt;&lt;/ToUserName&gt;
+&lt;CreateTime&gt;1372737330&lt;/CreateTime&gt;
+&lt;FuncFlag&gt;0&lt;/FuncFlag&gt;
+&lt;/xml&gt;
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2013/07/03.html" title="py2exe练手">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/2013/06/25.html" title="在windows下编译OpenResty">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-07-02</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E5%B7%A5%E4%BD%9C-ref">工作 <span>28</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#golang-ref">golang <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#python-ref">python <span>10</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>在windows上编译memcached v1.4.24 (用cygwin)</title>
+  
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>在windows上编译memcached v1.4.24 (用cygwin) </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h1>成品下载地址</h1>
+
+<p><a href="http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip">http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip</a></p>
+
+<h1>编译环境</h1>
+
+<p>cygwin x86 当前最新
+win7 x64 sp1</p>
+
+<h1>成品的依赖关系(ldd输出)</h1>
+
+<pre><code>$ ldd /usr/local/bin/memcached
+        ntdll.dll =&gt; /cygdrive/c/Windows/SysWOW64/ntdll.dll (0x77780000)
+        kernel32.dll =&gt; /cygdrive/c/Windows/syswow64/kernel32.dll (0x76fa0000)
+        KERNELBASE.dll =&gt; /cygdrive/c/Windows/syswow64/KERNELBASE.dll (0x76b30000)
+        ADVAPI32.DLL =&gt; /cygdrive/c/Windows/syswow64/ADVAPI32.DLL (0x75770000)
+        msvcrt.dll =&gt; /cygdrive/c/Windows/syswow64/msvcrt.dll (0x75810000)
+        sechost.dll =&gt; /cygdrive/c/Windows/SysWOW64/sechost.dll (0x769e0000)
+        RPCRT4.dll =&gt; /cygdrive/c/Windows/syswow64/RPCRT4.dll (0x770d0000)
+        SspiCli.dll =&gt; /cygdrive/c/Windows/syswow64/SspiCli.dll (0x75110000)
+        CRYPTBASE.dll =&gt; /cygdrive/c/Windows/syswow64/CRYPTBASE.dll (0x75100000)
+        cygwin1.dll =&gt; /usr/bin/cygwin1.dll (0x61000000)
+        cyggcc_s-1.dll =&gt; /usr/bin/cyggcc_s-1.dll (0x6fdb0000)
+        cygevent-2-0-5.dll =&gt; /usr/local/bin/cygevent-2-0-5.dll (0x63ec0000)
+</code></pre>
+
+<p>可以看到依赖了libevent</p>
+
+<h1>编译libevent</h1>
+
+<pre><code>cd /tmp
+wget https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/libevent-2.0.22-stable.tar.gz
+tar xf libevent-2.0.22-stable.tar.gz
+cd libevent-2.0.22-stable
+./configure --prefix=/usr/local
+make all
+make  install
+</code></pre>
+
+<p>全程无异常通过</p>
+
+<h1>编译memcached</h1>
+
+<pre><code>cd /tmp
+wget wget http://memcached.org/latest
+tar xf latest
+cd memcached-1.4.24/
+chmod 777 configure
+./configure
+</code></pre>
+
+<p>configure 执行完毕后,需要修改Makefile,不然编译会失败</p>
+
+<p>大概是326行,删掉-Werror, 结果如下</p>
+
+<pre><code>CFLAGS = -g -O2 -pthread -pthread -Wall -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls
+</code></pre>
+
+<p>继续执行剩余的编译</p>
+
+<pre><code>make
+make install
+</code></pre>
+
+<h1>完成,启动一下</h1>
+
+<pre><code>memcached -vv
+</code></pre>
+
+<p>输出一堆log,然后用telnet访问一下,正常,搞定.</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2015/05/28.html" title="在android上运行io.js">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/2015/03/07.html" title="总算实践了一次Linux From Scratch">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2015-04-27</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#%E5%85%B6%E4%BB%96-ref">其他 <span>56</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#memcache-ref">memcache <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

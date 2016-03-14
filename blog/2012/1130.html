@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Reflect Of Golang</title>
+  
+    <meta name="description" content="玩玩Golang的反射">
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Reflect Of Golang </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>正在重新实现mustache for golang</h2>
+
+<ul>
+<li>mustache作为模板引擎,必然需要用到反射啦</li>
+<li>官方的实现,就一个go源文件,几百行,蛋碎</li>
+<li>官方实现只返回一个string类型,出错就返回空字符串!!</li>
+<li>原本打算在上面改的,结果还是算了,重新实现一个更好,现在已经完成60%</li>
+<li><a href="https://github.com/wendal/mustache">mustache from wendal</a></li>
+</ul>
+
+<h2>访问Map</h2>
+
+<pre><code>// 这里的参数和返回值都用了reflect.Value,是因为这是最下层的实现
+// 在此之上,我们可以封装为 Get(_map interface{}, key string)之类的形式
+func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
+    //进行任何反射操作之前,判断其可用性很重要
+    if !value.IsVaild() {
+        return
+    }
+    //判断其真实类型
+    //注意,这里的真实,是指最终的类型,例如
+    // type AAA map[string]string, 那么仍会得到map,而非AAA
+    // 如果想得到AAA,那么应该使用 value.Type().Name()或者全路径value.Type().String()
+    if value.Type().Kind() != reflect.Map {
+        return 
+    }
+
+    //reflect包很多方法都是针对具体类型的,不合乎就panic
+    //例如MapIndex,如果value不是map,就直接panic了
+    rs = value.MapIndex(key)
+    return
+}
+</code></pre>
+
+<h2>访问数组/切片</h2>
+
+<pre><code>// 在取值方法,数组和切片的规则是一样的,提供索引值即可
+func GetArrayValue(value reflect.Value, index int) (rs reflect.Value) {
+    if !value.IsVaild() {
+        return
+    }
+    if value.Type().Kind() != reflect.Array ||
+         value.Type().Kind() != reflect.Slice {
+        return 
+    }
+
+    // value.Len()仅限于array和slice,map,string哦
+    if 0 &lt;= index &amp;&amp; index &lt; value.Len() {
+        rs = value.Index(index)
+    }
+    return
+}
+</code></pre>
+
+<h2>访问结构体及其指针</h2>
+
+<pre><code>// 这算是最复杂的了吧
+// 这里演示一下把T和*T当成Map用,呵呵
+// 也就是mustache模板引擎中Section节点
+func GetStructValue(value reflect.Value, key string) (rs reflect.Value) {
+    if !value.IsVaild() {
+        return
+    }
+    if value.Type().Kind() == reflect.Ptr {
+        //value.Elem()可以得到指针所指向的对象
+        if value.Elem().Kind() != reflect.Struct {
+            return
+        }
+    } else if value.Type().Kind() == reflect.Struct {
+        return
+    }
+
+    //好了,来取Struct的Field吧!
+
+    //首先,我们把*T还原为T
+    //如果本来就是Struct,那么只是简单返回而已
+    //指针类型是不能获取Field的
+    v := reflect.Indirect(ctx.value)
+    field := v.FieldByName(key)
+    if field.IsValid() { //字段存在时返回true
+        rs = field
+        return
+    }
+
+    //接下来,看看有米有对应的Method
+    //注意,如果是*T,那么全部方法都能拿到
+    //如果是T,那么只能获取那些非指针的方法哦
+    //我也很纠结这个,尝试突破但没有成功
+    t := value.Type()
+    method, ok := t.MethodByName(key)
+    if !ok { //没找到
+        return
+    }
+
+    //输入的参数必须为1,也就是当前value,当然,如果你知道其他参数,也可以是传参的,也就一个数组嘛
+    //输出的参数不为0就好了,我们只需要取第一个
+    if method.Func.Type().NumIn() != 1 || method.Func.Type().NumOut() == 0 {
+        return  
+    }
+    //调用之
+    rs = method.Func.Call([]reflect.Value{value})[0] //最后的[0]就是取第一个返回值
+    return
+}
+</code></pre>
+
+<h2>总结一下</h2>
+
+<ul>
+<li>在任何reflect的func调用前,判断IsVaild</li>
+<li>判断具体类型,然后再调用相应的反射方法,不然分分钟会panic</li>
+<li>如果传入的是T,那么是无法访问指针类的方法的</li>
+</ul>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/linux/ssh-tunnel-without-shell/" title="ssh tunnel without shell">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/linux/Way-of-VPS/" title="Way of VPS">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-11-30</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#go-ref">go <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#go-ref">go <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%2C-ref">, <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%8F%8D%E5%B0%84-ref">反射 <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

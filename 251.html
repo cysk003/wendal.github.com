@@ -84,7 +84,7 @@
 <div class="row">
   <div class="span8">
     <p>已经确定是我自己的原因
-实在不是很肯定,如果加入特定的&ndash;with-cc-opt参数就报错.</p>
+实在不是很肯定,如果加入特定的--with-cc-opt参数就报错.</p>
 
 <p>环境: Ubuntu 10.04.2 LTS Server</p>
 
@@ -116,7 +116,7 @@ make install
 <pre><code>./configure --add-module=simpl-ngx_devel_kit --add-module=lua-nginx-module --with-cc-opt=-lprofile #这里写错了,应该是profiler
 </code></pre>
 
-<p>报错,难道加上&ndash;with-cc-opt就报错?
+<p>报错,难道加上--with-cc-opt就报错?
 试试mysql的lib</p>
 
 <pre><code>./configure --add-module=simpl-ngx_devel_kit --add-module=lua-nginx-module --with-cc-opt=-lmysql
@@ -128,7 +128,7 @@ make install
 如果直接在auto/cc/gcc将:
     NGX_GCC_OPT=&ldquo;-O&rdquo;
 改为
-    NGX_GCC_OPT=&ldquo;-O2 -lprofile&rdquo; 是能够pass的. &ndash;&gt; 写错了!! 应该是-lprofiler</p>
+    NGX_GCC_OPT=&ldquo;-O2 -lprofile&rdquo; 是能够pass的. --&gt; 写错了!! 应该是-lprofiler</p>
 
 <p>好吧,困了,睡觉,明天报个issue.</p>
 
@@ -161,7 +161,7 @@ make install
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 14</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/332.html">Nut.Test -- 使用Nutz一样能方便地进行单元测试</a> <span class="date">2011-10-16 22:22:36</span></h3>
+  <p>首先,感谢Jay提出一个需求.</p>
+
+<p>这个功能很有可能出现在1.b.40中</p>
+
+<p>当前Nut.Test代码,主要解决以下几个问题:
+1. 测试方法使用NutzDao操作数据库,希望在测试方法执行完成后进行回滚
+2. Ioc支持,方便获取与实际生产环境类似的Ioc注入功能,方便进行功能测试</p>
+
+<p>这个测试Runner, 很好地平衡了侵入性与灵活性, 让用户以很低的成本与耦合度测试Nutz代码</p>
+
+<p>所以,我新建org.nutz.test包, 核心类NutzJUnit4ClassRunner,这个类本身非常简单</p>
+
+<pre><code>public class NutzJUnit4ClassRunner extends TestClassRunner {
+    public NutzJUnit4ClassRunner(final Class klass) throws InitializationError {
+        super(klass, new NutTestClassMethodsRunner(klass));
+    }
+}
+</code></pre>
+
+<p>核心代码位于NutTestClassMethodsRunner</p>
+
+  <div class="more">
+    <a href="/blog/332.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/330.html">在Linux下编译Qt Libs -- 能不能快点呢?!</a> <span class="date">2011-10-01 08:37:57</span></h3>
+  <p>出于好玩,下载了Qt libs for linux, 发现是个源码包,好吧编译呗</p>
+
+<p>敲入:</p>
+
+<pre><code>./configure -qt-sql-sqlite
+gmake
+gmake install
+</code></pre>
+
+<p>原本以为半个小时就万事,结果花了2个多小时!! 我吐血啊&hellip;</p>
+
+<p>难道就不能快点吗? demo examples docs 能不能编译啊!!</p>
+
+<p>好吧,谷哥告诉我,能这样:</p>
+
+<pre><code>./configure -qt-sql-sqlite -opensource -fast -no-qt3support -nomake demos -nomake docs -nomake examples -optimized-qmake -nomake tools
+gmake -j4
+gmake install
+</code></pre>
+
+<p>呵呵,半个小时搞定!!!</p>
+
+  <div class="more">
+    <a href="/blog/330.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/326.html">初试Jetty使用Mongodb作为Session管理器</a> <span class="date">2011-09-26 23:03:32</span></h3>
+  <p>闲话少说,直接上代码:</p>
+
+<pre><code>package net.wendal.jetty.mongodb;
+
+import org.eclipse.jetty.nosql.mongodb.MongoSessionIdManager;
+import org.eclipse.jetty.nosql.mongodb.MongoSessionManager;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.SessionManager;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
+
+public abstract class TestMongodb4Jetty {
+
+    public static void main(String[] args) throws Throwable {
+        Server server = new Server(9090);
+        WebAppContext webAppContext = new WebAppContext();
+        webAppContext.setWar(&quot;E:\\NutzQuickStart.war&quot;); //经典的nutz入门例子
+        MongoSessionManager msm = new MongoSessionManager();
+        SessionHandler sessionHandler = new SessionHandler();
+        sessionHandler.setSessionManager(msm);
+        webAppContext.setSessionHandler(sessionHandler);
+        MongoSessionIdManager idMgr = new MongoSessionIdManager(server);
+        idMgr.setWorkerName(&quot;wendal-mongodb-worker&quot;);
+        idMgr.setScavengeDelay(60);
+        msm.setSessionIdManager(idMgr);
+        server.setHandler(webAppContext);
+        server.start();
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/326.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/325.html">不走寻常路--NutzCP初版</a> <span class="date">2011-09-18 14:41:17</span></h3>
+  <p>想了一个晚上,用了一个早上完成编码 -- 效率还是很高的嘛</p>
+
+<p>项目地址: <a href="https://github.com/nutzam/nutzcp">https://github.com/nutzam/nutzcp</a></p>
+
+<p>很久之前,我也写过另外一个<a href="http://wendal.net/243.html">简单的连接池实现</a>,这次我认真地实现了另一个实现,也就是现在这个</p>
+
+<p><strong>这个连接池,基于一些假设:</strong>
+1. 数据库可接纳的总连接数是固定的
+2. 使用者是自律的,总是显式调用commit()/rollback(),然后调用close()</p>
+
+<p><strong>不走寻常路:</strong>
+1. 固定的连接池大小
+2. 超过固定连接数后,不允许再创建新连接,除非旧连接被返还</p>
+
+<p><strong>为何要固定的连接池大小呢?!</strong>
+以MySQL为例,server端可接纳的连接数是固件的,写在配置文件里面的,就是说,实际上server-client之间的可用连接数总数是稳定的,固定的,所以,维持一个固定大小的连接池比维持一个可变大小的连接池要简洁,更快,其实也更实用</p>
+
+<p>**为什么不允许overflow(连接池里面已经没有空余连接,那就创建不受管理的连接)呢? **
+因为不应该由数据库告诉程序: 我是MySQL数据库服务器,我已经没有可用的新连接啦!!
+客户端本身就能知道是否已经无法创建新连接,这样直接抛出异常,比服务器告知要快速得多</p>
+
+  <div class="more">
+    <a href="/blog/325.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/324.html">Nutz事务模板值得注意的细节</a> <span class="date">2011-09-17 22:31:36</span></h3>
+  <p>Nutz.Dao事务模板的官方文档: <a href="http://code.google.com/p/nutz/wiki/dao_transaction">http://code.google.com/p/nutz/wiki/dao_transaction</a></p>
+
+<p>需要注意的几个细节,文档还没提及:
+<strong>1. 数据库连接池的AutoCommit属性</strong>
+对于我见到的大部分连接池和数据库驱动,默认情况下AutoCommit=true,应该是为了性能
+这就导致如果用户不自行设置的话,Trans的大部分操作都是不可回滚的.故,如果使用Trans,那么务必设置AutoCommit</p>
+
+<p><strong>2. 多个数据源的事务</strong>
+大部分情况下,用户都不是使用XA驱动,故,多数据源的事务提交,在最后的提交阶段出错的话,已经执行commit操作的数据源,是不可能回滚的</p>
+
+<p><strong>3. 子线程的事务</strong>
+考虑下面的代码:</p>
+
+<pre><code>Trans.exec(new Atom(){
+   public void run() {
+       dao.insert(pet);
+       new MySuperPowerThread().start();
+       dao.count(Pet.class);
+   }
+});
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/324.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/321.html">让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制</a> <span class="date">2011-09-11 08:51:23</span></h3>
+  <p>本文并非教你写病毒来破解Android系统,所提及的操作,均要求用户主动参与</p>
+
+<p>本文主要针对是平板.Andoird手机由于涉及你的帐号/资金的安全,非常不建议你使用下面的方法!!</p>
+
+<p>先感谢一下硬件小二,rk28小组的协助</p>
+
+<h2>第一步,/system可写</h2>
+
+<p><a href="http://wendal.net/320.html">Rk2918现在可使用我不久前发明的方法,将/system映射在/data/sysrw</a></p>
+
+<p>Rk2818的话,自然是使用aufs这种xda发明的方法,但使用rk2918的方法会快些</p>
+
+<h2>第二步,获取root权限</h2>
+
+<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码-- <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
+
+<p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
+
+  <div class="more">
+    <a href="/blog/321.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/320.html">实现Rk2918的System分区可写</a> <span class="date">2011-09-09 11:33:27</span></h3>
+  <p>这是2011-09-08,也就是前天顿悟出来的方法</p>
+
+<p><strong>核心原理</strong>:在data分区下建一个文件夹/data/sysrw存放system原本的数据,启动时,软连接/data/sysrw为system分区</p>
+
+<p><strong>解释</strong>:
+1. data分区,最终挂载为/data文件夹,默认情况下,这是ext3格式的分区,但禁用了suid
+2. system分区,为不可写的cramfs格式,默认挂载在/system文件夹</p>
+
+<p><strong>步骤</strong>:
+1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
+2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
+3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
+..A. 不再挂载system分区 -- 注释掉 mount cramfs mtd@system /system -- 也就是前面加#号
+..B. 不再建立system文件夹 -- 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid -- 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 -- chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su -- 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 -- 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 --- 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+
+  <div class="more">
+    <a href="/blog/320.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
+  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo--&gt;String的转换</p>
+
+<p>1.b.38版新增了@JsonField,在即将发布的1.b.40版将这个注解再次增强
+正如其名,@JsonField是针对Json处理中字段级别的控制</p>
+
+<p>首先是字段命名,看代码</p>
+
+<pre><code>@JsonField(&quot;z-index&quot;)
+private String zIndex;
+</code></pre>
+
+<p>对应的Json将会是:</p>
+
+<pre><code>{
+    'z-index' : '10px'
+}
+</code></pre>
+
+<p>可以看到,无需再强求 json的key的名字与类属性名一致了</p>
+
+<p>然后是&rdquo;忽略&rdquo;,看代码</p>
+
+  <div class="more">
+    <a href="/blog/319.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/317.html">NutDao实现Lazy加载的可行性</a> <span class="date">2011-09-06 23:33:16</span></h3>
+  <p>不知道多少人问过@Many @One等注释能否实现懒加载或者自动加载</p>
+
+<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 -- 其实也就是有点不方便,外加效率较低</p>
+
+<p>我这里讨论的是NutDao做到真正懒加载的可能性与实现方式
+焦点集中在NutDao.query方法,因为大部分DB--&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
+
+<p>由于实现的是懒加载,不可避免的使用Aop,以拦截@Many/@One的getter
+使用Aop会导致一个问题,就是query方法返回的对象的类改变了,变成用户请求的类的一个定制化的子类的对象,这本身就导致一些问题:
+    1. 使用query出来的对象进行update/delete时,由于其并非用户期望的类(实际上是其子类),导致getEntity需要改造,因为@Table等注解是不被继承的,@Column也是,这样,写在@Many/@One字段上的信息会被隐藏掉
+    2. 用户代码可能会需要修改,当然,都是那些不好的写法,例如Class对象进行equal比较</p>
+
+<p>Aop实现的关键点:
+    1. 获取Dao对象,并存为其一个属性的值
+    2. 记录当前getter是否已经获取过,或者setter已经被执行过
+    3. 跳过Hibernate式的事务问题,平等对待getter调用时的事务问题</p>
+
+<p>可能的改造方法:
+    1. Aop整个NutDao,对于query以外的方法,进行对象解包/类解包,以移除query方法带出Aoped类的影响
+    2. 改造/继承AnnotationEntityMaker,让其生成对象时,使用Aop改造过的类</p>
+
+  <div class="more">
+    <a href="/blog/317.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/316.html">广工,3年来,你改变了什么?</a> <span class="date">2011-08-27 21:57:46</span></h3>
+  <p>广东工业大学,我本科的母校,毕业3年了</p>
+
+<p>今天,我再次回去,看看它的变化</p>
+
+<p>看着以前上课的课室,实验楼,一条条熟悉的过道 -- 记忆中画面不停飘过</p>
+
+<p>校园内,树木高了,绿化多了,然而,栏杆,铁门,围墙也多了 -- 以安全/治安的名义,能干很多事</p>
+
+<p>晚饭过后,去看看校外江边的公园,想不到啊,3年就能荒废成这样子,以至于我不敢为其拍照!!</p>
+
+<p>还是晚饭后,还是晚上7点,还是这个地理坐标,完全不一样的景象</p>
+
+<p>杂草丛生,灯看上去已经很久很久没亮过,路,如果那还是路的话,80%的面积被草覆盖了
+那曾经的草坪,是多么美,今天我只看到了杂草,小灌木,以至于我不敢踏足 -- 曾几何时,我躺着看着星空
+那座小桥,木板桥,已经破烂不堪,露出30%以上的水泥底座 -- 多少次与挚友,情侣路过这座小桥
+那条小河,已经不是小河,最多能说得上是条垃圾填埋沟 -- 曾经,它流淌着小小溪流</p>
+
+<p>以至于那座山,我不敢上前来,我甚至无法确认那条路还存在</p>
+
+  <div class="more">
+    <a href="/blog/316.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

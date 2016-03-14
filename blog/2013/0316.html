@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Golang的坑之http读取大文件必须读完</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Golang的坑之http读取大文件必须读完 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>先上代码</h2>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+)
+
+func main() {
+    resp, err := http.Get(&quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
+    resp.Body.Close() // 注意,这里并不读取resp.Body, 而resp.Body有大概700mb未读取
+}
+</code></pre>
+
+<p>你猜会怎样呢? 卡住了?!</p>
+
+<p>如果你的网速够快,你会发现, 几十秒之后, 程序自动退出了,但如果你很不幸是小水管,你会发现一直卡住&hellip;</p>
+
+<h2>原因是啥呢?</h2>
+
+<p>http包默认会重用连接,重用连接就需要先把前一个连接的数据读完</p>
+
+<p>代码片段(net/http/transfer.go)</p>
+
+<pre><code>func (b *body) Close() error {
+    if b.closed {
+        return nil
+    }
+    defer func() {
+        b.closed = true
+    }()
+    if b.hdr == nil &amp;&amp; b.closing {
+        return nil
+    }
+    
+    if b.res != nil &amp;&amp; b.res.requestBodyLimitHit {
+        return nil
+    }
+
+    // 操,问题就在这了,读完整个body!!
+    if _, err := io.Copy(ioutil.Discard, b); err != nil {
+        return err
+    }
+    return nil
+}
+</code></pre>
+
+<h2>怎么解决呢?</h2>
+
+<p>按上面代码片段的逻辑, 需要提前返回nil,从而避免被读取</p>
+
+<pre><code>    // b.hdr 总是为nil,因为从不设置
+    // 那b.closing什么时候为true呢?
+    if b.hdr == nil &amp;&amp; b.closing {
+        return nil
+    }
+</code></pre>
+
+<p>读源码可知, b.closing依赖于transferReader的Close值</p>
+
+<p>而transferReader的Close值, 是根据shouldClose方法判断的</p>
+
+<pre><code>// 这里的header是resp的
+func shouldClose(major, minor int, header Header) bool {
+    if major &lt; 1 {
+        return true
+    } else if major == 1 &amp;&amp; minor == 0 {
+        if !strings.Contains(strings.ToLower(header.Get(&quot;Connection&quot;)), &quot;keep-alive&quot;) {
+            return true
+        }
+        return false
+    } else {
+        // TODO: Should split on commas, toss surrounding white space,
+        // and check each field.
+        if strings.ToLower(header.Get(&quot;Connection&quot;)) == &quot;close&quot; {
+            header.Del(&quot;Connection&quot;)
+            return true
+        }
+    }
+    return false
+}
+</code></pre>
+
+<p>由于没法在这些代码之前修改resp的header,所以修改req的header,使服务器总是返回Connection: close</p>
+
+<h2>最终代码</h2>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+)
+
+func main() {
+    req, _ := http.NewRequest(&quot;GET&quot;, &quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;, nil)
+    req.Header.Set(&quot;Connection&quot;, &quot;close&quot;)
+    resp, err := http.DefaultClient.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
+    resp.Body.Close()
+}
+</code></pre>
+
+<p>一个月没写blog了, 心情欠佳+身体抱恙 ~_~ 哎,多事的3月</p>
+
+<h2>2013年4月5号更新</h2>
+
+<p>coocood提醒到, go1.1有个新的API来完成这个蛋碎的东西</p>
+
+<pre><code>http.DefaultTransport.(*http.Transport).CancelRequest(req)
+</code></pre>
+
+<p>如果不是默认的DefaultTransport,就找你自己set的Transport吧</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2013/0325.html" title="Python还是很适合快速开发的">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/2013/0216.html" title="天语T619也能Root">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-03-16</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#go-ref">go <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#go-ref">go <span>9</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

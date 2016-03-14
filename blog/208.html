@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>一次内存泄漏的排查</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>一次内存泄漏的排查 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
+问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
+
+<pre><code>409.879: [Full GC 409.879: [Tenured: 349567K-&gt;349567K(349568K), 1.5796790 secs] 506815K-&gt;382998K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5797868 secs] [Times: user=1.55 sys=0.00, real=1.58 secs] 
+417.784: [Full GC 417.784: [Tenured: 349567K-&gt;349568K(349568K), 1.6968523 secs] 506815K-&gt;382777K(506816K), [Perm : 15880K-&gt;15878K(65536K)], 1.6969534 secs] [Times: user=1.68 sys=0.00, real=1.69 secs] 
+422.242: [Full GC 422.242: [Tenured: 349568K-&gt;349568K(349568K), 1.5697638 secs] 506815K-&gt;382844K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5698652 secs] [Times: user=1.56 sys=0.00, real=1.56 secs] 
+Heap
+ def new generation   total 157248K, used 156479K [0x029e0000, 0x0d480000, 0x0d480000)
+  eden space 139776K, 100% used [0x029e0000, 0x0b260000, 0x0b260000)
+  from space 17472K,  95% used [0x0b260000, 0x0c2afda8, 0x0c370000)
+  to   space 17472K,   0% used [0x0c370000, 0x0c370000, 0x0d480000)
+ tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
+   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
+ compacting perm gen  total 65536K, used 16259K [0x229e0000, 0x269e0000, 0x2a9e0000)
+   the space 65536K,  24% used [0x229e0000, 0x239c0e98, 0x239c1000, 0x269e0000)
+No shared spaces configured.
+</code></pre>
+
+<p>由于新生代应该会很快回收,故关注另外一块已经用完的空间tenured generation</p>
+
+<pre><code> tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
+   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
+</code></pre>
+
+<p>足足用掉了340M,怎么会这样呢? 最后几次都是FULL GC,故肯定是有对象一直被引用,而且用了很多内存.
+用jmap把内存镜像抓下来</p>
+
+<pre><code>jmap -dump:format=b,file=heap.bin 1936
+#1936是进程号pid
+</code></pre>
+
+<p>然后使用 <a href="http://www.eclipse.org/mat/">Eclipse Memory Analyzer</a> 打开heap.bin , 经过漫长的等待后
+不跑任何分析,直接在Overview视图,点开Dominator Tree, 哇!!! 严重震惊了,数据如下:</p>
+
+<pre><code>Class Name                                                         | Shallow Heap | Retained Heap | Percentage 
+--------------------------------------------------------------------------------------------------------------
+                                                                   |              |               |            
+com.goojia.xiaonei.sunfarm.Config @ 0x144f8ea8                     |          136 |    15,856,928 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x135aa160                     |          136 |    15,856,880 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x1080dba8                     |          136 |    15,856,872 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x13382830                     |          136 |    15,856,872 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x1359cf10                     |          136 |    15,856,872 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x107e8a28                     |          136 |    15,856,864 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x117244d0                     |          136 |    15,856,856 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x12413010                     |          136 |    15,856,840 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x133913b0                     |          136 |    15,856,840 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x140dc1c8                     |          136 |    15,856,840 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x140d6c10                     |          136 |    15,856,824 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x10152860                     |          136 |    15,856,768 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x107ecc68                     |          136 |    15,856,768 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x144f7050                     |          136 |    15,856,736 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x1300c4d8                     |          136 |    15,856,720 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x117267b8                     |          136 |    15,856,712 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x107e8f20                     |          136 |    15,856,696 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf8796a0                      |          136 |    15,856,648 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf882128                      |          136 |    15,856,576 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf87ea38                      |          136 |    15,856,416 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf8bd308                      |          136 |    15,856,416 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf87fb40                      |          136 |    15,856,408 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0x140d7aa0                     |          136 |    15,856,280 |      4.04% 
+com.goojia.xiaonei.sunfarm.Config @ 0xf8ac2a8                      |          136 |    15,856,080 |      4.04% 
+com.goojia.xiaonei.sunfarm.Context @ 0x140d8970                    |          120 |     1,105,208 |      0.28% 
+class com.goojia.sunfarm.TextAreaAppender @ 0x25095de8 System Class|           16 |       501,512 |      0.13% 
+class java.lang.Integer$IntegerCache @ 0x24e2cdb8 System Class     |            8 |       401,032 |      0.10% 
+com.goojia.xiaonei.sunfarm.Context @ 0x140dc330                    |          120 |       339,344 |      0.09% 
+com.goojia.xiaonei.sunfarm.Context @ 0x13391438                    |          120 |       338,536 |      0.09% 
+com.goojia.xiaonei.sunfarm.Context @ 0x117245a0                    |          120 |       337,376 |      0.09% 
+Total: 30 of 8,160 entries                                         |              |               |            
+--------------------------------------------------------------------------------------------------------------
+</code></pre>
+
+<p>Config对象竟然占用了300多M,而且很准确的与帐号数一样,因为那是一一对应的.但,不对啊,怎么这么多呢? 打开一个Config看看</p>
+
+<pre><code>Class Name                                           | Shallow Heap | Retained Heap | Percentage 
+------------------------------------------------------------------------------------------------
+com.goojia.xiaonei.sunfarm.Config @ 0x144f8ea8       |          136 |    15,856,928 |      4.04% 
+|- com.goojia.xiaonei.sunfarm.DataMap @ 0x144f8fa8   |           56 |    15,854,760 |      4.04% 
+|- java.util.HashSet @ 0x17d01f50                    |           16 |           560 |      0.00% 
+|- java.util.HashSet @ 0x17d01da8                    |           16 |           424 |      0.00% 
+|- java.util.HashSet @ 0x17d02208                    |           16 |           232 |      0.00% 
+|- java.lang.String[4] @ 0x17d02530                  |           32 |           224 |      0.00% 
+|- java.util.HashSet @ 0x17d02180                    |           16 |           136 |      0.00% 
+|- java.lang.String @ 0x179f3478  guanghuiyuan@qq.com|           24 |            80 |      0.00% 
+|- java.lang.String[1] @ 0x17d01d28                  |           16 |            64 |      0.00% 
+|- java.lang.String[1] @ 0x17d01d68                  |           16 |            64 |      0.00% 
+|- java.lang.String @ 0x179f34c8  qs828000           |           24 |            56 |      0.00% 
+|- java.lang.String[10] @ 0x17d02330                 |           56 |            56 |      0.00% 
+|- java.lang.String @ 0x17d01d00  xn                 |           24 |            40 |      0.00% 
+|- java.lang.String @ 0x17d022e0  3                  |           24 |            40 |      0.00% 
+|- java.lang.String @ 0x17d02308  30                 |           24 |            40 |      0.00% 
+|- java.lang.String[1] @ 0x17d02610                  |           16 |            16 |      0.00% 
+'- Total: 15 entries                                 |              |               |            
+------------------------------------------------------------------------------------------------
+</code></pre>
+
+<p>哦? 是DataMap类的实例? 进行展开</p>
+
+<pre><code>Class Name                                              | Shallow Heap | Retained Heap | Percentage 
+---------------------------------------------------------------------------------------------------
+com.goojia.xiaonei.sunfarm.DataMap @ 0x144f8fa8         |           56 |    15,854,760 |      4.04% 
+|- net.sf.ezmorph.bean.MorphDynaBean @ 0x20b6f3f0       |           24 |    15,734,664 |      4.01% 
+|- java.util.HashMap @ 0x144f9108                       |           40 |        31,912 |      0.01% 
+|- java.util.HashMap @ 0x144f9130                       |           40 |        16,504 |      0.00% 
+|- java.util.HashMap @ 0x144f9068                       |           40 |        10,464 |      0.00% 
+|- java.util.HashMap @ 0x144f90b8                       |           40 |         6,432 |      0.00% 
+|- java.util.HashMap @ 0x144f9090                       |           40 |         4,216 |      0.00% 
+|- java.util.HashMap @ 0x144f90e0                       |           40 |         4,024 |      0.00% 
+|- java.text.DecimalFormat @ 0x144f8fe0                 |          136 |           672 |      0.00% 
+|- java.lang.String @ 0x20d78370  shenqichinesecrabapple|           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d7cdd0  shenqiparadiseflower  |           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d85b78  caomeilianrubaobing   |           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d8c560  shenqiPutianBlackPig  |           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d957d8  shengzhuanghuanxiong  |           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d97370  shenqishuangfengluotuo|           24 |            80 |      0.00% 
+|- java.lang.String @ 0x20d75070  hongtouzhuomuniao     |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d78470  shenqinigerseed       |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d78568  wanshengjienangua     |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d78950  gaojishengdanhong     |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d7a518  tianshanxuelian       |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d7b780  hongbailanmeigui      |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d7d410  munaiyinan_farm       |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d7d898  shenqima_ti_lian      |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d80770  ziyezuojiangcao       |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d822e8  shenqisweetviolet     |           24 |            72 |      0.00% 
+|- java.lang.String @ 0x20d82790  chinesecrabapple      |           24 |            72 |      0.00% 
+'- Total: 25 of 934 entries                             |              |               |            
+---------------------------------------------------------------------------------------------------
+</code></pre>
+
+<p>哦!!!!!!!! 原来是一个MorphDynaBean 的实例!! 但是DataMap不应该持有这个类的实例的啊,仅仅是初始化的时候,作为过程量传进入而已
+稍微读了一下代码,发现这个DataMap类,发现对于这个实例变量有2个用途
+1. 仅仅只是把bean赋值为一个实例变量:</p>
+
+<pre><code>this.bean = bean;
+</code></pre>
+
+<ol>
+<li><p>加载文件,转换为对象,赋值给实例变量,然后再另外一个方法中获取</p>
+
+<pre><code>    public boolean initFromLocal() {
+            loadDataFromLocal(); #这个方法仅仅在这里被调用,目的就是为this.bean赋值
+            if (null != this.bean) {
+                    initSeeds(bean);
+                    initBabies(bean);
+                    writeSeedReferenceFile();
+                    return true;
+            } else {
+                    return false;
+            }
+    }
+</code></pre></li>
+</ol>
+
+<p>显然,我轻微改动一下代码,这对象就不会被持有了! <a href="http://code.google.com/p/sunfarm/source/diff?spec=svn887&amp;r=887&amp;format=side&amp;path=/trunk/sunfarm/src/com/goojia/xiaonei/sunfarm/DataMap.java">具体改动</a>,就是去掉实例变量,改为过程量!</p>
+
+<p>就这样,内存就直接减下来了!! 哦也,搞定!Config对象占用的内存,从15M减到200K ,即减少98.7%!
+仅仅几行代码的更改,使助手在相同内存占用的情况下,每100M内存,多运行20倍以上的帐号!!
+故马上发布了助手的3.51版,哈哈!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/210.html" title="将Dom对象变成XML并写入流">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/206.html" title="升级,升级,还是升级">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2010-12-09 21:07:10</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#Dom-ref">Dom <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Eclipse-ref">Eclipse <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#memleak-ref">memleak <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Sunfarm-ref">Sunfarm <span>7</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E4%BC%98%E5%8C%96-ref">优化 <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F-ref">内存泄漏 <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E5%8A%A9%E6%89%8B-ref">助手 <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%A7%86%E5%9B%BE-ref">视图 <span>7</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%98%B3%E5%85%89%E7%89%A7%E5%9C%BA-ref">阳光牧场 <span>4</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

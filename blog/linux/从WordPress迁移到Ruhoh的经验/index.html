@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>从WordPress迁移到Ruhoh的经验</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>从WordPress迁移到Ruhoh的经验 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>预备工作</h2>
+
+<h3>备份旧博客</h3>
+
+<ul>
+<li>备份mysql数据库中的wordpress数据</li>
+<li>备份wordpress所在的目录</li>
+</ul>
+
+<h3>迁移评论</h3>
+
+<ul>
+<li>由于ruhoh是静态博客引擎,只能使用社会化评论系统了</li>
+<li>wordpress的评论转到DISQUS最为方便, 到DISQUS注册好,wordpress安装插件,等待导入完成即可</li>
+</ul>
+
+<h3>导出并转换旧博客的文章</h3>
+
+<ul>
+<li>由于ruhoh只认markdown格式,需要将进行转换</li>
+<li>在wordpress控制界面导出wordpress.xml</li>
+</ul>
+
+<h2>转换老文章</h2>
+
+<h3>安装ruby,以Fedora 14为例</h3>
+
+<pre><code>yum install libxml2-devel libtool gcc gcc-c++ make curl autoconf automake readline-devel
+curl -L get.rvm.io | bash -s stable
+</code></pre>
+
+<h3>安装Jekyll,因为要用到其转换脚本</h3>
+
+<pre><code>gem install jekyll
+</code></pre>
+
+<h3>下载<a href="https://gist.github.com/1394128">转换脚本</a>,并执行</h3>
+
+<pre><code>wget https://gist.github.com/raw/1394128/cc8a3113c76ab51ea262da517db533e43e7e8c5c/wordpressdotcom.rb
+ruby wordpressdotcom.rb wordpress.xml /tmp/output/
+#少量文章会转换失败,记下来,需要手工导入
+</code></pre>
+
+<h2>安装ruhoh</h2>
+
+<h3>安装ruhoh和git,并测试一下是否可用</h3>
+
+<pre><code>yum install git
+gem install ruhoh
+ruhoh help
+</code></pre>
+
+<h3>建文件夹,拷贝已转的文章</h3>
+
+<pre><code>mkdir -p /home/web/
+cd /home/web
+ruhoh new wendal.net
+cp /tmp/output/*.xml wendal.net/posts/
+cd wendal.net
+</code></pre>
+
+<h3>编译一下,看看是否正常</h3>
+
+<pre><code>ruhoh compile
+</code></pre>
+
+<h2>清理自动转换的结果</h2>
+
+<h3>为老文章修正为原本的wordpress permalink, 我原本的permalink是 /400.html</h3>
+
+<pre><code>wget https://github.com/wendal/wendal.net/raw/master/tools/fix_wp_id_permalink.go   
+go run fix_wp_id_permalink.go posts/     #这是一个golang小脚本
+</code></pre>
+
+<h3>清理空行, 因为我发现自动转换后的文章带很多空行, 所以又写了一个脚本clean一下</h3>
+
+<pre><code>wget https://github.com/wendal/wendal.net/raw/master/tools/cleanup_blank_line.go
+go run cleanup_blank_line.go posts/
+</code></pre>
+
+<h3>好了,清理完毕,再编译一次吧</h3>
+
+<pre><code>ruhoh compile
+find compiled/ #可以看到老文章全部都变回/450.html形式的文件名
+</code></pre>
+
+<h2>设置DISQUS和google分析的账号,然后做些小配置</h2>
+
+<h3>DISQUS的ID</h3>
+
+<pre><code>vim widgets/comments/config.yml #填入你老博客的ID
+#当文章的路径跟原博客中的路径相同,DISQUS就能无缝还原之前的屏幕
+</code></pre>
+
+<h3>google分析的账号</h3>
+
+<pre><code>vim widgets/analytics/config.yml #然后填入你自己的ID
+</code></pre>
+
+<h3>关闭代码高亮的行号显示</h3>
+
+<pre><code>vim widgets/google_prettify/config.yml #设置为false
+</code></pre>
+
+<h3>修改首页,里面有些ruhoh的信息,删掉前面那部分即可</h3>
+
+<pre><code>vim pages/index.html 
+</code></pre>
+
+<h3>将图片/附件,导入新博客</h3>
+
+<pre><code>cp -r wp所在目录/wp-content/uploads/* media/
+</code></pre>
+
+<h3>在文章中查找 http://博客域名/wp-content/uploads,替换为</h3>
+
+<pre><code>\{\{ urls.media}} 并做适当的修正
+</code></pre>
+
+<h3>修正文章中的错误排版 -- 纯体力了</h3>
+
+<h3>把导入失败的文章,按照<a href="http://wowubuntu.com/markdown/">markdown语法</a>,手工转换为新格式</h3>
+
+<h3>再编译一次吧</h3>
+
+<pre><code>ruhoh compile
+</code></pre>
+
+<h2>安装并配置nginx,实现平滑转换,减少坏链接</h2>
+
+<h3>安装nginx,当然了,我建议自行编译</h3>
+
+<pre><code>yum install nginx
+</code></pre>
+
+<h3>修改nginx的配置文件,在将location / {} 替换为</h3>
+
+<pre><code>\# 这里是原本的feed地址, ruhoh下叫做rss.xml,需要映射一下
+location = /feed {
+    root   /home/web/wendal.net/compiled;
+    rewrite /feed /rss.xml;
+}
+
+\# 一起的分类目录,转到categories页面 -- 貌似不能直接跳到具体分类,原因不明
+location /category/ {
+    rewrite /category/(.+)/ /categories/#$1-ref permanent;
+}
+
+\# 之前的标签页,转到tags页面
+location /tag/ {
+    rewrite /tag/(.+)/ /tags#$1-ref permanent;
+}
+
+\# 直接指向compiled目录,并启用gzip,因为全是静态文件
+location / {
+    root   /home/web/wendal.net/compiled;
+    gzip             on;
+    gzip_min_length  1024;
+    index  index.html index.htm;
+    add_header Cache-Control &quot;max-age=3600, must-revalidate&quot;;
+}
+</code></pre>
+
+<h3>启动nginx并测试之</h3>
+
+<pre><code>/usr/local/nginx/sbin/nginx -t
+/usr/local/nginx/sbin/nginx
+
+#访问一下
+curl -I http://127.0.0.1/
+</code></pre>
+
+<h2>呵呵,你已经搞定了,用浏览器访问一下你的新博客吧!</h2>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2012/1115.html" title="低调发布&#34;短点&#34;">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/linux/Ruhoh%2CNow%21/" title="Ruhoh,Now!">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-11-07</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#linux-ref">linux <span>11</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#%E8%BF%81%E7%A7%BB-ref">迁移 <span>8</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

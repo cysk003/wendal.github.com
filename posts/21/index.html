@@ -80,6 +80,28 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/218.html">禁用/消除 MySQL客户端的报警声</a> <span class="date">2010-12-17 14:49:58</span></h3>
+  <p>有时候需要用MySQL客户端导入sql文件,一不小心就容易出错,然后就是一段刺耳的报警声,很是烦人!
+Google一下,发现2种方法</p>
+
+<ol>
+<li><p><a href="http://hi.baidu.com/abunchofgrape/blog/item/7211bd510a83485b1138c22c.html">直接在服务器端禁用</a></p>
+
+<p>[mysql]
+no-beep
+#&hellip;. other configure</p></li>
+
+<li><p>或者仅仅在本地使用mysql客户端时禁用,执行命令时多加一个参数 -b</p>
+
+<p>mysql -p -u root -b</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/218.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
   <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
 
@@ -109,7 +131,7 @@ cd mysql-5.5.8</p></li>
 
 <div class="post">
   <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
-  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug &ndash; <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
+  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug -- <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
 
 <p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
 
@@ -118,7 +140,7 @@ cd mysql-5.5.8</p></li>
 <pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
 </code></pre>
 
-<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 &ndash; mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
+<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 -- mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
 
 <p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
 
@@ -142,12 +164,12 @@ cd mysql-5.5.8</p></li>
 
 <p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
 测试代码:
-文件1 &mdash; index.html</p>
+文件1 --- index.html</p>
 
 <pre><code>测试导入
 </code></pre>
 
-<p>文件2 &ndash; subdir/index.html</p>
+<p>文件2 -- subdir/index.html</p>
 
 <p>访问subdir/index.html,测试通过!</p>
 
@@ -197,7 +219,7 @@ StreamResult result = new StreamResult(os);//这里的os就是OutputStream对象
 transformer.transform(source, result);
 </code></pre>
 
-<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom&ndash;&gt;Stream的时间,约60ms. 算是可以接受了.</p>
+<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom--&gt;Stream的时间,约60ms. 算是可以接受了.</p>
 
   <div class="more">
     <a href="/210.html" class="btn">read more..</a>
@@ -235,10 +257,10 @@ No shared spaces configured.
   <h3 class="title"><a href="/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
   <p>今天,升级了好几样东西</p>
 
-<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        &mdash;&gt;  0.9.2           新增一个功能.修复几个bug
-<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             &mdash;&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
-<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             &mdash;&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
-<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  &mdash;&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
+<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        ---&gt;  0.9.2           新增一个功能.修复几个bug
+<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             ---&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
+<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             ---&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
+<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  ---&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
 
   <div class="more">
     <a href="/206.html" class="btn">read more..</a>
@@ -269,35 +291,6 @@ No shared spaces configured.
 
   <div class="more">
     <a href="/197.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
-  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
-
-<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
-启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
-
-<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
-org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
-    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
-    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
-    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
-    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
-</code></pre>
-
-<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
-再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
-没办法，出我的绝招，看源码/反编译！
-研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
-最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
-
-<pre><code>hibernate.default_schema=ALFRESCO
-</code></pre>
-
-  <div class="more">
-    <a href="/191.html" class="btn">read more..</a>
   </div>
 </div>
 

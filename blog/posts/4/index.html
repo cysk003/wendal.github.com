@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 4</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/07/03.html">py2exe练手</a> <span class="date">2013-07-03</span></h3>
+  <p>受老同学所托,写了个字符串抽样的东西(就是N个字符串抽取固定的几个),代码如下:</p>
+
+<pre><code>#!python
+# -*- coding: UTF-8 -*-
+
+import os.path
+import time
+import sys
+import itertools 
+import random
+
+if not os.path.exists(&quot;numbers.txt&quot;) :
+    print u&quot;没找到数据文件 numbers.txt&quot;
+    time.sleep(5)
+    sys.exit()
+
+with open(&quot;numbers.txt&quot;) as f :
+    d = str(f.read())
+
+#print d
+numbs = d.split(&quot;,&quot;)
+#print numbs, u&quot;长度&quot; ,len(numbs)
+
+re = itertools.combinations(numbs, 5) #内置的一个库,so easy
+re = list(re)
+random.shuffle(re)                    #把顺序打乱,哈哈
+
+with open(&quot;re.csv&quot;, &quot;w&quot;) as f:        #按同学要求,输出为csv文件
+    for p in re :
+        f.write(', '.join(str(x) for x in p))
+        f.write(&quot;\n&quot;)
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/07/03.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/07/02.html">微信公众平台开发小结</a> <span class="date">2013-07-02</span></h3>
+  <p>只讨论低权限帐号,高端帐号请绕道&hellip;</p>
+
+<h2>能做什么?不能做什么?</h2>
+
+<p>应答机,自主查询机都能做,但由于没法主动推送(除非你能拿到很高的权限),所以呢,什么预警系统的,一时半刻做不了</p>
+
+<h2>机制</h2>
+
+<h1>基本流程</h1>
+
+<pre><code>用户发信息  --&gt;微信服务器--&gt;我们的服务器
+
+用户显示信息&lt;--微信服务器&lt;--
+
+#如果是图文信息,就有额外的通信
+
+用户访问图文--&gt;我们的服务器
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/07/02.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/06/25.html">在windows下编译OpenResty</a> <span class="date">2013-06-25</span></h3>
+  <p>折腾了一天,终于解决了</p>
+
+<h1>首先,准备cygwin环境</h1>
+
+<p>cygwin下载setup.exe,启动并开始安装,建议选163源或者日本的源,速度较快</p>
+
+<p>需要的安装的包及其devel包:
+openssl zlib pcre</p>
+
+<p>还有就是一些编译需要的工具:
+gcc4 make perl lua  (不使用openresty内置的lua)</p>
+
+<p><img src="/blog/assets/media/2013/06/25/cygwin_install.jpg"></img></p>
+
+<p><img src="/blog/assets/media/2013/06/25/cygwin_install2.jpg"></img></p>
+
+<p>下载openresty, <a href="http://openresty.org/">openresty官网</a></p>
+
+  <div class="more">
+    <a href="/blog/2013/06/25.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/06/14.html">马来西亚,闲游</a> <span class="date">2013-06-14</span></h3>
+  <h1>严重声明</h1>
+
+<h2>很多图,慎入!!</h2>
+
+<h2>超级啰嗦,慎入!!</h2>
+
+<p>你还是想看?好吧&hellip; 不同情你</p>
+
+<h1>旅游是最好的投资</h1>
+
+<p>4天的马来西亚之行,是首次真正的出国之行,而且还真的是自由行了</p>
+
+<p>出发: 2013-06-10 10:20 亚航 AK1013 白云机场</p>
+
+<p>返航: 2013-06-13 16:05 亚航 AK1016 马来西亚LCCT机场</p>
+
+  <div class="more">
+    <a href="/blog/2013/06/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/05/23.html">X11的xcb库卡死</a> <span class="date">2013-05-23</span></h3>
+  <p>一个多月没写blog,郁闷了&hellip;</p>
+
+<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
+
+<p>操作系统: opensuse 11.4 x86
+语言:     Qt 4.8.4,vdpau + Nv卡</p>
+
+<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
+
+<p>堆栈:</p>
+
+<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
+#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
+#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
+#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
+#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
+#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
+
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/05/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0412.html">在windows下编译nginx</a> <span class="date">2013-04-12</span></h3>
+  <p>又有人在windows下编译nginx -- 为什么那么多人喜欢自残呢?</p>
+
+<h2>官网教程</h2>
+
+<p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
+
+<p>本文基本上就是对着做,但需要对其进行微调 -- 不爽吗?咬我啊!!</p>
+
+<h2>准备工具</h2>
+
+<p>系统: winxp sp3 32位, 例如你可以用个虚拟机什么的安装一个winxp</p>
+
+<p><a href="https://msys-cn.googlecode.com/files/MSYS-Update.7z">MSYS-CN 2010-08-19 更新版本</a></p>
+
+<p><a href="http://zlib.net/zlib-1.2.7.tar.gz">zlib 1.2.7</a></p>
+
+<p><a href="http://nchc.dl.sourceforge.net/project/pcre/pcre/8.32/pcre-8.32.zip">pcre 8.32</a></p>
+
+  <div class="more">
+    <a href="/blog/2013/0412.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0406.html">Golang下通过syscall调用win32的api</a> <span class="date">2013-04-06</span></h3>
+  <p>源于golang群中再次提到windows下获取磁盘空间的方法</p>
+
+<p>由于golang的api并非完全跨平台, golang本身并没有直接提供windows下的方式</p>
+
+<h2>syscall.Syscall系列方法</h2>
+
+<p>当前共5个方法</p>
+
+<pre><code>syscall.Syscall
+syscall.Syscall6
+syscall.Syscall9
+syscall.Syscall12
+syscall.Syscall15
+</code></pre>
+
+<p>分别对应 3个/6个/9个/12个/15个参数或以下的调用</p>
+
+  <div class="more">
+    <a href="/blog/2013/0406.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0325.html">Python还是很适合快速开发的</a> <span class="date">2013-03-25</span></h3>
+  <p>上周为了重写公司的其中一个关键进程,断然选用Python快速开发了一版</p>
+
+<h2>首先,是启动器</h2>
+
+<p>虽然python脚本可以直接启动,但为了兼容其他进程,需要封装成一个原命名的进程</p>
+
+<pre><code>#include &lt;Python.h&gt;
+#include &lt;sched.h&gt;
+
+int main(int argc, char *argv[]) {
+    //设置进程优先级,因为有其他更重要的进程
+    nice(10);
+    // 设置cpu亲和性,因为是4线程的机器,所以仅亲和后2个cpu
+    cpu_set_t  mask;
+    CPU_ZERO(&amp;mask);
+    CPU_SET(2, &amp;mask);//第3个
+    CPU_SET(3, &amp;mask);//第4个,其实就是第二个core
+    sched_setaffinity(0, sizeof(mask), &amp;mask);
+
+    Py_SetProgramName(argv[0]);
+    Py_Initialize(); //标准的啦,初始化Python环境
+    PySys_SetArgv(argc, argv);
+    FILE * fp = fopen(&quot;/home/xxx/yyy/zzz.py&quot;, &quot;r&quot;); //打开入口py脚本的句柄,准备打开
+    // 这里并没有去判断是否真的存放,因为必须存放,不然也什么都做不了
+    //PyRun_SimpleFile(fp, &quot;zzz.py&quot;);
+    PyRun_AnyFile(fp, &quot;zzz.py&quot;); //启动之,哈哈
+    Py_Finalize(); // 严格来说从不调用,哈哈,因为是守护进程,退出的话,都是直接退
+    return 0;//符合标准C嘛,哈哈
+}
+
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0325.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0316.html">Golang的坑之http读取大文件必须读完</a> <span class="date">2013-03-16</span></h3>
+  <h2>先上代码</h2>
+
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+)
+
+func main() {
+    resp, err := http.Get(&quot;http://mirrors.ustc.edu.cn/opensuse/distribution/12.3/iso/openSUSE-12.3-GNOME-Live-i686.iso&quot;)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(&quot;Resp code&quot;, resp.StatusCode)
+    resp.Body.Close() // 注意,这里并不读取resp.Body, 而resp.Body有大概700mb未读取
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0316.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0216.html">天语T619也能Root</a> <span class="date">2013-02-16</span></h3>
+  <h2>昨天,小黄蜂终于到手 -- 广东移动周销售1.4w台的299元廉价机</h2>
+
+<p>玩了一天,还是忍不住要root掉的. 实在无法忍受那些百度的app!!!</p>
+
+<h2>但,官方固件在哪里呢?</h2>
+
+<p>官网,木有
+常见论坛,木有</p>
+
+<p>最后,在592zn找到了
+<a href="http://www.592zn.com/thread-209732-1-1.html">天语T619官方固件+592zn带ROOT固件</a></p>
+
+<p>接下来,当然是root固件啦: 用<a href="http://yaffey.googlecode.com/files/yaffey-v0.2-win32.zip">yaffey</a>
+修改好,刷机,搞定!!</p>
+
+<p>接下来,就是各种删除,哈哈</p>
+
+  <div class="more">
+    <a href="/blog/2013/0216.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

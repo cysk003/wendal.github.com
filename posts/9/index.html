@@ -80,6 +80,17 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/427.html">今天生日,上一张图!</a> <span class="date">2012-05-24 21:58:24</span></h3>
+  <p><img src="/assets/media/2012/05/psb.jpg">鸣鸣玩电脑</img></p>
+
+<p>明天去帝都: 机票OK,酒店OK,保险OK</p>
+
+  <div class="more">
+    <a href="/427.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/426.html">香港的婚礼,不一样的</a> <span class="date">2012-05-21 10:32:38</span></h3>
   <p>先上个google地图:</p>
 
@@ -207,7 +218,7 @@ end
   <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank"><a href="http://glines.org/software/bfr">http://glines.org/software/bfr</a></a></p>
 
 <p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
-Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
+Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 -- 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
 
 <p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
 
@@ -359,7 +370,7 @@ cd /opt/openjdk
 
 <li><p>将ecj-3.7.2.jar放入ant的lib文件夹中</p></li>
 
-<li><p>如果是eclipse中跑ant,那么,需要设置一下,     Run As &ndash; Ant Build &hellip; &ndash; ClassPath ,加入ecj.jar</p></li>
+<li><p>如果是eclipse中跑ant,那么,需要设置一下,     Run As -- Ant Build &hellip; -- ClassPath ,加入ecj.jar</p></li>
 </ol>
 
 <p>Maven换用ecj
@@ -371,40 +382,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/416.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/414.html">Nutz资源扫描的重新实现</a> <span class="date">2012-04-28 08:44:50</span></h3>
-  <p><strong>Nutz.Resource包,是2010年4月创建的,至今2年了.当初的设计,就是为了 &ldquo;资源扫描&rdquo; 这个基础话题.</strong></p>
-
-<p>Spring中也有类似的基础设施,但复杂很多,例如classpath与classpath*等定义.</p>
-
-<p><strong>之前的实现,按以下思路完成:</strong>
-1. 传入一个路径,通过Files.findFile尝试寻找是否有这个文件
- &ndash;2. 路径是文件系统上的文件夹,将立马可以找到具体的File对象,可以直接扫描文件夹但
- &ndash;2. 文件存在于jar包,则需要解析出其jar文件的路径,读取jar文件进行扫描
-3. 如果还没找到,搜索classpath和WEB-INF/lib,遍历里面的文件夹/jar文件</p>
-
-<p>一个突出的问题是,Files.findFile的返回值是File对象,这意味着,如果该路径存在于多个不同的classpath路径或jar中,只有第一个路径会被返回.
-而且,因为是File对象,对于Jar文件中的文件,读取比较麻烦(例如jarinjar打包的可执行jar文件).</p>
-
-<p><strong>解决复杂路径的jar文件读取问题</strong>:</p>
-
-<pre><code>    public static ZipInputStream makeZipInputStream(String jarPath)
-            throws MalformedURLException, IOException {
-        ZipInputStream zis = null;
-        try {
-            zis = new ZipInputStream(new FileInputStream(jarPath));
-        } catch (IOException e) {
-            zis = new ZipInputStream(new URL(jarPath).openStream());
-        }
-        return zis;
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/414.html" class="btn">read more..</a>
   </div>
 </div>
 

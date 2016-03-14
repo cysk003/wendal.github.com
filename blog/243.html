@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>一个极其简陋的Datasource连接池实现</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>一个极其简陋的Datasource连接池实现 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>写了一段时间了,一直没提交到Nutz,哈哈. 明显没有技术含量,提上去明显找抽!</p>
+
+<p>用来跑Nutz的测试,能够全部pass.</p>
+
+<p>直接上代码:</p>
+
+<pre><code>package org.nutz.dao.impl;
+
+import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import javax.sql.DataSource;
+
+import org.nutz.lang.Lang;
+
+@SuppressWarnings(&quot;unchecked&quot;)
+public class SimpleDataSource implements DataSource {
+
+    private String username;
+    private String password;
+    private String url;
+
+    /*保存已经建立的连接*/
+    private ConcurrentLinkedQueue connQueue = new ConcurrentLinkedQueue();
+
+    public SimpleDataSource(String url, String driverClass, String username, String password)
+            throws ClassNotFoundException {
+        if (driverClass != null)
+            Class.forName(driverClass);
+        this.url = url;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Connection getConnection() throws SQLException {
+        Connection conn = (Connection) connQueue.poll();
+        if (conn != null)
+            return conn;
+        conn = DriverManager.getConnection(url, username, password);
+        return (Connection) Proxy.newProxyInstance( SimpleDataSource.class.getClassLoader(),
+                                                    new Class[]{Connection.class},
+                                                    new ConnectionInvocationHandler(conn, connQueue));
+    }
+
+    public void close() throws Throwable {
+        Iterator it = connQueue.iterator();
+        while (it.hasNext()) {
+            Connection conn = (Connection) it.next();
+            synchronized (conn) {
+                try {
+                    conn.close();
+                }
+                catch (Throwable e) {}
+            }
+        }
+    }
+
+    protected void finalize() throws Throwable {
+        close();
+    }
+
+    static class ConnectionInvocationHandler implements InvocationHandler {
+
+        private Connection conn;
+
+        private Queue&lt;connection&gt; connQueue;
+
+        public ConnectionInvocationHandler(Connection conn, Queue&lt;/connection&gt;&lt;connection&gt; connQueue) {
+            this.conn = conn;
+            this.connQueue = connQueue;
+        }
+
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (args == null
+                &amp;&amp; &quot;close&quot;.equals(method.getName())
+                &amp;&amp; connQueue.size() &lt; 20
+                &amp;&amp; connQueue.offer((Connection) proxy))
+                return null;
+            try {
+                return method.invoke(conn, args);
+            }
+            catch (Throwable e) {
+                throw Lang.unwrapThrow(e);
+            }
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // 其他无需实现的方法
+    // -------------------------------------------------------------------------
+    public Connection getConnection(String username, String password) {
+        throw Lang.noImplement();
+    }
+
+    public PrintWriter getLogWriter() throws SQLException {
+        throw Lang.noImplement();
+    }
+
+    public int getLoginTimeout() throws SQLException {
+        throw Lang.noImplement();
+    }
+
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        throw Lang.noImplement();
+    }
+
+    public void setLoginTimeout(int seconds) throws SQLException {
+        throw Lang.noImplement();
+    }
+
+    public boolean isWrapperFor(Class iface) throws SQLException {
+        throw Lang.noImplement();
+    }
+
+    public Object unwrap(Class iface) throws SQLException {
+        throw Lang.noImplement();
+    }
+}
+</code></pre>
+
+<p>用来跑Nutz的TestCase, 在我的机器耗时5.2秒,与DBCP相当(5.3秒).
+缺点:
+1. 高并发时,可能建立过多的连接
+2. 高并发时,部分连接可能没有被回收
+3. 限制死了最多保存20个连接(当然,这个很好改)
+4. XXX都没法配置</p>
+
+<p>调用方法:</p>
+
+<ol>
+<li><p>直接创建:</p>
+
+<p>DataSource dataSource = new SimpleDataSource(&ldquo;jdbc:h2:mem:~&ldquo;,&ldquo;org.h2.Driver&rdquo;,&ldquo;sa&rdquo;,&ldquo;sa&rdquo;);
+//代码&hellip;..</p>
+
+<p>//最后记得关闭一下,或者等GC的时候自行关闭.
+((SimpleDataSource)dataSource).close();</p></li>
+
+<li><p>NutIoc的json方式</p>
+
+<pre><code>dataSource : {
+    type :&quot;org.nutz.dao.impl.SimpleDataSource&quot;,
+    events : {
+        depose :&quot;close&quot;
+    },
+    args : [&quot;jdbc:h2:mem:~&quot;,&quot;org.h2.Driver&quot;,&quot;sa&quot;,&quot;sa&quot;]
+}
+</code></pre></li>
+</ol>
+
+<p>哈哈,没啥技术含量,来拍我吧!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/244.html" title="完成对JBE的修正,终于可以用了.">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/242.html" title="Nutz 一些无法完成的功能">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-02-21 13:18:41</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E6%8A%80%E6%9C%AF-ref">技术 <span>5</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%BF%9E%E6%8E%A5%E6%B1%A0-ref">连接池 <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

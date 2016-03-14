@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Java匿名内部类的传值</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Java匿名内部类的传值 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>在Nutz中,存在大量需要使用匿名内部类的情况,很多童鞋都对传值很困惑,所以我这里说明一下</p>
+
+<p><strong>传入:</strong></p>
+
+<pre><code>//匿名内部类,只能访问final的本地变量及方法参数
+public void addUser(final String name, String passwd, final String userType) {
+    User user = null;
+    if (&quot;admin&quot;.equal(userType))
+        user = new AdminUser(name, passwd); //仅作演示.
+    else
+        user = new User(name, passwd);
+    final User _user = user; //因为user变量不能设置为final,所以需要新加一个变量来中转
+    Trans.run(new Atom(){
+        public void run() {
+            dao.insert(_user);
+            if (log.isDebugEnable())
+                log.debugf(&quot;Add user id=%d, name=%s , type=%s&quot;, _user.getId(), name, userType);
+        }
+    });
+}
+</code></pre>
+
+<p><strong>传出(获取方法返回值等等):</strong></p>
+
+<p><strong>方法1 -- 对象数组法</strong>
+通过一个final的Object对象数组,存放需要的值</p>
+
+<pre><code>public long countUser(final String userType) {
+    final Object[] objs = new Object[1];
+    Trans.run(new Atom(){
+        public void run() {
+            objs[0] = dao.count(User.class, Cnd.where('userType', '=', userType));
+        }
+    });
+    return ((Number)objs[0]).longValue();
+}
+</code></pre>
+
+<p><strong>方法2 -- ThreadLocal法</strong>
+通过一个ThreadLocal来存放结果,这个ThreadLocal可以是静态的,供全app使用的</p>
+
+<pre><code>private static final ThreadLocal re = new ThreadLocal(); //自行补上泛型Object
+public long countUser(final String userType) {
+    Trans.run(new Atom(){
+        public void run() {
+            re.set(dao.count(User.class, Cnd.where('userType', '=', userType)));
+        }
+    });
+    return ((Number)re.get()).longValue(); //严谨一点的话,应该将ThreadLocal置空
+}
+</code></pre>
+
+<p><strong>方法3 -- Molecule法</strong>
+Molecule类是Nutz内置的抽象类类,实现Runnable和Atom接口,添加了两个获取/设置值的方法.</p>
+
+<pre><code>public long countUser(final String userType) {
+    Molecule mole = new Molecule() { //需要自行补齐泛型
+        public void run() {
+            setObj(dao.count(User.class, Cnd.where('userType', '=', userType)));
+        }
+    };
+    Trans.run(mole);
+    return ((Number)mole.getObj()).longValue(); 
+}
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/405.html" title="Python的while 1跟while True到底有什么区别?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/403.html" title="学习Java字节码的一些提示">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-03-24 21:37:42</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

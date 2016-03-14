@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>编译RK2918源码 -- 简单说明</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>编译RK2918源码 -- 简单说明 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>自从公布RK29的源码地址,各种模块都成为可能</p>
+
+<p>我也说说如何编译吧, 环境 Ubuntu 10.10 server x86版</p>
+
+<ol>
+<li><p>第一步当然是下载源码并解压啦, 以andy pad的源码为例</p>
+
+<p>cd ~/
+mkdir android
+cd ~/android
+wget <a href="https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip">https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip</a>
+unzip 4c6b4f4c48d1.zip
+mv paulobrien-android_kernel_andypad-4c6b4f4c48d1/ rk29</p></li>
+
+<li><p>安装依赖包</p>
+
+<p>sudo apt-get install lzop sharutils libncurses5-dev vim</p></li>
+
+<li><p>下载交叉编译器(我个人认为是错误翻译,应该叫跨平台编译器) arm 4.4.0</p>
+
+<p>cd ~/android
+wget <a href="http://dl.google.com/android/ndk/android-ndk-r4b-linux-x86.zip">http://dl.google.com/android/ndk/android-ndk-r4b-linux-x86.zip</a>
+unzip android-ndk-r4b-linux-x86.zip
+mkdir toolchain
+cp -r android-ndk-r4b/build/prebuilt/linux-x86/* toolchain/</p></li>
+
+<li><p>拷贝编译设置</p>
+
+<p>cd ~/android
+cd rk29
+cp arch/arm/configs/rk29_ddr3sdk_defconfig .config
+#提醒: configs文件夹下面有多个配置文件,具体差异不清楚</p>
+
+<p>#尝试编译一下内核
+make kernel
+#如无意外,你应该看到几个关于配置的提示,要求你进行选择,直接回车选默认值即可,然后编译完成</p></li>
+
+<li><p>完整编译一次</p>
+
+<p>cd ~/android/rk29
+#我本地解压出来的源码包,其中的drivers/usb/storage/debug.h会出错,所以需要自行下载一个
+cd drivers/usb/storage
+rm debug.h
+wget <a href="https://bitbucket.org/paulobrien/android_kernel_andypad/raw/4c6b4f4c48d1/drivers/usb/storage/debug.h">https://bitbucket.org/paulobrien/android_kernel_andypad/raw/4c6b4f4c48d1/drivers/usb/storage/debug.h</a></p>
+
+<p>cd ~/android/rk29
+make
+#一起顺利的话,恭喜你,成功了!!</p></li>
+
+<li><p>编译具体的模块,以cifs.ko为例</p>
+
+<p>#打开配置选项界面
+make menuconfig</p>
+
+<p>#File system --&gt; Network File system (按空格,让其启用) --&gt; CIFS support (按空格,直至变成M,即模块)
+按Esc无数次,然后提示是否保存,选保存</p>
+
+<p>#编译cifs模块
+make M=fs/cifs</p>
+
+<p>#应该会打印出 cifs.ko字样,查看一下
+find -name &ldquo;cifs.ko&rdquo;
+#你就应该看到编译好的cifs.ko模块</p>
+
+<p>#提醒一句, CIFS模块,还需要slow-work.ko和nls_utf8.ko,都可以用类似的方法进行编译得到</p></li>
+</ol>
+
+<hr />
+
+<p>反馈1 :
+编译slow-work.ko,需要修改slow-work.c哦, 请查看 <a href="http://forum.xda-developers.com/showthread.php?t=1113191">http://forum.xda-developers.com/showthread.php?t=1113191</a></p>
+
+<p>如果你遇到什么编译问题,欢迎留言交流哦</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/351.html" title="Python: 为对象动态添加函数,且函数定义来自一个str">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/344.html" title="Git的几个实用小技巧">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-11-18 13:23:23</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#Android-ref">Android <span>8</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#rk2918-ref">rk2918 <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E4%B8%8B%E8%BD%BD-ref">下载 <span>45</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

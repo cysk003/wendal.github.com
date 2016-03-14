@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>推荐OpenResty -- Nginx全能插件版</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>推荐OpenResty -- Nginx全能插件版 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>实在吐血,这是第二次写这个文章,刚才准备保存的时候操作失误,全没了&hellip;.</p>
+
+<p>官网: <a href="http://openresty.org/">http://openresty.org/</a>
+虽然是中国人做的,但没几个汉字&hellip;..</p>
+
+<p>我用Nginx,是这样一个过程:
+1. 系统rpm中的nginx,能让其跑起来
+2. 玩配置文件
+3. 玩编译选项
+4. 写插件,集成第三方插件</p>
+
+<p>OpenResty , 是淘宝一位大牛(agentzh)集成的包含N多好插件的Nginx捆绑源码包,这位仁兄自称Nginx最活跃的第三方模块开发人员哦</p>
+
+<p>下面,当然要列一下到底集成了什么模块(已经根据agentzh的微博提醒进行修正):</p>
+
+<p>LuaJIT -- 极速版Lua实现
+ArrayVarNginxModule -- 数组类型的Nginx变量
+AuthRequestNginxModule -- 鉴权,想象一下以C代码的速度判断一个请求是否合法,是不是很有快感呢?!
+DrizzleNginxModule -- Nginx-MySQL桥,非阻塞的哦,我又爱又恨的一个模块,值得注意的是,其响应是RDS流
+EchoNginxModule -- 以非常直观的方式在Nginx配置文件中编写简单的处理逻辑,源码包含大量注释,绝对是入门好例子!!
+EncryptedSessionNginxModule -- 加密会话
+FormInputNginxModule -- 解析post请求中的参数,这下子,简单请求根本不需要PHP/Java来处理啦
+HeadersMoreNginxModule -- Nginx默认的header模块只能添加或忽略,这个给你CRUD全套的!!
+IconvNginxModule -- 编码转换,不多说,也不懂
+StandardLuaInterpreter -- 与Lua官方实现所匹配,一般用不上,因为我们用LuaJIT!!
+MemcNginxModule -- 与Memcached的绝配,谁用谁知道!! 与upstram_keepalive一起用,你能更High!!
+Nginx
+NginxDevelKit -- N多第三方插件都依赖的东西,<del>不知道为啥</del> 提供一些方便使用的基础API封装
+LuaCjsonLibrary -- Lua版的Json处理库实在太慢,这个才叫速度!!
+LuaNginxModule -- 我的最爱,一般逻辑,完全没必要用Java/PHP啦
+LuaRdsParserLibrary -- 在Lua中直接处理RDS流,速度杠杠的!
+LuaRedisParserLibrary -- 在Lua中处理Redia模块的响应,暂时我还没用上
+PostgresNginxModule -- Nginx-Postgres桥,输出的也是RDS流
+RdsCsvNginxModule -- RDS流转CVS格式,不知道能干啥,报表?
+RdsJsonNginxModule -- RDS流转JSON字符串,之前经常用这个
+Redis2NginxModule -- Nginx-Redis2桥
+SetMiscNginxModule -- 提供很多很实用的方法,例如base64编解码,URL编解码,SQL防注入等等
+SrcacheNginxModule -- 缓存模块,据说跟Memc模块一起用比较爽
+UpstreamKeepaliveNginxModule -- 与Memc模块的标配,号称性能提升几倍呢
+XssNginxModule -- <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax编程</p>
+
+<p>OpenResty的最大的好处是帮你弄清楚各个模块的编译顺序,别小看,学问大大的呢</p>
+
+<p>当初没有这东西,单单弄清楚模块间的编译顺序就耗费不少时间</p>
+
+<p>来吧,试试这个国产的精品!!</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/339.html" title="RK2918 内核源码 -- 想不到吧?!">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/335.html" title="捐点钱给自己喜欢的开源软件">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-10-20 22:39:40</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Nginx-ref">Nginx <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Java-ref">Java <span>56</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#lua-ref">lua <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#MySQL-ref">MySQL <span>11</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#nginx-ref">nginx <span>23</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E7%BC%96%E7%A0%81-ref">编码 <span>6</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%9B%86%E6%88%90-ref">集成 <span>7</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

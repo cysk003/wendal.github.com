@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 11</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/400.html">如何阅读Nutz的源码</a> <span class="date">2012-03-19 22:50:37</span></h3>
+  <p>一直以来都有很多人问,我一直以来就有一个简单直接的回答:
+&ldquo;看你喜欢看的模块&rdquo;</p>
+
+<p>今天,我决定用长一点的篇幅及内容来解释一下</p>
+
+<p><strong>Nutz的基础设施 -- Lang/Castor/Json/Log/Plugin</strong>
+所有模块都是无约束地使用这个几个package所提供的方法
+--Lang,提供的是帮助方法,各种各样的,其名字来源于对java.lang包的补充. 注意,其中的Mirror类封装了大量的反射,但请不要再以JDK1.2的思维去想象反射的性能!!
+--Castor,负责类型转换, 例如String--&gt;List
+--Json,一个基本完整(不解析科学计数),Json字符串与Java对象的互转实现
+--Log,日志接口,Nutz的代码,在运行时并不强制依赖具体的日志实现,这个package就是做了封装
+--Plugin,插件模块,最初的设计是为了一套简单的插件机制,现在仅Log模块在使用,意义已经不大
+建议重点关注的类/接口:
+Mirror Castors Json Lang Files Streams Log Log4jLogAdapter SimplePluginManager MultiLineProperties</p>
+
+<p><strong>反向注入/依赖注入 -- Ioc</strong>
+由于Spring的横行,许多童鞋连Ioc的基本原理都已经忘掉了
+IocLoader负责加载配置信息(如js,注解)
+Ioc(NutIoc)按配置信息生成具体对象(bean)
+IocContext按配置信息管理bean的生命周期(create/fetch/depose)</p>
+
+  <div class="more">
+    <a href="/blog/400.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/399.html">登录入口的一个小小的细节,HttpSession.setAttribute的调用顺序</a> <span class="date">2012-03-14 21:23:40</span></h3>
+  <p>今天与zozoh的交谈中,又把这个问题提了一下. 就是登录代码中,Session处于一个不可靠的状态.</p>
+
+<p>这里用NutzMVC的代码来演示,但并不代表是nutz的问题,而是J2EE都面对的问题(PS: 如果你使用了SpringSecurity等安全框架,则可能它已经帮你出来了这个问题)</p>
+
+<pre><code>//登录入口方法
+public View login(String userName, String passwd, HttpSession session) {
+    session.setAttribute(&quot;me&quot;, user); //当代码运行到这里,会话中已经存在me这个attr
+    session.setAttribute(&quot;rule&quot;, rule);
+    return new JspView(&quot;/index.jsp&quot;);
+}
+
+//登录后才能访问的入口方法
+@Filters(@By(type = CheckSession.class, args = {&quot;me&quot;, &quot;/&quot;})) //已经HttpSession中已经包含me这个attr,所以,这个过滤器会判定为已经登录
+public Object xxx(HttpSession session) {
+    Rule myRule = session.get(&quot;rule&quot;); //由于已经被@Filters标注,所以方法会认为会话是已经完整初始化的
+    // .... ... .. 
+}
+</code></pre>
+
+<p>也就是说, HttpSession在登录入口方法完成前,处于一个不可靠的状态 -- 对于检测是否登录的代码来说,这个会话是已经登录的,但事实上这个会话并未完成逻辑上的初始化.
+当恶意进行类似的访问(多线程),那么其他入口方法要么报NPE,要么执行不可预测的逻辑.如果入口方法需要设置多个attr,那么HttpSession将处于多个不同的半初始化状态.</p>
+
+  <div class="more">
+    <a href="/blog/399.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/397.html">图,是一种表态</a> <span class="date">2012-03-14 09:06:57</span></h3>
+  <p><img src="/blog/assets/media/2012/03/p_large_7rdv_2c51000037bc1263.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/397.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/394.html">获得方法形参名称列表 -- 哦也,搞定!!</a> <span class="date">2012-03-10 22:46:33</span></h3>
+  <p>JAVA获取类的方法的参数名 -- 老话题,新方法!!</p>
+
+<p>折腾了一天,终于搞定了.测试了nutz所有的类,均读取正常!! 完美读取任何class的变量名信息! 呵呵,当前,前提是编译时含debug信息.</p>
+
+<p><strong>无任何依赖</strong>,不需要asm,不要其他任何字节码工具,纯标准JDK API实现. 核心代码,仅一个方法,130行,哦也!!</p>
+
+<p>终于完成这个一直想做到的功能 -- 在Java中,获取方法的形参(参数)的名字.由于这个类只做需要做的事,所以,我非常确信它比asm的vistor更快,更可靠.</p>
+
+<pre><code>public void list(int page , int pageSize) { //这个类的作用,就是拿到page和pageSize这两个名字,是的,是名字.
+   //...
+}
+</code></pre>
+
+<p><strong>实现关键点:</strong>:
+1. 跳过一切不需要的数据结构,如版本号,接口信息,字段信息
+2. 只解析常量池中UTF8_String,因为只用到这个,其他都是多余的常量
+3. 实现方法到descriptor的转换函数,因为字节码中的方法签名,是descriptor格式的</p>
+
+<p>代码中含义泛型,直接贴这里的话,页面显示比较麻烦,就上个截图吧.
+<img src="/blog/assets/media/2012/03/method_param.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/394.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/393.html">NutzMongoSession -- 轻便的分布式Session实现</a> <span class="date">2012-03-06 15:20:40</span></h3>
+  <p>作为Ngqa项目的其中一个功能, NutzMongoSession已经开发完成,并迁入zTask项目中,与NutzMongo的代码整合.</p>
+
+<p><strong>1. 用法</strong>
+基本配置(web.xml),接管全部请求,并替换其获取会话的req.getSession方法:</p>
+
+<pre><code>    &lt;filter&gt;
+        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.nutz.mongo.session.MongoSessionFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;mongoSession&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+        &lt;dispatcher&gt;REQUEST&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;FORWARD&lt;/dispatcher&gt;
+        &lt;dispatcher&gt;INCLUDE&lt;/dispatcher&gt;
+    &lt;/filter-mapping&gt;
+</code></pre>
+
+<p>在项目启动的代码中,加入下面的语句:</p>
+
+  <div class="more">
+    <a href="/blog/393.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/387.html">Win8消费者预览版无法拨通VPN的解决方法</a> <span class="date">2012-03-03 14:56:47</span></h3>
+  <p>用上Win8已经2天了,其中就纠结的莫过于VPN拨号失败&hellip;
+<img src="/blog/assets/media/2012/03/Win8_VPN_FAIL.jpg"></img></p>
+
+<p>失败的原因是, VPN拨号是,会自动把计算机名做为域,并附加到验证信息中!! 非常非常纠结的一个行为,而且无法自行输入(^&amp;$&amp;#%&amp;$^%&amp;)</p>
+
+<p>几经探索,终于找到一个方法,就是设置VPN的选项,让其先拨ADSL:
+<img src="/blog/assets/media/2012/03/Win8_VPN_1.jpg"></img></p>
+
+<p>拨号时,就会出现对话框了.. 鸡冻啊!!:</p>
+
+<p><img src="/blog/assets/media/2012/03/Win8_VPN_2.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/387.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/383.html">SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</a> <span class="date">2012-02-26 22:15:59</span></h3>
+  <p>自认翻X墙高手,却与同事交流的时候败下阵来,我最初还口口声声说 几条命令 就能搞定,绝对米问题.
+结果,俺发现,这玩意还是有点技术含量的&hellip; 不过,经过我不断提炼,最后是十几条命令搞定(关键语句仅3条,即启动3个进程),哦也!!</p>
+
+<p>需求基本上是这样:
+客户端只需要配置一下代理服务器,就能做到需要翻墙就翻墙,不需要就走普通渠道.</p>
+
+<p>最初,我的想法
+1. 直接ssh隧道 -- 只有部分程序支持sockt5代理
+2. squid+ssh隧道 -- squid压根不支持sockt5的后端代理,我靠
+3. squid+Polipo+ssh隧道 -- 有点靠谱了,我差点就狠心学一下squid恶心的配置文件
+4. nginx+Polipo+ssh隧道 -- 代理https有点问题,我一直没解决</p>
+
+<ol>
+<li><p>在本地一台Linux服务器,创建用proxy,创建sshkey并上传到国外的vps:</p>
+
+<p>#添加用户
+adduser proxy
+#切换到proxy用户
+su proxy
+#创建ssh密钥,一路回车
+ssh-keygen
+#将刚刚生成的key,上传到国外vps,以便进行无密码登录
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/383.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/379.html">鸣鸣与本地樱花</a> <span class="date">2012-02-26 15:46:35</span></h3>
+  <p>广州市花都区梯面镇,一小片的樱花树</p>
+
+<p><img src="/blog/assets/media/2012/02/C-300x225.jpg">鸣鸣与樱花合影</img></p>
+
+<p><img src="/blog/assets/media/2012/02/DSCF0983-300x225.jpg">小樱花特写2</img></p>
+
+<p><img src="/blog/assets/media2012/02/DSCF0986-300x225.jpg">小樱花特写1</img></p>
+
+<p>相机: 富士, 非单反, 纯傻瓜机
+未PS,但用Windows自带的画图工具缩小的尺寸.</p>
+
+  <div class="more">
+    <a href="/blog/379.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/376.html">Nutz-Socialauth 1.b.3 -- 支持国内社会化登录(OpenId)</a> <span class="date">2012-02-23 10:08:55</span></h3>
+  <p>作为<a href="https://github.com/howe/ngqa">Ngqa</a>的子项目之一,开发了2周,终于能拿得出手了</p>
+
+<p>这个项目算是<a href="http://code.google.com/p/socialauth/">socialauth</a>的一个插件项目,加上本项目的代码,将支持以下的社会化登录(打星号的是本项目添加的登录方式,<strong>率先支持github和BrowserID哦</strong>):</p>
+
+<ul>
+<li><p>google</p></li>
+
+<li><p>yahoo</p></li>
+
+<li><p>twitter</p></li>
+
+<li><p>facebook</p></li>
+
+<li><p>hotmail(msn)</p></li>
+
+<li><p>*<strong>QQ连接(qq)</strong></p></li>
+
+<li><p>*新浪微博(sina)</p></li>
+
+<li><p>*开心网(kaixin001)</p></li>
+</ul>
+
+  <div class="more">
+    <a href="/blog/376.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/375.html">海淘 -- 地球绕一圈,价格反而便宜了</a> <span class="date">2012-02-22 16:41:03</span></h3>
+  <p>2011年11月,第一次接触到海淘,现在已经有好几单</p>
+
+<p>最初用的是<a href="http://www.buytong.com/">百通</a>,走了2单, 速度一般般,后来百通爆仓,外加当时<a href="http://www.thunderex.com/Register.aspx?cs=jason&amp;ref=wendal">风雷</a>单价更低,所以至今最大一单走了风雷</p>
+
+<p>价格:
+   海淘第一单,是OLAY的洁面刷,美国亚马逊$20,国内报价280, 汗吧&hellip;
+   XBox360这种国内禁售品,更是绕了地球一圈&hellip; 赶上圣诞购物月, $199实在难以抗拒,呵呵,还返$10, 一个月之后再送一张$50-$10</p>
+
+<p>运费:
+   百通26/磅,但不保价,很坑爹了&hellip; 距QQ群的反馈,貌似越来越不给力,单子越来越慢
+   风雷28/磅,保$100,之前25/磅,这个月刚刚提价&hellip; 速度还不错</p>
+
+<p>关税:
+   至今没被税过,外加风雷对部分货物是包税的</p>
+
+<p>当前觉得风雷还是很靠谱的,虽然现在贵2元,还是比较值</p>
+
+<p>附上几个网站:
+<a href="http://www.mgpyh.com/">http://www.mgpyh.com/</a> 信息及时,立场比较中立
+<a href="http://camelcamelcamel.com">http://camelcamelcamel.com</a> 价格跟踪,登记一下目标价,到位就有邮件通知,很方便
+<a href="http://www.smzdm.com/">http://www.smzdm.com/</a>
+<a href="http://www.mgzpy.com/">http://www.mgzpy.com/</a></p>
+
+  <div class="more">
+    <a href="/blog/375.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

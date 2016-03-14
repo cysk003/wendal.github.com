@@ -91,6 +91,48 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2016/03/14.html">python fuse 记录</a> <span class="date">2016-03-14</span></h3>
+
+  <p>[FUSE <a href="https://zh.wikipedia.org/wiki/FUSE">https://zh.wikipedia.org/wiki/FUSE</a>]</p>
+
+<p>常用fuse api方法</p>
+
+<pre><code>struct fuse_operations {
+    int (*getattr) (const char *, struct stat *);
+    int (*readlink) (const char *, char *, size_t);
+    int (*getdir) (const char *, fuse_dirh_t, fuse_dirfil_t);
+    int (*mknod) (const char *, mode_t, dev_t);
+    int (*mkdir) (const char *, mode_t);
+    int (*unlink) (const char *);
+    int (*rmdir) (const char *);
+    int (*symlink) (const char *, const char *);
+    int (*rename) (const char *, const char *);
+    int (*link) (const char *, const char *);
+    int (*chmod) (const char *, mode_t);
+    int (*chown) (const char *, uid_t, gid_t);
+    int (*truncate) (const char *, off_t);
+    int (*utime) (const char *, struct utimbuf *);
+    int (*open) (const char *, struct fuse_file_info *);
+    int (*read) (const char *, char *, size_t, off_t, struct fuse_file_info *);
+    int (*write) (const char *, const char *, size_t, off_t,struct fuse_file_info *);
+    int (*statfs) (const char *, struct statfs *);
+    int (*flush) (const char *, struct fuse_file_info *);
+    int (*release) (const char *, struct fuse_file_info *);
+    int (*fsync) (const char *, int, struct fuse_file_info *);
+    int (*setxattr) (const char *, const char *, const char *, size_t, int);
+    int (*getxattr) (const char *, const char *, char *, size_t);
+    int (*listxattr) (const char *, char *, size_t);
+    int (*removexattr) (const char *, const char *);
+};
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2016/03/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/12/02.html">answer to life everything and the universe</a> <span class="date">2015-12-02</span></h3>
 
   <p>这是一篇胡言乱语,异想天开的文章,请跳过.</p>
@@ -450,9 +492,9 @@ U-ApiKey: 121234132432143\r\n
 
   <h2>首先,需要准备一下环境</h2>
 
-<p>ubuntu 14.04 x86 版 &ndash; 当前最新啦,哈哈</p>
+<p>ubuntu 14.04 x86 版 -- 当前最新啦,哈哈</p>
 
-<p>android ndk r9b     &ndash; 为啥用这个版本?因为我机器上有&hellip;</p>
+<p>android ndk r9b     -- 为啥用这个版本?因为我机器上有&hellip;</p>
 
 <h2>编译环境准备</h2>
 
@@ -677,15 +719,15 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p><img src="/assets/media/2013/10/28/IMG_0857.JPG" /></p>
 
-<p>北京第一餐 &ndash; 脑残酸菜撸肉面</p>
+<p>北京第一餐 -- 脑残酸菜撸肉面</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0935.JPG" /></p>
 
-<p>灰太狼大平卖 &ndash; 只要9毛9!!</p>
+<p>灰太狼大平卖 -- 只要9毛9!!</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0954.JPG" /></p>
 
-<p>后海 &ndash; Three-Person</p>
+<p>后海 -- Three-Person</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_1723.JPG" /></p>
 
@@ -741,7 +783,7 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p>总之,待了七天七夜,完整地走了perth的一周</p>
 
-<h1>Day1 &ndash; 阳光下睡个觉</h1>
+<h1>Day1 -- 阳光下睡个觉</h1>
 
 <p>3号晚上21:45的飞机,实际21:55起飞,直飞perth, 凌晨5:30到达</p>
 
@@ -925,7 +967,7 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
 <p>这些gif我曾经在nutz群中发送多次,但多少人真的看懂了&hellip;</p>
 
-<h1>首先,看第一种理解 &ndash; 加几个注解,对象就能注入</h1>
+<h1>首先,看第一种理解 -- 加几个注解,对象就能注入</h1>
 
 <p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not.gif"></p>
 
@@ -933,7 +975,7 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
 <p>运行即可看到, 变量dao为null,但为什么呢? 已经加了@Inject注解了啊</p>
 
-<h1>再看第二种理解 &ndash; 加了注解,有Ioc容器,就能注入</h1>
+<h1>再看第二种理解 -- 加了注解,有Ioc容器,就能注入</h1>
 
 <p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not2.gif"></p>
 
@@ -1020,23 +1062,6 @@ plughw:CARD=I82801AAICH,DEV=0
 
   <div class="more">
     <a href="/2013/07/25.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/07/04.html">篮子里的鸡蛋</a> <span class="date">2013-07-04</span></h3>
-
-  <p>一个鸡蛋,一块吐司</p>
-
-<p><img src="/assets/media/2013/07/04/1.jpg" /></p>
-
-<p>成品</p>
-
-<p><img src="/assets/media/2013/07/04/2.jpg" /></p>
-
-
-  <div class="more">
-    <a href="/2013/07/04.html" class="btn">read more..</a>
   </div>
 </div>
 

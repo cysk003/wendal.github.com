@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 5</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0215.html">Gor 2.1 发布了</a> <span class="date">2013-02-15</span></h3>
+  <h2>重要改进</h2>
+
+<p>脱离了libyaml引入的cgo限制, 使用纯golang实现, 实现真正的跨平台</p>
+
+<p><a href="http://code.google.com/p/gor/downloads/list">下载地址</a>
+已编译好的linux/windows/macx下的二进制程序</p>
+
+<p>当然, 也可以通过go install来安装</p>
+
+<pre><code>go get -u github.com/wendal/gor
+go install github.com/wendal/gor/gor
+</code></pre>
+
+<h2>ChangeLog</h2>
+
+<ol>
+<li>Update:  goyaml2 v2.0     纯golang实现的yaml解析器,兼容部分yaml语法(常用的部分)</li>
+<li>Update:  mustache v2.0   纯golang实现的mustache模板引擎</li>
+<li>Add:      同时支持yaml与json格式的配置文件及meta数据</li>
+<li>Add:      对自定义partials的支持</li>
+<li>Add:      对自定义widget的支持
+6: Add:      更换markdown引擎,支持github形式的markdown格式</li>
+<li>Fix:       引用不存在的layout会NPE</li>
+<li>Fix:       Post元数据与widget可能冲突</li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/2013/0215.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0205.html">获取goroutine的id</a> <span class="date">2013-02-05</span></h3>
+  <h2>获取goroutine的id? 官方不支持的!!</h2>
+
+<p>人家官方说了:</p>
+
+<pre><code>&quot;This, among other reasons, to prevent programmers 
+for simulating thread local storage using the goroutine id as a key. &quot;
+</code></pre>
+
+<p>就为了避免咱们当成ThreadLocal的key!! 这是为了神马?为神马?!!</p>
+
+<h2>方法还是有的嘛,改动一下源码</h2>
+
+<p>神马?!改源码这么大件事?! 对的,但只是添加,不修改不覆盖,不影响其他功能</p>
+
+<p>文件一, $GOPATH/src/pkg/runtime/runtime.c, 在最后面添加一个方法</p>
+
+<pre><code>void
+runtime·GetGoId(int32 ret)
+{
+        ret = g-&gt;goid;
+        USED(&amp;ret);
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0205.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0130.html">在Linux下安装Cuda5</a> <span class="date">2013-01-30</span></h3>
+  <p>所有操作均为root用户.</p>
+
+<h2>安装环境</h2>
+
+<p>系统环境: Ubuntu 11.10 Desktop 32位
+硬件环境: Nvidia GT540M
+注意!! 虚拟机是不行的!!</p>
+
+<h2>下载cuda</h2>
+
+<pre><code>wget http://developer.download.nvidia.com/compute/cuda/5_0/rel-update-1/installers/cuda_5.0.35_linux_32_ubuntu11.10-1.run
+#当然,我更喜欢用QQ旋风之类的先下载好
+#无需额外下载显卡驱动, cuda 5.0已经包含了最适合的显卡驱动
+</code></pre>
+
+<h2>安装必要的库</h2>
+
+  <div class="more">
+    <a href="/blog/2013/0130.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0127.html">一个神奇的周末</a> <span class="date">2013-01-27</span></h3>
+  <h2>周六,重写了新版的NutJson的前解析器</h2>
+
+<p>Nutz.Json的解析器分2部分, String-&gt;MapList, MapList-&gt;Pojo</p>
+
+<p>单纯对一个简单的json字符串执行String-&gt;Map操作</p>
+
+<p>改造前(3~4x)</p>
+
+<pre><code>Nutz-Json 500w次耗时: 14288
+Fast-Json 500w次耗时: 4330
+Nutz-Json 500w次耗时: 12336
+Fast-Json 500w次耗时: 3029
+</code></pre>
+
+<p>改造后(1.3~1.6x)</p>
+
+<pre><code>Nutz-Json 500w次耗时: 6033
+Fast-Json 500w次耗时: 4618
+Nutz-Json 500w次耗时: 4717
+Fast-Json 500w次耗时: 3048
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0127.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0123.html">Golang的坑之DNS查询与系统线程</a> <span class="date">2013-01-23</span></h3>
+  <h2>这个问题源之于我3个月前开发的一个缓存服务</h2>
+
+<ol>
+<li>代理Http请求</li>
+<li>缓存部分请求,减少外网访问</li>
+</ol>
+
+<h2>但是,在不稳定的网络环境下(例如3G网络),不时出现崩溃的情况</h2>
+
+<p>纠结啊纠结啊&hellip;</p>
+
+<ol>
+<li>难道是因为我在32位系统下使用golang?</li>
+<li>难道是RP问题?</li>
+</ol>
+
+<p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
+
+<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
+SIGABRT: abort
+PC=0xffffe424
+
+
+goroutine 1 [chan receive]:
+net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
+    /opt/go/src/pkg/net/fd.go:268 +0x75
+net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
+    /opt/go/src/pkg/net/fd.go:622 +0x199
+net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
+    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
+net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
+net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/http/server.go:1029 +0x77
+net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
+    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
+net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
+    /opt/go/src/pkg/net/http/server.go:1091 +0x55
+    
+尾部
+eax     0x0
+ebx     0x231f
+ecx     0x2357
+edx     0x6
+edi     0xb77ceff4
+esi     0xb
+ebp     0xafa112f8
+esp     0xafa11050
+eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
+eflags  0x202
+cs      0x73
+fs      0x0
+gs      0x33
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0123.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
+  <h2>在Java/Python中, 文件打开后,默认是覆写,但golang默认是不覆盖的</h2>
+
+<p>最初以为这些代码会&rdquo;无则创建,有则覆盖&rdquo;</p>
+
+<pre><code>f, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE, os.ModePerm)
+</code></pre>
+
+<p>这样得到f, 如果不执行</p>
+
+<pre><code>f.Truncate(0)
+</code></pre>
+
+<p>就f.Write就只是覆盖当前位置的内容,并不会截断文件.</p>
+
+<h2>事实上需要这样写</h2>
+
+  <div class="more">
+    <a href="/blog/2013/0116.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0115.html">Golang下进行字符集转换</a> <span class="date">2013-01-15</span></h3>
+  <h1>演示一下gb2312转UTF8</h1>
+
+<p>源网页是国家地震局的一周内地震统计,编码是gb2312</p>
+
+<pre><code>package main
+
+import (
+    iconv &quot;github.com/djimenez/iconv-go&quot;
+    &quot;io/ioutil&quot;
+    &quot;log&quot;
+    &quot;net/http&quot; 
+)
+
+func main() {
+    log.SetFlags(log.LstdFlags | log.Lshortfile)
+    resp, err := http.Get(&quot;http://data.earthquake.cn/datashare/globeEarthquake_csn.html&quot;)
+    if err != nil {
+        log.Fatal(err)
+    }
+ 
+    defer resp.Body.Close()
+    input, err := ioutil.ReadAll(resp.Body)
+    out := make([]byte, len(input))
+    out = out[:]
+    iconv.Convert(input, out, &quot;gb2312&quot;, &quot;utf-8&quot;)
+    ioutil.WriteFile(&quot;out.html&quot;, out, 0644)
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/0115.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0113.html">最近买了2款软件</a> <span class="date">2013-01-13</span></h3>
+  <p>最近又入手了2款软件</p>
+
+<h2>Sublime Text 2</h2>
+
+<p><img src="/blog/assets/media/2013/01/13/1.jpg"></img></p>
+
+<h2>IDEA 12</h2>
+
+<p><img src="/blog/assets/media/2013/01/13/2.jpg"></img></p>
+
+  <div class="more">
+    <a href="/blog/2013/0113.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0111.html">Gor--极快的静态博客引擎</a> <span class="date">2013-01-11</span></h3>
+  <h2>1秒编译200篇文章</h2>
+
+<p>Gor的速度极快哦, 编译本网站200篇文章仅需1秒!</p>
+
+<p><img src="/blog/assets/media/2013/01/gor_1.jpg"></img></p>
+
+<h2>为什么写Gor?</h2>
+
+<p>Gor源于对ruhoh的不满</p>
+
+<ol>
+<li>依赖一大堆东西</li>
+<li>ruby编写,看不懂</li>
+<li>速度慢, 需要10秒以上</li>
+<li>gor在很多方面就是ruhoh for golang版</li>
+</ol>
+
+<p>Gor跟jekyll/octopress 有啥不同</p>
+
+  <div class="more">
+    <a href="/blog/2013/0111.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/0108.html">Nutz福利之轻功</a> <span class="date">2013-01-08</span></h3>
+  <h2>作为挨踢人士,翻过伟大的强,总是那么频繁,Nutz新年福利之轻功,提供给大家一个免费的途径,方便大家访问讨论组,查找技术文章&hellip;</h2>
+
+<h2>连接服务器(Linux下)</h2>
+
+<pre><code>ssh -C -N -D 7070 nutz_xxxx@ci.wendal.net
+#输入密码即可, nutz_xxxx即为你的账号
+</code></pre>
+
+<h2>连接服务器(Windows下)</h2>
+
+<ol>
+<li><a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">下载putty</a>, 请使用官网地址,切勿使用所谓汉化版</li>
+
+<li><p>启动putty, 填入域名</p>
+
+<p><img src="/blog/assets/media/2013/01/fuck_gfw_1.jpg"></img></p></li>
+
+<li><p>设置不启动shell及启用压缩</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/2013/0108.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

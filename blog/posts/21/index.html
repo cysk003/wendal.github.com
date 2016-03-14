@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 21</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/217.html">从源码编译MySQL 5.5 -- 简单版</a> <span class="date">2010-12-16 13:53:13</span></h3>
+  <p><a href="http://dev.mysql.com/downloads/mysql/">MySQL 5.5</a>分支,今天<a href="http://www.oschina.net/news/13830/mysql-5-5-final">终于发布 5.5.8 GA</a>了.</p>
+
+<p>一贯风格,尝鲜,马上编译之. 折腾了一段时间,发现需要用<a href="http://www.cmake.org/">cmake</a>进行配置了</p>
+
+<ol>
+<li><p>先安装cmake和ccmake</p>
+
+<p>sudo apt-get install cmake cmake-curses-gui libncurses5-dev</p></li>
+
+<li><p>下载并解压mysql-5.5.8.tar.gz到mysql-5.5.8</p>
+
+<p>wget -o mysql-5.5.8.tar.gz <a href="http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/">http://dev.mysql.com/get/Downloads/MySQL-5.5/mysql-5.5.8.tar.gz/from/http://mirror.csclub.uwaterloo.ca/mysql/</a>
+tar xvf mysql-5.5.8.tar.gz
+cd mysql-5.5.8</p></li>
+
+<li><p>然后执行ccmake进行配置,建议将CMAKE_BUILD_TYPE设置为Release</p>
+
+<p>sudo ccmake .
+#或者 cmake -i 对话式配置</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/217.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
+  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug -- <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
+
+<p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
+
+<p>找到以下代码:</p>
+
+<pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
+</code></pre>
+
+<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 -- mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
+
+<p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
+
+  <div class="more">
+    <a href="/blog/214.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/212.html">让Nginx的SSI支持相对路径--更安全的方法</a> <span class="date">2010-12-14 14:04:24</span></h3>
+  <p>这个比较老生长谈的问题,例如 文章 <a href="http://bbs.linuxtone.org/thread-6515-1-1.html">关于nginx的ssi</a>
+但,这种改法,实在不安全.毕竟全局的函数都被改了,任意的../../../都能被访问
+故,基于我对nginx的了解,使用另外一种改法,仅仅修改SSI模块,安全性相对较高
+修改src/http/modules/ngx_http_ssi_filter_module.c
+找到以下代码(以nginx 0.9.3版为例):</p>
+
+<pre><code>    if (ngx_http_parse_unsafe_uri(r, uri, &amp;args;, &amp;flags;) != NGX_OK) {
+        return NGX_HTTP_SSI_ERROR;
+    }
+</code></pre>
+
+<p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
+测试代码:
+文件1 --- index.html</p>
+
+<pre><code>测试导入
+</code></pre>
+
+<p>文件2 -- subdir/index.html</p>
+
+<p>访问subdir/index.html,测试通过!</p>
+
+  <div class="more">
+    <a href="/blog/212.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/211.html">Jxl与WPS的一点点不兼容</a> <span class="date">2010-12-10 14:18:56</span></h3>
+  <p>今天与同事探讨了一个诡异的问题,用Jxl处理一个空的excel文件,<strong>第二次</strong>运行就报错,代码如下:</p>
+
+<pre><code>Workbook workbook = Workbook.getWorkbook(new File(&quot;Book1.xls&quot;));
+WritableWorkbook w = Workbook.createWorkbook(new File(&quot;Book1.xls&quot;),workbook);
+w.write();
+w.close();
+workbook.close();
+</code></pre>
+
+<p>很平常的代码而已,第一次运行,Pass,第二次,FAIL! 然后把旧的空xls文件覆盖回去,第一依然PASS,再跑就FAIL
+折腾来折腾去,终于发现是因为这个xls文件是右键新建出来的. 如果打开WPS,然后新建一个,然后保存,就完全没有问题!!
+够诡异了吧&hellip; WPS的版本是: 6.6.0.2461</p>
+
+  <div class="more">
+    <a href="/blog/211.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/210.html">将Dom对象变成XML并写入流</a> <span class="date">2010-12-10 12:37:21</span></h3>
+  <p>昨晚在Q群上,一位群友需要解决这样的需求:
+将一个Dom对象,变回XML文本,并写入流中,以便下载.</p>
+
+<p>我想,为啥不直接让Dom对象边转换,边写入流呢? 这样效率应该最高哦,内存占用也会低.
+故马上Google,查到<a href="http://download.oracle.com/javaee/1.4/tutorial/doc/JAXPXSLT4.html">一篇文章相关的文章(Writing Out a DOM as an XML File)</a>,感觉上是能够解决这个问题的.
+原文是英文,而且一大堆解释,我精简如下:</p>
+
+<pre><code>//先创建一个Dom
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File(&quot;faces-config-beans.xml&quot;));
+//然后应用转换器
+TransformerFactory tFactory = TransformerFactory.newInstance();
+Transformer transformer = tFactory.newTransformer();
+DOMSource source = new DOMSource(document);
+StreamResult result = new StreamResult(os);//这里的os就是OutputStream对象.
+transformer.transform(source, result);
+</code></pre>
+
+<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom--&gt;Stream的时间,约60ms. 算是可以接受了.</p>
+
+  <div class="more">
+    <a href="/blog/210.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/208.html">一次内存泄漏的排查</a> <span class="date">2010-12-09 21:07:10</span></h3>
+  <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
+问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
+
+<pre><code>409.879: [Full GC 409.879: [Tenured: 349567K-&gt;349567K(349568K), 1.5796790 secs] 506815K-&gt;382998K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5797868 secs] [Times: user=1.55 sys=0.00, real=1.58 secs] 
+417.784: [Full GC 417.784: [Tenured: 349567K-&gt;349568K(349568K), 1.6968523 secs] 506815K-&gt;382777K(506816K), [Perm : 15880K-&gt;15878K(65536K)], 1.6969534 secs] [Times: user=1.68 sys=0.00, real=1.69 secs] 
+422.242: [Full GC 422.242: [Tenured: 349568K-&gt;349568K(349568K), 1.5697638 secs] 506815K-&gt;382844K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5698652 secs] [Times: user=1.56 sys=0.00, real=1.56 secs] 
+Heap
+ def new generation   total 157248K, used 156479K [0x029e0000, 0x0d480000, 0x0d480000)
+  eden space 139776K, 100% used [0x029e0000, 0x0b260000, 0x0b260000)
+  from space 17472K,  95% used [0x0b260000, 0x0c2afda8, 0x0c370000)
+  to   space 17472K,   0% used [0x0c370000, 0x0c370000, 0x0d480000)
+ tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
+   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
+ compacting perm gen  total 65536K, used 16259K [0x229e0000, 0x269e0000, 0x2a9e0000)
+   the space 65536K,  24% used [0x229e0000, 0x239c0e98, 0x239c1000, 0x269e0000)
+No shared spaces configured.
+</code></pre>
+
+<p>由于新生代应该会很快回收,故关注另外一块已经用完的空间tenured generation</p>
+
+  <div class="more">
+    <a href="/blog/208.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
+  <p>今天,升级了好几样东西</p>
+
+<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        ---&gt;  0.9.2           新增一个功能.修复几个bug
+<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             ---&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
+<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             ---&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
+<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  ---&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
+
+  <div class="more">
+    <a href="/blog/206.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/201.html">推荐: 国外公开课</a> <span class="date">2010-12-04 17:32:04</span></h3>
+  <p><a href="http://v.163.com/open/">网易视频-国外公开课</a>
+<a href="http://yyets.net/?mod=2&amp;ac=list_resource&amp;class=juji&amp;type=29">人人影视-国外公开课</a>
+<strong>开眼看世界,国外优秀的公开课! 思维比知识更重要!! 思想进步,才能升华人生. 扔掉马哲,扔掉政治经济学,扔掉学校给你灌的垃圾!!</strong></p>
+
+  <div class="more">
+    <a href="/blog/201.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/197.html">Spket其实是兼容 jQuery 1.4.x的!</a> <span class="date">2010-12-04 12:02:19</span></h3>
+  <p>前几天,折腾Spket,安装好后,配置jQuery,死活不出提示!!
+翻阅Google,到处都说Spket不兼容jQuery 1.4.x .但经过我一番探索,终于发现 <a href="http://forums.spket.com/viewtopic.php?f=7&amp;t=1380&amp;start=0">官网一个论坛帖子</a> 上面附带的jar就能成功!!</p>
+
+<p>我自己打包好一个版本,放到Google Docs上了, <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hOGNjY2NkODAtNDliZC00NzkxLTllNDAtNjNlOGZkMTllNWEw&amp;hl=zh_CN&amp;authkey=CLiin-4F">Spket 1.6.18 兼容jQuery1.4.x</a>,是一个Eclipse插件版本</p>
+
+<p>如果你已经安装好原版的Spket 1.6.8 , 仅提取com.spket.js_1.6.18.jar覆盖原文件也就可以了.</p>
+
+<p>官方很久没更新了,哈哈!!</p>
+
+  <div class="more">
+    <a href="/blog/197.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/191.html">归还技术债务--Alfresco升级记</a> <span class="date">2010-12-01 22:17:45</span></h3>
+  <p>这周开始，按领导的意思，开始着力升级Alfresco到3.3.3 (发现已经发布3.3.3.7 改为升级最新3.x版本)</p>
+
+<p>了解升级步骤，下载升级需要的war包。部署到测试环境，一切都似乎很顺利。
+启动！！ 等待了3分钟，报错了！！ 大意是 之前的升级未完成！！</p>
+
+<pre><code>13:12:29,186 ERROR [org.alfresco.repo.domain.schema.SchemaBootstrap] Schema auto-update failed
+org.alfresco.error.AlfrescoRuntimeException: 11010000 A previous schema upgrade failed or was not completed.  Revert to the original database before attempting the upgrade again.
+    at org.alfresco.repo.domain.schema.SchemaBootstrap.onBootstrap(SchemaBootstrap.java:1373)
+    at org.alfresco.util.AbstractLifecycleBean.onApplicationEvent(AbstractLifecycleBean.java:62)
+    at org.springframework.context.event.SimpleApplicationEventMulticaster$1.run(SimpleApplicationEventMulticaster.java:77)
+    at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:49)
+</code></pre>
+
+<p>查阅 <a href="http://wiki.alfresco.com/wiki/Schema_Upgrade_Scripts">Alfresco升级指南-Schema升级</a> 发现，多了一个表 alf_bootstrap_lock，删除之！
+再次启动，Alfresco竟然开始建表了！！ 百思不得其解！！
+没办法，出我的绝招，看源码/反编译！
+研究了好久，尝试启动无数次后，发现，这Alfresco直接无视数据库中的表！！！ Why？？？！！！！
+最后，发现Alfresco是通过Databasemeta来获取表信息的，其中的getTables方法，传入了catalog和schema的值。其中catalog我并未定义，为null，schema的值我设置为alfresco 。 难道。。。 难道。。。 大小写的问题！！！！ 猛然改为</p>
+
+<pre><code>hibernate.default_schema=ALFRESCO
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/191.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

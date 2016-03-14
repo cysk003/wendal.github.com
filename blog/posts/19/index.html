@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 19</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/248.html">一个简单XML工具类,支持简单的路径求值</a> <span class="date">2011-03-06 19:57:55</span></h3>
+  <p>估计是个轮子,因为一说起XML,自然想到的是JDom/dom4j等老牌/强大的工具.</p>
+
+<p>但我的需求如此简单: &ldquo;支持简单的路径求值&rdquo; ,就加一个N多垃圾的jar包,算了,一气之下,写了这个工具类.</p>
+
+<p>原本这个工具类包含 一个接口,一个实现类,一个工厂类,一个测试类</p>
+
+<p>完成初版后,发现,为啥还分这么多东西,不就一个简单需求嘛!! 很不符合我的风格. 而且,我还特意建了一个工程叫NutzXML &hellip;.</p>
+
+<p>不行,这种需要扩展,不考虑效率的东西, 咋调用一下都这么麻烦? 改!!</p>
+
+<p>最后,整个XmlMap类,加上注释,150行, 这里展示的是无注释的版本:</p>
+
+<pre><code>package org.nutz.xml;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/248.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/247.html">一起来,为Nutz编写插件!</a> <span class="date">2011-03-05 21:33:29</span></h3>
+  <p><strong>随着Nutz代码的不断改进,为Nutz编写插件已经越来越容易.</strong></p>
+
+<p>早期我们编写的插件,很多都是为了兼容/集成XX框架而写的. 例如<a href="http://code.google.com/p/nutzmore/source/browse/trunk/src/org/nutz/ioc/impl/spring/SpringIocProvider.java">SpringIocLoader</a></p>
+
+<p>其实我们可以做更多更强大的插件,今天以当前扩展功能最好的MVC为例:
+1. 视图插件
+2. 适配器插件
+3. 处理器插件
+4. UrlMapping插件</p>
+
+<p>逐一讲解:
+<strong>1. 视图插件</strong>
+    要求: 实现View接口和ViewMarker接口
+    能做什么?
+        -- 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        -- Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+
+<p><strong>2. 适配器插件</strong>
+    要求: 实现HttpAdaptor接口
+    能做什么?
+        -- 你的请求的格式未被nutz识别? 例如WebService请求
+        -- 请求是加密的? 需要解码才能读取
+        -- 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+
+  <div class="more">
+    <a href="/blog/247.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/246.html">人生第一次离职,Mark一下</a> <span class="date">2011-02-25 21:18:59</span></h3>
+  <p>终于办完离职手续,离开了工作了3年的公司.</p>
+
+<p>太困了,虽然很多话想写,下次吧,先自己Mark一下,留个纪念.</p>
+
+  <div class="more">
+    <a href="/blog/246.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/245.html">JDiff 使用与改进</a> <span class="date">2011-02-24 15:45:02</span></h3>
+  <p>不久前为Nutz的构建服务添加JDiff报告. 报告查看地址: <a href="http://build.sunfarms.net/nutz/lastest/jdiff/">http://build.sunfarms.net/nutz/lastest/jdiff/</a> 以后都可以知道不同的nutz版本API有何不同了.</p>
+
+<p>JDiff报告,就是描述不同版本的代码之间的API差异, 如某某public类被删除了,某某接口改变了</p>
+
+<p>感兴趣的可以先访问<a href="http://www.jdiff.org">官网</a>,以了解基本使用.</p>
+
+<p>但,原本的JDiff有一个很大的问题,对中文支持不好.故,我改进了一下,放出一个版本(原版已经很久没用更新了)
+添加了一个配置,用于设置源码的编码encoding. 另外,我移除了对xerces.jar的依赖.</p>
+
+<p>现在可以在old或者new节点添加encoding=&ldquo;UTF-8&rdquo;之类的设置. 实例配置,请查看Nutz项目的build2.xml文件,地址: <a href="http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml">http://code.google.com/p/nutz/source/browse/trunk/build/build2.xml</a></p>
+
+<p>我已经上传到Google Doc,需要的童鞋就下载吧.
+地址: <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hMjViMjBlMGEtMDlkMi00NjllLWE0MjctNmUxNWI3N2QzZjE2&amp;hl=zh_CN">jdiff-1.1.1-Modify-by-Wendal.zip</a></p>
+
+<p>附上对原版的修改:</p>
+
+<ol>
+<li>移除对xerces.jar的依赖,
+将XML2API中的代码:</li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/245.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
+  <p>先放出下载地址:
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
+
+<p>原版下载地址: <a href="http://www.cs.ioc.ee/~ando/jbe/">JBE - Java Bytecode Editor</a></p>
+
+<p>原版存在的问题:
+对方法进行修改后,点击Save Method, 如果存在 invokeinterface 的行, 将无法保存!! 后台报错.</p>
+
+<p>以下是我在压缩包中写的描述:
+This JBE had been modify by Wendal Chen , base on JBE 0.1b</p>
+
+<p>Fix:
+when save method whit &ldquo;invokeinterface&rdquo; , app fail.</p>
+
+<p>File change:</p>
+
+<pre><code>JAsmParser.java line 169~170:
+int arg1 = getMethodConstRef(instrElems, cpg, labels);
+int arg2 = Utility.methodSignatureArgumentTypes(getDescrFromFullMethod(instrElems[1])).length;
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/244.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/243.html">一个极其简陋的Datasource连接池实现</a> <span class="date">2011-02-21 13:18:41</span></h3>
+  <p>写了一段时间了,一直没提交到Nutz,哈哈. 明显没有技术含量,提上去明显找抽!</p>
+
+<p>用来跑Nutz的测试,能够全部pass.</p>
+
+<p>直接上代码:</p>
+
+<pre><code>package org.nutz.dao.impl;
+
+import java.io.PrintWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/243.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/242.html">Nutz 一些无法完成的功能</a> <span class="date">2011-02-16 20:58:49</span></h3>
+  <p>这篇文章针对的是1.b.35</p>
+
+<ol>
+<li><p>Nutz.Ioc与Spring.ioc相比,无法实现工厂类生成具体类的实例</p>
+
+<p>public class A {}</p>
+
+<p>public class B {
+    public static A makeA(){return new A();}
+}</p></li>
+
+<li><p>Nutz.Aop与Spring.Aop相比,无法拦截构造方法,静态方法</p></li>
+
+<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; --&gt;POJO转换工具</p></li>
+
+<li><p>Nutz.MVC 没有校验功能,没有配置方式的URL映射</p></li>
+
+<li><p>Nutz.MVC 与Struts2相比, 没有标签库</p></li>
+
+<li><p>Nutz.Lang 与Apache Common 系列相比, 很多功能都没有</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/242.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/234.html">做爸爸了!! 过年前有了个虎宝宝!!</a> <span class="date">2011-02-08 20:38:16</span></h3>
+  <p>嘻嘻,母女平安. 靓照暂时就不曝光了.</p>
+
+<p>下面记一下经验,嘻嘻:
+. 买生育保险能省很多钱,常规产检都是免费的哦! 仅住院/做手术,就省了4k
+. 绿色(超薄干爽)的帮宝适,很舒服,但不是最好的,那只是中档货. 最好的是母乳宝宝,然后是超级棉柔,都是黄色包装的!!前者(母乳宝宝)大陆无销售,一般是美国产,需要在香港买/淘宝代购,2.5元/片;后者(超级棉柔),一般存货不多,而且标明是日本进口, 2元/片
+. 早点去医院的孕妇学校,能学到很多东西,而且能提前接触到产房的人
+. 手术后6小时就得翻身(很痛,但是一定要坚强),并且马上让宝宝吮吸,对恢复很有帮助!! 使用卧式,叫护士教.
+. 手术后6小时开始就要喝水/喝汤了,12小时就要喝粥,24小时务必下床!! 要坚强!! 放屁后就可以吃饭了!! 不会觉得饿的,但一样要吃,按平时的饭量吃.
+. 术前要求医生使用&rdquo;术后镇痛术&rdquo;,就是一个缓慢静脉镇痛药,250元,很值得的!!
+. 宝宝出生后,2小时~4小时就要先喂一次水,然后开始喂奶粉,20毫升就够了,宝宝开头仅喝10毫升的,接下来2天,每2小时喂一次.
+. 如果打算母乳喂养,那么怀孕时就要做按摩,我老婆12小时就开始有乳汁了(剖宫产啊,一般第2/3天才有的;顺产也要第二天),医院的护士都很惊讶呢!! 做法: 每天晚上,用大拇指,按压第3/4个脚趾,从脚趾的关节,顺着骨头往脚面推,不是脚底,每个脚趾按100下,共400下.这个要老公做的,我经常按到手软呢.
+. 怀孕后就先休假1个月!! 好好休息一下,一般就是睡大觉,然后再上班. 这样孕期的反应就少很多了.
+. 香港有卖一种仿乳头的奶瓶,英国产,淘宝也有代购,150ml的,其实完全足够了.
+. 奶粉我觉得明治最好,为黄种人设计,不热气,虽然有人提到会缺锌,但相比欧美的产品,还是明治好!! 买明治,一定要买日本本土产的,买其他的话,还不如买美赞臣/牛栏牌
+. 怀孕后,继续正常饮食,补充叶酸/维生素就可以了,不要经常进补!! 经常散步,即使顶着大肚子. 手术前,老婆走得比我还快呢!
+. 防辐射服 -- 没用的,骗钱的     仅仅是心理安慰,我就没有买
+. 怀孕后,上Q/看电影,一切照旧! 我们周围最强的电磁波辐射,其实是光线,除非你住在黑暗的屏蔽室内,否则啥都挡不住!
+. 宝宝够暖就可以了,偶尔打个喷嚏其实很好很正常的. 衣服太多,会出红疹,严重的话要住院的!!</p>
+
+  <div class="more">
+    <a href="/blog/234.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/233.html">Hibernate的ConnectionProvider是怎么一回事?</a> <span class="date">2011-01-28 14:28:12</span></h3>
+  <p>这次讨论一下Hibernate的ConnectionProvider接口, 因为我看到某些Hibernate项目是这样配置的:</p>
+
+<pre><code>&lt;property name=&quot;c3p0.min_size&quot;&gt;5&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_size&quot;&gt;30&lt;/property&gt;
+&lt;property name=&quot;c3p0.time_out&quot;&gt;1800&lt;/property&gt;
+&lt;property name=&quot;c3p0.max_statement&quot;&gt;50&lt;/property&gt;
+</code></pre>
+
+<p>问题是, 这样就配置好了吗? hibernate.connection.provider_class到底需不需要呢?
+来看看Hibernate 3.3.2 GA的源码
+ConnectionProviderFactory类的newConnectionProvider方法.</p>
+
+<pre><code>public static ConnectionProvider newConnectionProvider(Properties properties, Map connectionProviderInjectionData) throws HibernateException {
+    ConnectionProvider connections;
+    String providerClass = properties.getProperty(Environment.CONNECTION_PROVIDER);
+    if ( providerClass!=null ) {
+        try {
+            log.info(&quot;Initializing connection provider: &quot; + providerClass);
+            connections = (ConnectionProvider) ReflectHelper.classForName(providerClass).newInstance();
+        }
+        catch ( Exception e ) {
+            log.error( &quot;Could not instantiate connection provider&quot;, e );
+            throw new HibernateException(&quot;Could not instantiate connection provider: &quot; + providerClass);
+        }
+    }
+    else if ( properties.getProperty(Environment.DATASOURCE)!=null ) {
+        connections = new DatasourceConnectionProvider();
+    }
+    else if ( properties.getProperty(Environment.URL)!=null ) {
+        connections = new DriverManagerConnectionProvider();
+    }
+    else {
+        connections = new UserSuppliedConnectionProvider();
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/233.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/232.html">系统变量file.encoding对Java的运行影响有多大?</a> <span class="date">2011-01-27 20:06:27</span></h3>
+  <p>这个话题来自: Nutz的<a href="http://code.google.com/p/nutz/issues/detail?id=361">issue 361</a></p>
+
+<p>在考虑这个issue时, 我一直倾向于使用系统变量file.encoding来改变JVM的默认编码.</p>
+
+<p>今天,我想到, 这个系统变量,对JVM的影响到底有多大呢?
+我使用最简单的方法看看这个变量的影响--在JDK 1.6.0_20的src.zip文件中,查找包含file.encoding字眼的文件.
+共找到4个, 分别是:
+先上重头戏 java.nio.Charset类:</p>
+
+<pre><code>    public static Charset defaultCharset() {
+        if (defaultCharset == null) {
+        synchronized (Charset.class) {
+        java.security.PrivilegedAction pa =
+            new GetPropertyAction(&quot;file.encoding&quot;);
+        String csn = (String)AccessController.doPrivileged(pa);
+        Charset cs = lookup(csn);
+        if (cs != null)
+            defaultCharset = cs;
+                else 
+            defaultCharset = forName(&quot;UTF-8&quot;);
+            }
+    }
+    return defaultCharset;
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/232.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

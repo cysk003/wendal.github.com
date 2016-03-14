@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>简单好用的sshfs -- 通过ssh映射远程路径</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>简单好用的sshfs -- 通过ssh映射远程路径 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>最近习惯性访问N个Linux机器,在不同机器间跳来跳去,很是麻烦,最终,找到了sshfs,可以把远程目录直接映射到本地,无需修改远程机器的设置,仅要求有ssh连接的权限(ssh都没有的话,还能干啥?!~!)</p>
+
+<p>官网地址: <a href="http://fuse.sourceforge.net/sshfs.html">http://fuse.sourceforge.net/sshfs.html</a></p>
+
+<p>安装:</p>
+
+<pre><code>#如果是ubuntu
+apt-get install sshfs
+#如果是Fedore
+yum install fuse-sshfs
+#如果是CentOS,貌似只能自己安装了
+wget http://nchc.dl.sourceforge.net/project/fuse/sshfs-fuse/2.4/sshfs-fuse-2.4.tar.gz
+tar xvf sshfs-fuse-2.4.tar.gz
+cd sshfs-fuse-2.4
+./configure
+#如果缺glib2什么的,就自行装上
+make install
+</code></pre>
+
+<p>先看看选项:</p>
+
+<pre><code>general options:
+    -o opt,[opt...]        mount options
+    -h   --help            print help
+    -V   --version         print version
+
+SSHFS options:
+    -p PORT                equivalent to '-o port=PORT'
+    -C                     equivalent to '-o compression=yes' #启用压缩,建议配上
+    -F ssh_configfile      specifies alternative ssh configuration file #使用非默认的ssh配置文件
+    -1                     equivalent to '-o ssh_protocol=1' #不要用啊
+    -o reconnect           reconnect to server               #自动重连
+    -o delay_connect       delay connection to server
+    -o sshfs_sync          synchronous writes
+    -o no_readahead        synchronous reads (no speculative readahead) #提前预读
+    -o sshfs_debug         print some debugging information
+    -o cache=BOOL          enable caching {yes,no} (default: yes) #能缓存目录结构之类的信息
+    -o cache_timeout=N     sets timeout for caches in seconds (default: 20)
+    -o cache_X_timeout=N   sets timeout for {stat,dir,link} cache
+    -o workaround=LIST     colon separated list of workarounds
+             none             no workarounds enabled
+             all              all workarounds enabled
+             [no]rename       fix renaming to existing file (default: off)
+             [no]nodelaysrv   set nodelay tcp flag in sshd (default: off)
+             [no]truncate     fix truncate for old servers (default: off)
+             [no]buflimit     fix buffer fillup bug in server (default: on)
+    -o idmap=TYPE          user/group ID mapping, possible types are:  #文件权限uid/gid映射关系
+             none             no translation of the ID space (default)
+             user             only translate UID of connecting user
+    -o ssh_command=CMD     execute CMD instead of 'ssh'
+    -o ssh_protocol=N      ssh protocol to use (default: 2) #肯定要2的
+    -o sftp_server=SERV    path to sftp server or subsystem (default: sftp)
+    -o directport=PORT     directly connect to PORT bypassing ssh
+    -o transform_symlinks  transform absolute symlinks to relative
+    -o follow_symlinks     follow symlinks on the server
+    -o no_check_root       don't check for existence of 'dir' on server
+    -o password_stdin      read password from stdin (only for pam_mount)
+    -o SSHOPT=VAL          ssh options (see man ssh_config)
+
+Module options:
+
+[subdir]
+    -o subdir=DIR       prepend this directory to all paths (mandatory)
+    -o [no]rellinks     transform absolute symlinks to relative
+
+[iconv]
+    #字符集转换,对我这种UTF8控,默认已经是最好的
+    -o from_code=CHARSET   original encoding of file names (default: UTF-8)
+    -o to_code=CHARSET      new encoding of the file names (default: UTF-8)
+</code></pre>
+
+<p>实际使用:</p>
+
+<pre><code>挂载(如果配上ssh key就可以完全自动化了):
+sshfs root@192.168.9.109:/opt /opt/s109
+卸载:
+fusermount -u /opt/s109
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/459.html" title="Golang连接Oracle数据库(通过OCI库)">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/454.html" title="在Android中运行go程序(Golang 1.0.2, ARM 6)">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-09-26 08:52:25</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#VPS%2FLinux-ref">VPS/Linux <span>29</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E8%B7%AF%E5%BE%84-ref">路径 <span>13</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

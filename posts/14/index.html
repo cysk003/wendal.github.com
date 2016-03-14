@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/335.html">捐点钱给自己喜欢的开源软件</a> <span class="date">2011-10-18 09:17:54</span></h3>
+  <p>声明: 本文并非为Nutz募捐</p>
+
+<p>昨晚,点了几次鼠标,填了信用卡资料,一笔微不足道的捐款送达Python基金会</p>
+
+<p>回想那些捐款过的开源/免费软件,我的款项也许还不够作者买瓶红酒或者吃一顿KFC, 但我的确捐了,以表达我的感激之情,这难道不就够了吗?</p>
+
+<p>感觉国内的开源/免费软件生存环境还是太差:
+1. 第一次发布, 99.99%被骂山寨,没创意&hellip;.
+2. 免费的,就要求开源,开源的就骂质量差
+3. 只知道索取,不会有所贡献 -- 拿到源码就跑,有bug也不报告,更别说捐款了
+&hellip;</p>
+
+<p>当然,大家的理由都很多,很充分,很现实:
+1. 没钱
+2. 技术不够
+3. 没时间
+&hellip;</p>
+
+<p>捐10块钱,报个bug,发邮件咨询一下作者,帮助一下新手,写blog介绍一下经验,有这么难吗?</p>
+
+  <div class="more">
+    <a href="/335.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/332.html">Nut.Test -- 使用Nutz一样能方便地进行单元测试</a> <span class="date">2011-10-16 22:22:36</span></h3>
   <p>首先,感谢Jay提出一个需求.</p>
 
@@ -176,7 +203,7 @@ public abstract class TestMongodb4Jetty {
 
 <div class="post">
   <h3 class="title"><a href="/325.html">不走寻常路--NutzCP初版</a> <span class="date">2011-09-18 14:41:17</span></h3>
-  <p>想了一个晚上,用了一个早上完成编码 &ndash; 效率还是很高的嘛</p>
+  <p>想了一个晚上,用了一个早上完成编码 -- 效率还是很高的嘛</p>
 
 <p>项目地址: <a href="https://github.com/nutzam/nutzcp">https://github.com/nutzam/nutzcp</a></p>
 
@@ -247,7 +274,7 @@ public abstract class TestMongodb4Jetty {
 
 <h2>第二步,获取root权限</h2>
 
-<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码&ndash; <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
+<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码-- <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
 
 <p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
 
@@ -270,13 +297,13 @@ public abstract class TestMongodb4Jetty {
 1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
 2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
 3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
-..A. 不再挂载system分区 &ndash; 注释掉 mount cramfs mtd@system /system &ndash; 也就是前面加#号
-..B. 不再建立system文件夹 &ndash; 注释掉 mkdir /system
-..C. 修改data分区的挂载方式,使其支持suid &ndash; 挂载语句改为 mount ext3 mtd@userdata /data
-..D. 修改data分区的权限 &ndash; chmod 0770 /data 改为 chmod 0777 /data
-..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su &ndash; 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
-..F. 为了提供更大自由度,修改根分区的权限 &ndash; 注释掉 mount rootfs rootfs / ro remount
-..G. 建立通往/system的软链接 &mdash; 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+..A. 不再挂载system分区 -- 注释掉 mount cramfs mtd@system /system -- 也就是前面加#号
+..B. 不再建立system文件夹 -- 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid -- 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 -- chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su -- 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 -- 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 --- 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
 
   <div class="more">
     <a href="/320.html" class="btn">read more..</a>
@@ -285,7 +312,7 @@ public abstract class TestMongodb4Jetty {
 
 <div class="post">
   <h3 class="title"><a href="/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
-  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo&ndash;&gt;String的转换</p>
+  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo--&gt;String的转换</p>
 
 <p>1.b.38版新增了@JsonField,在即将发布的1.b.40版将这个注解再次增强
 正如其名,@JsonField是针对Json处理中字段级别的控制</p>
@@ -316,10 +343,10 @@ private String zIndex;
   <h3 class="title"><a href="/317.html">NutDao实现Lazy加载的可行性</a> <span class="date">2011-09-06 23:33:16</span></h3>
   <p>不知道多少人问过@Many @One等注释能否实现懒加载或者自动加载</p>
 
-<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 &ndash; 其实也就是有点不方便,外加效率较低</p>
+<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 -- 其实也就是有点不方便,外加效率较低</p>
 
 <p>我这里讨论的是NutDao做到真正懒加载的可能性与实现方式
-焦点集中在NutDao.query方法,因为大部分DB&ndash;&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
+焦点集中在NutDao.query方法,因为大部分DB--&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
 
 <p>由于实现的是懒加载,不可避免的使用Aop,以拦截@Many/@One的getter
 使用Aop会导致一个问题,就是query方法返回的对象的类改变了,变成用户请求的类的一个定制化的子类的对象,这本身就导致一些问题:
@@ -337,32 +364,6 @@ private String zIndex;
 
   <div class="more">
     <a href="/317.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/316.html">广工,3年来,你改变了什么?</a> <span class="date">2011-08-27 21:57:46</span></h3>
-  <p>广东工业大学,我本科的母校,毕业3年了</p>
-
-<p>今天,我再次回去,看看它的变化</p>
-
-<p>看着以前上课的课室,实验楼,一条条熟悉的过道 &ndash; 记忆中画面不停飘过</p>
-
-<p>校园内,树木高了,绿化多了,然而,栏杆,铁门,围墙也多了 &ndash; 以安全/治安的名义,能干很多事</p>
-
-<p>晚饭过后,去看看校外江边的公园,想不到啊,3年就能荒废成这样子,以至于我不敢为其拍照!!</p>
-
-<p>还是晚饭后,还是晚上7点,还是这个地理坐标,完全不一样的景象</p>
-
-<p>杂草丛生,灯看上去已经很久很久没亮过,路,如果那还是路的话,80%的面积被草覆盖了
-那曾经的草坪,是多么美,今天我只看到了杂草,小灌木,以至于我不敢踏足 &ndash; 曾几何时,我躺着看着星空
-那座小桥,木板桥,已经破烂不堪,露出30%以上的水泥底座 &ndash; 多少次与挚友,情侣路过这座小桥
-那条小河,已经不是小河,最多能说得上是条垃圾填埋沟 &ndash; 曾经,它流淌着小小溪流</p>
-
-<p>以至于那座山,我不敢上前来,我甚至无法确认那条路还存在</p>
-
-  <div class="more">
-    <a href="/316.html" class="btn">read more..</a>
   </div>
 </div>
 

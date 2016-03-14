@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>换种顺序来执行TestCase(Junit适用)</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>换种顺序来执行TestCase(Junit适用) </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>Junit的TestCase,总是按固定的顺序执行的. 正如你在Eclipse中跑Run As Junit Test, 无论你跑多少次, TestCase的执行顺序都是一致的,可重复的. 这就导致一个问题, TestCase之间的独立性无法保证.</p>
+
+<p>例如下面一个Test类中的2个TestCase:</p>
+
+<pre><code>public class DaoTest {
+
+    @Test
+    public void test_count() {
+        dao.insert(new User(&quot;root&quot;, &quot;123456&quot;));
+        assertEquals(1, dao.count(User.class));
+    }
+
+    @Test
+    public void test_insert() {
+        dao.clear(User.class, null);
+        dao.insert(new User(&quot;admin&quot;, &quot;123456&quot;));
+        assertEquals(1, dao.count(User.class));
+    }
+
+}
+</code></pre>
+
+<p>如果先执行test_count()然后执行test_insert(),两个TestCase都能通过.</p>
+
+<p>但如果先执行test_insert(),然后执行test_count(),则test_count()会失败.</p>
+
+<p>所以,有必要去打乱TestCase的默认执行顺序,以暴露出TestCase本身的问题. TestCase更可靠,才能让主代码更可靠.</p>
+
+<p>我实现了一个简单的方式,使用的是Junit的公开API, 测试过4.3和4.8.2,均可使用:</p>
+
+<pre><code>        //得到所有带@Test的方法,这里用的是Nutz的资源扫描,反正你能得到全部Test类就行
+        List&lt;Class&gt; list = Scans.me().scanPackage(&quot;org.nutz&quot;);
+        List&lt;request&gt; reqs = new ArrayList&lt;request&gt;();
+        Map&lt;Request, Method&gt; reqMap = new HashMap&lt;Request, Method&gt;();
+        for (Class clazz : list) {
+            Method[] methods = clazz.getMethods();
+            for (Method method : methods) {
+                if (method.getAnnotation(Test.class) != null) {
+                    //将单个TestCase(即一个Test Method),封装为Junit的Test Request
+                    Request req = Request.method(clazz, method.getName());
+                    reqs.add(req);
+                    reqMap.put(req , method);//在最终打印测试结果时,方便查找具体出错的Method
+                }
+            }
+        }
+
+        // 因为reqs 是一个List,我们可以按需调整TestCase的顺序
+        // 正序 //nothing change.
+        // 反序Collections.reverse(reqs)
+        // 乱序Collections.shuffle(reqs)
+
+        //把执行顺序保存下来,方便重现执行顺序
+        try {
+            FileWriter fw = new FileWriter(&quot;./test_order.txt&quot;);
+            for (Request request : reqs) {
+                fw.write(reqMap.get(request).toString());
+                fw.write(&quot;\n&quot;);
+            }
+            fw.flush();
+            fw.close();
+        }
+        catch (IOException e) {}
+
+        //到这里, List已经按我们预期的方式排好,可以执行测试了
+        final TestResult result = new TestResult();
+        RunNotifier notifier = new RunNotifier();
+        notifier.addListener(new RunListener() { //需要设置一个RunListener,以便收集测试结果
+
+            public void testFailure(Failure failure) throws Exception {
+                result.addError(asTest(failure.getDescription()), failure.getException());
+            }
+            public void testFinished(Description description) throws Exception {
+                result.endTest(asTest(description));
+            }
+            public void testStarted(Description description) throws Exception {
+                result.startTest(asTest(description));
+            }
+
+            public junit.framework.Test asTest(Description description) {
+                return new junit.framework.Test() {
+
+                    public void run(TestResult result) {
+                        throw Lang.noImplement();
+                    }
+
+                    public int countTestCases() {
+                        return 1;
+                    }
+                };
+            }
+        });
+        //来吧,执行之!!
+        for (Request request : reqs) {
+            request.getRunner().run(notifier);
+        }
+
+        //接下来,就是打印结果了.
+        System.out.printf(&quot;Run %d , Fail %d , Error %d \n&quot;, result.runCount(), result.failureCount(), result.errorCount());
+
+        if (result.failureCount() &gt; 0) { //断言失败的TestCase
+            Enumeration&lt;testfailure&gt; enu = result.failures();
+            while (enu.hasMoreElements()) {
+                TestFailure testFailure = (TestFailure) enu.nextElement();
+                System.out.println(&quot;--Fail------------------------------------------------&quot;);
+                System.out.println(testFailure.trace());
+                testFailure.thrownException().printStackTrace(System.out);
+            }
+        }
+
+        if (result.errorCount() &gt; 0) { //抛异常的TestCase
+            Enumeration&lt;testfailure&gt; enu = result.errors();
+            while (enu.hasMoreElements()) {
+                TestFailure testFailure = (TestFailure) enu.nextElement();
+                System.out.println(&quot;--ERROR------------------------------------------------&quot;);
+                System.out.println(testFailure.trace());
+                testFailure.thrownException().printStackTrace(System.out);
+            }
+        }
+</code></pre>
+
+<p>来, 考验一下你的TestCase吧!! 让它在乱序中多次执行. Nutz按这种思路,已经爆出几个Bug(当然,我已经迅速fix了)</p>
+
+<p><a href="https://github.com/nutzam/nutz/blob/master/test/org/nutz/AdvancedTestAll.java">https://github.com/nutzam/nutz/blob/master/test/org/nutz/AdvancedTestAll.java</a></p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/454.html" title="在Android中运行go程序(Golang 1.0.2, ARM 6)">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/450.html" title="fql改造记录 -- fql is a tool that use SQL like query to manipulate files">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-08-26 22:18:26</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#Eclipse-ref">Eclipse <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#junit-ref">junit <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

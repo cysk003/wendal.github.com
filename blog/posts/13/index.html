@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 13</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/356.html">NutDao配置多数据源</a> <span class="date">2012-01-06 22:20:11</span></h3>
+  <p>首先,我必须声明,这是一个非常简单的方法,很多小菜没做出来,是因为把nutz想得太复杂</p>
+
+<p>数据源(或者是数据库连接池),在Nutz.Ioc看来,是一个普通的Bean,没任何特别之处. 再强调一点,除了$aop命名的bean用于配置Aop之外,其他所有的bean都是一视同仁的,没有任何特别关照!!</p>
+
+<p>先看看标准的单数据源配置方法:</p>
+
+<pre><code>var ioc = {
+    dataSource : {
+                type : &quot;org.apache.commons.dbcp.BasicDataSource&quot;,
+                events : {
+                        depose : 'close'
+                },
+                fields : {
+                        driverClassName : 'org.h2.Driver',
+                        url : 'jdbc:h2:quick3;AUTO_RECONNECT=TRUE;CACHE_SIZE=65536',
+                        username : 'sa',
+                        password : ''
+                }
+        },
+        /*定义NutDao*/
+        dao : {
+            type : &quot;org.nutz.dao.impl.NutDao&quot;,
+            fields : {
+                dataSource : {refer : 'dataSource'}
+            }
+        }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/356.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/355.html">Java/Python/Lua/Lisp的胡思乱想</a> <span class="date">2012-01-05 00:52:55</span></h3>
+  <p>本已入睡,但脑海中不停翻滚几个编程语言的好坏,于是爬起来写博了</p>
+
+<p>Java -- 我接触时间最长,自认最拿手的</p>
+
+<p>Java的语法非常精辟,但相对于当前流行的动态语言又显得非常糟糕. Java发展了这么多年,一直保持非常好的兼容性和持续改进,以前是Sun这个善意的独裁者,现在是邪恶的Oracle.
+  有很长一段时间,我一直认为跨平台是Java最大的优势,直至最近,我的想法改变为: Java跨平台承诺,是各种第三方类库繁荣发展的根本源泉;苛刻的静态类型检查,令人厌恶的声明式异常机制,恰恰成就了Eclipse之类的强大IDE,因为在Java中,方法的调用是可预知的,可控的,可推导的;多年发展的JVM,在我看来,依旧是顶级的虚拟机实现;神奇的Java语言,其GC机制是精益求精,大家都在骂gc,但大家都在使用.
+  当年我爱上Java,是因为这种语言能表达任何我想实现的东西,为此我把多少想法动手敲了下来. 我是这样描述的: 如果一件事手工完成需要1个小时,而编写一个Java程序来完成,编码需要59分钟,运行1分钟,那我必然选后者.
+  现在基本上是,东西拿到手,立马出Java实现的思路,然后考虑用Java来做是否合适</p>
+
+<p>Python -- 与操作系统交互可以很美妙</p>
+
+<p>我喜欢Python,但它不够好
+  Python语法很优美,写出来比Java好看.但,文档太烂,类库太乱!! 虚拟机(python解析器)太慢!! 没有一款足够好用的IDE,因为在我看来IDE是提高生产效率的关键因素之一. Python总体设计还是不错的,就是有些细节非常反人类,例如import和变量作用域问题,无数次踩坑!!
+  Python访问操作系统提供的东西实在方便,比Java节省80%以上的代码,但还是那句,文档太烂,不到抛错的时候,就根本没想到某某方法竟然能抛出异常!!
+  真不明白为何Python不改进一下虚拟机的性能呢?!! 现在连js都有V8引擎了!!</p>
+
+<p>Lua -- 简约,而不简单</p>
+
+<p>这种语言简直就是1天学完语法,1天看完API,开工干活的级别. -- 呵呵,有点夸张了
+  整个语言,就1w行左右,源码仅那么几百k,实在让我惊叹. 这种语言还是很不错的,&ldquo;只做一件事,做好一件事&rdquo;,就是做最好的嵌入式语言.
+  突然很期待有一本Lua源码剖析,呵呵,看看这语言是如何实现出来的</p>
+
+  <div class="more">
+    <a href="/blog/355.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/353.html">新年了,开始写论文了~_~</a> <span class="date">2012-01-04 12:45:48</span></h3>
+  <p>拖了一年了,老婆也发话了&hellip; 看来是时候认认真真把论文搞定了</p>
+
+<p>文档啥的,一直都不是强项,宁愿写100行代码也想不出10行文档的我,要写出一份几十页的论文,真是情何以堪啊&hellip;</p>
+
+<ol>
+<li>文档格式</li>
+</ol>
+
+<p>说明一下,我这里说的不是文档的排版,而是文档的存储格式</p>
+
+<p>最初的想法,当然是传统的Work文档,直观易用,但,这玩意真不适合程序员使用,尤其是没有版本管理,转换成其他格式也非常不便
+昨晚学了一下传说中的Latex,这玩意强大得很,简直不是人用的&hellip;. 一眼看上去,都不知道最终文档长啥样</p>
+
+<p>所以呢,我决定尝试一把,用zDoc或者Markdown来写.现在主要是倾向于zDoc(即nutzdoc),理由很简单,自己参与的项目,如果有bug也立马修正.
+但保险起见,实现zDoc--&gt;MarkDown转换器也立马提上日程,这个需求最初是nutz迁移到github时提出的,后来发现github的wiki的不如google code做得好,这个需求也就沉寂下去了</p>
+
+<ol>
+<li>文档管理</li>
+</ol>
+
+<p>既然文档是zdoc格式,那么,版本管理和持续集成也就不成问题咯
+Git -- 版本控制,话说我已经爱上这玩意,svn已经N久没有使用过
+Hudson -- 不知道什么原因,我一直喜欢用这个进行持续集成,我也用过其他的啊,咋就还钟情于hudson呢</p>
+
+  <div class="more">
+    <a href="/blog/353.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/351.html">Python: 为对象动态添加函数,且函数定义来自一个str</a> <span class="date">2011-12-03 20:24:42</span></h3>
+  <p>在Python中,通常情况下,你只能为对象添加一个已经写好的方法</p>
+
+<p>需求:传入一个str类型的变量,其值是一个完整的合法的Python函数定义,然后为一个对象添加这个函数:</p>
+
+<pre><code>method_str = u'''
+def say(self, name)
+    print 'My name is', name
+'''
+class MyClass :
+
+    def __init__(self) :
+        pass
+
+    def extends(self, method_name, method_str) :
+        #完成这个方法...
+
+obj = MyClass();
+obj.extends('say', method_str)
+obj.say('wendal') #打印出My name is wendal
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/351.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/350.html">编译RK2918源码 -- 简单说明</a> <span class="date">2011-11-18 13:23:23</span></h3>
+  <p>自从公布RK29的源码地址,各种模块都成为可能</p>
+
+<p>我也说说如何编译吧, 环境 Ubuntu 10.10 server x86版</p>
+
+<ol>
+<li><p>第一步当然是下载源码并解压啦, 以andy pad的源码为例</p>
+
+<p>cd ~/
+mkdir android
+cd ~/android
+wget <a href="https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip">https://bitbucket.org/paulobrien/android_kernel_andypad/get/4c6b4f4c48d1.zip</a>
+unzip 4c6b4f4c48d1.zip
+mv paulobrien-android_kernel_andypad-4c6b4f4c48d1/ rk29</p></li>
+
+<li><p>安装依赖包</p>
+
+<p>sudo apt-get install lzop sharutils libncurses5-dev vim</p></li>
+
+<li><p>下载交叉编译器(我个人认为是错误翻译,应该叫跨平台编译器) arm 4.4.0</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/blog/350.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/344.html">Git的几个实用小技巧</a> <span class="date">2011-11-14 10:51:50</span></h3>
+  <p>不止一次听到抱怨说, <strong>Git库好大</strong>啊,把整个历史都拉下来,慢死了
+我情何以堪呢?!! 你可以单单取最后几个,甚至最后一个版本的啊?</p>
+
+<pre><code>#仅获取最新版和一个历史版本,即最后2个版本
+git clone git@github.com:nutzam/nutz --depth=1
+
+#看看下载了多少数据:
+Cloning into nutz...
+remote: Counting objects: 2928, done.
+remote: Compressing objects: 100% (1956/1956), done.
+remote: Total 2928 (delta 1212), reused 2179 (delta 831)
+Receiving objects: 100% (2928/2928), 3.20 MiB | 1.06 MiB/s, done.
+Resolving deltas: 100% (1212/1212), done.
+
+#仅3.2mb哦, 小很多了吧?
+</code></pre>
+
+<p>上面的git clone,<strong>仅获取了最后2个版本</strong>,我是如何知道的呢?</p>
+
+<pre><code>cd nutz
+git rev-list master
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/344.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/342.html">一波三折的一个月,鸣鸣的腹泻终于好了,我也恢复元气了</a> <span class="date">2011-11-13 22:04:57</span></h3>
+  <p>终于有心情,有闲情来写blog了</p>
+
+<p>鸣鸣的腹泻,终于告一段落,我自己也渐渐恢复元气 .. 几个安乐觉,几瓶白兰氏鸡精&hellip;. 最重要的,当然是鸣鸣玩耍的嬉笑声</p>
+
+<p>这一次腹泻,可以算是鸣鸣出生以来的第一次生病, 揪心啊&hellip;.</p>
+
+<p>起初,只是轻微的腹泻,水样, 鸣鸣也不哭,也不闹
+渐渐地,腹泻的次数不断增加,最高峰时,1~2小时一次,鸣鸣的精神状态也开始不佳
+恩,鸣鸣还是大哭了, 因为不断腹泻导致小屁股红肿,每次腹泻都让她很疼 -- 呜呜&hellip;.</p>
+
+<p>首先是去了两次的区人民医院,第二次差点跟医生吵起来 -- 叫我怎么说呢,事情就是发生了
+  由于我坚决反对吊针,那医生几乎发狂了,竟然向后推了一下鸣鸣的头,最后,打了一支屁股针,开了点冲剂
+  第二天,直奔省妇幼保健院,二话没说,验大便 -- 肠炎+腺病毒感染, 接着一句: 还好,不严重 &hellip; 没去打针,没去吊针,只开了一次中药肚脐贴,一瓶氧化锌,3颗庆大霉素(医生说不入血,没事). 贴好肚脐,喂了一次庆大霉素,帮她涂氧化锌到小屁股,然后就睡觉了. 中午补涂氧化锌的时候,竟然还亲了一下妈妈,露出点点笑容 -- hold不住啊&hellip; 精神状态明显好转啊!! 当天, 腹泻次数明显减少了, 也不哭闹了 -- 我能不激动吗?!!
+  之后几天,复诊了两次,最后一次显示无发炎 -- 俺是不是应该捐的钱给医院呢??</p>
+
+<p>Mark一下省妇幼的用药:
+1. 庆大霉素3颗,实际吃了1.5颗,因为每次仅吃半颗
+2. 3次肚脐贴,不知道什么成分
+3. 钙/B12冲剂
+4. 纽曼斯 -- 一种复合益生菌,在医院之外买的,挪威进口, 大概10元/颗,一瓶30颗,每天1~2次 -- 你觉得贵吗?病好了,啥都值!
+5. 自己买了一些丁桂儿脐贴, 感觉不错</p>
+
+  <div class="more">
+    <a href="/blog/342.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/339.html">RK2918 内核源码 -- 想不到吧?!</a> <span class="date">2011-11-03 09:06:50</span></h3>
+  <p>想不到, 我竟然找到了, 这都要感谢一位外国友人的提示!!</p>
+
+<p>还是那句, 对国人保密,对外国人公开 -- 不能太&rdquo;云南白药&rdquo;啊!!</p>
+
+<p>下载地址:
+<a href="http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip">http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip</a></p>
+
+<p>包含:
+busybox源码
+e2fs源码
+kernel源码 -- 当然,这才是最关键的</p>
+
+<p>根据其日期,猜测是SDK 1.x的作品, 不过,一般来说,h文件都不会大改的,呵呵!!</p>
+
+  <div class="more">
+    <a href="/blog/339.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/338.html">推荐OpenResty -- Nginx全能插件版</a> <span class="date">2011-10-20 22:39:40</span></h3>
+  <p>实在吐血,这是第二次写这个文章,刚才准备保存的时候操作失误,全没了&hellip;.</p>
+
+<p>官网: <a href="http://openresty.org/">http://openresty.org/</a>
+虽然是中国人做的,但没几个汉字&hellip;..</p>
+
+<p>我用Nginx,是这样一个过程:
+1. 系统rpm中的nginx,能让其跑起来
+2. 玩配置文件
+3. 玩编译选项
+4. 写插件,集成第三方插件</p>
+
+<p>OpenResty , 是淘宝一位大牛(agentzh)集成的包含N多好插件的Nginx捆绑源码包,这位仁兄自称Nginx最活跃的第三方模块开发人员哦</p>
+
+<p>下面,当然要列一下到底集成了什么模块(已经根据agentzh的微博提醒进行修正):</p>
+
+<p>LuaJIT -- 极速版Lua实现
+ArrayVarNginxModule -- 数组类型的Nginx变量
+AuthRequestNginxModule -- 鉴权,想象一下以C代码的速度判断一个请求是否合法,是不是很有快感呢?!
+DrizzleNginxModule -- Nginx-MySQL桥,非阻塞的哦,我又爱又恨的一个模块,值得注意的是,其响应是RDS流
+EchoNginxModule -- 以非常直观的方式在Nginx配置文件中编写简单的处理逻辑,源码包含大量注释,绝对是入门好例子!!
+EncryptedSessionNginxModule -- 加密会话
+FormInputNginxModule -- 解析post请求中的参数,这下子,简单请求根本不需要PHP/Java来处理啦
+HeadersMoreNginxModule -- Nginx默认的header模块只能添加或忽略,这个给你CRUD全套的!!
+IconvNginxModule -- 编码转换,不多说,也不懂
+StandardLuaInterpreter -- 与Lua官方实现所匹配,一般用不上,因为我们用LuaJIT!!
+MemcNginxModule -- 与Memcached的绝配,谁用谁知道!! 与upstram_keepalive一起用,你能更High!!
+Nginx
+NginxDevelKit -- N多第三方插件都依赖的东西,<del>不知道为啥</del> 提供一些方便使用的基础API封装
+LuaCjsonLibrary -- Lua版的Json处理库实在太慢,这个才叫速度!!
+LuaNginxModule -- 我的最爱,一般逻辑,完全没必要用Java/PHP啦
+LuaRdsParserLibrary -- 在Lua中直接处理RDS流,速度杠杠的!
+LuaRedisParserLibrary -- 在Lua中处理Redia模块的响应,暂时我还没用上
+PostgresNginxModule -- Nginx-Postgres桥,输出的也是RDS流
+RdsCsvNginxModule -- RDS流转CVS格式,不知道能干啥,报表?
+RdsJsonNginxModule -- RDS流转JSON字符串,之前经常用这个
+Redis2NginxModule -- Nginx-Redis2桥
+SetMiscNginxModule -- 提供很多很实用的方法,例如base64编解码,URL编解码,SQL防注入等等
+SrcacheNginxModule -- 缓存模块,据说跟Memc模块一起用比较爽
+UpstreamKeepaliveNginxModule -- 与Memc模块的标配,号称性能提升几倍呢
+XssNginxModule -- <del>防跨站攻击的</del> 通过Jsonp进行跨站ajax编程</p>
+
+  <div class="more">
+    <a href="/blog/338.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/335.html">捐点钱给自己喜欢的开源软件</a> <span class="date">2011-10-18 09:17:54</span></h3>
+  <p>声明: 本文并非为Nutz募捐</p>
+
+<p>昨晚,点了几次鼠标,填了信用卡资料,一笔微不足道的捐款送达Python基金会</p>
+
+<p>回想那些捐款过的开源/免费软件,我的款项也许还不够作者买瓶红酒或者吃一顿KFC, 但我的确捐了,以表达我的感激之情,这难道不就够了吗?</p>
+
+<p>感觉国内的开源/免费软件生存环境还是太差:
+1. 第一次发布, 99.99%被骂山寨,没创意&hellip;.
+2. 免费的,就要求开源,开源的就骂质量差
+3. 只知道索取,不会有所贡献 -- 拿到源码就跑,有bug也不报告,更别说捐款了
+&hellip;</p>
+
+<p>当然,大家的理由都很多,很充分,很现实:
+1. 没钱
+2. 技术不够
+3. 没时间
+&hellip;</p>
+
+<p>捐10块钱,报个bug,发邮件咨询一下作者,帮助一下新手,写blog介绍一下经验,有这么难吗?</p>
+
+  <div class="more">
+    <a href="/blog/335.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

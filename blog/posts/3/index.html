@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Wendal随笔 Page 3</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/10/28.html">北京几张图</a> <span class="date">2013-10-28</span></h3>
+  <p>飞机着陆</p>
+
+<p><img src="/blog/assets/media/2013/10/28/IMG_0857.JPG" /></p>
+
+<p>北京第一餐 -- 脑残酸菜撸肉面</p>
+
+<p><img src="/blog/assets/media/2013/10/28/IMG_0935.JPG" /></p>
+
+<p>灰太狼大平卖 -- 只要9毛9!!</p>
+
+<p><img src="/blog/assets/media/2013/10/28/IMG_0954.JPG" /></p>
+
+<p>后海 -- Three-Person</p>
+
+<p><img src="/blog/assets/media/2013/10/28/IMG_1723.JPG" /></p>
+
+<p>离开北京那天, 灰霾爆表了</p>
+
+<p><img src="/blog/assets/media/2013/10/28/IMG_2007.JPG" /></p>
+
+  <div class="more">
+    <a href="/blog/2013/10/28.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/10/20.html">让redis支持动态库</a> <span class="date">2013-10-20</span></h3>
+  <h1>So, let&rsquo;s put some fun in redis</h1>
+
+<p>redis的命令列表是写死在代码里面,编译后就没法修改(跟nginx一个德行)</p>
+
+<h1>硬编码一些额外的方法到redis中</h1>
+
+<p>最初写的一个hello world级的测试命令</p>
+
+<pre><code>void wendalCommand(redisClient *c) {
+    struct timeval tv;           // 从timeCommand拷贝的...
+    addReplyMultiBulkLen(c,3);   // 共返回3个结果
+    addReplyBulkCString(c, &quot;Hi,Wendal&quot;); // 输出个字符串啦
+    gettimeofday(&amp;tv,NULL);              // 获取时间, 也是从timeCommand拷贝的
+    addReplyBulkLongLong(c,tv.tv_sec);   // 不解释了
+    addReplyBulkLongLong(c,tv.tv_usec);  // 不解释了
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/10/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/10/15.html">perth归来</a> <span class="date">2013-10-15</span></h3>
+  <h2>其实已经回国几天了,但群里的狼友依然很high</h2>
+
+<p>奋斗吧,童鞋们 -_-</p>
+
+<h1>perth是什么地方? 大概做了些啥?</h1>
+
+<p>西澳大利亚的首府, 西临南印度洋</p>
+
+<p>阳光下睡个觉,海滩戏水,河边看美女,超市看各种降价,郊外看农场</p>
+
+<p>总之,待了七天七夜,完整地走了perth的一周</p>
+
+<h1>Day1 -- 阳光下睡个觉</h1>
+
+<p>3号晚上21:45的飞机,实际21:55起飞,直飞perth, 凌晨5:30到达</p>
+
+  <div class="more">
+    <a href="/blog/2013/10/15.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/09/23.html">Android系统配置数据库注释(settings.db)</a> <span class="date">2013-09-23</span></h3>
+  <h1>system表</h1>
+
+<p>参考: <a href="http://developer.android.com/reference/android/provider/Settings.System.html">http://developer.android.com/reference/android/provider/Settings.System.html</a></p>
+
+<pre><code>1|volume_music|11               // 媒体音量
+2|volume_ring|5                 // 闹钟音量
+3|volume_system|7               // 系统音量
+4|volume_voice|4                // 通话音量
+5|volume_alarm|6                // 警报音量
+6|volume_notification|5         // 提示音的音量
+7|volume_bluetooth_sco|7        // 蓝牙耳机的音量
+8|mode_ringer|2                 // 情景模式. 0=静音,1=震动,2=普通
+9|vibrate_on|10                 // 震动的级别
+10|mode_ringer_streams_affected|166 // ...
+11|mute_streams_affected|46     // ...
+12|power_on_able|false          // 不清楚
+13|default_screen_orientation|0 //默认屏幕方向, 0=横向,1=竖向
+14|dim_screen|1                 // 自动调暗屏幕, 1自然就是开启咯
+15|stay_on_while_plugged_in|0   // 插入电源时保持屏幕开启,不锁屏
+16|screen_off_timeout|-1        // 屏幕超时,进入锁屏的耗时, -1自然是不启用咯
+17|emergency_tone|0             // 
+18|call_auto_retry|0            // 呼叫失败后自动重拨
+19|dtmf_tone_type|0             // 
+20|hearing_aid|0                //
+21|tty_mode|0                   //
+22|airplane_mode_on|0           // 飞行模式
+23|airplane_mode_radios|cell,bluetooth,wifi,nfc,wimax // 飞行模式下,需要关闭的设备
+24|airplane_mode_toggleable_radios|bluetooth,wifi,nfc //
+25|auto_time|1                  // 从移动网络自动获取时间, 据说中国移动和中国联通均不支持
+26|auto_time_zone|1             // 从移动网络自动获取时区
+27|screen_brightness|102        // 屏幕亮度
+28|screen_brightness_mode|0     // 屏幕亮点自动调节
+29|window_animation_scale|1.0   // 窗口动画-缩放
+30|transition_animation_scale|1.0 // 依然是窗口动画
+31|accelerometer_rotation|1     // 屏幕自动旋转
+32|haptic_feedback_enabled|1    // 虚拟按键的反馈
+33|notification_light_pulse|1   // 提示灯
+34|set_install_location|0       // 允许设置安装位置
+35|default_install_location|0   // 允许设置缺省的安装位置
+36|power_sounds_enabled|1       // 开机关机的声音
+37|low_battery_sound|/system/media/audio/ui/LowBattery.ogg // 低电量的警告语,极其恶心那个
+38|dtmf_tone|1
+39|sound_effects_enabled|1      // 声音效果
+41|dock_sounds_enabled|0        // 插入或移除设备的时候,&quot;叫&quot;~~
+42|desk_dock_sound|/system/media/audio/ui/Dock.ogg // 插入时的叫声
+43|desk_undock_sound|/system/media/audio/ui/Undock.ogg // 拔出时的叫声
+44|car_dock_sound|/system/media/audio/ui/Dock.ogg  //车载模式下,插入的叫声
+45|car_undock_sound|/system/media/audio/ui/Undock.ogg //车载模式下,拔出的叫声
+46|lockscreen_sounds_enabled|0  // 屏幕加锁解锁的声音
+47|lock_sound|/system/media/audio/ui/Lock.ogg // 加锁的声音
+48|unlock_sound|/system/media/audio/ui/Unlock.ogg //解锁的声音
+49|vibrate_in_silent|1          // 静音时启用震动
+50|pointer_speed|0              // 不知道...
+51|accelerometer_coordinate|default
+52|is_scan_tf_card|1            // 是否扫描sdcard
+53|hidden_google_application|0  // 隐藏google应用
+54|time_12_24|24                // 时间按12小时制还是24小时制
+55|display_adaption_mode|center // 屏幕适配模式
+56|is_scan_usb_host|1           // 扫描U盘不?
+57|shortcut_key_0|website--split--http://tv.sohu.com // 快捷键0, 我XX
+58|shortcut_key_1|website--split--http://v.qq.com/   // 快捷键1, 我XX
+59|shortcut_key_2|app--split--com.android.settings--split--com.android.settings.Settings // 快捷键2, 我XX
+60|shortcut_key_3|app--split--com.softwinner.TvdFileManager--split--com.softwinner.TvdFileManager.MainUI // 快捷键3, 我XX
+61|display_adapter_enable|1     // 自动适配显示设备
+62|display_area_ratio|100       // 显示的区域
+63|smart_brightness_enable|0    // 自动调整屏幕亮度
+66|mouse_advance|30             // USB鼠标的设置? 不清楚
+67|color_brightness|50          // RGB的调色
+68|color_contrast|50            // RGB的调色
+69|color_saturation|50          // RGB的调色
+70|audio_output_type|NORMAL     // 音频输出类型
+71|audio_output_channel|HDMI    // 音频输出的通道 -- 可以查audiomode表, 见过: HDMI VGA LVDS
+72|directly_power_off|1         // 直接关闭电源,无需再次确认
+73|bd_folder_play_mode|1        // 蓝光目录模式, 当打开蓝光光盘格式的目录时,自动开始播放 -- XX
+74|hdmi_output_mode|255         // hdmi的输出模式,无解中
+75|display_output_format|HDMI 1080P 60HZ // 显示输出的模式,这个太重要了,可选模式? 因机器而异的...
+76|first_boot_system|true       // 是否为第一次启动, 不准确的值
+77|alarm_alert|content://media/internal/audio/media/9 //警告音
+78|notification_sound|content://media/internal/audio/media/50 // 提示音
+79|ringtone|content://media/internal/audio/media/124 // 闹钟
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/09/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-09-06</span></h3>
+  <h1>nutz加jetty 的测试代码</h1>
+
+<pre><code>    @At
+    @Ok(&quot;void&quot;) //不要视图啊... 因为多次进入
+    @Fail(&quot;void&quot;)// 一样不需要...
+    public void async(final @Param(&quot;wait&quot;)long wait, @Attr(&quot;obj&quot;)Object obj, final HttpServletRequest req) {
+        System.out.println(&quot;async IN&quot;);
+        if (obj == null) { // 第一次进入时,必然是null, 第二次,如果是线程唤醒的,那就有值了,呵呵
+            System.out.println(&quot;OBJ NULL&quot;);
+            // 获取这个关键的对象,哈哈哈
+            final Continuation continuation = ContinuationSupport.getContinuation(req);
+            if (continuation.isExpired()) { // 往下的代码设置了超时,so,这样判断一下咯
+                System.out.println(&quot;async TIMEOUT&quot;);
+                return;
+            }
+            continuation.setTimeout(15*1000); //设置超时哦
+            continuation.suspend(); // 非阻塞的方法... 仅仅是设置一个状态
+            new Thread() { //我在这启动一个线程,休眠一定时间之后唤醒这个异步请求
+                public void run() {
+                    System.out.println(&quot;async Thread Start&quot;);
+                    if (wait &lt; 1) {
+                        Lang.quiteSleep(10 * 1000);
+                    } else {
+                        Lang.quiteSleep(wait * 1000);
+                    }
+                    System.out.println(&quot;async Thread wakeup&quot;);
+                    req.setAttribute(&quot;obj&quot;, &quot;I do it!&quot;);
+                    continuation.resume();
+                };
+            }.start();
+        } else {
+            System.out.println(&quot;async GET OBJ --&gt; &quot; + obj);
+        }
+        
+        System.out.println(&quot;async OUT&quot;);
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/09/06.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/08/28.html">让golang的get命令兼容gitlab</a> <span class="date">2013-08-28</span></h3>
+  <h1>我们有些什么呢?</h1>
+
+<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
+
+<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
+
+<p>如果尝试执行下面的语句去获取这个库的话</p>
+
+<pre><code>go get git.wendal.net/wendal/gofly
+
+#会输出
+package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
+</code></pre>
+
+<p>然而,如果我们输入</p>
+
+<p>```</p>
+
+  <div class="more">
+    <a href="/blog/2013/08/28.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/08/23.html">再说Ioc</a> <span class="date">2013-08-23</span></h3>
+  <p>很多人都没搞懂Ioc到底什么原理,搞不懂里面有什么魔术.</p>
+
+<p>注: 不讨论JavaAgent/JNI/动态类创建/自定义ClassLoader/自定义JVM下的行为</p>
+
+<p>这些gif我曾经在nutz群中发送多次,但多少人真的看懂了&hellip;</p>
+
+<h1>首先,看第一种理解 -- 加几个注解,对象就能注入</h1>
+
+<p><img src="/blog/assets/media/2013/08/23/nutz_ioc_inject_not.gif"></p>
+
+<p>上面的@Inject是Nutz Ioc的注解,你可以替换成Spring之类的注解,完全没有区别.</p>
+
+<p>运行即可看到, 变量dao为null,但为什么呢? 已经加了@Inject注解了啊</p>
+
+<h1>再看第二种理解 -- 加了注解,有Ioc容器,就能注入</h1>
+
+<p><img src="/blog/assets/media/2013/08/23/nutz_ioc_inject_not2.gif"></p>
+
+  <div class="more">
+    <a href="/blog/2013/08/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/08/09.html">用openresty做redis订阅发布</a> <span class="date">2013-08-09</span></h3>
+  <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
+
+<pre><code>    location =/subscribe {
+        send_timeout 365h; #很久很久很久,呵呵
+        content_by_lua &quot;
+        local redis = require \&quot;resty.redis\&quot;
+        local red = redis:new()
+        red:connect(\&quot;127.0.0.1\&quot;, 6379)
+        red:subscribe(ngx.var.arg_key) -- 严格来说,需要判断空值和url decode
+        local res, err = red:read_reply()
+        if res then 
+            ngx.say(res) -- 其实是个数组.. 第3个值才是publish的值
+        else
+            ngx.status = 500
+        end
+        red:close()
+        &quot;;
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/08/09.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/07/25.html">Ubuntu12.04下asoundrc不起效</a> <span class="date">2013-07-25</span></h3>
+  <p>因为要配置asound,所以用到~/.asoundrc, 但ubuntu下总是没效果的样子</p>
+
+<p>最后,终于发现这个痕迹</p>
+
+<pre><code>wendal@ubuntu:~$ aplay -L
+default
+    Playback/recording through the PulseAudio sound server
+sysdefault:CARD=I82801AAICH
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Default Audio Device
+front:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Front speakers
+surround40:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.0 Surround output to Front and Rear speakers
+surround41:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    4.1 Surround output to Front, Rear and Subwoofer speakers
+surround50:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.0 Surround output to Front, Center and Rear speakers
+surround51:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    5.1 Surround output to Front, Center, Rear and Subwoofer speakers
+iec958:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    IEC958 (S/PDIF) Digital Audio Output
+dmix:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample mixing device
+dsnoop:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct sample snooping device
+hw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Direct hardware device without any conversions
+plughw:CARD=I82801AAICH,DEV=0
+    Intel 82801AA-ICH, Intel 82801AA-ICH
+    Hardware device with all software conversions
+</code></pre>
+
+  <div class="more">
+    <a href="/blog/2013/07/25.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/blog/2013/07/04.html">篮子里的鸡蛋</a> <span class="date">2013-07-04</span></h3>
+  <p>一个鸡蛋,一块吐司</p>
+
+<p><img src="/blog/assets/media/2013/07/04/1.jpg" /></p>
+
+<p>成品</p>
+
+<p><img src="/blog/assets/media/2013/07/04/2.jpg" /></p>
+
+  <div class="more">
+    <a href="/blog/2013/07/04.html" class="btn">read more..</a>
+  </div>
+</div>
+
+
+<ul>
+
+  <li>
+	1
+  </li>
+
+  <li>
+	2
+  </li>
+
+  <li>
+	3
+  </li>
+
+  <li>
+	4
+  </li>
+
+  <li>
+	5
+  </li>
+
+  <li>
+	6
+  </li>
+
+  <li>
+	7
+  </li>
+
+  <li>
+	8
+  </li>
+
+  <li>
+	9
+  </li>
+
+  <li>
+	10
+  </li>
+
+  <li>
+	11
+  </li>
+
+  <li>
+	12
+  </li>
+
+  <li>
+	13
+  </li>
+
+  <li>
+	14
+  </li>
+
+  <li>
+	15
+  </li>
+
+  <li>
+	16
+  </li>
+
+  <li>
+	17
+  </li>
+
+  <li>
+	18
+  </li>
+
+  <li>
+	19
+  </li>
+
+  <li>
+	20
+  </li>
+
+  <li>
+	21
+  </li>
+
+  <li>
+	22
+  </li>
+
+  <li>
+	23
+  </li>
+
+  <li>
+	24
+  </li>
+
+  <li>
+	25
+  </li>
+
+</ul>
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

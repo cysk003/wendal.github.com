@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Nginx不同编译选项得到的二进制文件大小对比</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>Nginx不同编译选项得到的二进制文件大小对比 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>Nginx信息:
+版本: 0.9.3
+对原版的修改, 将auto/cc/gcc的-g去掉,将-O改为-O2
+附上原始数据,比较长:</p>
+
+<pre><code>#默认编译
+./configure
+make
+ll objs/nginx
+make clean
+#File size 525556
+#--with-cc-opt=-g 2444312
+#--with-cc-opt=-g --with-debug 2513996
+
+#加载大部分可选模块
+./configure --with-http_ssl_module \
+        --with-http_realip_module \
+        --with-http_addition_module \
+        --with-http_xslt_module \
+        --with-http_sub_module \
+        --with-http_dav_module \
+        --with-http_flv_module \
+        --with-http_gzip_static_module \
+        --with-http_random_index_module \
+        --with-http_secure_link_module \
+        --with-http_degradation_module \
+        --with-http_stub_status_module \
+        --with-http_perl_module
+make &gt; /dev/null
+ll objs/nginx
+make clean
+#File size 642031
+#--with-cc-opt=-g 4557807
+#--with-cc-opt=-g --with-debug 4689478
+
+#移除大部分可以移除的模块
+./configure         --without-http_charset_module \
+        --without-http_gzip_module \
+        --without-http_ssi_module \
+        --without-http_userid_module \
+        --without-http_access_module \
+        --without-http_auth_basic_module \
+        --without-http_autoindex_module \
+        --without-http_status_module \
+        --without-http_geo_module \
+        --without-http_map_module \
+        --without-http_split_clients_module \
+        --without-http_referer_module \
+        --without-http_rewrite_module \
+        --without-http_proxy_module \
+        --without-http_fastcgi_module \
+        --without-http_uwsgi_module \
+        --without-http_scgi_module \
+        --without-http_memcached_module \
+        --without-http_limit_zone_module \
+        --without-http_limit_req_module \
+        --without-http_empty_gif_module \
+        --without-http_browser_module \
+        --without-http_upstream_ip_hash_module
+make
+ll objs/nginx
+make clean
+#File size 357657
+#--with-cc-opt=-g 1556885
+#--with-cc-opt=-g --with-debug 1616309
+
+#进一步移除Http-Cache
+./configure         --without-http_charset_module \
+        --without-http_gzip_module \
+        --without-http_ssi_module \
+        --without-http_userid_module \
+        --without-http_access_module \
+        --without-http_auth_basic_module \
+        --without-http_autoindex_module \
+        --without-http_status_module \
+        --without-http_geo_module \
+        --without-http_map_module \
+        --without-http_split_clients_module \
+        --without-http_referer_module \
+        --without-http_rewrite_module \
+        --without-http_proxy_module \
+        --without-http_fastcgi_module \
+        --without-http_uwsgi_module \
+        --without-http_scgi_module \
+        --without-http_memcached_module \
+        --without-http_limit_zone_module \
+        --without-http_limit_req_module \
+        --without-http_empty_gif_module \
+        --without-http_browser_module \
+        --without-http_upstream_ip_hash_module \
+        --without-http-cache
+make
+ll objs/nginx
+make clean
+#File size 343543
+#--with-cc-opt=-g 1467019
+#--with-cc-opt=-g --with-debug 1521963
+</code></pre>
+
+<p>附上图表(使用Google Chart).
+<img src="https://chart.googleapis.com/chart?cht=bvg&amp;chs=700x250&amp;chd=t:642031,525556,357657,343543|4557807,2444312,1556885,1467019|4689478,2513996,1616309,1521963&amp;chco=4d89f9,c6d9fd,0000FF&amp;chxt=y&amp;chds=0,5000000&amp;chxr=0,0,5000000&amp;chdl=Normal|--with-cc-opt=-g|--with-cc-opt=-g%20--with-debug&amp;chg=0,10" alt="" />
+解释:
+1. 第一组, 添加大部分可选模块 如gzip_static SSL等
+2. 第二组, 默认配置
+3. 第三组, 移除大部分可移除的模块, 使用 --without-http_XXXX
+4. 第四组, 在第三组基础上,再移除Http-Cache</p>
+
+<p>图表中的Y轴的单位为字节.</p>
+
+<p>PS: 本blog使用的Nginx大小为450k,哈哈!
+编译参数:</p>
+
+<pre><code>root@ubuntu:~# /usr/local/nginx/sbin/nginx -V
+nginx: nginx version: nginx/0.9.3
+nginx: built by gcc 4.4.3 (Ubuntu 4.4.3-4ubuntu5)
+nginx: configure arguments: --user=www --group=www 
+--prefix=/usr/local/nginx --with-http_stub_status_module 
+--with-http_gzip_static_module --with-cc-opt=-ltcmalloc 
+--without-http_empty_gif_module --without-http_split_clients_module 
+--without-http_geo_module --without-http_auth_basic_module 
+--without-http_memcached_module --with-cpu-opt=pentium4 
+--without-http_uwsgi_module --without-http_scgi_module
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/230.html" title="动手做一个Nginx Module-简洁版">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/227.html" title="WP-Codebox乱码问题">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2011-01-17 19:45:47</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Nginx-ref">Nginx <span>17</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#bug-ref">bug <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Dom-ref">Dom <span>9</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#nginx-ref">nginx <span>23</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

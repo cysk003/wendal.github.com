@@ -80,6 +80,41 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/275.html">用Jsoup查台电的固件更新情况</a> <span class="date">2011-04-26 18:13:57</span></h3>
+  <p>最近入手台电T720 Wifi,便宜货,不要跟iPad比.</p>
+
+<p>T720用的是 Android 2.1 , 比较旧, 但官方已经说了很久会出2.2的固件,哎&hellip; 何年何月啊?!</p>
+
+<p>每次都上台电查,烦,决定用Jsoup写一个检查的,上代码:</p>
+
+<pre><code>import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class Main {
+
+    public static void main(String[] args) throws Throwable {
+        Document doc = Jsoup.connect(&quot;http://www.teclast.com/topic.php?channelID=78&amp;topicID;=148&quot;).get();
+        Elements es = doc.select(&quot;font[color$=003399]&quot;);
+        String type = &quot;T720&quot;;//机器型号
+        for (Element e : es) {
+            if(!e.ownText().startsWith(type))
+                continue;
+            Element f = e.parent().parent().select(&quot;font[color$=0000CC]&quot;).first();
+            if(f!= null)
+                System.out.println(e.ownText() + &quot; &quot; + f.ownText());
+        }
+    }
+}
+</code></pre>
+
+  <div class="more">
+    <a href="/275.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/274.html">Everbox4j 当前进度(2011-04-26)</a> <span class="date">2011-04-26 09:23:12</span></h3>
   <p>项目地址: <a href="http://code.google.com/p/everbox4j/">http://code.google.com/p/everbox4j/</a>
 源码地址: <a href="http://code.google.com/p/everbox4j/source/browse/">http://code.google.com/p/everbox4j/source/browse/</a></p>
@@ -92,8 +127,8 @@
     一个简单的管理UI界面,仅界面,功能还没做,呜呜</p>
 
 <p>学到不少东西:
-    上传的机制 &ndash; 分段上传,由服务器决定上传哪几段
-    下载机制 &ndash; 先发起一个下载请求,服务器分配一个下载地址</p>
+    上传的机制 -- 分段上传,由服务器决定上传哪几段
+    下载机制 -- 先发起一个下载请求,服务器分配一个下载地址</p>
 
 <p>Everbox用到的一些东西:
     Json
@@ -142,8 +177,8 @@
 
 <p>直接写中文域名是无法解析到正确的Server的
 中文域名其实就是一个英文域名!!
-中文域名 &mdash;(Punycode编码) &ndash;&gt; 英文域名
-而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn&ndash;fiq228c.com 进行访问,仅此而已!!</p>
+中文域名 ---(Punycode编码) --&gt; 英文域名
+而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn--fiq228c.com 进行访问,仅此而已!!</p>
 
 <p>那Punycode编码是什么呢? 先看看Python如何调用:
 尝试编码  www.坚果.com</p>
@@ -151,7 +186,7 @@
 <pre><code>'坚果'.decode('gbk').encode('punycode')
 </code></pre>
 
-<p>得到jfs419a,然后合成真正的URL www.xn&ndash;jfs419a.com &ndash; 这个域名还没启用的.</p>
+<p>得到jfs419a,然后合成真正的URL www.xn--jfs419a.com -- 这个域名还没启用的.</p>
 
 <p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
 
@@ -184,7 +219,7 @@ C. 瞄过源码</p>
 <p><strong>3. 找Bug的方法</strong>
 你马上就开始debug了? No! No! 请把debug放到最后,当成无计可施的最后手段
 System.out.println()才是真正的利器!!
-你马上会反驳,println很耗时间的 &ndash; 是的,但帮你理清思路
+你马上会反驳,println很耗时间的 -- 是的,但帮你理清思路
 通过println,打印变量的值/应该经过的分支,帮你一步步理清思路
 使用Debug往往是最快解决问题的,但也是最容易让你无法找到问题的根源
 良好的Log,是生产环境中必不可少的信息</p>
@@ -241,7 +276,7 @@ static ngx_command_t  ngx_http_status_commands[] = {
 
 <div class="post">
   <h3 class="title"><a href="/266.html">再一次搞定UTF-8的BOM</a> <span class="date">2011-04-12 18:55:43</span></h3>
-  <p>一年前的某天,我觉察到BOM的问题 &ndash; 一个Java源文件死活无法编译
+  <p>一年前的某天,我觉察到BOM的问题 -- 一个Java源文件死活无法编译
 今天,我狠狠地为 Nutz的Streams类添加了一个方法,用于自动过滤掉BOM头!!
 代码如下:</p>
 
@@ -328,34 +363,6 @@ log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
 
   <div class="more">
     <a href="/262.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/261.html">发布一个Httpsqs的Python客户端</a> <span class="date">2011-04-01 21:04:15</span></h3>
-  <p>Httpsqs是张宴的一款开源队列服务器,项目首页 <a href="http://code.google.com/p/httpsqs/">http://code.google.com/p/httpsqs/</a></p>
-
-<p>这款软件有几种客户端, Java/Perl/C,却没有Python的客户端.</p>
-
-<p>故,本人奉上一个实现,欢迎指正!!</p>
-
-<p>直接去下载 <a href="http://wendal-common.googlecode.com/files/httpsqs-python-client-v1.zip">httpsqs-python-client-v1.zip</a></p>
-
-<p>代码:</p>
-
-<pre><code>#Verion 1.0
-#Author wendal(wendal1985@gmail.com)
-#If you find a bug, pls mail me
-
-import sys,httplib
-
-ERROR = 'HTTPSQS_ERROR'
-
-GET_END = 'HTTPSQS_GET_END'
-</code></pre>
-
-  <div class="more">
-    <a href="/261.html" class="btn">read more..</a>
   </div>
 </div>
 

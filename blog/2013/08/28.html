@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>让golang的get命令兼容gitlab</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>让golang的get命令兼容gitlab </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h1>我们有些什么呢?</h1>
+
+<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
+
+<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
+
+<p>如果尝试执行下面的语句去获取这个库的话</p>
+
+<pre><code>go get git.wendal.net/wendal/gofly
+
+#会输出
+package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
+</code></pre>
+
+<p>然而,如果我们输入</p>
+
+<pre><code>go get git.wendal.net/wendal/gofly.git
+
+#会输出
+fatal: repository 'git.wendal.net/wendal/gofly' does not exist
+package git.wendal.net/wendal/gofly.git: exit status 128
+</code></pre>
+
+<h1>为什么呢?貌似go get不支持自定义的库地址啊(git的)</h1>
+
+<p>且看 $GOROOT/src/cmd/go/vcs.go里面的一段代码</p>
+
+<pre><code>    // General syntax for any server.
+    {
+        re:   `^(?P&lt;root&gt;(?P&lt;repo&gt;([a-z0-9.\-]+\.)+[a-z0-9.\-]+(:[0-9]+)?/[A-Za-z0-9_.\-/]*?)\.(?P&lt;vcs&gt;bzr|git|hg|svn))(/[A-Za-z0-9_.\-]+)*$`,
+        ping: true,
+    },
+</code></pre>
+
+<p>可以看到, 对于未知的库地址(非github/Google Code/Bitbucket/Launchpad),都按这里的配置进行设置</p>
+
+<p>按上述的正则表达式,输入git.wendal.net/wendal/gofly可以得到</p>
+
+<pre><code>root = git.wendal.net/wendal/gofly
+repo = git.wendal.net/wendal/gofly
+vcs  = git
+</code></pre>
+
+<p>What? 当使用git进行clone的时候,其实就执行了</p>
+
+<pre><code>git clone $repo $GOPATH/src/$root
+#展开之后(假设GOPATH=/opt/gopath)
+git clone git.wendal.net/wendal/gofly /opt/gopath/src/git.wendal.net/wendal/gofly
+</code></pre>
+
+<p>git库的地址当成本地路径了,不出错才怪呢</p>
+
+<h1>怎么解决呢? 添加自定义的库地址,跟github类似</h1>
+
+<p>首先,拷贝一份github的配置</p>
+
+<pre><code>    // Github
+    {
+        prefix: &quot;github.com/&quot;,
+        re:     `^(?P&lt;root&gt;github\.com/[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+)(/[A-Za-z0-9_.\-]+)*$`,
+        vcs:    &quot;git&quot;,
+        repo:   &quot;https://{root}&quot;,
+        check:  noVCSSuffix,
+    },
+</code></pre>
+
+<p>改成</p>
+
+<pre><code>    // git.xwoods.org
+    {
+        prefix: &quot;git.wendal.net/&quot;,
+        re:   `^(?P&lt;root&gt;git\.wendal\.net/(?P&lt;p&gt;.[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+))(/[A-Za-z0-9_.\-]+)*))$`,
+        ping:   false,
+        repo:   &quot;git@git.wendal.net:{p}.git&quot;,
+        vcs :   &quot;git&quot;,
+    },
+</code></pre>
+
+<p>注意 re和repo,做了特别处理哦,多一个p变量, 这样repo就把凑成标准的ssh式git地址,自动使用密钥(哈哈,私有库嘛)</p>
+
+<p>最后,还需要把golang编译</p>
+
+<pre><code># linux/mac 下
+$GOROOT/src/make.bash
+
+#windows下
+cd %GOROOT%\src\cmd\go
+go install
+</code></pre>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/2013/09/06.html" title="记录一下jetty的异步请求">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/2013/08/23.html" title="再说Ioc">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2013-08-28</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#golang-ref">golang <span>1</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#linux-ref">linux <span>8</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#git-ref">git <span>21</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>

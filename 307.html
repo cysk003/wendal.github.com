@@ -111,7 +111,7 @@ List&lt;class &lt;?&gt;&gt; list = Scans.me().scanPackage(&quot;net.wendal.mvc&q
 </code></pre>
 
 <p>注意,你应该已经发现, 返回的是NutResource,而不是File之类的对象,why?
-其实,这正是我当时做resource包的初衷 &ndash; File对象无法表达jar里面的文件,而InputStream又不包含文件名之类的信息</p>
+其实,这正是我当时做resource包的初衷 -- File对象无法表达jar里面的文件,而InputStream又不包含文件名之类的信息</p>
 
 <p>NutResource类最重要的两个方法:</p>
 
@@ -122,7 +122,7 @@ public InputStream getInputStream()
 <p>同时包含两中信息,满足大部分需求</p>
 
 <p>Scans类的局限性:
-1. 不允许进行根路径扫描 &ndash; 就是说,你不能直接把文件放在classpath根下,必须放在文件夹中
+1. 不允许进行根路径扫描 -- 就是说,你不能直接把文件放在classpath根下,必须放在文件夹中
 2. 现在已经测试在Tomcat/Jetty/WebLogic下正常,在Maven环境下不正常(至今搞不懂Maven的ClassLoader在某些情形下竟然返回null)</p>
 
     <hr>
@@ -152,7 +152,7 @@ public InputStream getInputStream()
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

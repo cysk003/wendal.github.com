@@ -80,12 +80,27 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/20.html">加班的星期天,应该是第一次</a> <span class="date">2010-08-01 22:18:18</span></h3>
+  <p>为了Alfresco的工作流,又加班了一天.</p>
+
+<p>算是突破性的进展,终于成功把两个流连接起来了,而且可以控制把其中一个流给关闭掉呢,哈哈! 问题的关键是实现自定义的ActionHandler和AssignmentHandler,通过页面获取的工作流id,获取另外一个工作流的全部信息. 我太强大了!!</p>
+
+<p>另外一个问题是发邮件, 似乎Alfresco WCM workflow的标准定义中, 串行工作流模式中, bpm_assignees的值会发生变化,争取找个时间把它简单重现!故,我有做了一个简单的ActionHandler,负责把当前Task的actorid保存在另外一个变量中. 哈哈,又解决一个难题,之前发邮件耗费了我起码一周的时间!</p>
+
+<p>应老婆建议,明天起有规律的说说Alfresco的配置. 例如如何安装,如何调整vtomcat等,还有就是一些曾经遇到的问题</p>
+
+  <div class="more">
+    <a href="/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/18.html">加班的星期六</a> <span class="date">2010-07-31 21:40:11</span></h3>
   <p>已经忘记了上一次加班是什么时候了?是否曾经星期六加班过呢?</p>
 
 <p>忙了一天的Alfresco工作流,终于有了突破性进展,放弃内置的AlfrescoScriptAction,改为自己写ActionHandler</p>
 
-<p>在页面上让用户选需要绑定的工作流 &ndash; 通过自定义的mytasks.jsp和改造wcm的submit-config-workflow.jsp 通过jquery完成页面修改与联动,并隐藏掉原有配置界面.</p>
+<p>在页面上让用户选需要绑定的工作流 -- 通过自定义的mytasks.jsp和改造wcm的submit-config-workflow.jsp 通过jquery完成页面修改与联动,并隐藏掉原有配置界面.</p>
 
 <p>今天上Google Reader,发现Alfresco 3.2 SP2 企业版已经发布,修复了不少的Bug,其中两个bug似乎与我们已经遇到的问题相关.</p>
 

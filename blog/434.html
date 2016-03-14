@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>NutIoc的执行过程</title>
+  
+    <meta name="author" content="Wendal Chen">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/blog/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/blog/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Wendal随笔</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/blog/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/blog/about">Wendal在此</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>NutIoc的执行过程 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <p>越来越多人阅读Nutz的源码,很是欣慰.</p>
+
+<p>首先,什么是Ioc呢? Ioc本质上就是一个有状态的Map<String,Object>, 其中bean就是用户通过各种形式的配置信息所定义的对象</p>
+
+<p>先上一段代码,通过一个js配置一个Ioc容器,并获取一个bean</p>
+
+<pre><code>public static void main(String[] args) {
+    IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
+    Ioc ioc = new NutIoc(loader);
+    Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
+    System.out.println(pet.getName());
+}
+</code></pre>
+
+<p>ioc的js配置文件(ioc.js,名字是随意的)</p>
+
+<pre><code>var ioc = {
+    pet : {
+        type : &quot;net.wendal.test.Pet&quot;,
+        fields : {
+            name : &quot;wendal&quot;
+        }
+    }
+}
+</code></pre>
+
+<p><strong>Ioc第一步,读取bean的配置信息</strong> : 任何bean,都有其对应的配置信息,都必须通过一个IocLoader来读取</p>
+
+<pre><code>IocLoader loader = new JsonLoader(&quot;ioc.js&quot;);
+</code></pre>
+
+<ol>
+<li><p>从ioc.js中读取配置信息</p></li>
+
+<li><p>ioc.js中,有个前缀&rdquo;var ioc =&ldquo;字符串,这是为了方便Eclipse进行语法提示而已, 写不写都可以,但只能写这个字符串,这是JsonLoader所约定的</p></li>
+
+<li><p>ioc.js仅定义了一个bean,名叫pet,任何bean都必须有唯一的名字, 因为Ioc实质上就是一个Map<String,Object>,其中的key就是bean的名字</p></li>
+
+<li><p>这个bean的信息,会保存在IocObject中, 注意,这是配置信息, 真正的对象并未生成</p></li>
+</ol>
+
+<p><strong>第二步,生成Ioc容器</strong></p>
+
+<pre><code>Ioc ioc = new NutIoc(loader);
+//只是进行一些必要的初始化,并完成与Aop的连接点
+</code></pre>
+
+<p><strong>第三步,获取对象</strong></p>
+
+<pre><code>Pet pet = ioc.get(Pet.class, &quot;pet&quot;);
+</code></pre>
+
+<p>这时候, 具体的Pet实例要准备生成了</p>
+
+<ol>
+<li><p>首先,需要生成IocLoading --&gt; createLoading()</p></li>
+
+<li><p>然后通过 iocloader的load方法,拿到IocObject, 即bean的配置信息</p></li>
+
+<li><p>接着IocMaker实例,通过IocObject和IocMaking实例, 新建实际的bean对象</p></li>
+
+<li><p>下一步,就是为刚刚生成的bean注入字段, 因为当前的bean对象,仅仅是new之后的全新状态</p></li>
+
+<li><p>收尾的一步, 看看这个bean,是否为单例,是否需要保存到app作用域--大部分的bean都是单例的</p>
+
+<p>// 每一作用域(IocContext),都管理着符合其生命周期的bean -- 默认情况下,bean都是app作用域的,单例的</p>
+
+<p>// 如果bean还定义了create/fetch等IocEvent的话,那么,这时候也会触发</p></li>
+
+<li><p>将bean作为返回值,交给用户</p></li>
+</ol>
+
+<p>==补充一句,整个流程,等价于:</p>
+
+<pre><code>Pet pet = new Pet();
+pet.setName(&quot;wendal&quot;);
+</code></pre>
+
+<p><strong>延伸一下:</strong></p>
+
+<p><strong>1. 注解式Ioc</strong></p>
+
+<pre><code>IocLoader loader = AnnotationIocLoader(&quot;net.wendal.test&quot;);
+
+//而bean需要定义为
+@IocBean
+public class Pet {
+    @Inject(&quot;wendal&quot;) //这里只是演示,正常情况下,不可能这样写死
+    private String name;
+}
+</code></pre>
+
+<p>就是注解--&gt;IocObject这一步</p>
+
+<p><strong>2. MVC中的Ioc</strong>
+是通过IocProvider提供的. 不妨看看JsonIocProvider的代码:</p>
+
+<pre><code>public class JsonIocProvider implements IocProvider {
+
+    public Ioc create(NutConfig config, String[] args) {
+        //可以看到,就跟我们在main中写的差不多呢
+        return new NutIoc(new JsonLoader(args), new ScopeContext(&quot;app&quot;), &quot;app&quot;);
+    }
+}
+</code></pre>
+
+<p>然后,是谁调用了ioc.get(XXX.class, &ldquo;xxx&rdquo;)呢? 是ModuleProcessor,摘取一部分源码看看:</p>
+
+<pre><code>Object obj;
+/*
+* 如果 Ioc 容器实现了高级接口，那么会为当前请求设置上下文对象
+*/
+if (ioc instanceof Ioc2) {
+    reqContext = new RequestIocContext(ac.getRequest());
+    SessionIocContext sessionContext = new SessionIocContext(Mvcs.getHttpSession());
+    IocContext myContext = new ComboContext(reqContext, sessionContext);
+    Mvcs.setIocContext(myContext);
+    //看上去比main方法里面写得复杂,事实上还是一个样!!多个上下文而已!
+    obj = ((Ioc2) ioc).get(moduleType, injectName, myContext);
+}
+/*
+ * 否则，则仅仅简单的从容器获取
+ */
+else
+    obj = ioc.get(moduleType, injectName); 
+</code></pre>
+
+<p>延展阅读: <a href="http://code.google.com/p/nutz/wiki/lang_mirror">Mirror</a>类,封装了Nutz中大部分的反射操作</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/blog/436.html" title="NutMVC的View怎么玩?">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+            <li class="next"><a href="/blog/429.html" title="北京之行,就上一张图吧">Next &rarr;</a></li>
+          
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'wendalblog'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2012-06-23 19:05:17</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories/#Java-ref">Java <span>96</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags/#cmake-ref">cmake <span>4</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Eclipse-ref">Eclipse <span>12</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#el-ref">el <span>68</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#io-ref">io <span>80</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#js-ref">js <span>33</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#MVC-ref">MVC <span>16</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#Nutz-ref">Nutz <span>61</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#SSI-ref">SSI <span>21</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#%E9%85%8D%E7%BD%AE-ref">配置 <span>51</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Wendal Chen 2013 
+		  Power By <a href="http://github.com/wendal/gor">Gor 极速博客引擎</a>
+          and with help from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+        <p><a href="http://ip.dnspod.cn/" target="_blank">本地DNS优化</a></p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="//cdnjscn.b0.upaiyun.com/libs/prettify/r298/prettify.min.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint ";
+  }
+  prettyPrint();
+</script>
+
+    
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+  _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+  _gaq.push(['_setAccount', 'UA-22727186-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<a href="https://github.com/wendal"><img style="position: absolute; top: 0; right: 0; border: 0;" src="/assets/media/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>
