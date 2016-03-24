@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/251.html">[误报]难道我遇到lua-nginx-module的一个bug?</a> <span class="date">2011-03-09 22:30:07</span></h3>
+  <p>已经确定是我自己的原因
+实在不是很肯定,如果加入特定的--with-cc-opt参数就报错.</p>
+
+<p>环境: Ubuntu 10.04.2 LTS Server</p>
+
+<p>先安装好依赖的包:
+apt-get install liblua5.1-0-dev g++
+然后下载google-perftools:</p>
+
+<pre><code>wget http://google-perftools.googlecode.com/files/google-perftools-1.6.tar.gz
+tar xvf google-perftools-1.6.tar.gz
+cd google-perftools-1.6
+./configure
+make
+make install
+</code></pre>
+
+<p>然后到nginx编译:
+下载ngx_devel_kit 0.2.17
+下载lua-nginx-module 0.1.6rc2</p>
+
+  <div class="more">
+    <a href="/251.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/250.html">兼容FireFox 4的AutoProxy</a> <span class="date">2011-03-09 07:50:52</span></h3>
   <p>#########################################
 ##官方已经发布兼容FF4 版本!! <a href="https://addons.mozilla.org/zh-CN/firefox/addon/autoproxy/versions/">马上去下载安装吧!!</a>
@@ -314,49 +342,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
   <div class="more">
     <a href="/234.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/233.html">Hibernate的ConnectionProvider是怎么一回事?</a> <span class="date">2011-01-28 14:28:12</span></h3>
-  <p>这次讨论一下Hibernate的ConnectionProvider接口, 因为我看到某些Hibernate项目是这样配置的:</p>
-
-<pre><code>&lt;property name=&quot;c3p0.min_size&quot;&gt;5&lt;/property&gt;
-&lt;property name=&quot;c3p0.max_size&quot;&gt;30&lt;/property&gt;
-&lt;property name=&quot;c3p0.time_out&quot;&gt;1800&lt;/property&gt;
-&lt;property name=&quot;c3p0.max_statement&quot;&gt;50&lt;/property&gt;
-</code></pre>
-
-<p>问题是, 这样就配置好了吗? hibernate.connection.provider_class到底需不需要呢?
-来看看Hibernate 3.3.2 GA的源码
-ConnectionProviderFactory类的newConnectionProvider方法.</p>
-
-<pre><code>public static ConnectionProvider newConnectionProvider(Properties properties, Map connectionProviderInjectionData) throws HibernateException {
-    ConnectionProvider connections;
-    String providerClass = properties.getProperty(Environment.CONNECTION_PROVIDER);
-    if ( providerClass!=null ) {
-        try {
-            log.info(&quot;Initializing connection provider: &quot; + providerClass);
-            connections = (ConnectionProvider) ReflectHelper.classForName(providerClass).newInstance();
-        }
-        catch ( Exception e ) {
-            log.error( &quot;Could not instantiate connection provider&quot;, e );
-            throw new HibernateException(&quot;Could not instantiate connection provider: &quot; + providerClass);
-        }
-    }
-    else if ( properties.getProperty(Environment.DATASOURCE)!=null ) {
-        connections = new DatasourceConnectionProvider();
-    }
-    else if ( properties.getProperty(Environment.URL)!=null ) {
-        connections = new DriverManagerConnectionProvider();
-    }
-    else {
-        connections = new UserSuppliedConnectionProvider();
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/233.html" class="btn">read more..</a>
   </div>
 </div>
 

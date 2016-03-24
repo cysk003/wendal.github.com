@@ -80,6 +80,15 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/429.html">北京之行,就上一张图吧</a> <span class="date">2012-06-01 10:19:17</span></h3>
+  <p><img src="/assets/media/2012/06/6f91c323jw1dtdb6o9986j.jpg">Nutz的代码就是这么来滴~~~~</img></p>
+
+  <div class="more">
+    <a href="/429.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/427.html">今天生日,上一张图!</a> <span class="date">2012-05-24 21:58:24</span></h3>
   <p><img src="/assets/media/2012/05/psb.jpg">鸣鸣玩电脑</img></p>
 
@@ -351,37 +360,6 @@ cd /opt/openjdk
 
   <div class="more">
     <a href="/417.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/416.html">在Ant/Maven中使用ecj编译器(Eclipse内置的Java编译器)</a> <span class="date">2012-04-30 16:10:55</span></h3>
-  <p>为什么要换ecj呢? JDK自带的java不够好吗? 是的, 尤其是debug信息. 那两种兼容吗? 完全兼容, ecj和javac一样是经过认证的哦, 事实上,如果你正在使用Eclipse,那么,你的java源码, 100%是ecj编译的呢(当然,是你自己写的那部分)</p>
-
-<p>Ant换用ecj
-1. 在build.xml中加入:</p>
-
-<pre><code>&lt;property name=&quot;build.compiler&quot; value=&quot;org.eclipse.jdt.core.JDTCompilerAdapter&quot;&gt;&lt;/property&gt;
-</code></pre>
-
-<ol>
-<li><p>下载独立的ecj.jar
-<a href="http://mirrors.ustc.edu.cn/eclipse/eclipse/downloads/drops/R-3.7.2-201202080800/ecj-3.7.2.jar">ECJ 3.7.2</a></p></li>
-
-<li><p>将ecj-3.7.2.jar放入ant的lib文件夹中</p></li>
-
-<li><p>如果是eclipse中跑ant,那么,需要设置一下,     Run As -- Ant Build &hellip; -- ClassPath ,加入ecj.jar</p></li>
-</ol>
-
-<p>Maven换用ecj
-1. 官网文档: <a href="http://maven.apache.org/plugins/maven-compiler-plugin/non-javac-compilers.html">http://maven.apache.org/plugins/maven-compiler-plugin/non-javac-compilers.html</a>
-2. 设置为plexus-compiler-eclipse即可</p>
-
-<p>带来的好处: [](<a href="http://wendal.net/394.html">http://wendal.net/394.html</a>)
-事实证明, 只有ecj编译的class文件的debug信息会原样遵循方法参数的声明顺序, 悲催啊&hellip;</p>
-
-  <div class="more">
-    <a href="/416.html" class="btn">read more..</a>
   </div>
 </div>
 

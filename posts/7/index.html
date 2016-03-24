@@ -80,6 +80,41 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2012/1130.html">Reflect Of Golang</a> <span class="date">2012-11-30</span></h3>
+  <h2>正在重新实现mustache for golang</h2>
+
+<ul>
+<li>mustache作为模板引擎,必然需要用到反射啦</li>
+<li>官方的实现,就一个go源文件,几百行,蛋碎</li>
+<li>官方实现只返回一个string类型,出错就返回空字符串!!</li>
+<li>原本打算在上面改的,结果还是算了,重新实现一个更好,现在已经完成60%</li>
+<li><a href="https://github.com/wendal/mustache">mustache from wendal</a></li>
+</ul>
+
+<h2>访问Map</h2>
+
+<pre><code>// 这里的参数和返回值都用了reflect.Value,是因为这是最下层的实现
+// 在此之上,我们可以封装为 Get(_map interface{}, key string)之类的形式
+func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
+    //进行任何反射操作之前,判断其可用性很重要
+    if !value.IsVaild() {
+        return
+    }
+    //判断其真实类型
+    //注意,这里的真实,是指最终的类型,例如
+    // type AAA map[string]string, 那么仍会得到map,而非AAA
+    // 如果想得到AAA,那么应该使用 value.Type().Name()或者全路径value.Type().String()
+    if value.Type().Kind() != reflect.Map {
+        return 
+    }
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1130.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/linux/Way-of-VPS/">Way of VPS</a> <span class="date">2012-11-25</span></h3>
   <h1>VPS之路</h1>
 
@@ -307,34 +342,6 @@ WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS
 
   <div class="more">
     <a href="/459.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/457.html">简单好用的sshfs -- 通过ssh映射远程路径</a> <span class="date">2012-09-26 08:52:25</span></h3>
-  <p>最近习惯性访问N个Linux机器,在不同机器间跳来跳去,很是麻烦,最终,找到了sshfs,可以把远程目录直接映射到本地,无需修改远程机器的设置,仅要求有ssh连接的权限(ssh都没有的话,还能干啥?!~!)</p>
-
-<p>官网地址: <a href="http://fuse.sourceforge.net/sshfs.html">http://fuse.sourceforge.net/sshfs.html</a></p>
-
-<p>安装:</p>
-
-<pre><code>#如果是ubuntu
-apt-get install sshfs
-#如果是Fedore
-yum install fuse-sshfs
-#如果是CentOS,貌似只能自己安装了
-wget http://nchc.dl.sourceforge.net/project/fuse/sshfs-fuse/2.4/sshfs-fuse-2.4.tar.gz
-tar xvf sshfs-fuse-2.4.tar.gz
-cd sshfs-fuse-2.4
-./configure
-#如果缺glib2什么的,就自行装上
-make install
-</code></pre>
-
-<p>先看看选项:</p>
-
-  <div class="more">
-    <a href="/457.html" class="btn">read more..</a>
   </div>
 </div>
 

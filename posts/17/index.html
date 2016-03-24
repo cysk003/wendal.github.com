@@ -80,6 +80,32 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/276.html">Everbox4j 1.0 终于发布啦! Everbox也能在Linux/Mac上用!!</a> <span class="date">2011-04-27 22:10:03</span></h3>
+  <p>############################################################
+#<strong>这东西刚刚开发完,喜欢探险的童鞋欢迎使用</strong>
+#<strong>系统出现问题,文件被误删,帐号被封,本人一概不负责!!</strong>
+#<strong>胆小怕死者,老人小孩孕妇,心脏病,高血压,切勿尝试!!</strong>
+############################################################</p>
+
+<p>奋斗了几个晚上,终于做出来了!!!</p>
+
+<p>激动,终于可以安心睡个觉了!@!!</p>
+
+<p>下载地址: <a href="http://code.google.com/p/everbox4j/downloads/list">
+http://code.google.com/p/everbox4j/downloads/list</a></p>
+
+<p>已知限制:
+1. 如果同时开启上传和下载,只会进行上传
+2. 上传模式,只会上传服务器没有的本地文件,不会执行任何删除操作
+3. 下载模式,只会下载本地没有的服务器文件,不会进行任何删除操作
+4. 只支持盛大帐户</p>
+
+  <div class="more">
+    <a href="/276.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/275.html">用Jsoup查台电的固件更新情况</a> <span class="date">2011-04-26 18:13:57</span></h3>
   <p>最近入手台电T720 Wifi,便宜货,不要跟iPad比.</p>
 
@@ -333,36 +359,6 @@ log4j.appender.Console.layout.ConversionPattern=log4j: %d [%t] %-5p %c - %m%n
 
   <div class="more">
     <a href="/263.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/262.html">神奇的Slf4J-API版本 - 2.0.99</a> <span class="date">2011-04-03 12:29:03</span></h3>
-  <p>今天,一位群友&rdquo;我思&rdquo;,在组合使用slf4j和logback时报一下错误:</p>
-
-<pre><code>Exception in thread &quot;main&quot; java.lang.NoSuchMethodError: org.slf4j.helpers.MessageFormatter.arrayFormat(Ljava/lang/String;[Ljava/lang/Object;)Lorg/slf4j/helpers/FormattingTuple;
-</code></pre>
-
-<p>最后发现是slf4j的版本不对, 他使用的是slf4j-api-2.0.99.jar</p>
-
-<p>但是,但是,官方正式版只有1.6.1,而且至今我都没发现有2.0.x系列的计划呢!!
-我的神啊,哪里来的版本? 经提醒,这个jar就在 1.6.1版的发行包中!!  slf4j-1.6.1.zip\slf4j-1.6.1\integration\lib</p>
-
-<p>神奇啊,为啥呢?? 找不到其源码jar,好吧,上JD-GUI,看看报错的类MessageFormatter.arrayFormat
-2.0.99版的方法声明:</p>
-
-<pre><code>public static final String arrayFormat(String messagePattern, Object[] argArray)
-</code></pre>
-
-<p>1.6.1版的方法声明:</p>
-
-<pre><code>public static final FormattingTuple arrayFormat(String messagePattern, Object[] argArray)
-</code></pre>
-
-<p>看到区别了吧,返回值的类型不同了!!! 同样的,还有一个1.6.99版的API,内容与2.0.99版一致</p>
-
-  <div class="more">
-    <a href="/262.html" class="btn">read more..</a>
   </div>
 </div>
 

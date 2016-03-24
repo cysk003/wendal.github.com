@@ -80,6 +80,32 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/0111.html">Gor--极快的静态博客引擎</a> <span class="date">2013-01-11</span></h3>
+  <h2>1秒编译200篇文章</h2>
+
+<p>Gor的速度极快哦, 编译本网站200篇文章仅需1秒!</p>
+
+<p><img src="/assets/media/2013/01/gor_1.jpg"></img></p>
+
+<h2>为什么写Gor?</h2>
+
+<p>Gor源于对ruhoh的不满</p>
+
+<ol>
+<li>依赖一大堆东西</li>
+<li>ruby编写,看不懂</li>
+<li>速度慢, 需要10秒以上</li>
+<li>gor在很多方面就是ruhoh for golang版</li>
+</ol>
+
+<p>Gor跟jekyll/octopress 有啥不同</p>
+
+  <div class="more">
+    <a href="/2013/0111.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/0108.html">Nutz福利之轻功</a> <span class="date">2013-01-08</span></h3>
   <h2>作为挨踢人士,翻过伟大的强,总是那么频繁,Nutz新年福利之轻功,提供给大家一个免费的途径,方便大家访问讨论组,查找技术文章&hellip;</h2>
 
@@ -334,41 +360,6 @@ passwd free2 #创建密码
 
   <div class="more">
     <a href="/linux/ssh-tunnel-without-shell/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1130.html">Reflect Of Golang</a> <span class="date">2012-11-30</span></h3>
-  <h2>正在重新实现mustache for golang</h2>
-
-<ul>
-<li>mustache作为模板引擎,必然需要用到反射啦</li>
-<li>官方的实现,就一个go源文件,几百行,蛋碎</li>
-<li>官方实现只返回一个string类型,出错就返回空字符串!!</li>
-<li>原本打算在上面改的,结果还是算了,重新实现一个更好,现在已经完成60%</li>
-<li><a href="https://github.com/wendal/mustache">mustache from wendal</a></li>
-</ul>
-
-<h2>访问Map</h2>
-
-<pre><code>// 这里的参数和返回值都用了reflect.Value,是因为这是最下层的实现
-// 在此之上,我们可以封装为 Get(_map interface{}, key string)之类的形式
-func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
-    //进行任何反射操作之前,判断其可用性很重要
-    if !value.IsVaild() {
-        return
-    }
-    //判断其真实类型
-    //注意,这里的真实,是指最终的类型,例如
-    // type AAA map[string]string, 那么仍会得到map,而非AAA
-    // 如果想得到AAA,那么应该使用 value.Type().Name()或者全路径value.Type().String()
-    if value.Type().Kind() != reflect.Map {
-        return 
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1130.html" class="btn">read more..</a>
   </div>
 </div>
 
