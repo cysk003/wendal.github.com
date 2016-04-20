@@ -80,6 +80,45 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2014/0223.html">tcpdump加Wireshark抓包分析才是王道啊</a> <span class="date">2014-02-23</span></h3>
+  <p>最近折腾RTSP协议,焦头乱额.</p>
+
+<p>Receiver Report RTCP Packets (RR)</p>
+
+<pre><code>  Receiver Reports are structured in the same way as Sender Reports. Of course, they include no sender information block, and the packet type code is 201.
+ 0               1               2               3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|V=2|P|    RC   |   PT=RR=201   |            length L           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     SSRC of packet sender                     |
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                 SSRC_1 (SSRC of first source)                 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| fraction lost |       cumulative number of packets lost       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           extended highest sequence number received           |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                      inter-arrival jitter                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         last SR (LSR)                         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   delay since last SR (DLSR)                  |
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                 SSRC_2 (SSRC of second source)                |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+:                               ...                             :
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+|                  profile-specific extensions                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
+
+  <div class="more">
+    <a href="/2014/0223.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/12/15.html">为pcduino编译内核</a> <span class="date">2013-12-15</span></h3>
   <h2>软件环境</h2>
 
@@ -383,33 +422,6 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
   <div class="more">
     <a href="/2013/08/23.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/08/09.html">用openresty做redis订阅发布</a> <span class="date">2013-08-09</span></h3>
-  <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
-
-<pre><code>    location =/subscribe {
-        send_timeout 365h; #很久很久很久,呵呵
-        content_by_lua &quot;
-        local redis = require \&quot;resty.redis\&quot;
-        local red = redis:new()
-        red:connect(\&quot;127.0.0.1\&quot;, 6379)
-        red:subscribe(ngx.var.arg_key) -- 严格来说,需要判断空值和url decode
-        local res, err = red:read_reply()
-        if res then 
-            ngx.say(res) -- 其实是个数组.. 第3个值才是publish的值
-        else
-            ngx.status = 500
-        end
-        red:close()
-        &quot;;
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/08/09.html" class="btn">read more..</a>
   </div>
 </div>
 

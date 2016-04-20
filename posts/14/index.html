@@ -80,6 +80,27 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/339.html">RK2918 内核源码 -- 想不到吧?!</a> <span class="date">2011-11-03 09:06:50</span></h3>
+  <p>想不到, 我竟然找到了, 这都要感谢一位外国友人的提示!!</p>
+
+<p>还是那句, 对国人保密,对外国人公开 -- 不能太&rdquo;云南白药&rdquo;啊!!</p>
+
+<p>下载地址:
+<a href="http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip">http://www.odys.de/downloads/software/odys_xpress_GPLSourceCode.zip</a></p>
+
+<p>包含:
+busybox源码
+e2fs源码
+kernel源码 -- 当然,这才是最关键的</p>
+
+<p>根据其日期,猜测是SDK 1.x的作品, 不过,一般来说,h文件都不会大改的,呵呵!!</p>
+
+  <div class="more">
+    <a href="/339.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/338.html">推荐OpenResty -- Nginx全能插件版</a> <span class="date">2011-10-20 22:39:40</span></h3>
   <p>实在吐血,这是第二次写这个文章,刚才准备保存的时候操作失误,全没了&hellip;.</p>
 
@@ -355,35 +376,6 @@ public abstract class TestMongodb4Jetty {
 
   <div class="more">
     <a href="/320.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
-  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo--&gt;String的转换</p>
-
-<p>1.b.38版新增了@JsonField,在即将发布的1.b.40版将这个注解再次增强
-正如其名,@JsonField是针对Json处理中字段级别的控制</p>
-
-<p>首先是字段命名,看代码</p>
-
-<pre><code>@JsonField(&quot;z-index&quot;)
-private String zIndex;
-</code></pre>
-
-<p>对应的Json将会是:</p>
-
-<pre><code>{
-    'z-index' : '10px'
-}
-</code></pre>
-
-<p>可以看到,无需再强求 json的key的名字与类属性名一致了</p>
-
-<p>然后是&rdquo;忽略&rdquo;,看代码</p>
-
-  <div class="more">
-    <a href="/319.html" class="btn">read more..</a>
   </div>
 </div>
 

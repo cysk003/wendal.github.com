@@ -91,6 +91,44 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2016/04/20.html">nutz websocket nginx maven 配合使用</a> <span class="date">2016-04-20</span></h3>
+
+  <h2>起因</h2>
+
+<p>很久以前,用jetty玩过websocket,为了nutz.cn的自动提醒功能,又实践了一次websocket.</p>
+
+<p>websocket需要服务器端,nginx,页面端,同时配合,才能工作.</p>
+
+<h2>页面端</h2>
+
+<pre><code class="language-js">        var ws;
+		var WS_URL = window.location.host+&quot;${base}/yvr/topic/socket&quot;;
+		if (location.protocol == 'http:') { // 需要特别注意的地方,根据http/https协议选不同的websocket前缀
+			ws = new WebSocket(&quot;ws://&quot;+WS_URL); // 普通http用ws,全称WebSocket
+		} else {
+			ws = new WebSocket(&quot;wss://&quot;+WS_URL); // https环境下需要wss协议,全称WebSocket Secure
+		}
+		
+		ws.onmessage = function(event) { // onmessage 特指服务器端发送消息过来
+		    var re = JSON.parse(event.data);
+		    _replies_count = re.count;
+		    var n = new Notification(re.data, re.options); // 这里使用了Chrome Notification API
+			n.onclick = function() {
+				location.reload();
+			};
+		};
+		window.setInterval(function(){ // 定时查询
+			ws.send(JSON.stringify({id:'${obj.topic.id}',replies:_replies_count}));
+		}, 5000);
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2016/04/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/03/24.html">香港打疫苗?你想多了吧</a> <span class="date">2016-03-24</span></h3>
 
   <p>本文章非专业意见,非有偿推荐,不喜勿看,不喜勿转. 要转的话必须完整转载,不准扣字眼!!!</p>
@@ -1013,35 +1051,6 @@ package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.n
 
   <div class="more">
     <a href="/2013/08/23.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/08/09.html">用openresty做redis订阅发布</a> <span class="date">2013-08-09</span></h3>
-
-  <p>openresty依然很强大,先上服务器端的代码, 定义一个通用的订阅接口</p>
-
-<pre><code>    location =/subscribe {
-        send_timeout 365h; #很久很久很久,呵呵
-        content_by_lua &quot;
-        local redis = require \&quot;resty.redis\&quot;
-        local red = redis:new()
-        red:connect(\&quot;127.0.0.1\&quot;, 6379)
-        red:subscribe(ngx.var.arg_key) -- 严格来说,需要判断空值和url decode
-        local res, err = red:read_reply()
-        if res then 
-            ngx.say(res) -- 其实是个数组.. 第3个值才是publish的值
-        else
-            ngx.status = 500
-        end
-        red:close()
-        &quot;;
-    }
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/08/09.html" class="btn">read more..</a>
   </div>
 </div>
 

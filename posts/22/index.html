@@ -80,6 +80,17 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/201.html">推荐: 国外公开课</a> <span class="date">2010-12-04 17:32:04</span></h3>
+  <p><a href="http://v.163.com/open/">网易视频-国外公开课</a>
+<a href="http://yyets.net/?mod=2&amp;ac=list_resource&amp;class=juji&amp;type=29">人人影视-国外公开课</a>
+<strong>开眼看世界,国外优秀的公开课! 思维比知识更重要!! 思想进步,才能升华人生. 扔掉马哲,扔掉政治经济学,扔掉学校给你灌的垃圾!!</strong></p>
+
+  <div class="more">
+    <a href="/201.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/197.html">Spket其实是兼容 jQuery 1.4.x的!</a> <span class="date">2010-12-04 12:02:19</span></h3>
   <p>前几天,折腾Spket,安装好后,配置jQuery,死活不出提示!!
 翻阅Google,到处都说Spket不兼容jQuery 1.4.x .但经过我一番探索,终于发现 <a href="http://forums.spket.com/viewtopic.php?f=7&amp;t=1380&amp;start=0">官网一个论坛帖子</a> 上面附带的jar就能成功!!</p>
@@ -299,33 +310,6 @@ BIOS打印了相关信息,顺利进入系统.
 
   <div class="more">
     <a href="/122.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/118.html">离线下载Android SDK</a> <span class="date">2010-11-05 23:04:22</span></h3>
-  <p>我实在搞不懂,为啥GFW要墙Android 的开发网站.</p>
-
-<p>今天,把当前最新版本的Android SDK全部下载到 <a href="http://build.sunfarms.net/android/repository/">http://build.sunfarms.net/android/repository/</a>
-同时发现一个问题,即使把 <a href="http://build.sunfarms.net/android/repository/repository.xml">http://build.sunfarms.net/android/repository/repository.xml</a> 添加到SDK Manager ,与Google官网一样的内容,却不认平台下载.
-仔细找了一下,原来写死在代码里面的 <a href="http://code.google.com/p/android-sdk-tool/source/browse/src/main/java/com/m11n/android/AndroidSdkTool.java?r=6426c47fe356e9d649fe612464563960a1ca7d74">点击查看</a>
-没办法. 只好自己编译一个了,哈哈.
-Google源码截取:</p>
-
-<pre><code>        private String repositoryUrl = &quot;http://dl-ssl.google.com/android/repository/&quot;;
-        private String sdkUrl = &quot;http://dl.google.com/android/&quot;;
-        private String downloadDir = System.getProperty(&quot;java.io.tmpdir&quot;) + &quot;/&quot;;
-        private Boolean overwrite = true;
-        private Boolean verbose = true;
-        private DocumentBuilder builder;
-
-        public AndroidSdkTool() throws ParserConfigurationException {
-                builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        }
-</code></pre>
-
-  <div class="more">
-    <a href="/118.html" class="btn">read more..</a>
   </div>
 </div>
 

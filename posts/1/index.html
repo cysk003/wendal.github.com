@@ -80,6 +80,42 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2016/04/20.html">nutz websocket nginx maven 配合使用</a> <span class="date">2016-04-20</span></h3>
+  <h2>起因</h2>
+
+<p>很久以前,用jetty玩过websocket,为了nutz.cn的自动提醒功能,又实践了一次websocket.</p>
+
+<p>websocket需要服务器端,nginx,页面端,同时配合,才能工作.</p>
+
+<h2>页面端</h2>
+
+<pre><code class="language-js">        var ws;
+		var WS_URL = window.location.host+&quot;${base}/yvr/topic/socket&quot;;
+		if (location.protocol == 'http:') { // 需要特别注意的地方,根据http/https协议选不同的websocket前缀
+			ws = new WebSocket(&quot;ws://&quot;+WS_URL); // 普通http用ws,全称WebSocket
+		} else {
+			ws = new WebSocket(&quot;wss://&quot;+WS_URL); // https环境下需要wss协议,全称WebSocket Secure
+		}
+		
+		ws.onmessage = function(event) { // onmessage 特指服务器端发送消息过来
+		    var re = JSON.parse(event.data);
+		    _replies_count = re.count;
+		    var n = new Notification(re.data, re.options); // 这里使用了Chrome Notification API
+			n.onclick = function() {
+				location.reload();
+			};
+		};
+		window.setInterval(function(){ // 定时查询
+			ws.send(JSON.stringify({id:'${obj.topic.id}',replies:_replies_count}));
+		}, 5000);
+</code></pre>
+
+  <div class="more">
+    <a href="/2016/04/20.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/03/24.html">香港打疫苗?你想多了吧</a> <span class="date">2016-03-24</span></h3>
   <p>本文章非专业意见,非有偿推荐,不喜勿看,不喜勿转. 要转的话必须完整转载,不准扣字眼!!!</p>
 
@@ -325,33 +361,6 @@ win7 x64 sp1</p>
 
   <div class="more">
     <a href="/2015/04/27.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2015/03/07.html">总算实践了一次Linux From Scratch</a> <span class="date">2015-03-07</span></h3>
-  <h2>Linux From Scratch</h2>
-
-<p>第一次接触linux应该是当年的sun推广的unix远程实验室. 之后安装Linux无数次,编译内核N百次,
-但一直没有把&rdquo;Linux From Scratch&rdquo;实践一次.</p>
-
-<p>编译LFS,并不是为了使用它,是为了看看linux到底是怎么编译,组织起来,运行起来的.</p>
-
-<p>编译的过程, 并未太多阻碍</p>
-
-<ul>
-<li>开头部分,下载依赖的源码包, 耗了点时间,没有直接下载整体压缩包(当时也不知道),然后根据wget-list下载</li>
-<li>在chroot之后,逐一编译期间,无意中按了exit,退出了chroot环境, 以为前功尽弃,结果chroot回去发现一切正常如旧</li>
-<li>最后,真正启动系统时,报无法挂载根目录, 原因是我用2台虚拟机来跑,第一台做编译host,有sda和sdab,第二台虚拟机是运行环境,只有sda,改一下grub.conf搞定.</li>
-</ul>
-
-<p>早上10点左右开工,下午5点启动成功, 约8小时的样子, 敲了近千条命令, 中后期的make check基本上跳过.</p>
-
-<p>在编译内核之前,我一直很奇怪为啥内核还没编译,而只是输出的ABI的header,现在想来, 还是挺有道理的.
-因为前面的部分是编译rootfs, 这部分跟具体的内核并无关联.</p>
-
-  <div class="more">
-    <a href="/2015/03/07.html" class="btn">read more..</a>
   </div>
 </div>
 
