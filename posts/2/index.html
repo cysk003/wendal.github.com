@@ -80,6 +80,39 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2015/04/27.html">在windows上编译memcached v1.4.24 (用cygwin)</a> <span class="date">2015-04-27</span></h3>
+  <h1>成品下载地址</h1>
+
+<p><a href="http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip">http://wendal.net/dw/memcached/memcached-1.4.24-x86-cgywin.zip</a></p>
+
+<h1>编译环境</h1>
+
+<p>cygwin x86 当前最新
+win7 x64 sp1</p>
+
+<h1>成品的依赖关系(ldd输出)</h1>
+
+<pre><code>$ ldd /usr/local/bin/memcached
+        ntdll.dll =&gt; /cygdrive/c/Windows/SysWOW64/ntdll.dll (0x77780000)
+        kernel32.dll =&gt; /cygdrive/c/Windows/syswow64/kernel32.dll (0x76fa0000)
+        KERNELBASE.dll =&gt; /cygdrive/c/Windows/syswow64/KERNELBASE.dll (0x76b30000)
+        ADVAPI32.DLL =&gt; /cygdrive/c/Windows/syswow64/ADVAPI32.DLL (0x75770000)
+        msvcrt.dll =&gt; /cygdrive/c/Windows/syswow64/msvcrt.dll (0x75810000)
+        sechost.dll =&gt; /cygdrive/c/Windows/SysWOW64/sechost.dll (0x769e0000)
+        RPCRT4.dll =&gt; /cygdrive/c/Windows/syswow64/RPCRT4.dll (0x770d0000)
+        SspiCli.dll =&gt; /cygdrive/c/Windows/syswow64/SspiCli.dll (0x75110000)
+        CRYPTBASE.dll =&gt; /cygdrive/c/Windows/syswow64/CRYPTBASE.dll (0x75100000)
+        cygwin1.dll =&gt; /usr/bin/cygwin1.dll (0x61000000)
+        cyggcc_s-1.dll =&gt; /usr/bin/cyggcc_s-1.dll (0x6fdb0000)
+        cygevent-2-0-5.dll =&gt; /usr/local/bin/cygevent-2-0-5.dll (0x63ec0000)
+</code></pre>
+
+  <div class="more">
+    <a href="/2015/04/27.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2015/03/07.html">总算实践了一次Linux From Scratch</a> <span class="date">2015-03-07</span></h3>
   <h2>Linux From Scratch</h2>
 
@@ -306,52 +339,6 @@ func main() {
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/2014/03/30.html">JDK8 Access to Parameter Names at Runtime</a> <span class="date">2014-03-30</span></h3>
-  <h2>JDK 8的新特性之一, 运行时获取方法参数的名称</h2>
-
-<p>JDK8之前, Eclipse自带的ECJ编译器,同本地变量表,把方法参数的名字,放在最前面,使其编译出来的class的名字看推测.</p>
-
-<p>而 JDK8把这种行为规范化(终于&hellip;) <a href="http://openjdk.java.net/jeps/118">http://openjdk.java.net/jeps/118</a></p>
-
-<p>参考文章 <a href="http://www.java-allandsundry.com/2013/12/java-8-parameter-name-at-runtime.html">Java 8 parameter name at runtime</a></p>
-
-<h2>演示代码</h2>
-
-<pre><code>package nutz_jdk8;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Parameter;
-
-public class Bot {
-    private final String name;
-    private final String author;
-    private final int rating;
-    private final int score;
-
-    public Bot(String name, String author, int rating, int score) {
-        this.rating = rating; // 注意这里的顺序,并非按参数顺序逐一调用
-        this.score = score;
-        this.name = name;
-        this.author = author;
-    }
-
-    public static void main(String[] args) throws NoSuchMethodException, SecurityException {
-		Class&lt;Bot&gt; clazz = Bot.class;
-		Constructor ctor = clazz.getConstructor(String.class, String.class, int.class, int.class);
-		Parameter[] ctorParameters =ctor.getParameters();
-		for (Parameter param: ctorParameters) {
-		    System.out.println(param.isNamePresent() + &quot;:&quot; + param.getName());
-		}
-	}
-}
-</code></pre>
-
-  <div class="more">
-    <a href="/2014/03/30.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -453,6 +440,10 @@ public class Bot {
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

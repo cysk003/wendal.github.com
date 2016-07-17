@@ -80,6 +80,38 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/383.html">SSH隧道+Polipo+Pac文件--打造翻G功F夫W墙的共用平台</a> <span class="date">2012-02-26 22:15:59</span></h3>
+  <p>自认翻X墙高手,却与同事交流的时候败下阵来,我最初还口口声声说 几条命令 就能搞定,绝对米问题.
+结果,俺发现,这玩意还是有点技术含量的&hellip; 不过,经过我不断提炼,最后是十几条命令搞定(关键语句仅3条,即启动3个进程),哦也!!</p>
+
+<p>需求基本上是这样:
+客户端只需要配置一下代理服务器,就能做到需要翻墙就翻墙,不需要就走普通渠道.</p>
+
+<p>最初,我的想法
+1. 直接ssh隧道 -- 只有部分程序支持sockt5代理
+2. squid+ssh隧道 -- squid压根不支持sockt5的后端代理,我靠
+3. squid+Polipo+ssh隧道 -- 有点靠谱了,我差点就狠心学一下squid恶心的配置文件
+4. nginx+Polipo+ssh隧道 -- 代理https有点问题,我一直没解决</p>
+
+<ol>
+<li><p>在本地一台Linux服务器,创建用proxy,创建sshkey并上传到国外的vps:</p>
+
+<p>#添加用户
+adduser proxy
+#切换到proxy用户
+su proxy
+#创建ssh密钥,一路回车
+ssh-keygen
+#将刚刚生成的key,上传到国外vps,以便进行无密码登录
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/383.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/379.html">鸣鸣与本地樱花</a> <span class="date">2012-02-26 15:46:35</span></h3>
   <p>广州市花都区梯面镇,一小片的樱花树</p>
 
@@ -307,34 +339,6 @@ com.mongodb.util和com.mongodb.io包里面的类也不要用,很多类连驱动�
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/361.html">Mongodb学习小记</a> <span class="date">2012-01-26 22:54:17</span></h3>
-  <p>实现自增(跟oralce的序列是一个概念):</p>
-
-<pre><code>public static Integer getAutoIncreaseID(String idName) {
-    BasicDBObject query = new BasicDBObject(&quot;name&quot;, idName);
-    BasicDBObject update = new BasicDBObject(&quot;$inc&quot;, new BasicDBObject(&quot;id&quot;, 1));
-    return (Integer) XX.getDB()
-            .getCollection(&quot;inc_ids&quot;)
-            .findAndModify(query, null, null, false, update, true, true)
-            .get(&quot;id&quot;);
-}
-</code></pre>
-
-<p>把元素添加到数组,仅当数组中没有这个值</p>
-
-<pre><code>BasicDBObject query = new BasicDBObject(&quot;_id&quot;, new ObjectId(&quot;XXXXXXXXXXXXXXX&quot;));
-BasicDBObject update = new BasicDBObject(&quot;$addToSet&quot;, new BasicDBObject(&quot;tags&quot;, tag));
-db.getCollection().update(query, update);
-</code></pre>
-
-<p>OpenId的登录信息,放入Mongodb中存放,使用JopenId</p>
-
-  <div class="more">
-    <a href="/361.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -436,6 +440,10 @@ db.getCollection().update(query, update);
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

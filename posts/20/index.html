@@ -80,6 +80,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/242.html">Nutz 一些无法完成的功能</a> <span class="date">2011-02-16 20:58:49</span></h3>
+  <p>这篇文章针对的是1.b.35</p>
+
+<ol>
+<li><p>Nutz.Ioc与Spring.ioc相比,无法实现工厂类生成具体类的实例</p>
+
+<p>public class A {}</p>
+
+<p>public class B {
+    public static A makeA(){return new A();}
+}</p></li>
+
+<li><p>Nutz.Aop与Spring.Aop相比,无法拦截构造方法,静态方法</p></li>
+
+<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; --&gt;POJO转换工具</p></li>
+
+<li><p>Nutz.MVC 没有校验功能,没有配置方式的URL映射</p></li>
+
+<li><p>Nutz.MVC 与Struts2相比, 没有标签库</p></li>
+
+<li><p>Nutz.Lang 与Apache Common 系列相比, 很多功能都没有</p></li>
+</ol>
+
+  <div class="more">
+    <a href="/242.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/234.html">做爸爸了!! 过年前有了个虎宝宝!!</a> <span class="date">2011-02-08 20:38:16</span></h3>
   <p>嘻嘻,母女平安. 靓照暂时就不曝光了.</p>
 
@@ -348,37 +377,6 @@ NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/222.html">增强型JavaDoc -- APIviz 简洁实践</a> <span class="date">2010-12-27 13:40:55</span></h3>
-  <p>一段时间之前,为Nutz的JavaDoc添加了这个插件,<a href="http://code.google.com/p/apiviz/">APIviz</a>,可以自动生成包依赖关系图,和简单的UML类图.
-在国内还没见到公开的使用,还是介绍一下,<a href="http://build.sunfarms.net/nutz/lastest/api/">Nutz示例</a>
-第一步,安装<a href="http://www.graphviz.org/">Graphviz</a>,该软件可以运行在N多平台上,这里以Ubuntu为例</p>
-
-<pre><code>apt-get install graphviz
-</code></pre>
-
-<p>第二步,当然就是下载APIviz了, 当前最新版为 1.3.1 GA
-第三步, Ant调用:</p>
-
-<pre><code>&lt;javadoc doclet=&quot;org.jboss.apiviz.APIviz&quot; encoding=&quot;UTF-8&quot; sourcepath=&quot;src&quot; docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; charset=&quot;utf-8&quot; destdir=&quot;${javadoc-dir}&quot; additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot; classpathref=&quot;nutz-classpath&quot; docencoding=&quot;utf-8&quot;&gt;&lt;/javadoc&gt;
-</code></pre>
-
-<p>与普通的JavaDoc相比,添加了3个属性:</p>
-
-<pre><code>#引用APIviz
-doclet=&quot;org.jboss.apiviz.APIviz&quot; 
-#指向APIviz的jar包
-docletpath=&quot;${basedir}/build/deps/apiviz-1.3.1.GA.jar&quot; 
-#声明类文件的路径,其余的-author -version是官网上建议添加的,非必需.
-#这里的${classes-dir-jdk6}就是Nutz编译好的class存放的地址
-additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot;
-</code></pre>
-
-  <div class="more">
-    <a href="/222.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -480,6 +478,10 @@ additionalparam=&quot;-author -version -sourceclasspath ${classes-dir-jdk6}&quot
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

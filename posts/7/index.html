@@ -80,6 +80,32 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2012/1213.html">Deploy Nutz as HttpAPI by Jetty 7</a> <span class="date">2012-12-13</span></h3>
+  <h1>将Nutz挂载到jetty上,作为HttpAPI</h1>
+
+<h2>这里描述的,一个这样的web服务</h2>
+
+<ol>
+<li>不需要jsp</li>
+<li>不需要静态资源,例如js/css</li>
+<li>仅挂载一个NutFilter,不需要其他jar</li>
+</ol>
+
+<h2>实现</h2>
+
+<pre><code>//新建一个Jetty Server,监听8080端口
+Server server = new Server(8080); 
+//创建一个Servlet容器,并映射在根路径
+ServletContextHandler ctx = new ServletContextHandler();
+ctx.setContextPath(&quot;/&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1213.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/linux/ssh-tunnel-without-shell/">ssh tunnel without shell</a> <span class="date">2012-12-10</span></h3>
   <h1>IT人士,必备翻墙梯</h1>
 
@@ -325,24 +351,6 @@ WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/460.html">Windows下隐藏Golang的DOS黑色窗口</a> <span class="date">2012-10-07 09:45:59</span></h3>
-  <p>纯属自己mark一下,其实就是编译为Windows GUI程序, 默认是Windows Console程序</p>
-
-<pre><code>go build -ldflags -Hwindowsgui XXX.go
-</code></pre>
-
-<p>参考文档 <a href="https://golang.org/cmd/ld/">https://golang.org/cmd/ld/</a></p>
-
-<p>续: 那怎么关掉这个程序呢?</p>
-
-<p>可选方法: 在go代码中监听一个管理端口,用浏览器或telnet访问这个端口,就执行exit操作</p>
-
-  <div class="more">
-    <a href="/460.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -444,6 +452,10 @@ WHERE TABLE_SCHEMA != 'mysql' GROUP BY TABLE_SCHEMA, TABLE_NAME, INDEX_NAME ) AS
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

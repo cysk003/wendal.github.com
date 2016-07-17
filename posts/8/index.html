@@ -80,6 +80,24 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/460.html">Windows下隐藏Golang的DOS黑色窗口</a> <span class="date">2012-10-07 09:45:59</span></h3>
+  <p>纯属自己mark一下,其实就是编译为Windows GUI程序, 默认是Windows Console程序</p>
+
+<pre><code>go build -ldflags -Hwindowsgui XXX.go
+</code></pre>
+
+<p>参考文档 <a href="https://golang.org/cmd/ld/">https://golang.org/cmd/ld/</a></p>
+
+<p>续: 那怎么关掉这个程序呢?</p>
+
+<p>可选方法: 在go代码中监听一个管理端口,用浏览器或telnet访问这个端口,就执行exit操作</p>
+
+  <div class="more">
+    <a href="/460.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/459.html">Golang连接Oracle数据库(通过OCI库)</a> <span class="date">2012-10-06 11:17:54</span></h3>
   <p>这是我对mattn/go-oci8的一个fork <a href="https://github.com/wendal/go-oci8">https://github.com/wendal/go-oci8</a></p>
 
@@ -320,47 +338,6 @@ func main() {
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/436.html">NutMVC的View怎么玩?</a> <span class="date">2012-06-29 23:24:44</span></h3>
-  <p><strong>撒手不管 VoidView:</strong></p>
-
-<pre><code>@Ok(&quot;void&quot;) //不做任何操作,不理会任何返回值,不碰resp对象!!
-
-//适合控制欲极强的童鞋,或有特别需要的
-</code></pre>
-
-<p><strong>ajax好基友 UTF8JsonView:</strong></p>
-
-<pre><code>@Ok(&quot;json&quot;) // 将任何返回值转换为json字符串,后面可以加jsonFormat参数
-//注意,使用这个视图,你就不要自己拼json字符串了!! 返回map/list/pojo吧!!
-</code></pre>
-
-<p>示例页面js调用:</p>
-
-<pre><code>$.ajax({
-  url: &quot;${base}/login&quot;,
-  dataType : &quot;json&quot;,
-  data : {&quot;user&quot; : &quot;wendal&quot;, &quot;passwd&quot; : &quot;123456&quot;}, //或者 表单数据
-  //如果是复杂的对象,建议使用$.toJSON(obj) 然后后台使用@Adpter(JsonAdpter.class)
-  success : function(re) {
-    if (re.ok) {
-      alert('登陆成功');
-      windows.location = &quot;${base}/home&quot;; //跳转到某个URL去, 多嘴一句,ajax是不能自动识别302的!!
-    } else {
-      alert('登陆失败,请检查用户名及密码!!');
-    };
-  },
-  fail : function(err) {
-    alert(&quot;服务器错误: &quot;+ err);
-  }
-});
-</code></pre>
-
-  <div class="more">
-    <a href="/436.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -462,6 +439,10 @@ func main() {
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

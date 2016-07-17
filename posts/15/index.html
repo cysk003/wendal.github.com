@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/320.html">实现Rk2918的System分区可写</a> <span class="date">2011-09-09 11:33:27</span></h3>
+  <p>这是2011-09-08,也就是前天顿悟出来的方法</p>
+
+<p><strong>核心原理</strong>:在data分区下建一个文件夹/data/sysrw存放system原本的数据,启动时,软连接/data/sysrw为system分区</p>
+
+<p><strong>解释</strong>:
+1. data分区,最终挂载为/data文件夹,默认情况下,这是ext3格式的分区,但禁用了suid
+2. system分区,为不可写的cramfs格式,默认挂载在/system文件夹</p>
+
+<p><strong>步骤</strong>:
+1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
+2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
+3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
+..A. 不再挂载system分区 -- 注释掉 mount cramfs mtd@system /system -- 也就是前面加#号
+..B. 不再建立system文件夹 -- 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid -- 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 -- chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su -- 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 -- 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 --- 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+
+  <div class="more">
+    <a href="/320.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
   <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo--&gt;String的转换</p>
 
@@ -323,20 +350,6 @@ List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.i
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/303.html">Autoproxy Forever!!</a> <span class="date">2011-07-24 08:54:14</span></h3>
-  <p>看到不少帖子又在找兼容 Firefox 5 Firefox 6 Firefox 7 Firefox 8的Autoproxy,我鸭梨很大啊,因为官方的动作还是很慢!!</p>
-
-<p>我现在用Firefox 8.0a1 , Autoproxy也很正常</p>
-
-<p>好吧,放出我自己的版本,兼容至Firefox9!!:
-<a href="http://dl.dbank.com/c0cluqlrqw">http://dl.dbank.com/c0cluqlrqw</a></p>
-
-  <div class="more">
-    <a href="/303.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -438,6 +451,10 @@ List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.i
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

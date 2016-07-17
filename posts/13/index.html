@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/361.html">Mongodb学习小记</a> <span class="date">2012-01-26 22:54:17</span></h3>
+  <p>实现自增(跟oralce的序列是一个概念):</p>
+
+<pre><code>public static Integer getAutoIncreaseID(String idName) {
+    BasicDBObject query = new BasicDBObject(&quot;name&quot;, idName);
+    BasicDBObject update = new BasicDBObject(&quot;$inc&quot;, new BasicDBObject(&quot;id&quot;, 1));
+    return (Integer) XX.getDB()
+            .getCollection(&quot;inc_ids&quot;)
+            .findAndModify(query, null, null, false, update, true, true)
+            .get(&quot;id&quot;);
+}
+</code></pre>
+
+<p>把元素添加到数组,仅当数组中没有这个值</p>
+
+<pre><code>BasicDBObject query = new BasicDBObject(&quot;_id&quot;, new ObjectId(&quot;XXXXXXXXXXXXXXX&quot;));
+BasicDBObject update = new BasicDBObject(&quot;$addToSet&quot;, new BasicDBObject(&quot;tags&quot;, tag));
+db.getCollection().update(query, update);
+</code></pre>
+
+<p>OpenId的登录信息,放入Mongodb中存放,使用JopenId</p>
+
+  <div class="more">
+    <a href="/361.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/360.html">Viv -- 基于Nutz和BuguMongo的,使用Mongodb作为持久层的Issue管理系统</a> <span class="date">2012-01-21 15:44:09</span></h3>
   <p>项目地址: <a href="https://github.com/wendal/viv">https://github.com/wendal/viv</a></p>
 
@@ -346,35 +374,6 @@ git rev-list master
   </div>
 </div>
 
-<div class="post">
-  <h3 class="title"><a href="/342.html">一波三折的一个月,鸣鸣的腹泻终于好了,我也恢复元气了</a> <span class="date">2011-11-13 22:04:57</span></h3>
-  <p>终于有心情,有闲情来写blog了</p>
-
-<p>鸣鸣的腹泻,终于告一段落,我自己也渐渐恢复元气 .. 几个安乐觉,几瓶白兰氏鸡精&hellip;. 最重要的,当然是鸣鸣玩耍的嬉笑声</p>
-
-<p>这一次腹泻,可以算是鸣鸣出生以来的第一次生病, 揪心啊&hellip;.</p>
-
-<p>起初,只是轻微的腹泻,水样, 鸣鸣也不哭,也不闹
-渐渐地,腹泻的次数不断增加,最高峰时,1~2小时一次,鸣鸣的精神状态也开始不佳
-恩,鸣鸣还是大哭了, 因为不断腹泻导致小屁股红肿,每次腹泻都让她很疼 -- 呜呜&hellip;.</p>
-
-<p>首先是去了两次的区人民医院,第二次差点跟医生吵起来 -- 叫我怎么说呢,事情就是发生了
-  由于我坚决反对吊针,那医生几乎发狂了,竟然向后推了一下鸣鸣的头,最后,打了一支屁股针,开了点冲剂
-  第二天,直奔省妇幼保健院,二话没说,验大便 -- 肠炎+腺病毒感染, 接着一句: 还好,不严重 &hellip; 没去打针,没去吊针,只开了一次中药肚脐贴,一瓶氧化锌,3颗庆大霉素(医生说不入血,没事). 贴好肚脐,喂了一次庆大霉素,帮她涂氧化锌到小屁股,然后就睡觉了. 中午补涂氧化锌的时候,竟然还亲了一下妈妈,露出点点笑容 -- hold不住啊&hellip; 精神状态明显好转啊!! 当天, 腹泻次数明显减少了, 也不哭闹了 -- 我能不激动吗?!!
-  之后几天,复诊了两次,最后一次显示无发炎 -- 俺是不是应该捐的钱给医院呢??</p>
-
-<p>Mark一下省妇幼的用药:
-1. 庆大霉素3颗,实际吃了1.5颗,因为每次仅吃半颗
-2. 3次肚脐贴,不知道什么成分
-3. 钙/B12冲剂
-4. 纽曼斯 -- 一种复合益生菌,在医院之外买的,挪威进口, 大概10元/颗,一瓶30颗,每天1~2次 -- 你觉得贵吗?病好了,啥都值!
-5. 自己买了一些丁桂儿脐贴, 感觉不错</p>
-
-  <div class="more">
-    <a href="/342.html" class="btn">read more..</a>
-  </div>
-</div>
-
 
 <ul>
 
@@ -476,6 +475,10 @@ git rev-list master
 
   <li>
 	25
+  </li>
+
+  <li>
+	26
   </li>
 
 </ul>

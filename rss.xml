@@ -2,7 +2,13 @@
 <rss version="2.0">  <channel>
     <title>Wendal随笔</title>
     <link>http://wendal.net</link>
-    <pubDate>27 Apr 16 12:37 CST</pubDate>
+    <pubDate>17 Jul 16 21:38 CST</pubDate>
+    <item>
+      <title>北京,北京</title>
+      <link>http://wendal.net/生活/%E5%8C%97%E4%BA%AC%2C%E5%8C%97%E4%BA%AC/</link>
+      <pubDate>2016-07-17 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;年度北京之旅,畅谈nutz的未来,畅谈nutz团队的未来&lt;/p&gt;&#xA;&#xA;&lt;p&gt;&lt;img src=&#34;/assets/media/2016/07/17/zozoh.png&#34;&gt;&lt;/img&gt;&lt;/p&gt;&#xA;</description>
+    </item>
     <item>
       <title>nutz websocket nginx maven 配合使用</title>
       <link>http://wendal.net/2016/04/20.html</link>
