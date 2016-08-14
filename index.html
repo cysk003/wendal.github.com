@@ -91,6 +91,35 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2016/08/14.html">杂碎</a> <span class="date">2016-08-14</span></h3>
+
+  <h2>关于Nutz的版本发布(群消息复制粘贴)</h2>
+
+<p>bug总会有的, 无论我多么希望发布一个完美无bug的版本.</p>
+
+<p>每次发布时, 都尽可能的修正已知的bug,并添加新的testcase, 但总有一些未能覆盖的场景.</p>
+
+<p>发布基本是这样: TestAll(顺序,反序,乱序)跑通,更新我能控制的各种服务,看看有无异常, 然后呼吁大家测试一下新版本(很少有反馈), 静候几天, 发布新版本.</p>
+
+<p>再然后, 大家开始更新版本, 出问题, 继续报issue -- 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
+
+<p>个人觉得nutz发布版本已经算严格的了(国内开源项目中对比)</p>
+
+<h2>Maven的增量编译</h2>
+
+<p>nutzmore项目中的子项目众多,所以一直希望用mvn deploy直接发布.但总是报签名不正确.</p>
+
+<p>后来深究了原因,是maven的增量编译(useIncrementalCompilation 参数)的缘故. 这个参数会导致gpg签名后,有一定概率重新打包jar</p>
+
+<p>```xml</p>
+
+
+  <div class="more">
+    <a href="/2016/08/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/07/17.html">北京,北京</a> <span class="date">2016-07-17</span></h3>
 
   <p>年度北京之旅,畅谈nutz的未来,畅谈nutz团队的未来</p>
@@ -1010,33 +1039,6 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
   <div class="more">
     <a href="/2013/09/06.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/08/28.html">让golang的get命令兼容gitlab</a> <span class="date">2013-08-28</span></h3>
-
-  <h1>我们有些什么呢?</h1>
-
-<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
-
-<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
-
-<p>如果尝试执行下面的语句去获取这个库的话</p>
-
-<pre><code>go get git.wendal.net/wendal/gofly
-
-#会输出
-package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
-</code></pre>
-
-<p>然而,如果我们输入</p>
-
-<p>```</p>
-
-
-  <div class="more">
-    <a href="/2013/08/28.html" class="btn">read more..</a>
   </div>
 </div>
 

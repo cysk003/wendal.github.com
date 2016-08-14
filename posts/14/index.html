@@ -80,6 +80,36 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/344.html">Git的几个实用小技巧</a> <span class="date">2011-11-14 10:51:50</span></h3>
+  <p>不止一次听到抱怨说, <strong>Git库好大</strong>啊,把整个历史都拉下来,慢死了
+我情何以堪呢?!! 你可以单单取最后几个,甚至最后一个版本的啊?</p>
+
+<pre><code>#仅获取最新版和一个历史版本,即最后2个版本
+git clone git@github.com:nutzam/nutz --depth=1
+
+#看看下载了多少数据:
+Cloning into nutz...
+remote: Counting objects: 2928, done.
+remote: Compressing objects: 100% (1956/1956), done.
+remote: Total 2928 (delta 1212), reused 2179 (delta 831)
+Receiving objects: 100% (2928/2928), 3.20 MiB | 1.06 MiB/s, done.
+Resolving deltas: 100% (1212/1212), done.
+
+#仅3.2mb哦, 小很多了吧?
+</code></pre>
+
+<p>上面的git clone,<strong>仅获取了最后2个版本</strong>,我是如何知道的呢?</p>
+
+<pre><code>cd nutz
+git rev-list master
+</code></pre>
+
+  <div class="more">
+    <a href="/344.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/342.html">一波三折的一个月,鸣鸣的腹泻终于好了,我也恢复元气了</a> <span class="date">2011-11-13 22:04:57</span></h3>
   <p>终于有心情,有闲情来写blog了</p>
 
@@ -353,31 +383,6 @@ public abstract class TestMongodb4Jetty {
 
   <div class="more">
     <a href="/324.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/321.html">让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制</a> <span class="date">2011-09-11 08:51:23</span></h3>
-  <p>本文并非教你写病毒来破解Android系统,所提及的操作,均要求用户主动参与</p>
-
-<p>本文主要针对是平板.Andoird手机由于涉及你的帐号/资金的安全,非常不建议你使用下面的方法!!</p>
-
-<p>先感谢一下硬件小二,rk28小组的协助</p>
-
-<h2>第一步,/system可写</h2>
-
-<p><a href="http://wendal.net/320.html">Rk2918现在可使用我不久前发明的方法,将/system映射在/data/sysrw</a></p>
-
-<p>Rk2818的话,自然是使用aufs这种xda发明的方法,但使用rk2918的方法会快些</p>
-
-<h2>第二步,获取root权限</h2>
-
-<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码-- <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
-
-<p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
-
-  <div class="more">
-    <a href="/321.html" class="btn">read more..</a>
   </div>
 </div>
 

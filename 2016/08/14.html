@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>python fuse 记录</title>
+    <title>杂碎</title>
   
-    <meta name="description" content="python fuse 记录">
+    <meta name="description" content="关于nutz,maven,ffmpeg,人生的一些想法">
   
     <meta name="author" content="Wendal Chen">
 
@@ -80,65 +80,81 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>python fuse 记录 </h1>
+  <h1>杂碎 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>[FUSE <a href="https://zh.wikipedia.org/wiki/FUSE">https://zh.wikipedia.org/wiki/FUSE</a>]</p>
+    <h2>关于Nutz的版本发布(群消息复制粘贴)</h2>
 
-<p>常用fuse api方法</p>
+<p>bug总会有的, 无论我多么希望发布一个完美无bug的版本.</p>
 
-<pre><code>struct fuse_operations {
-    int (*getattr) (const char *, struct stat *);
-    int (*readlink) (const char *, char *, size_t);
-    int (*getdir) (const char *, fuse_dirh_t, fuse_dirfil_t);
-    int (*mknod) (const char *, mode_t, dev_t);
-    int (*mkdir) (const char *, mode_t);
-    int (*unlink) (const char *);
-    int (*rmdir) (const char *);
-    int (*symlink) (const char *, const char *);
-    int (*rename) (const char *, const char *);
-    int (*link) (const char *, const char *);
-    int (*chmod) (const char *, mode_t);
-    int (*chown) (const char *, uid_t, gid_t);
-    int (*truncate) (const char *, off_t);
-    int (*utime) (const char *, struct utimbuf *);
-    int (*open) (const char *, struct fuse_file_info *);
-    int (*read) (const char *, char *, size_t, off_t, struct fuse_file_info *);
-    int (*write) (const char *, const char *, size_t, off_t,struct fuse_file_info *);
-    int (*statfs) (const char *, struct statfs *);
-    int (*flush) (const char *, struct fuse_file_info *);
-    int (*release) (const char *, struct fuse_file_info *);
-    int (*fsync) (const char *, int, struct fuse_file_info *);
-    int (*setxattr) (const char *, const char *, const char *, size_t, int);
-    int (*getxattr) (const char *, const char *, char *, size_t);
-    int (*listxattr) (const char *, char *, size_t);
-    int (*removexattr) (const char *, const char *);
-};
+<p>每次发布时, 都尽可能的修正已知的bug,并添加新的testcase, 但总有一些未能覆盖的场景.</p>
+
+<p>发布基本是这样: TestAll(顺序,反序,乱序)跑通,更新我能控制的各种服务,看看有无异常, 然后呼吁大家测试一下新版本(很少有反馈), 静候几天, 发布新版本.</p>
+
+<p>再然后, 大家开始更新版本, 出问题, 继续报issue -- 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
+
+<p>个人觉得nutz发布版本已经算严格的了(国内开源项目中对比)</p>
+
+<h2>Maven的增量编译</h2>
+
+<p>nutzmore项目中的子项目众多,所以一直希望用mvn deploy直接发布.但总是报签名不正确.</p>
+
+<p>后来深究了原因,是maven的增量编译(useIncrementalCompilation 参数)的缘故. 这个参数会导致gpg签名后,有一定概率重新打包jar</p>
+
+<pre><code class="language-xml">
+			&lt;plugin&gt;
+				&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.3&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;source&gt;1.8&lt;/source&gt;
+					&lt;target&gt;1.8&lt;/target&gt;
+					&lt;compilerArgs&gt;
+						&lt;arg&gt;-parameters&lt;/arg&gt;
+					&lt;/compilerArgs&gt;
+					&lt;useIncrementalCompilation&gt;false&lt;/useIncrementalCompilation&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
 </code></pre>
 
-<p>python fuse实现需要注意的点</p>
+<p>命令行下的配置</p>
 
-<pre><code>readlink // 返回的是链接的路径,字符串
-rename   // 无视目标路径的是否存在,直接rename过去
+<pre><code class="language-cmd">mvn -Dmaven.compiler.useIncrementalCompilation=false clean package javadoc:jar source:jar gpg:sign deploy
 </code></pre>
 
-<p>big_writes,large_read 对性能的影响并没有太大帮助.</p>
+<p>官方说明: <a href="https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html">https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html</a></p>
+
+<h2>ffmpeg</h2>
+
+<p>高版本的ffmpeg在输出h264时,如果源数据不是yuv420p且不指定pixfmt,会生成mp4文件在低版本的h264解码器上会失败</p>
+
+<pre><code class="language-cmd">ffmpeg -i xxx.mp4 -pix_fmt yuv420p out.mp4
+</code></pre>
+
+<h2>人生的一些想法</h2>
+
+<p>已知的会觉得理所当然</p>
+
+<p>200年前还不能记录并还原声音, 1000年前,能进行一百以内四则运算的人口比例不到1%</p>
+
+<p>&ldquo;娱乐至死&rdquo;,也许真的是统治的最高境界.</p>
+
+<p>本届奥运会的娱乐化程度更高了,&ldquo;今天头条/天天头条&rdquo;推送的大多数是娱乐新闻/路边新闻.</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/2016/03/24.html" title="香港打疫苗?你想多了吧">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/2015/12/02.html" title="answer to life everything and the universe">Next &rarr;</a></li>
+            <li class="next"><a href="/2016/07/17.html" title="北京,北京">Next &rarr;</a></li>
           
           
         </ul>
@@ -164,7 +180,7 @@ rename   // 无视目标路径的是否存在,直接rename过去
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2016-03-14</span></div>
+    <div class="date"><span>2016-08-14</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
@@ -179,11 +195,15 @@ rename   // 无视目标路径的是否存在,直接rename过去
     <ul class="tag_box">
     
       <li>
-  <a href="/tags/#fuse-ref">fuse <span>1</span></a>
+  <a href="/tags/#nutz-ref">nutz <span>3</span></a>
 </li>
     
       <li>
-  <a href="/tags/#walnut-ref">walnut <span>2</span></a>
+  <a href="/tags/#ffmpeg-ref">ffmpeg <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags/#maven-ref">maven <span>1</span></a>
 </li>
     
     </ul>

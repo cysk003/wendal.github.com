@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2016/08/14.html">杂碎</a> <span class="date">2016-08-14</span></h3>
+  <h2>关于Nutz的版本发布(群消息复制粘贴)</h2>
+
+<p>bug总会有的, 无论我多么希望发布一个完美无bug的版本.</p>
+
+<p>每次发布时, 都尽可能的修正已知的bug,并添加新的testcase, 但总有一些未能覆盖的场景.</p>
+
+<p>发布基本是这样: TestAll(顺序,反序,乱序)跑通,更新我能控制的各种服务,看看有无异常, 然后呼吁大家测试一下新版本(很少有反馈), 静候几天, 发布新版本.</p>
+
+<p>再然后, 大家开始更新版本, 出问题, 继续报issue -- 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
+
+<p>个人觉得nutz发布版本已经算严格的了(国内开源项目中对比)</p>
+
+<h2>Maven的增量编译</h2>
+
+<p>nutzmore项目中的子项目众多,所以一直希望用mvn deploy直接发布.但总是报签名不正确.</p>
+
+<p>后来深究了原因,是maven的增量编译(useIncrementalCompilation 参数)的缘故. 这个参数会导致gpg签名后,有一定概率重新打包jar</p>
+
+<p>```xml</p>
+
+  <div class="more">
+    <a href="/2016/08/14.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/07/17.html">北京,北京</a> <span class="date">2016-07-17</span></h3>
   <p>年度北京之旅,畅谈nutz的未来,畅谈nutz团队的未来</p>
 
@@ -314,31 +341,6 @@ Destination Gateway Genmask Flags Metric Ref Use Iface
 
   <div class="more">
     <a href="/2015/07/21.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2015/05/28.html">在android上运行io.js</a> <span class="date">2015-05-28</span></h3>
-  <p>无意中看到io.js在4月份开始已经支持android编译,果断弄一个</p>
-
-<h2>环境</h2>
-
-<p>opensuse 11.4 x86</p>
-
-<p>android 4.2.2 linux 3.2, 已root</p>
-
-<h2>下载并安装NDK r10e</h2>
-
-<p><a href="http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86.bin">http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86.bin</a></p>
-
-<p>直接下载挺慢的,走百度云就很快</p>
-
-<p>在opensuse切换到root,然后运行</p>
-
-<p>```</p>
-
-  <div class="more">
-    <a href="/2015/05/28.html" class="btn">read more..</a>
   </div>
 </div>
 

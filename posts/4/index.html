@@ -80,6 +80,31 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/08/28.html">让golang的get命令兼容gitlab</a> <span class="date">2013-08-28</span></h3>
+  <h1>我们有些什么呢?</h1>
+
+<p>Gitlib已经发布了6.0,号称是企业级的版本了,作为私有git库的首选,自然越来越多人用</p>
+
+<p>假设 有这样一个golang 的库,URL是 <a href="http://git.wendal.net/wendal/gofly">http://git.wendal.net/wendal/gofly</a></p>
+
+<p>如果尝试执行下面的语句去获取这个库的话</p>
+
+<pre><code>go get git.wendal.net/wendal/gofly
+
+#会输出
+package git.wendal.net/wendal/gofly: unrecognized import path &quot;git.wendal.net/wendal/gofly&quot;
+</code></pre>
+
+<p>然而,如果我们输入</p>
+
+<p>```</p>
+
+  <div class="more">
+    <a href="/2013/08/28.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/08/23.html">再说Ioc</a> <span class="date">2013-08-23</span></h3>
   <p>很多人都没搞懂Ioc到底什么原理,搞不懂里面有什么魔术.</p>
 
@@ -340,31 +365,6 @@ gcc4 make perl lua  (不使用openresty内置的lua)</p>
 
   <div class="more">
     <a href="/2013/05/23.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0412.html">在windows下编译nginx</a> <span class="date">2013-04-12</span></h3>
-  <p>又有人在windows下编译nginx -- 为什么那么多人喜欢自残呢?</p>
-
-<h2>官网教程</h2>
-
-<p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
-
-<p>本文基本上就是对着做,但需要对其进行微调 -- 不爽吗?咬我啊!!</p>
-
-<h2>准备工具</h2>
-
-<p>系统: winxp sp3 32位, 例如你可以用个虚拟机什么的安装一个winxp</p>
-
-<p><a href="https://msys-cn.googlecode.com/files/MSYS-Update.7z">MSYS-CN 2010-08-19 更新版本</a></p>
-
-<p><a href="http://zlib.net/zlib-1.2.7.tar.gz">zlib 1.2.7</a></p>
-
-<p><a href="http://nchc.dl.sourceforge.net/project/pcre/pcre/8.32/pcre-8.32.zip">pcre 8.32</a></p>
-
-  <div class="more">
-    <a href="/2013/0412.html" class="btn">read more..</a>
   </div>
 </div>
 

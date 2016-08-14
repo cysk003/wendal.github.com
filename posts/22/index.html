@@ -80,6 +80,33 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/208.html">一次内存泄漏的排查</a> <span class="date">2010-12-09 21:07:10</span></h3>
+  <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
+问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
+
+<pre><code>409.879: [Full GC 409.879: [Tenured: 349567K-&gt;349567K(349568K), 1.5796790 secs] 506815K-&gt;382998K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5797868 secs] [Times: user=1.55 sys=0.00, real=1.58 secs] 
+417.784: [Full GC 417.784: [Tenured: 349567K-&gt;349568K(349568K), 1.6968523 secs] 506815K-&gt;382777K(506816K), [Perm : 15880K-&gt;15878K(65536K)], 1.6969534 secs] [Times: user=1.68 sys=0.00, real=1.69 secs] 
+422.242: [Full GC 422.242: [Tenured: 349568K-&gt;349568K(349568K), 1.5697638 secs] 506815K-&gt;382844K(506816K), [Perm : 15879K-&gt;15879K(65536K)], 1.5698652 secs] [Times: user=1.56 sys=0.00, real=1.56 secs] 
+Heap
+ def new generation   total 157248K, used 156479K [0x029e0000, 0x0d480000, 0x0d480000)
+  eden space 139776K, 100% used [0x029e0000, 0x0b260000, 0x0b260000)
+  from space 17472K,  95% used [0x0b260000, 0x0c2afda8, 0x0c370000)
+  to   space 17472K,   0% used [0x0c370000, 0x0c370000, 0x0d480000)
+ tenured generation   total 349568K, used 349568K [0x0d480000, 0x229e0000, 0x229e0000)
+   the space 349568K, 100% used [0x0d480000, 0x229e0000, 0x229e0000, 0x229e0000)
+ compacting perm gen  total 65536K, used 16259K [0x229e0000, 0x269e0000, 0x2a9e0000)
+   the space 65536K,  24% used [0x229e0000, 0x239c0e98, 0x239c1000, 0x269e0000)
+No shared spaces configured.
+</code></pre>
+
+<p>由于新生代应该会很快回收,故关注另外一块已经用完的空间tenured generation</p>
+
+  <div class="more">
+    <a href="/208.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
   <p>今天,升级了好几样东西</p>
 
@@ -266,35 +293,6 @@ cp objs/nginx /usr/local/nginx/sbin/
 
   <div class="more">
     <a href="/126.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/124.html">折腾了2天,终于把Nutz提交给Maven库</a> <span class="date">2010-11-10 22:07:12</span></h3>
-  <p>昨天在 <a href="https://oss.sonatype.org">https://oss.sonatype.org</a> 申请将Nutz加入资源库, 相关Issue:</p>
-
-<p><a href="https://issues.sonatype.org/browse/OSSRH-983">https://issues.sonatype.org/browse/OSSRH-983</a></p>
-
-<p>原本以为要2天,想不到一天就通过了申请.</p>
-
-<p>下午折腾了一下,搞到傍晚才成功上传一版,期间遇到的问题有:</p>
-
-<ol>
-<li><p>要求asc文件,开头无头绪,后来发现是gpg工具生存的.</p></li>
-
-<li><p>提交后提示public key未登记,又折腾了一下,提交到公共服务器</p></li>
-
-<li><p>签名无效, 神奇之极, 没办法,重新签名, 并打包为bundle,一次性提交!</p></li>
-</ol>
-
-<p>哦也,成功,release! 哈哈,发布成功:</p>
-
-<p><a href="https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/">https://oss.sonatype.org/content/groups/staging/org/nutz/nutz/1.a.32/</a></p>
-
-<p>不过,很奇怪,并没要在Maven中央库找到nutz,难道是同步间隔的问题??</p>
-
-  <div class="more">
-    <a href="/124.html" class="btn">read more..</a>
   </div>
 </div>
 

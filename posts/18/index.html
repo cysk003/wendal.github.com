@@ -80,6 +80,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/267.html">Json格式的ngx_http_stub_status_module</a> <span class="date">2011-04-13 07:07:47</span></h3>
+  <p>原版的ngx_http_stub_status_module,查看到的状态信息是一个无格式文本,非常不好解析.</p>
+
+<p>网上有另外一些实现,例如<a href="https://github.com/drmingdrmer/nginx-json-status-module">nginx-json-status-module</a>,但实现得极其垃圾,竟然直接调用malloc. 另外为了庆贺一下Nginx 1.0.0版本的发布,我做了一些修改,使其以Json格式返回.</p>
+
+<p>上代码:</p>
+
+<pre><code>/*
+ * Copyright (C) Igor Sysoev
+ * Modify by Wendal Chen
+ */
+
+#include &lt;ngx_config.h&gt;
+#include &lt;ngx_core.h&gt;
+#include &lt;ngx_http.h&gt;
+
+static char *ngx_http_set_status(ngx_conf_t *cf, ngx_command_t *cmd,
+                                 void *conf);
+
+static ngx_command_t  ngx_http_status_commands[] = {
+</code></pre>
+
+  <div class="more">
+    <a href="/267.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/266.html">再一次搞定UTF-8的BOM</a> <span class="date">2011-04-12 18:55:43</span></h3>
   <p>一年前的某天,我觉察到BOM的问题 -- 一个Java源文件死活无法编译
 今天,我狠狠地为 Nutz的Streams类添加了一个方法,用于自动过滤掉BOM头!!
@@ -314,34 +342,6 @@ Encoded Integers</p>
 
   <div class="more">
     <a href="/256.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/255.html">[已经确认]想不到真的遇到Lua-nginx-module的bug</a> <span class="date">2011-03-17 15:32:15</span></h3>
-  <p>难以置信啊, agentzh大牛已经确认是个bug,对应的版本:
-Lua-nginx-module 0.16rc2 + Nginx 0.8.54</p>
-
-<p>期待修复,哈哈</p>
-
-<p>原本一直以为是自己代码的原因,因为实在很诡异,附上我的原文:</p>
-
-<pre><code>我得到的最小集合就是:
-1. nginx.conf
-location /test {
-    root html;
-    content_by_lua_file &quot;conf/test.lua&quot;;
-}
-server/http等配置按默认的, event module用的是 epoll
-
-2. test.lua文件仅2行:
-ngx.location.capture('/1.html')
-
-ngx.exec(&quot;/1.html&quot;)
-</code></pre>
-
-  <div class="more">
-    <a href="/255.html" class="btn">read more..</a>
   </div>
 </div>
 
