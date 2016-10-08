@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 8</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,27 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/462.html">在windows下编译goexif</a> <span class="date">2012-10-20 11:28:21</span></h3>
+  <p>纯go版:</p>
+
+<pre><code>go get github.com/rwcarlsen/goexif/exif
+</code></pre>
+
+<p>cgo版:</p>
+
+<pre><code># 1. 下载libexif源码,获取头文件
+# 2. 下载exif.dll, 记得下载cygwin下的版本, 直接google得到的版本不靠谱,版本太老
+go get github.com/gosexy/exif
+</code></pre>
+
+<p><a href="/assets/media/2012/10/libexif-0.6.21.zip">libexif-0.6.21</a></p>
+
+  <div class="more">
+    <a href="/462.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/461.html">查找mysql中的低效索引</a> <span class="date">2012-10-11 09:39:38</span></h3>
@@ -285,7 +308,7 @@ CGO_ENABLED=0 GOARCH=arm GOOS=linux ./make.bash
 #如果访问失败,请翻墙吧!! 需要mysql 4.1以上哦
 </code></pre>
 
-<p>然后,当然是我的最爱 -- 代码</p>
+<p>然后,当然是我的最爱 &ndash; 代码</p>
 
 <pre><code>package main
 
@@ -335,15 +358,6 @@ func main() {
 
   <div class="more">
     <a href="/446.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/441.html">Nutz T恤与小鸣鸣</a> <span class="date">2012-07-21 21:29:48</span></h3>
-  <p><img src="/assets/media/2012/07/DSCF06572.jpg"></img></p>
-
-  <div class="more">
-    <a href="/441.html" class="btn">read more..</a>
   </div>
 </div>
 

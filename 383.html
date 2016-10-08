@@ -90,10 +90,10 @@
 客户端只需要配置一下代理服务器,就能做到需要翻墙就翻墙,不需要就走普通渠道.</p>
 
 <p>最初,我的想法
-1. 直接ssh隧道 -- 只有部分程序支持sockt5代理
-2. squid+ssh隧道 -- squid压根不支持sockt5的后端代理,我靠
-3. squid+Polipo+ssh隧道 -- 有点靠谱了,我差点就狠心学一下squid恶心的配置文件
-4. nginx+Polipo+ssh隧道 -- 代理https有点问题,我一直没解决</p>
+1. 直接ssh隧道 &ndash; 只有部分程序支持sockt5代理
+2. squid+ssh隧道 &ndash; squid压根不支持sockt5的后端代理,我靠
+3. squid+Polipo+ssh隧道 &ndash; 有点靠谱了,我差点就狠心学一下squid恶心的配置文件
+4. nginx+Polipo+ssh隧道 &ndash; 代理https有点问题,我一直没解决</p>
 
 <ol>
 <li><p>在本地一台Linux服务器,创建用proxy,创建sshkey并上传到国外的vps:</p>
@@ -127,9 +127,9 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub root@nutz.cn</p></li>
 <li><p>编译并启动Polipo</p>
 
 <p>#如果有git客户端
-git clone git://git.wifi.pps.jussieu.fr/polipo --depth=0
+git clone git://git.wifi.pps.jussieu.fr/polipo &ndash;depth=0
 #如果木有,则下载压缩包
-wget -O polipo.zip --no-check-certificate <a href="https://github.com/jech/polipo/zipball/master">https://github.com/jech/polipo/zipball/master</a>
+wget -O polipo.zip &ndash;no-check-certificate <a href="https://github.com/jech/polipo/zipball/master">https://github.com/jech/polipo/zipball/master</a>
 unzip polipo.zip</p>
 
 <p>cd polipo #或者是unzip出来的文件夹</p>
@@ -163,11 +163,11 @@ ClientAliveCountMax 10000000
 </code></pre>
 
 <p>还需要解决的问题:
-1. Polipo崩溃后自动重启 -- 一个监护进程
-2. SSH隧道短线自动重连  -- 同上
-3. 流量控制            -- 加个nginx?squid来控制?
-4. 限制视频,下载       -- 同上
-5. 用户过滤            -- 同上, 我想到了伟大的nginx-lua模块</p>
+1. Polipo崩溃后自动重启 &ndash; 一个监护进程
+2. SSH隧道短线自动重连  &ndash; 同上
+3. 流量控制            &ndash; 加个nginx?squid来控制?
+4. 限制视频,下载       &ndash; 同上
+5. 用户过滤            &ndash; 同上, 我想到了伟大的nginx-lua模块</p>
 
     <hr>
     <div class="pagination">
@@ -196,7 +196,7 @@ ClientAliveCountMax 10000000
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
@@ -238,7 +238,7 @@ ClientAliveCountMax 10000000
 </li>
     
       <li>
-  <a href="/tags/#nginx-ref">nginx <span>24</span></a>
+  <a href="/tags/#nginx-ref">nginx <span>25</span></a>
 </li>
     
       <li>

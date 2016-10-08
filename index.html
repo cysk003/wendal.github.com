@@ -91,6 +91,38 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/2016/10/08.html">在Ubuntu 14.04上配置nginx的http2</a> <span class="date">2016-10-08</span></h3>
+
+  <h2>下载源码</h2>
+
+<pre><code>cd /tmp
+
+wget https://openresty.org/download/openresty-1.11.2.1.tar.gz
+tar xf openresty-1.11.2.1.tar.gz
+
+wget https://www.openssl.org/source/openssl-1.0.2j.tar.gz
+tar xf openssl-1.0.2j.tar.gz
+
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.bz2
+tar xf pcre-8.39.tar.bz2
+</code></pre>
+
+<h2>开始编译</h2>
+
+<pre><code>cd /tmp/openresty-1.11.2.1
+./configure --prefix=/opt/openresty --with-http_v2_module --with-http_stub_status_module --with-http_realip_module --with-http_ssl_module --with-openssl=/tmp/openssl-1.0.2j --with-pcre=/tmp/pcre-8.39
+
+make
+make install
+</code></pre>
+
+
+  <div class="more">
+    <a href="/2016/10/08.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/08/14.html">杂碎</a> <span class="date">2016-08-14</span></h3>
 
   <h2>关于Nutz的版本发布(群消息复制粘贴)</h2>
@@ -101,7 +133,7 @@
 
 <p>发布基本是这样: TestAll(顺序,反序,乱序)跑通,更新我能控制的各种服务,看看有无异常, 然后呼吁大家测试一下新版本(很少有反馈), 静候几天, 发布新版本.</p>
 
-<p>再然后, 大家开始更新版本, 出问题, 继续报issue -- 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
+<p>再然后, 大家开始更新版本, 出问题, 继续报issue &ndash; 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
 
 <p>个人觉得nutz发布版本已经算严格的了(国内开源项目中对比)</p>
 
@@ -603,9 +635,9 @@ U-ApiKey: 121234132432143\r\n
 
   <h2>首先,需要准备一下环境</h2>
 
-<p>ubuntu 14.04 x86 版 -- 当前最新啦,哈哈</p>
+<p>ubuntu 14.04 x86 版 &ndash; 当前最新啦,哈哈</p>
 
-<p>android ndk r9b     -- 为啥用这个版本?因为我机器上有&hellip;</p>
+<p>android ndk r9b     &ndash; 为啥用这个版本?因为我机器上有&hellip;</p>
 
 <h2>编译环境准备</h2>
 
@@ -830,15 +862,15 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p><img src="/assets/media/2013/10/28/IMG_0857.JPG" /></p>
 
-<p>北京第一餐 -- 脑残酸菜撸肉面</p>
+<p>北京第一餐 &ndash; 脑残酸菜撸肉面</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0935.JPG" /></p>
 
-<p>灰太狼大平卖 -- 只要9毛9!!</p>
+<p>灰太狼大平卖 &ndash; 只要9毛9!!</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0954.JPG" /></p>
 
-<p>后海 -- Three-Person</p>
+<p>后海 &ndash; Three-Person</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_1723.JPG" /></p>
 
@@ -894,7 +926,7 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p>总之,待了七天七夜,完整地走了perth的一周</p>
 
-<h1>Day1 -- 阳光下睡个觉</h1>
+<h1>Day1 &ndash; 阳光下睡个觉</h1>
 
 <p>3号晚上21:45的飞机,实际21:55起飞,直飞perth, 凌晨5:30到达</p>
 
@@ -992,53 +1024,6 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
   <div class="more">
     <a href="/2013/09/23.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-09-06</span></h3>
-
-  <h1>nutz加jetty 的测试代码</h1>
-
-<pre><code>    @At
-    @Ok(&quot;void&quot;) //不要视图啊... 因为多次进入
-    @Fail(&quot;void&quot;)// 一样不需要...
-    public void async(final @Param(&quot;wait&quot;)long wait, @Attr(&quot;obj&quot;)Object obj, final HttpServletRequest req) {
-        System.out.println(&quot;async IN&quot;);
-        if (obj == null) { // 第一次进入时,必然是null, 第二次,如果是线程唤醒的,那就有值了,呵呵
-            System.out.println(&quot;OBJ NULL&quot;);
-            // 获取这个关键的对象,哈哈哈
-            final Continuation continuation = ContinuationSupport.getContinuation(req);
-            if (continuation.isExpired()) { // 往下的代码设置了超时,so,这样判断一下咯
-                System.out.println(&quot;async TIMEOUT&quot;);
-                return;
-            }
-            continuation.setTimeout(15*1000); //设置超时哦
-            continuation.suspend(); // 非阻塞的方法... 仅仅是设置一个状态
-            new Thread() { //我在这启动一个线程,休眠一定时间之后唤醒这个异步请求
-                public void run() {
-                    System.out.println(&quot;async Thread Start&quot;);
-                    if (wait &lt; 1) {
-                        Lang.quiteSleep(10 * 1000);
-                    } else {
-                        Lang.quiteSleep(wait * 1000);
-                    }
-                    System.out.println(&quot;async Thread wakeup&quot;);
-                    req.setAttribute(&quot;obj&quot;, &quot;I do it!&quot;);
-                    continuation.resume();
-                };
-            }.start();
-        } else {
-            System.out.println(&quot;async GET OBJ --&gt; &quot; + obj);
-        }
-        
-        System.out.println(&quot;async OUT&quot;);
-    }
-</code></pre>
-
-
-  <div class="more">
-    <a href="/2013/09/06.html" class="btn">read more..</a>
   </div>
 </div>
 

@@ -85,10 +85,10 @@
   <div class="span8">
     <p>不知道多少人问过@Many @One等注释能否实现懒加载或者自动加载</p>
 
-<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 -- 其实也就是有点不方便,外加效率较低</p>
+<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 &ndash; 其实也就是有点不方便,外加效率较低</p>
 
 <p>我这里讨论的是NutDao做到真正懒加载的可能性与实现方式
-焦点集中在NutDao.query方法,因为大部分DB--&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
+焦点集中在NutDao.query方法,因为大部分DB&ndash;&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
 
 <p>由于实现的是懒加载,不可避免的使用Aop,以拦截@Many/@One的getter
 使用Aop会导致一个问题,就是query方法返回的对象的类改变了,变成用户请求的类的一个定制化的子类的对象,这本身就导致一些问题:
@@ -133,7 +133,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

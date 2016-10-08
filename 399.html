@@ -102,7 +102,7 @@ public Object xxx(HttpSession session) {
 }
 </code></pre>
 
-<p>也就是说, HttpSession在登录入口方法完成前,处于一个不可靠的状态 -- 对于检测是否登录的代码来说,这个会话是已经登录的,但事实上这个会话并未完成逻辑上的初始化.
+<p>也就是说, HttpSession在登录入口方法完成前,处于一个不可靠的状态 &ndash; 对于检测是否登录的代码来说,这个会话是已经登录的,但事实上这个会话并未完成逻辑上的初始化.
 当恶意进行类似的访问(多线程),那么其他入口方法要么报NPE,要么执行不可预测的逻辑.如果入口方法需要设置多个attr,那么HttpSession将处于多个不同的半初始化状态.</p>
 
 <p>要避免这个问题,是将登录的标记,放在入口方法的最后.</p>
@@ -143,7 +143,7 @@ public Object xxx(HttpSession session) {
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

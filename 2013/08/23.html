@@ -89,7 +89,7 @@
 
 <p>这些gif我曾经在nutz群中发送多次,但多少人真的看懂了&hellip;</p>
 
-<h1>首先,看第一种理解 -- 加几个注解,对象就能注入</h1>
+<h1>首先,看第一种理解 &ndash; 加几个注解,对象就能注入</h1>
 
 <p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not.gif"></p>
 
@@ -97,7 +97,7 @@
 
 <p>运行即可看到, 变量dao为null,但为什么呢? 已经加了@Inject注解了啊</p>
 
-<h1>再看第二种理解 -- 加了注解,有Ioc容器,就能注入</h1>
+<h1>再看第二种理解 &ndash; 加了注解,有Ioc容器,就能注入</h1>
 
 <p><img src="/assets/media/2013/08/23/nutz_ioc_inject_not2.gif"></p>
 
@@ -105,9 +105,9 @@
 
 <h1>到底什么东西能被注入?</h1>
 
-<p>首先,被注入的,必须是个对象,而非一个类 -- 注解仅仅是ioc配置信息,这些配置信息可以通过js/xml/yaml/数据库记录甚至UI操作来读取</p>
+<p>首先,被注入的,必须是个对象,而非一个类 &ndash; 注解仅仅是ioc配置信息,这些配置信息可以通过js/xml/yaml/数据库记录甚至UI操作来读取</p>
 
-<p>然后,必须是ioc管理的对象 -- 由ioc容器,通过某种方法(一般就是反射API的newInstance方法)创建的对象</p>
+<p>然后,必须是ioc管理的对象 &ndash; 由ioc容器,通过某种方法(一般就是反射API的newInstance方法)创建的对象</p>
 
 <p>就是说, 一个对象要被注入某个属性, 必须由ioc容器创建,根据配置信息进行组装,然后用户通过ioc的api直接/间接获取到.</p>
 
@@ -176,7 +176,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

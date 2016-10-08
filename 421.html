@@ -86,7 +86,7 @@
     <p>官网地址: <a href="http://glines.org/software/bfr" target="_blank"><a href="http://glines.org/software/bfr">http://glines.org/software/bfr</a></a></p>
 
 <p>Google上,&ldquo;Linux Pipe Buffer size&rdquo;,&ldquo;Linux管道缓冲区是否可调整&rdquo;&ldquo;增大pipe缓冲区大小&rdquo;之类的查询,能出30万条记录&hellip;
-Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 -- 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
+Linux上的管道, 要不就是4k,要不就是64k, 很多时候根本不够用 &ndash; 我遇到需求的比较夸张,每秒传输200mb的数据通过一个管道,悲催&hellip;, 问题如果从几秒钟的跨度看, 输入输出是均衡的,但细看一下, 一秒之内的输入输出非常不均衡, 导致输入输出都耗费大量时间在阻塞式读写中</p>
 
 <p>前一段时间,已经打算自己写一个类似的缓冲器, 桥接管道两段,做个大缓存,可惜,由于C水平有限,且找到替代方案,就不了了之</p>
 
@@ -155,7 +155,7 @@ short --long       default desc
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 5</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,14 +82,48 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2013/05/23.html">X11的xcb库卡死</a> <span class="date">2013-05-23</span></h3>
+  <p>一个多月没写blog,郁闷了&hellip;</p>
+
+<h2>X11的xcb库(1.7版)在不知道神马情况下会卡死</h2>
+
+<p>操作系统: opensuse 11.4 x86
+语言:     Qt 4.8.4,vdpau + Nv卡</p>
+
+<p>症状: 在多线程下,调用vdpau_create_decoder会卡住</p>
+
+<p>堆栈:</p>
+
+<pre><code>#0  0xffffe424 in __kernel_vsyscall ()
+#1  0xb43dc03e in __poll (fds=0xa5d15798, nfds=1, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:87
+#2  0xb1cc63f0 in _xcb_conn_wait (c=0x80f0b58, cond=0xa5d157f0, vector=0x0, count=0x0) at xcb_conn.c:313
+#3  0xb1cc7d4f in xcb_wait_for_reply (c=0x80f0b58, request=13576, e=0xa5d1587c) at xcb_in.c:379
+#4  0xb4213f92 in _XReply (dpy=0x80ffdb0, rep=0xa5d158bc, extra=0, discard=1) at xcb_io.c:533
+#5  0xb0698032 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#6  0xb061715b in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#7  0xb06174b7 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#8  0xb064dddb in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#9  0xb067dbef in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#10 0xb063b645 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#11 0xb061a423 in ?? () from /usr/lib/vdpau/libvdpau_nvidia.so.1
+#12 0x0806d123 in mx::create_decoder (vdp=0x81f37f0, w=1920, h=1080, decoder=0x8235810) at ../../src/disp/xde_res_vdpau.cpp:79
+
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/05/23.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2013/0412.html">在windows下编译nginx</a> <span class="date">2013-04-12</span></h3>
-  <p>又有人在windows下编译nginx -- 为什么那么多人喜欢自残呢?</p>
+  <p>又有人在windows下编译nginx &ndash; 为什么那么多人喜欢自残呢?</p>
 
 <h2>官网教程</h2>
 
 <p><a href="http://nginx.org/en/docs/howto_build_on_win32.html">Building nginx on the Win32 platform with Visual C</a></p>
 
-<p>本文基本上就是对着做,但需要对其进行微调 -- 不爽吗?咬我啊!!</p>
+<p>本文基本上就是对着做,但需要对其进行微调 &ndash; 不爽吗?咬我啊!!</p>
 
 <h2>准备工具</h2>
 
@@ -195,7 +231,7 @@ func main() {
 
 <div class="post">
   <h3 class="title"><a href="/2013/0216.html">天语T619也能Root</a> <span class="date">2013-02-16</span></h3>
-  <h2>昨天,小黄蜂终于到手 -- 广东移动周销售1.4w台的299元廉价机</h2>
+  <h2>昨天,小黄蜂终于到手 &ndash; 广东移动周销售1.4w台的299元廉价机</h2>
 
 <p>玩了一天,还是忍不住要root掉的. 实在无法忍受那些百度的app!!!</p>
 
@@ -331,68 +367,6 @@ Fast-Json 500w次耗时: 3048
 
   <div class="more">
     <a href="/2013/0127.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/0123.html">Golang的坑之DNS查询与系统线程</a> <span class="date">2013-01-23</span></h3>
-  <h2>这个问题源之于我3个月前开发的一个缓存服务</h2>
-
-<ol>
-<li>代理Http请求</li>
-<li>缓存部分请求,减少外网访问</li>
-</ol>
-
-<h2>但是,在不稳定的网络环境下(例如3G网络),不时出现崩溃的情况</h2>
-
-<p>纠结啊纠结啊&hellip;</p>
-
-<ol>
-<li>难道是因为我在32位系统下使用golang?</li>
-<li>难道是RP问题?</li>
-</ol>
-
-<p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
-
-<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
-SIGABRT: abort
-PC=0xffffe424
-
-
-goroutine 1 [chan receive]:
-net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
-    /opt/go/src/pkg/net/fd.go:268 +0x75
-net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
-    /opt/go/src/pkg/net/fd.go:622 +0x199
-net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
-    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
-net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
-    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
-net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
-    /opt/go/src/pkg/net/http/server.go:1029 +0x77
-net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
-    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
-net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
-    /opt/go/src/pkg/net/http/server.go:1091 +0x55
-    
-尾部
-eax     0x0
-ebx     0x231f
-ecx     0x2357
-edx     0x6
-edi     0xb77ceff4
-esi     0xb
-ebp     0xafa112f8
-esp     0xafa11050
-eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
-eflags  0x202
-cs      0x73
-fs      0x0
-gs      0x33
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/0123.html" class="btn">read more..</a>
   </div>
 </div>
 

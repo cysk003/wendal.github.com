@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 16</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,15 +82,43 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/307.html">Nutz的Scans类,你用过没?</a> <span class="date">2011-08-04 08:40:25</span></h3>
+  <p>你是否想得到某个package下的全部类呢?
+你是否想得到某个文件夹下全部的配置文件?</p>
+
+<p>你还在自己写这种的实现? 你还在拼命地问谷哥?</p>
+
+<p>好吧,不吹水了,正式介绍Scans类:
+org.nutz.resource.Scans</p>
+
+<p>首先,必须先强调一点,在J2EE环境中,如果你没有使用NutzMVC的话,请在Filter/Servlet中加入这一句:</p>
+
+<pre><code>Scans.me().init(config.getServletContext());
+</code></pre>
+
+<p>这个语句必须优先于其他任何Nutz相关语句</p>
+
+<p>好,如何得到某个文件夹下全部的配置文件呢?即使打包成jar也无需改代码呢?</p>
+
+<pre><code>//第一个参数是需要扫描的文件夹,第二个是文件名需要匹配正则表达式,可以为null
+List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.ini&quot;);
+</code></pre>
+
+  <div class="more">
+    <a href="/307.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/305.html">鸣鸣半岁了,今天第一次吃辅食!!</a> <span class="date">2011-08-01 22:00:58</span></h3>
-  <p><strong>经过6个月的纯母乳喂养,鸣鸣今天迈入新的阶段--添加辅食</strong></p>
+  <p><strong>经过6个月的纯母乳喂养,鸣鸣今天迈入新的阶段&ndash;添加辅食</strong></p>
 
-<p>鸣鸣一天天成长,每天都很踏实 -- 我很反对用&rdquo;眨眼就过去了&hellip;&ldquo;,因为那代表着空虚和不作为</p>
+<p>鸣鸣一天天成长,每天都很踏实 &ndash; 我很反对用&rdquo;眨眼就过去了&hellip;&ldquo;,因为那代表着空虚和不作为</p>
 
-<p>鸣鸣现在的体重是出生时的3倍--15斤,长高了17厘米
-双眼同步正常,已经能够自己坐着玩玩具 -- 认真玩玩具的时候,平衡力明显减弱</p>
+<p>鸣鸣现在的体重是出生时的3倍&ndash;15斤,长高了17厘米
+双眼同步正常,已经能够自己坐着玩玩具 &ndash; 认真玩玩具的时候,平衡力明显减弱</p>
 
-<p>值得一提的是鸣鸣最喜欢的玩具--塑料玩具桶,呵呵,前身是我们刚买不久的垃圾桶!! 由于鸣鸣的不懈努力,以其鲜艳的颜色,终于纳入玩具行列</p>
+<p>值得一提的是鸣鸣最喜欢的玩具&ndash;塑料玩具桶,呵呵,前身是我们刚买不久的垃圾桶!! 由于鸣鸣的不懈努力,以其鲜艳的颜色,终于纳入玩具行列</p>
 
 <p>周围的人,无一例外地反对我如此&rdquo;迟&rdquo;地添加辅食:
 1. XX出世没几天就吃米糊啦?!
@@ -131,20 +161,20 @@ Aop,1.a.29进行重构,我操刀
 Json,1.b.38历经两次重构,先是jukai,后面是我
 Dao,1.b.38,被zozoh翻天覆地地重构完成</p>
 
-<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 -- 在不停的fix bug中完善</p>
+<p>我觉得Nutz自身已经成熟了,多次重构,用户实践 &ndash; 在不停的fix bug中完善</p>
 
 <p>然而,Nutz还需要些什么呢?或者说,用户还需要些什么呢?
-1. 代码生成器 -- 很多很多用户要求这个,但是,真的能提供生产效率吗??
-2. IDE -- 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
-3. 支持NoSQL -- 貌似没啥意义
+1. 代码生成器 &ndash; 很多很多用户要求这个,但是,真的能提供生产效率吗??
+2. IDE &ndash; 我一直在思考其必要性,Nutz复杂到需要IDE协助吗??
+3. 支持NoSQL &ndash; 貌似没啥意义
 4. 还有一些零碎的功能增强,一时半刻没想起来</p>
 
 <p>我觉得Nutz还有一些设计欠佳的地方:
-1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 -- 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
-2. Ioc的单例 -- NutIoc中的单例的概念,我依旧觉得很怪,呵呵
-3. Dao的Pojo实例的生成机制 -- 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
-4. Json反序列化的定制性 -- 1.b.38引入的JsonField注解,恩,应该得到一些改善
-5. Castor的扩展机制 -- 这东西到底有没有人用过呢??</p>
+1. Ioc的bean定义,由于最初的设计支持一种抽象的Bean,这种bean只声明字段 &ndash; 这种遗留的设计导致Ioc本身及IocLoader不必要的复杂性,然而我至今没发现需要用到的场景
+2. Ioc的单例 &ndash; NutIoc中的单例的概念,我依旧觉得很怪,呵呵
+3. Dao的Pojo实例的生成机制 &ndash; 新版的Dao中,这部分的代码依然有些零碎,我曾经尝试改进,没有成功, 这导致编写缓存/懒加载等需要参与对象生成的插件比较困难
+4. Json反序列化的定制性 &ndash; 1.b.38引入的JsonField注解,恩,应该得到一些改善
+5. Castor的扩展机制 &ndash; 这东西到底有没有人用过呢??</p>
 
   <div class="more">
     <a href="/302.html" class="btn">read more..</a>
@@ -192,7 +222,7 @@ public class JGit {
 文件内容描述块 0x00 ~ 0x65
 Loader程序 0x66 ~ 0x66+Loader的长度
 update.img 0x66+Loader的长度+1 ~ 文件结束前32个字节
-MD5 文件的最后32个字节为文件其余部分的MD5码--ASCII形式</p>
+MD5 文件的最后32个字节为文件其余部分的MD5码&ndash;ASCII形式</p>
 
 <p>文件内容描述块:
 文件头 0x00~0x04 共5个字节,固定为RKFWf
@@ -251,15 +281,15 @@ src/gl-system-install
 
 <p>5月,先是脚受伤,接着过敏&hellip;</p>
 
-<p>Java -- 为Nutz重写的Json解析器,最初的实现(zozoh)我看不懂,第二版(juqkai)改造得不够彻底,代码比较乱. 这次修改之后,解析将比之前严格,对于非法转义字符,不匹配的[}均直接抛出异常. 这将导致已经使用nutz的项目,其json文件可能会被报错. 然而,这并未100%的执行Json规范,主要是数字处理和map的key</p>
+<p>Java &ndash; 为Nutz重写的Json解析器,最初的实现(zozoh)我看不懂,第二版(juqkai)改造得不够彻底,代码比较乱. 这次修改之后,解析将比之前严格,对于非法转义字符,不匹配的[}均直接抛出异常. 这将导致已经使用nutz的项目,其json文件可能会被报错. 然而,这并未100%的执行Json规范,主要是数字处理和map的key</p>
 
-<p>Python -- 最近用得比较多,但至今未打动我. 很多情况下,Python依旧是Shell的替代品,呵呵. 不知道是不是习惯于一种思维: 编程语言=语法+API , 也许还没领会到Python的精髓与思维模式. 与Java相比, 多了些语法糖果,如in和缩进式的逻辑语句</p>
+<p>Python &ndash; 最近用得比较多,但至今未打动我. 很多情况下,Python依旧是Shell的替代品,呵呵. 不知道是不是习惯于一种思维: 编程语言=语法+API , 也许还没领会到Python的精髓与思维模式. 与Java相比, 多了些语法糖果,如in和缩进式的逻辑语句</p>
 
-<p>Lua -- 呵呵,最近貌似很流行呢!! 最近玩的愤怒的小鸟,也是用Lua写的
+<p>Lua &ndash; 呵呵,最近貌似很流行呢!! 最近玩的愤怒的小鸟,也是用Lua写的
 成果: <a href="http://www.teclast.com/bbs/forum.php?mod=viewthread&amp;tid=157140&amp;extra=">RK29xx固件解包打包工具_v1.1测试版</a> 当前唯一正确解包/打包RK2918方案固件的工具,完美解开台电T760的2.x固件,酷比1.x固件
 Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值得学习的一门语言</p>
 
-<p>C -- 处理字符串,真是痛苦啊&hellip;</p>
+<p>C &ndash; 处理字符串,真是痛苦啊&hellip;</p>
 
 <p>刚刚把Nutz的代码迁移到Github了,准备写个简单教程,说说经验,呵呵</p>
 
@@ -297,38 +327,6 @@ Lua真的是一门神奇的语言, 很少的语法,极度精简的API!! 很值�
 
   <div class="more">
     <a href="/287.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/285.html">宝宝快100天了,记录一下经验</a> <span class="date">2011-05-04 19:12:41</span></h3>
-  <p>嘻嘻,鸣鸣诞生快100天,每天都如此充实.</p>
-
-<p>好,记录一下: <strong>13斤,63厘米</strong></p>
-
-<p>一些经验:
-<strong>1. 母乳喂养</strong>
-除非有生理/心理疾病,母乳都是足够的.
-首先,母乳是按需生产,宝宝喝得多,就产得多
-其次,认为母乳不足,添加奶粉,是非常错误的,BB少吮吸,奶自然就少
-最后,母乳如何才多? 1.怀孕期要按摩 2.喂奶前喝牛奶,吃鸡蛋,喂奶期间可以适当喝点水</p>
-
-<p><strong>2. 补钙</strong>
-千万被直接让BB吃钙片/液体钙!!
-如果宝宝晚上突然哭,不肯睡,可能就是缺钙.
-那么,妈妈就应该补钙了!! 我老婆每天补充400~500mg的钙,嘻嘻</p>
-
-<p><strong>3. 晚上喂奶</strong>
-晚上尽量不要喂奶!!
-临睡觉,让宝宝多喝点
-如果宝宝晚上醒了,先判断是否为纸尿裤湿了,不要急着喂奶.
-宝宝是需要调教的,除了第一个月,晚上基本上可以不用喂奶的
-如何调教? 临睡那一餐,多喂点,宝宝醒来的时候,慢一点喂,逐渐逐渐的,间隔时间就长起来了&hellip; 最后过渡到晚上不喂,或晚上只喂一点点
-我现在做的是,晚上不需要喂,或者只需要喂一两口(其实宝宝还是睡着的,眼睛都没睁开过), 整个晚上都不醒.
-睡得好,宝宝才能长得快,而非吃得好哦</p>
-
-  <div class="more">
-    <a href="/285.html" class="btn">read more..</a>
   </div>
 </div>
 

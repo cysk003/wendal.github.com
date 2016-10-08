@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 6</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,68 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2013/0123.html">Golang的坑之DNS查询与系统线程</a> <span class="date">2013-01-23</span></h3>
+  <h2>这个问题源之于我3个月前开发的一个缓存服务</h2>
+
+<ol>
+<li>代理Http请求</li>
+<li>缓存部分请求,减少外网访问</li>
+</ol>
+
+<h2>但是,在不稳定的网络环境下(例如3G网络),不时出现崩溃的情况</h2>
+
+<p>纠结啊纠结啊&hellip;</p>
+
+<ol>
+<li>难道是因为我在32位系统下使用golang?</li>
+<li>难道是RP问题?</li>
+</ol>
+
+<p>出错信息非常长(几百~上千个goroutine),就只贴头尾</p>
+
+<pre><code>runtime/cgo: pthread_create failed: Resource temporarily unavailable
+SIGABRT: abort
+PC=0xffffe424
+
+
+goroutine 1 [chan receive]:
+net.(*pollServer).WaitRead(0xd0170f0, 0xd02e850, 0xcfff5e0, 0xb)
+    /opt/go/src/pkg/net/fd.go:268 +0x75
+net.(*netFD).accept(0xd02e850, 0x80923d3, 0x0, 0xcfc0320, 0xcf7b178, ...)
+    /opt/go/src/pkg/net/fd.go:622 +0x199
+net.(*TCPListener).AcceptTCP(0xd030358, 0xcfc0d20, 0x0, 0x0)
+    /opt/go/src/pkg/net/tcpsock_posix.go:320 +0x56
+net.(*TCPListener).Accept(0xd030358, 0x0, 0x0, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/tcpsock_posix.go:330 +0x39
+net/http.(*Server).Serve(0xd0170c0, 0xcfff920, 0xd030358, 0x0, 0x0, ...)
+    /opt/go/src/pkg/net/http/server.go:1029 +0x77
+net/http.(*Server).ListenAndServe(0xd0170c0, 0xd0170c0, 0x40)
+    /opt/go/src/pkg/net/http/server.go:1019 +0x9f
+net/http.ListenAndServe(0x81f73c4, 0x5, 0xcfff840, 0xd0301f8, 0xd0301f8, ...)
+    /opt/go/src/pkg/net/http/server.go:1091 +0x55
+    
+尾部
+eax     0x0
+ebx     0x231f
+ecx     0x2357
+edx     0x6
+edi     0xb77ceff4
+esi     0xb
+ebp     0xafa112f8
+esp     0xafa11050
+eip     0xffffe424  //就这个,虽然不知道是什么,但很厉害的样子
+eflags  0x202
+cs      0x73
+fs      0x0
+gs      0x33
+</code></pre>
+
+  <div class="more">
+    <a href="/2013/0123.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2013/0116.html">Golang的坑之文件覆写</a> <span class="date">2013-01-16</span></h3>
@@ -333,33 +397,6 @@ func GetFuncName(fn func()) string {
 
   <div class="more">
     <a href="/2012/1221.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2012/1215.html">在Linux下查看硬盘信息</a> <span class="date">2012-12-15</span></h3>
-  <h2>很简单,用hdparm程序就可以了</h2>
-
-<pre><code>hdparm -i /dev/sda
-
-/dev/sda:
-hdparm: ioctl 0x304 failed: Inappropriate ioctl for device
-
-Model=HSPS35L4U16GCJC0914                     , FwRev=20101212, SerialNo=AA20120906000000181
-Config={ HardSect NotMFM Fixed DTR&gt;10Mbs }
-RawCHS=16383/16/63, TrkSize=0, SectSize=576, ECCbytes=0
-BuffType=(2) DualPort, BuffSize=1kB, MaxMultSect=1, MultSect=?0?
-CurCHS=16383/16/63, CurSects=16514064, LBA=yes, LBAsects=30932992
-IORDY=on/off, tPIO={min:120,w/IORDY:120}, tDMA={min:120,rec:120}
-PIO modes:  pio0 pio1 pio2 pio3 pio4
-DMA modes:  mdma0 mdma1 mdma2
-UDMA modes: udma0 udma1 udma2
-AdvancedPM=no WriteCache=enabled
-Drive conforms to: Unspecified:  ATA/ATAPI-7
-</code></pre>
-
-  <div class="more">
-    <a href="/2012/1215.html" class="btn">read more..</a>
   </div>
 </div>
 

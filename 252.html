@@ -95,8 +95,8 @@
 数字(double), 字符串, 布尔值(true/false)
 函数(function)
 表(相当于HashMap+List,唯一的数据结构)
-用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) -- 对我基本无用处
-协程(thread) -- 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
+用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) &ndash; 对我基本无用处
+协程(thread) &ndash; 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
 nil(空,啥都不是,一般就是标志物)</p>
 
 <p>语法:
@@ -137,7 +137,7 @@ end
 
 <p>剩下的就是基础API了,没必要记,用用就知道了</p>
 
-<p>突然感觉到 编程语言就是 语法+API  ---&gt; 有点废话</p>
+<p>突然感觉到 编程语言就是 语法+API  &mdash;&gt; 有点废话</p>
 
 <p>另外提醒一下, Lua没有对象,不过可以通过table类型来模拟.</p>
 
@@ -168,7 +168,7 @@ end
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

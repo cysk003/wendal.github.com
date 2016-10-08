@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 21</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,23 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/225.html">发起一个新项目 - NginxS</a> <span class="date">2011-01-03 10:19:25</span></h3>
+  <p>为了更好地阅读/研究Nginx的源码,我奋斗了一个上午,终于把NginxS项目搭建起来了.
+NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
+1. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Fbranches">branches</a> 中提交了0.<sup>7</sup>&frasl;<sub>0</sub>.<sup>8</sup>&frasl;<sub>0</sub>.9分支的源代码,便于分析不同版本之间的差异,如果官网有新版发布,就会及时跟进.
+2. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Ftrunk">trunk</a> 中,现在代码是当前最新稳定版0.8.54, 准备用于学习nginx的代码,并添加中文注释/笔记</p>
+
+<p>项目地址:
+<a href="http://code.google.com/p/nginxs/">http://code.google.com/p/nginxs/</a></p>
+
+<p>看看我能读出个啥东西来,哈哈!</p>
+
+  <div class="more">
+    <a href="/225.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/224.html">3年,换了4家公司!</a> <span class="date">2010-12-30 08:43:36</span></h3>
@@ -226,7 +245,7 @@ cd mysql-5.5.8</p></li>
 
 <div class="post">
   <h3 class="title"><a href="/214.html">JavaMail 调试参数设置</a> <span class="date">2010-12-16 09:17:24</span></h3>
-  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug -- <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
+  <p>这周折腾Alfresco升级,同时也发现Alfresco 3.3 SP4 的一个bug &ndash; <a href="https://issues.alfresco.com/jira/browse/ALF-6186">mail.smtp.auth不起效</a></p>
 
 <p>故顺便看看这个配置在代码中的位置,到处寻觅<a href="http://www.oracle.com/technetwork/java/index-jsp-139225.html">JavaMail</a>的源码,终于在<a href="http://kenai.com/projects/javamail/downloads">kenai</a>找到,不过其实我已经用<a href="http://java.decompiler.free.fr/?q=jdgui">JD-GUI</a>反编译看了一下</p>
 
@@ -235,7 +254,7 @@ cd mysql-5.5.8</p></li>
 <pre><code>String str2 = this.jdField_session_of_type_JavaxMailSession.getProperty(&quot;mail.&quot; + this.name + &quot;.auth&quot;);
 </code></pre>
 
-<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 -- mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
+<p>另外找到一个比较详细的<a href="http://hi.baidu.com/jlhh/blog/item/823341434fdca71b9313c620.html">JavaMail参数表</a>,但是缺少了一个调试用的参数 &ndash; mail.debug = true , 默认是false, 调试时加上,很多信息哦,O(∩_∩)O哈哈~</p>
 
 <p>后续报道: <a href="http://java.sun.com/products/javamail/javadocs/index.html">官方API</a>中已经有mail.debug , 看来有点多此一举了</p>
 
@@ -259,12 +278,12 @@ cd mysql-5.5.8</p></li>
 
 <p>将上述代码注释掉或直接删掉,然后按一般方法编译nginx即可(可以参考<a href="/186.html">升级到0.9.0</a>).
 测试代码:
-文件1 --- index.html</p>
+文件1 &mdash; index.html</p>
 
 <pre><code>测试导入
 </code></pre>
 
-<p>文件2 -- subdir/index.html</p>
+<p>文件2 &ndash; subdir/index.html</p>
 
 <p>访问subdir/index.html,测试通过!</p>
 
@@ -290,34 +309,6 @@ workbook.close();
 
   <div class="more">
     <a href="/211.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/210.html">将Dom对象变成XML并写入流</a> <span class="date">2010-12-10 12:37:21</span></h3>
-  <p>昨晚在Q群上,一位群友需要解决这样的需求:
-将一个Dom对象,变回XML文本,并写入流中,以便下载.</p>
-
-<p>我想,为啥不直接让Dom对象边转换,边写入流呢? 这样效率应该最高哦,内存占用也会低.
-故马上Google,查到<a href="http://download.oracle.com/javaee/1.4/tutorial/doc/JAXPXSLT4.html">一篇文章相关的文章(Writing Out a DOM as an XML File)</a>,感觉上是能够解决这个问题的.
-原文是英文,而且一大堆解释,我精简如下:</p>
-
-<pre><code>//先创建一个Dom
-DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-DocumentBuilder builder = factory.newDocumentBuilder();
-Document document = builder.parse(new File(&quot;faces-config-beans.xml&quot;));
-//然后应用转换器
-TransformerFactory tFactory = TransformerFactory.newInstance();
-Transformer transformer = tFactory.newTransformer();
-DOMSource source = new DOMSource(document);
-StreamResult result = new StreamResult(os);//这里的os就是OutputStream对象.
-transformer.transform(source, result);
-</code></pre>
-
-<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom--&gt;Stream的时间,约60ms. 算是可以接受了.</p>
-
-  <div class="more">
-    <a href="/210.html" class="btn">read more..</a>
   </div>
 </div>
 

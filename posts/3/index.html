@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 3</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,31 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2014/04/29.html">用NDK编译Live555</a> <span class="date">2014-04-29</span></h3>
+  <p>针对 live555 2014.03.25和 live 2014.04.23 也就是当前最新咯.</p>
+
+<h2>准备工作</h2>
+
+<p>下载源码 <a href="http://www.live555.com/liveMedia/public/">http://www.live555.com/liveMedia/public/</a> 该地址经常被X,请问候非圆校长</p>
+
+<p>解压到一个空文件夹, 并将目录名从live改成jni</p>
+
+<p>建一个文件, 叫 Android.mk</p>
+
+<p>文件内容在 <a href="https://gist.github.com/wendal/11399988">https://gist.github.com/wendal/11399988</a></p>
+
+<h2>编译</h2>
+
+<p>在jni目录下执行</p>
+
+<p>```</p>
+
+  <div class="more">
+    <a href="/2014/04/29.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2014/04/02.html">为Golang程序打上编译标记</a> <span class="date">2014-04-02</span></h3>
@@ -247,15 +274,15 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p><img src="/assets/media/2013/10/28/IMG_0857.JPG" /></p>
 
-<p>北京第一餐 -- 脑残酸菜撸肉面</p>
+<p>北京第一餐 &ndash; 脑残酸菜撸肉面</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0935.JPG" /></p>
 
-<p>灰太狼大平卖 -- 只要9毛9!!</p>
+<p>灰太狼大平卖 &ndash; 只要9毛9!!</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_0954.JPG" /></p>
 
-<p>后海 -- Three-Person</p>
+<p>后海 &ndash; Three-Person</p>
 
 <p><img src="/assets/media/2013/10/28/IMG_1723.JPG" /></p>
 
@@ -307,7 +334,7 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
 <p>总之,待了七天七夜,完整地走了perth的一周</p>
 
-<h1>Day1 -- 阳光下睡个觉</h1>
+<h1>Day1 &ndash; 阳光下睡个觉</h1>
 
 <p>3号晚上21:45的飞机,实际21:55起飞,直飞perth, 凌晨5:30到达</p>
 
@@ -402,51 +429,6 @@ sudo apt-get install -y texinfo ccache zlib1g-dev gawk bison flex gettext uuid-d
 
   <div class="more">
     <a href="/2013/09/23.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2013/09/06.html">记录一下jetty的异步请求</a> <span class="date">2013-09-06</span></h3>
-  <h1>nutz加jetty 的测试代码</h1>
-
-<pre><code>    @At
-    @Ok(&quot;void&quot;) //不要视图啊... 因为多次进入
-    @Fail(&quot;void&quot;)// 一样不需要...
-    public void async(final @Param(&quot;wait&quot;)long wait, @Attr(&quot;obj&quot;)Object obj, final HttpServletRequest req) {
-        System.out.println(&quot;async IN&quot;);
-        if (obj == null) { // 第一次进入时,必然是null, 第二次,如果是线程唤醒的,那就有值了,呵呵
-            System.out.println(&quot;OBJ NULL&quot;);
-            // 获取这个关键的对象,哈哈哈
-            final Continuation continuation = ContinuationSupport.getContinuation(req);
-            if (continuation.isExpired()) { // 往下的代码设置了超时,so,这样判断一下咯
-                System.out.println(&quot;async TIMEOUT&quot;);
-                return;
-            }
-            continuation.setTimeout(15*1000); //设置超时哦
-            continuation.suspend(); // 非阻塞的方法... 仅仅是设置一个状态
-            new Thread() { //我在这启动一个线程,休眠一定时间之后唤醒这个异步请求
-                public void run() {
-                    System.out.println(&quot;async Thread Start&quot;);
-                    if (wait &lt; 1) {
-                        Lang.quiteSleep(10 * 1000);
-                    } else {
-                        Lang.quiteSleep(wait * 1000);
-                    }
-                    System.out.println(&quot;async Thread wakeup&quot;);
-                    req.setAttribute(&quot;obj&quot;, &quot;I do it!&quot;);
-                    continuation.resume();
-                };
-            }.start();
-        } else {
-            System.out.println(&quot;async GET OBJ --&gt; &quot; + obj);
-        }
-        
-        System.out.println(&quot;async OUT&quot;);
-    }
-</code></pre>
-
-  <div class="more">
-    <a href="/2013/09/06.html" class="btn">read more..</a>
   </div>
 </div>
 

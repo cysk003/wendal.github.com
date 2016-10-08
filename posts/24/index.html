@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 24</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,23 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/90.html">总结一点点项目经验–迁移/部署/静态资源</a> <span class="date">2010-10-01 09:45:59</span></h3>
+  <ol>
+<li><p>如果可能的话, 提前一天切换一个小时, 会发现不少问题.</p></li>
+
+<li><p>这次的部署,属于升级版,测试新版,应该在无法访问前一版本的网络环境中测试. 这一次部署,就发现项目中某些链接竟然直接指向旧的系统!!</p></li>
+
+<li><p>使用CDN (内容分发网络),就是静态资源分开存放, 例如 放到 res.sunfarms.net . 即使不能独立域名, 则最好把项目拆成两个工程, 一个放静态文件(css/jpg/gif/swf等),一个放动态内容</p></li>
+</ol>
+
+<p>&hellip; 先写这么多, 墨水不够.</p>
+
+  <div class="more">
+    <a href="/90.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/70.html">iText锚点的一个小陷阱 目标地锚点必须有字符串</a> <span class="date">2010-09-08 21:27:32</span></h3>
@@ -173,7 +192,7 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 
 <p>哈哈,事件都多起来了, 群里络绎不绝地询问XBlink是做什么的,与Nutz是什么关系,^_^</p>
 
-<p>其实,XBlink就是  POJO &lt;--&gt; XML , 作者希望做到与XStream分庭抗礼(我的个人理解)</p>
+<p>其实,XBlink就是  POJO &lt;&ndash;&gt; XML , 作者希望做到与XStream分庭抗礼(我的个人理解)</p>
 
 <p>而 Nutz与XBlink的关系</p>
 
@@ -236,7 +255,8 @@ Anchor anchorSrc = new Anchor(&quot;From&quot;); anchorDest.setReference(&quot;#
 <div class="post">
   <h3 class="title"><a href="/52.html">说说这个blog的VPS提供商</a> <span class="date">2010-08-10 18:50:12</span></h3>
   <p>用了大半个月,感觉非常不错,地址: <a href="http://www.vpsee.com/vps-plans/">http://www.vpsee.com/vps-plans/</a>重申一下,我不是托!<img src="http://www.vpsee.com/vps-plans/" alt="
-" /></p>
+" />
+</p>
 
 <p>准备续费了,说说感受,打算继续月付</p>
 
@@ -280,21 +300,6 @@ document.title = 'VeryCD - '+ _VC_DocumentTitles[_VC_DocumentTitleIndex];
 
   <div class="more">
     <a href="/43.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/41.html">InputStream与OutputStream的read/write陷阱–实际是byte</a> <span class="date">2010-08-09 22:05:45</span></h3>
-  <p>先不要说这是标题党,我觉得这是很多人都已经在使用的误区,即误以为InputStream.read()返回的值真的是int,而OutputStream.write()接受的参数的确为int. 事实上,它们返回或接受的参数是 byte, 即一个字节, 务必仔细读清楚其JavaDoc, 明确说明是读出一个字节,而非int</p>
-
-<p>我觉得这是Java核心API其中一个极度容易被人误用的地方,哈哈</p>
-
-<pre><code>int read();
-void write(int data);
-</code></pre>
-
-  <div class="more">
-    <a href="/41.html" class="btn">read more..</a>
   </div>
 </div>
 

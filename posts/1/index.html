@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 1</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +82,36 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/2016/10/08.html">在Ubuntu 14.04上配置nginx的http2</a> <span class="date">2016-10-08</span></h3>
+  <h2>下载源码</h2>
+
+<pre><code>cd /tmp
+
+wget https://openresty.org/download/openresty-1.11.2.1.tar.gz
+tar xf openresty-1.11.2.1.tar.gz
+
+wget https://www.openssl.org/source/openssl-1.0.2j.tar.gz
+tar xf openssl-1.0.2j.tar.gz
+
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.39.tar.bz2
+tar xf pcre-8.39.tar.bz2
+</code></pre>
+
+<h2>开始编译</h2>
+
+<pre><code>cd /tmp/openresty-1.11.2.1
+./configure --prefix=/opt/openresty --with-http_v2_module --with-http_stub_status_module --with-http_realip_module --with-http_ssl_module --with-openssl=/tmp/openssl-1.0.2j --with-pcre=/tmp/pcre-8.39
+
+make
+make install
+</code></pre>
+
+  <div class="more">
+    <a href="/2016/10/08.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/2016/08/14.html">杂碎</a> <span class="date">2016-08-14</span></h3>
   <h2>关于Nutz的版本发布(群消息复制粘贴)</h2>
 
@@ -89,7 +121,7 @@
 
 <p>发布基本是这样: TestAll(顺序,反序,乱序)跑通,更新我能控制的各种服务,看看有无异常, 然后呼吁大家测试一下新版本(很少有反馈), 静候几天, 发布新版本.</p>
 
-<p>再然后, 大家开始更新版本, 出问题, 继续报issue -- 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
+<p>再然后, 大家开始更新版本, 出问题, 继续报issue &ndash; 再fix,添加testcase, 让TestAll覆盖更多场景.</p>
 
 <p>个人觉得nutz发布版本已经算严格的了(国内开源项目中对比)</p>
 
@@ -310,37 +342,6 @@
 
   <div class="more">
     <a href="/2015/09/08.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/2015/07/21.html">搬瓦工换机房换ip之后不能连外网</a> <span class="date">2015-07-21</span></h3>
-  <p>昨晚把<a href="http://nutzbook.wendal.net">nutzbook</a>所在的vps换了机房, 自然ip也更换了</p>
-
-<p>然后,突然发现怎么不能ping外网呢?</p>
-
-<pre><code>[root@nutzbook ~]# ping 8.8.8.8
-PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
-^C
---- 8.8.8.8 ping statistics ---
-74 packets transmitted, 0 received, 100% packet loss, time 74016ms
-
-[root@nutzbook ~]# ping 114.114.114.114
-PING 114.114.114.114 (114.114.114.114) 56(84) bytes of data.
-^C
---- 114.114.114.114 ping statistics ---
-11 packets transmitted, 0 received, 100% packet loss, time 10547ms
-
-
-[root@nutzbook ~]# route -n
-Kernel IP routing table
-Destination Gateway Genmask Flags Metric Ref Use Iface
-169.254.0.0 0.0.0.0 255.255.0.0 U 1002 0 0 venet0
-0.0.0.0 0.0.0.0 0.0.0.0 U 0 0 0 venet0
-</code></pre>
-
-  <div class="more">
-    <a href="/2015/07/21.html" class="btn">read more..</a>
   </div>
 </div>
 

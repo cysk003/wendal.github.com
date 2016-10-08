@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 7</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,33 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/2012/1215.html">在Linux下查看硬盘信息</a> <span class="date">2012-12-15</span></h3>
+  <h2>很简单,用hdparm程序就可以了</h2>
+
+<pre><code>hdparm -i /dev/sda
+
+/dev/sda:
+hdparm: ioctl 0x304 failed: Inappropriate ioctl for device
+
+Model=HSPS35L4U16GCJC0914                     , FwRev=20101212, SerialNo=AA20120906000000181
+Config={ HardSect NotMFM Fixed DTR&gt;10Mbs }
+RawCHS=16383/16/63, TrkSize=0, SectSize=576, ECCbytes=0
+BuffType=(2) DualPort, BuffSize=1kB, MaxMultSect=1, MultSect=?0?
+CurCHS=16383/16/63, CurSects=16514064, LBA=yes, LBAsects=30932992
+IORDY=on/off, tPIO={min:120,w/IORDY:120}, tDMA={min:120,rec:120}
+PIO modes:  pio0 pio1 pio2 pio3 pio4
+DMA modes:  mdma0 mdma1 mdma2
+UDMA modes: udma0 udma1 udma2
+AdvancedPM=no WriteCache=enabled
+Drive conforms to: Unspecified:  ATA/ATAPI-7
+</code></pre>
+
+  <div class="more">
+    <a href="/2012/1215.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/2012/1214.html">rm文件不再需要按y了,解脱啊</a> <span class="date">2012-12-14</span></h3>
@@ -319,7 +348,7 @@ func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
 
 <p><strong>1. 别跟硬件较劲,坏了就是坏了,你是修不好的</strong></p>
 
-<p>灰尘太多,风扇卡死,机柜密封不透气,电压不稳,漏水,小昆虫,老鼠 -- 各种靠谱不靠谱的原因,导致各种各样的硬件损坏, 解决之道,唯有更换</p>
+<p>灰尘太多,风扇卡死,机柜密封不透气,电压不稳,漏水,小昆虫,老鼠 &ndash; 各种靠谱不靠谱的原因,导致各种各样的硬件损坏, 解决之道,唯有更换</p>
 
 <p>最初硬是较劲,尝试fix各种不靠谱的问题,最近才发现很多都是硬件问题,浪费精力</p>
 
@@ -327,27 +356,6 @@ func GetMapValue(value reflect.Value, key reflect.Value) (rs reflect.Value) {
 
   <div class="more">
     <a href="/465.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/462.html">在windows下编译goexif</a> <span class="date">2012-10-20 11:28:21</span></h3>
-  <p>纯go版:</p>
-
-<pre><code>go get github.com/rwcarlsen/goexif/exif
-</code></pre>
-
-<p>cgo版:</p>
-
-<pre><code># 1. 下载libexif源码,获取头文件
-# 2. 下载exif.dll, 记得下载cygwin下的版本, 直接google得到的版本不靠谱,版本太老
-go get github.com/gosexy/exif
-</code></pre>
-
-<p><a href="/assets/media/2012/10/libexif-0.6.21.zip">libexif-0.6.21</a></p>
-
-  <div class="more">
-    <a href="/462.html" class="btn">read more..</a>
   </div>
 </div>
 

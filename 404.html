@@ -107,7 +107,7 @@ public void addUser(final String name, String passwd, final String userType) {
 
 <p><strong>传出(获取方法返回值等等):</strong></p>
 
-<p><strong>方法1 -- 对象数组法</strong>
+<p><strong>方法1 &ndash; 对象数组法</strong>
 通过一个final的Object对象数组,存放需要的值</p>
 
 <pre><code>public long countUser(final String userType) {
@@ -121,7 +121,7 @@ public void addUser(final String name, String passwd, final String userType) {
 }
 </code></pre>
 
-<p><strong>方法2 -- ThreadLocal法</strong>
+<p><strong>方法2 &ndash; ThreadLocal法</strong>
 通过一个ThreadLocal来存放结果,这个ThreadLocal可以是静态的,供全app使用的</p>
 
 <pre><code>private static final ThreadLocal re = new ThreadLocal(); //自行补上泛型Object
@@ -135,7 +135,7 @@ public long countUser(final String userType) {
 }
 </code></pre>
 
-<p><strong>方法3 -- Molecule法</strong>
+<p><strong>方法3 &ndash; Molecule法</strong>
 Molecule类是Nutz内置的抽象类类,实现Runnable和Atom接口,添加了两个获取/设置值的方法.</p>
 
 <pre><code>public long countUser(final String userType) {
@@ -176,7 +176,7 @@ Molecule类是Nutz内置的抽象类类,实现Runnable和Atom接口,添加了两
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

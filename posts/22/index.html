@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 22</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +82,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/210.html">将Dom对象变成XML并写入流</a> <span class="date">2010-12-10 12:37:21</span></h3>
+  <p>昨晚在Q群上,一位群友需要解决这样的需求:
+将一个Dom对象,变回XML文本,并写入流中,以便下载.</p>
+
+<p>我想,为啥不直接让Dom对象边转换,边写入流呢? 这样效率应该最高哦,内存占用也会低.
+故马上Google,查到<a href="http://download.oracle.com/javaee/1.4/tutorial/doc/JAXPXSLT4.html">一篇文章相关的文章(Writing Out a DOM as an XML File)</a>,感觉上是能够解决这个问题的.
+原文是英文,而且一大堆解释,我精简如下:</p>
+
+<pre><code>//先创建一个Dom
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File(&quot;faces-config-beans.xml&quot;));
+//然后应用转换器
+TransformerFactory tFactory = TransformerFactory.newInstance();
+Transformer transformer = tFactory.newTransformer();
+DOMSource source = new DOMSource(document);
+StreamResult result = new StreamResult(os);//这里的os就是OutputStream对象.
+transformer.transform(source, result);
+</code></pre>
+
+<p>手头没有更大的XML文件,故只拿了一个200k的XML,Dom&ndash;&gt;Stream的时间,约60ms. 算是可以接受了.</p>
+
+  <div class="more">
+    <a href="/210.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/208.html">一次内存泄漏的排查</a> <span class="date">2010-12-09 21:07:10</span></h3>
   <p>昨天,又有一位用户抱怨<a href="http://code.google.com/p/sunfarm">阳光牧场助手</a>的内存占用过高
 问用户拿到20来个帐号后,用助手加载,启动,得到一些GC的数据:</p>
@@ -110,10 +140,10 @@ No shared spaces configured.
   <h3 class="title"><a href="/206.html">升级,升级,还是升级</a> <span class="date">2010-12-09 12:56:44</span></h3>
   <p>今天,升级了好几样东西</p>
 
-<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        ---&gt;  0.9.2           新增一个功能.修复几个bug
-<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             ---&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
-<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             ---&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
-<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  ---&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
+<p><a href="http://nginx.org/en/download.html">Nginx</a> 0.9.1        &mdash;&gt;  0.9.2           新增一个功能.修复几个bug
+<a href="http://cn.wordpress.org/">Wordpress</a> 3.0.2             &mdash;&gt;  3.0.3           修复一个安全问题,号称之前所有版本都存在
+<a href="http://www.alfresco.com">Alfresco</a> 3.3.3.7             &mdash;&gt;  3.3.4           修复几个严重的bug,其中一个是无法容忍的
+<a href="http://code.google.com/p/sunfarm/">阳光牧场助手</a> 3.50  &mdash;&gt;  3.51            大幅优化内存占用,锐减90%以上</p>
 
   <div class="more">
     <a href="/206.html" class="btn">read more..</a>
@@ -215,7 +245,7 @@ cp objs/nginx /usr/local/nginx/sbin/
 2008年9月,改革项目.废弃沿用2年Excel式的任务管理,启用组内bugzilla;改变工作方式,强调分工,对Mac的依赖降低.(新官上任3把火?)
 2008年10月,开发JLint,极大地提高项目组的工作效率,进一步降低对Mac的依赖
 2008年10月,参加GCT考试,3小时回答185条题目,好在我答题是出了名的快!
-2008年12月,顺利获得暨南大学的工程硕士入学资格,专业--软件工程
+2008年12月,顺利获得暨南大学的工程硕士入学资格,专业&ndash;软件工程
 2009年1月,私下改造公司第一个Android项目XRace,改进其启动性能90%以上,但未获公司的注意
 2009年1月,开始组内学习计划,先后学习Ruby/ror/Perl
 2009年5月,开发一个Android Dex文件反编译器,后来发现其他项目做得更好,放弃之
@@ -234,7 +264,7 @@ cp objs/nginx /usr/local/nginx/sbin/
 2010年6月,实现了一个改资源URL的工具,因为实际部署时, 图片等静态资源放在另外域名/机器上.
 2010年7月,开发基于Alfresco的工作流定制,天啊,我之前还没搞过工作流
 2010年9月,二期上线,部署到全球的3个站点,客户有钱嘛
-2010年11月,获颁&rdquo;季度最佳员工&rdquo; -- 经过好几次提名后
+2010年11月,获颁&rdquo;季度最佳员工&rdquo; &ndash; 经过好几次提名后
 &hellip; 人生还在继续</p>
 
   <div class="more">
@@ -248,9 +278,9 @@ cp objs/nginx /usr/local/nginx/sbin/
 故今早动手破解,下午2点成功!
 但无意放出破解版,毕竟是优秀的商业软件,会阻碍其发展. <strong>仅本人使用!!</strong>
 这里仅简单说说我用到的工具软件:
-1. XMind 3.1.1破解版 -- 这是国外破解的版本,给了我很大的启发!
-2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> -- 反编译出源码,软件逻辑一目了然!
-3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> -- 这软件堪称神器,直接改字节码!</p>
+1. XMind 3.1.1破解版 &ndash; 这是国外破解的版本,给了我很大的启发!
+2. <a href="http://java.decompiler.free.fr/">JD-GUI</a> &ndash; 反编译出源码,软件逻辑一目了然!
+3. <a href="http://www.cs.ioc.ee/~ando/jbe/">Java Bytecode Editor</a> &ndash; 这软件堪称神器,直接改字节码!</p>
 
 <p>其实,我只是刚刚开始用XMind,还没使用其Pro的功能.但将近300元/year,实在是高!!
 我已经捐款给不少免费/开源项目,分别是我心目中的价位. 希望经过一段时间的使用,会发现XMind真正的价值!!</p>
@@ -272,27 +302,6 @@ cp objs/nginx /usr/local/nginx/sbin/
 
   <div class="more">
     <a href="/133.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/126.html">取亚运门票,花了一个小时</a> <span class="date">2010-11-11 12:57:33</span></h3>
-  <p>很久很久以前,买了两张亚运的门票.</p>
-
-<p>比赛临近,觉得还是先取了吧,故飞奔到取票点. 在取票点待了5分钟,我意识到,只有我是来取票的,其他都是在买票的黄牛党!</p>
-
-<p>天啊,咋就那么多人,他们为啥一次性买这么多! 为什么我要等那么久?!!</p>
-
-<p>不过,我其实是支持黄牛的,本质上,这是市场经济的一种正常表现(门票也是一种普通商品,虽然票面上写着不得交易/出售).</p>
-
-<p>商品,不能强制要求购买者不得转让,这是不符合商品自由流动的规则的! 亚运门票,一种有价证劵,是应该同时也必要能够在市场上流通. 而且,亚运门票并非公益性的(除非你是从亚运大礼包中获取),故,购买者有权处理其去留.</p>
-
-<p>亚运门票,设计得还是不错的, 预定的门票是印刷的,黄牛拿到的门票,基本上都是当场打印的.</p>
-
-<p>我不满的是,这么多人在购买,工行竟然只有一个人在办理!! 我讨厌四大行!!</p>
-
-  <div class="more">
-    <a href="/126.html" class="btn">read more..</a>
   </div>
 </div>
 

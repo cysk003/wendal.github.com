@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 15</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +82,35 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/324.html">Nutz事务模板值得注意的细节</a> <span class="date">2011-09-17 22:31:36</span></h3>
+  <p>Nutz.Dao事务模板的官方文档: <a href="http://code.google.com/p/nutz/wiki/dao_transaction">http://code.google.com/p/nutz/wiki/dao_transaction</a></p>
+
+<p>需要注意的几个细节,文档还没提及:
+<strong>1. 数据库连接池的AutoCommit属性</strong>
+对于我见到的大部分连接池和数据库驱动,默认情况下AutoCommit=true,应该是为了性能
+这就导致如果用户不自行设置的话,Trans的大部分操作都是不可回滚的.故,如果使用Trans,那么务必设置AutoCommit</p>
+
+<p><strong>2. 多个数据源的事务</strong>
+大部分情况下,用户都不是使用XA驱动,故,多数据源的事务提交,在最后的提交阶段出错的话,已经执行commit操作的数据源,是不可能回滚的</p>
+
+<p><strong>3. 子线程的事务</strong>
+考虑下面的代码:</p>
+
+<pre><code>Trans.exec(new Atom(){
+   public void run() {
+       dao.insert(pet);
+       new MySuperPowerThread().start();
+       dao.count(Pet.class);
+   }
+});
+</code></pre>
+
+  <div class="more">
+    <a href="/324.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/321.html">让你的Android彻底裸奔吧!! -- 瘫痪Android的安全机制</a> <span class="date">2011-09-11 08:51:23</span></h3>
   <p>本文并非教你写病毒来破解Android系统,所提及的操作,均要求用户主动参与</p>
 
@@ -95,7 +126,7 @@
 
 <h2>第二步,获取root权限</h2>
 
-<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码-- <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
+<p>因为是完全击垮,故需要使用完全自由的su程序,改造自Superuser的su源码&ndash; <a href="https://github.com/wendal/android_su">无限制无管理功能的su</a></p>
 
 <p>这里提供的su,去掉了GUI确认等繁琐操作,任何程序都可以无提示获取root权限</p>
 
@@ -118,13 +149,13 @@
 1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
 2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
 3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
-..A. 不再挂载system分区 -- 注释掉 mount cramfs mtd@system /system -- 也就是前面加#号
-..B. 不再建立system文件夹 -- 注释掉 mkdir /system
-..C. 修改data分区的挂载方式,使其支持suid -- 挂载语句改为 mount ext3 mtd@userdata /data
-..D. 修改data分区的权限 -- chmod 0770 /data 改为 chmod 0777 /data
-..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su -- 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
-..F. 为了提供更大自由度,修改根分区的权限 -- 注释掉 mount rootfs rootfs / ro remount
-..G. 建立通往/system的软链接 --- 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+..A. 不再挂载system分区 &ndash; 注释掉 mount cramfs mtd@system /system &ndash; 也就是前面加#号
+..B. 不再建立system文件夹 &ndash; 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid &ndash; 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 &ndash; chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su &ndash; 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 &ndash; 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 &mdash; 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
 
   <div class="more">
     <a href="/320.html" class="btn">read more..</a>
@@ -133,7 +164,7 @@
 
 <div class="post">
   <h3 class="title"><a href="/319.html">Nutz.Json的新注解@JsonField用法详解</a> <span class="date">2011-09-07 21:06:39</span></h3>
-  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo--&gt;String的转换</p>
+  <p>长期以来Nutz的Json包,仅有一个注解@toJson,用于指定当前对象的通过什么方法进行Pojo&ndash;&gt;String的转换</p>
 
 <p>1.b.38版新增了@JsonField,在即将发布的1.b.40版将这个注解再次增强
 正如其名,@JsonField是针对Json处理中字段级别的控制</p>
@@ -164,10 +195,10 @@ private String zIndex;
   <h3 class="title"><a href="/317.html">NutDao实现Lazy加载的可行性</a> <span class="date">2011-09-06 23:33:16</span></h3>
   <p>不知道多少人问过@Many @One等注释能否实现懒加载或者自动加载</p>
 
-<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 -- 其实也就是有点不方便,外加效率较低</p>
+<p>从代码上说,NutDao实现的是不加载,你需要的时候自行调用 &ndash; 其实也就是有点不方便,外加效率较低</p>
 
 <p>我这里讨论的是NutDao做到真正懒加载的可能性与实现方式
-焦点集中在NutDao.query方法,因为大部分DB--&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
+焦点集中在NutDao.query方法,因为大部分DB&ndash;&gt;Pojo都是走这个方法的,fetch方法其实就是封装了一下query方法</p>
 
 <p>由于实现的是懒加载,不可避免的使用Aop,以拦截@Many/@One的getter
 使用Aop会导致一个问题,就是query方法返回的对象的类改变了,变成用户请求的类的一个定制化的子类的对象,这本身就导致一些问题:
@@ -194,18 +225,18 @@ private String zIndex;
 
 <p>今天,我再次回去,看看它的变化</p>
 
-<p>看着以前上课的课室,实验楼,一条条熟悉的过道 -- 记忆中画面不停飘过</p>
+<p>看着以前上课的课室,实验楼,一条条熟悉的过道 &ndash; 记忆中画面不停飘过</p>
 
-<p>校园内,树木高了,绿化多了,然而,栏杆,铁门,围墙也多了 -- 以安全/治安的名义,能干很多事</p>
+<p>校园内,树木高了,绿化多了,然而,栏杆,铁门,围墙也多了 &ndash; 以安全/治安的名义,能干很多事</p>
 
 <p>晚饭过后,去看看校外江边的公园,想不到啊,3年就能荒废成这样子,以至于我不敢为其拍照!!</p>
 
 <p>还是晚饭后,还是晚上7点,还是这个地理坐标,完全不一样的景象</p>
 
 <p>杂草丛生,灯看上去已经很久很久没亮过,路,如果那还是路的话,80%的面积被草覆盖了
-那曾经的草坪,是多么美,今天我只看到了杂草,小灌木,以至于我不敢踏足 -- 曾几何时,我躺着看着星空
-那座小桥,木板桥,已经破烂不堪,露出30%以上的水泥底座 -- 多少次与挚友,情侣路过这座小桥
-那条小河,已经不是小河,最多能说得上是条垃圾填埋沟 -- 曾经,它流淌着小小溪流</p>
+那曾经的草坪,是多么美,今天我只看到了杂草,小灌木,以至于我不敢踏足 &ndash; 曾几何时,我躺着看着星空
+那座小桥,木板桥,已经破烂不堪,露出30%以上的水泥底座 &ndash; 多少次与挚友,情侣路过这座小桥
+那条小河,已经不是小河,最多能说得上是条垃圾填埋沟 &ndash; 曾经,它流淌着小小溪流</p>
 
 <p>以至于那座山,我不敢上前来,我甚至无法确认那条路还存在</p>
 
@@ -223,7 +254,7 @@ private String zIndex;
 <a href="http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole">http://code.google.com/p/nutzlab/source/browse/#svn%2Ftrunk%2FzMole</a></p>
 
 <p><strong>历史:</strong>
-最初的代码,是在2010年11月提交的,之后一直处于冻结状态 -- 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
+最初的代码,是在2010年11月提交的,之后一直处于冻结状态 &ndash; 为什么? 因为我的Html页面做不出来,前端我可不在行. 当时,模板基本上就已经定下来,代码结构也基本确定
 直到几天前,我重启这个项目,并作了少量修正后,发布了NutzMole 1.0版,可独立运行,说白了,就是把旧代码清理一下,打包成一个独立运行包</p>
 
 <p>1.0发布后,意见/建议/批评纷纷袭来,很大的原因是这个版本并未严格测试,模板本身使用的一些代码在Nutz 1.b.39已经无法使用</p>
@@ -232,11 +263,11 @@ private String zIndex;
 
 <p><strong>对比一下最初的NutzMole和rapid代码生成器平台</strong>:
     NutzMole使用多个配置文件,rapid仅一个配置文件
-    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板--&gt;文件的机制</p>
+    NutzMole使用传统的接口/实现类来配置,rapid提供的文件模板&ndash;&gt;文件的机制</p>
 
 <p>NutzMole以专用工具的思想设计, rapid是按平台的理念设计,我对其代码生成器的印象是:
     1. 单一配置文件,对用户非常友好
-    2. 平等的文件模板机制 --&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
+    2. 平等的文件模板机制 &ndash;&gt; 路径本身也可以使用表达式,全部模板都是使用相同的context</p>
 
   <div class="more">
     <a href="/314.html" class="btn">read more..</a>
@@ -252,7 +283,7 @@ private String zIndex;
 <p>步骤:</p>
 
 <ol>
-<li><p>拷贝.ssh文件夹 -- scp就不需要密码了</p></li>
+<li><p>拷贝.ssh文件夹 &ndash; scp就不需要密码了</p></li>
 
 <li><p>新vps装lnmp,旧vps导出数据库,打包/opt和nginx的配置</p></li>
 
@@ -306,45 +337,17 @@ dataSource.setHouseKeepingTestSql('select 1')
   <h3 class="title"><a href="/308.html">鸣鸣第一次出境, Mark一下</a> <span class="date">2011-08-07 19:44:14</span></h3>
   <p>嘻嘻, 鸣鸣第一次去香港了,行程如下:
 第一天
-广州--&gt;深圳,游深圳夜景
-深圳--&gt;香港--&gt;深圳,通过深圳湾口岸,坐B2到元朗,买1天地铁通票,到湾仔会展中心,进&rdquo;第19界婴幼儿用品展览会&rdquo;购物,游香港街景,然后到太子坐车会深圳湾过关
-深圳--&gt;广州,深圳红树林,深圳街景,回广州</p>
+广州&ndash;&gt;深圳,游深圳夜景
+深圳&ndash;&gt;香港&ndash;&gt;深圳,通过深圳湾口岸,坐B2到元朗,买1天地铁通票,到湾仔会展中心,进&rdquo;第19界婴幼儿用品展览会&rdquo;购物,游香港街景,然后到太子坐车会深圳湾过关
+深圳&ndash;&gt;广州,深圳红树林,深圳街景,回广州</p>
 
 <p>这次购买了不少的用品,但最打动我但有无法购买的是&rdquo;轮状病毒疫苗&rdquo;
 我咨询到的轮状病毒疫苗 仅限6~24周的婴儿使用,呜呜,我女儿已经半岁了,能预防/减轻5岁以下儿童的轮状病毒腹泻,非常非常有用</p>
 
-<p>另外一个,就是2700港元的&rdquo;子宫颈癌疫苗&rdquo;,香港刚刚推出的,适用于45岁以下的女性,分3次肌肉注射,6个月内完成 -- 积极考虑中,呵呵</p>
+<p>另外一个,就是2700港元的&rdquo;子宫颈癌疫苗&rdquo;,香港刚刚推出的,适用于45岁以下的女性,分3次肌肉注射,6个月内完成 &ndash; 积极考虑中,呵呵</p>
 
   <div class="more">
     <a href="/308.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/307.html">Nutz的Scans类,你用过没?</a> <span class="date">2011-08-04 08:40:25</span></h3>
-  <p>你是否想得到某个package下的全部类呢?
-你是否想得到某个文件夹下全部的配置文件?</p>
-
-<p>你还在自己写这种的实现? 你还在拼命地问谷哥?</p>
-
-<p>好吧,不吹水了,正式介绍Scans类:
-org.nutz.resource.Scans</p>
-
-<p>首先,必须先强调一点,在J2EE环境中,如果你没有使用NutzMVC的话,请在Filter/Servlet中加入这一句:</p>
-
-<pre><code>Scans.me().init(config.getServletContext());
-</code></pre>
-
-<p>这个语句必须优先于其他任何Nutz相关语句</p>
-
-<p>好,如何得到某个文件夹下全部的配置文件呢?即使打包成jar也无需改代码呢?</p>
-
-<pre><code>//第一个参数是需要扫描的文件夹,第二个是文件名需要匹配正则表达式,可以为null
-List&lt;nutresource&gt; list = Scans.me().scan(&quot;config/&quot;,&quot;^.+\\.ini&quot;);
-</code></pre>
-
-  <div class="more">
-    <a href="/307.html" class="btn">read more..</a>
   </div>
 </div>
 

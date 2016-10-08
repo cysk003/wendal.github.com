@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 20</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +82,34 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
+  <p>先放出下载地址:
+<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
+
+<p>原版下载地址: <a href="http://www.cs.ioc.ee/~ando/jbe/">JBE - Java Bytecode Editor</a></p>
+
+<p>原版存在的问题:
+对方法进行修改后,点击Save Method, 如果存在 invokeinterface 的行, 将无法保存!! 后台报错.</p>
+
+<p>以下是我在压缩包中写的描述:
+This JBE had been modify by Wendal Chen , base on JBE 0.1b</p>
+
+<p>Fix:
+when save method whit &ldquo;invokeinterface&rdquo; , app fail.</p>
+
+<p>File change:</p>
+
+<pre><code>JAsmParser.java line 169~170:
+int arg1 = getMethodConstRef(instrElems, cpg, labels);
+int arg2 = Utility.methodSignatureArgumentTypes(getDescrFromFullMethod(instrElems[1])).length;
+</code></pre>
+
+  <div class="more">
+    <a href="/244.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/243.html">一个极其简陋的Datasource连接池实现</a> <span class="date">2011-02-21 13:18:41</span></h3>
   <p>写了一段时间了,一直没提交到Nutz,哈哈. 明显没有技术含量,提上去明显找抽!</p>
 
@@ -121,7 +151,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 <li><p>Nutz.Aop与Spring.Aop相比,无法拦截构造方法,静态方法</p></li>
 
-<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; --&gt;POJO转换工具</p></li>
+<li><p>Nutz.Dao与Hibernate相比,没有缓存层,无自动update表结构,没有复杂的映射关系管理,没有XML&lt; &ndash;&gt;POJO转换工具</p></li>
 
 <li><p>Nutz.MVC 没有校验功能,没有配置方式的URL映射</p></li>
 
@@ -152,7 +182,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 . 香港有卖一种仿乳头的奶瓶,英国产,淘宝也有代购,150ml的,其实完全足够了.
 . 奶粉我觉得明治最好,为黄种人设计,不热气,虽然有人提到会缺锌,但相比欧美的产品,还是明治好!! 买明治,一定要买日本本土产的,买其他的话,还不如买美赞臣/牛栏牌
 . 怀孕后,继续正常饮食,补充叶酸/维生素就可以了,不要经常进补!! 经常散步,即使顶着大肚子. 手术前,老婆走得比我还快呢!
-. 防辐射服 -- 没用的,骗钱的     仅仅是心理安慰,我就没有买
+. 防辐射服 &ndash; 没用的,骗钱的     仅仅是心理安慰,我就没有买
 . 怀孕后,上Q/看电影,一切照旧! 我们周围最强的电磁波辐射,其实是光线,除非你住在黑暗的屏蔽室内,否则啥都挡不住!
 . 宝宝够暖就可以了,偶尔打个喷嚏其实很好很正常的. 衣服太多,会出红疹,严重的话要住院的!!</p>
 
@@ -211,7 +241,7 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 <p>在考虑这个issue时, 我一直倾向于使用系统变量file.encoding来改变JVM的默认编码.</p>
 
 <p>今天,我想到, 这个系统变量,对JVM的影响到底有多大呢?
-我使用最简单的方法看看这个变量的影响--在JDK 1.6.0_20的src.zip文件中,查找包含file.encoding字眼的文件.
+我使用最简单的方法看看这个变量的影响&ndash;在JDK 1.6.0_20的src.zip文件中,查找包含file.encoding字眼的文件.
 共找到4个, 分别是:
 先上重头戏 java.nio.Charset类:</p>
 
@@ -244,7 +274,7 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 
 <ol>
 <li>创建一个存放文件的文件夹 命名为 ngx_http_hello_module
-----------------------------------------------------</li>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-</li>
 </ol>
 
 <pre><code>    #进入主文件夹
@@ -257,7 +287,7 @@ ConnectionProviderFactory类的newConnectionProvider方法.</p>
 
 <ol>
 <li>创建config文件,注意,切记要在Linux下创建这个文件!!
------------------------------------------------</li>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</li>
 </ol>
 
 <p>```</p>
@@ -364,23 +394,6 @@ if (jspConfig == null) {
 
   <div class="more">
     <a href="/226.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/225.html">发起一个新项目 - NginxS</a> <span class="date">2011-01-03 10:19:25</span></h3>
-  <p>为了更好地阅读/研究Nginx的源码,我奋斗了一个上午,终于把NginxS项目搭建起来了.
-NginxS,就是要研读Nginx的代码,暂时打算做以下两个用途:
-1. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Fbranches">branches</a> 中提交了0.<sup>7</sup>&frasl;<sub>0</sub>.<sup>8</sup>&frasl;<sub>0</sub>.9分支的源代码,便于分析不同版本之间的差异,如果官网有新版发布,就会及时跟进.
-2. 在 <a href="http://code.google.com/p/nginxs/source/browse/#svn%2Ftrunk">trunk</a> 中,现在代码是当前最新稳定版0.8.54, 准备用于学习nginx的代码,并添加中文注释/笔记</p>
-
-<p>项目地址:
-<a href="http://code.google.com/p/nginxs/">http://code.google.com/p/nginxs/</a></p>
-
-<p>看看我能读出个啥东西来,哈哈!</p>
-
-  <div class="more">
-    <a href="/225.html" class="btn">read more..</a>
   </div>
 </div>
 

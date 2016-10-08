@@ -89,8 +89,8 @@
 
 <p>直接写中文域名是无法解析到正确的Server的
 中文域名其实就是一个英文域名!!
-中文域名 ---(Punycode编码) --&gt; 英文域名
-而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn--fiq228c.com 进行访问,仅此而已!!</p>
+中文域名 &mdash;(Punycode编码) &ndash;&gt; 英文域名
+而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn&ndash;fiq228c.com 进行访问,仅此而已!!</p>
 
 <p>那Punycode编码是什么呢? 先看看Python如何调用:
 尝试编码  www.坚果.com</p>
@@ -98,7 +98,7 @@
 <pre><code>'坚果'.decode('gbk').encode('punycode')
 </code></pre>
 
-<p>得到jfs419a,然后合成真正的URL www.xn--jfs419a.com -- 这个域名还没启用的.</p>
+<p>得到jfs419a,然后合成真正的URL www.xn&ndash;jfs419a.com &ndash; 这个域名还没启用的.</p>
 
 <p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
 
@@ -106,7 +106,7 @@
 
 <p><strong>最新发现: JDK6中已经有相应的实现 java.net.IDN</strong></p>
 
-<p>另外贴一下 在线转换的地址 <a href="http://www.cnnic.net.cn/html/Dir/2003/10/29/1112.htm">http://www.cnnic.net.cn/html/Dir/2003/10/29/1112.htm</a></p>
+<p>另外贴一下 在线转换的地址 <a href="http://www.cnnic.net.cn/html/Dir/2003/10/29/1112.htm">http://www.cnnic.net.cn/html/Dir/<sup>2003</sup>&frasl;<sub>10</sub>/<sup>29</sup>&frasl;<sub>1112</sub>.htm</a></p>
 
 <p>所有,把中文域名转一下,按普通英文域名来配置就OK了!!</p>
 
@@ -139,7 +139,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
@@ -173,7 +173,7 @@
 </li>
     
       <li>
-  <a href="/tags/#nginx-ref">nginx <span>24</span></a>
+  <a href="/tags/#nginx-ref">nginx <span>25</span></a>
 </li>
     
       <li>

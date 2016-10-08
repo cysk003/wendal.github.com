@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 17</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -78,6 +80,38 @@
 
       <div class="content">
         
+
+<div class="post">
+  <h3 class="title"><a href="/285.html">宝宝快100天了,记录一下经验</a> <span class="date">2011-05-04 19:12:41</span></h3>
+  <p>嘻嘻,鸣鸣诞生快100天,每天都如此充实.</p>
+
+<p>好,记录一下: <strong>13斤,63厘米</strong></p>
+
+<p>一些经验:
+<strong>1. 母乳喂养</strong>
+除非有生理/心理疾病,母乳都是足够的.
+首先,母乳是按需生产,宝宝喝得多,就产得多
+其次,认为母乳不足,添加奶粉,是非常错误的,BB少吮吸,奶自然就少
+最后,母乳如何才多? 1.怀孕期要按摩 2.喂奶前喝牛奶,吃鸡蛋,喂奶期间可以适当喝点水</p>
+
+<p><strong>2. 补钙</strong>
+千万被直接让BB吃钙片/液体钙!!
+如果宝宝晚上突然哭,不肯睡,可能就是缺钙.
+那么,妈妈就应该补钙了!! 我老婆每天补充400~500mg的钙,嘻嘻</p>
+
+<p><strong>3. 晚上喂奶</strong>
+晚上尽量不要喂奶!!
+临睡觉,让宝宝多喝点
+如果宝宝晚上醒了,先判断是否为纸尿裤湿了,不要急着喂奶.
+宝宝是需要调教的,除了第一个月,晚上基本上可以不用喂奶的
+如何调教? 临睡那一餐,多喂点,宝宝醒来的时候,慢一点喂,逐渐逐渐的,间隔时间就长起来了&hellip; 最后过渡到晚上不喂,或晚上只喂一点点
+我现在做的是,晚上不需要喂,或者只需要喂一两口(其实宝宝还是睡着的,眼睛都没睁开过), 整个晚上都不醒.
+睡得好,宝宝才能长得快,而非吃得好哦</p>
+
+  <div class="more">
+    <a href="/285.html" class="btn">read more..</a>
+  </div>
+</div>
 
 <div class="post">
   <h3 class="title"><a href="/282.html">评价一下Everbox和微盘</a> <span class="date">2011-04-30 20:38:53</span></h3>
@@ -253,8 +287,8 @@ public class Main {
     一个简单的管理UI界面,仅界面,功能还没做,呜呜</p>
 
 <p>学到不少东西:
-    上传的机制 -- 分段上传,由服务器决定上传哪几段
-    下载机制 -- 先发起一个下载请求,服务器分配一个下载地址</p>
+    上传的机制 &ndash; 分段上传,由服务器决定上传哪几段
+    下载机制 &ndash; 先发起一个下载请求,服务器分配一个下载地址</p>
 
 <p>Everbox用到的一些东西:
     Json
@@ -303,8 +337,8 @@ public class Main {
 
 <p>直接写中文域名是无法解析到正确的Server的
 中文域名其实就是一个英文域名!!
-中文域名 ---(Punycode编码) --&gt; 英文域名
-而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn--fiq228c.com 进行访问,仅此而已!!</p>
+中文域名 &mdash;(Punycode编码) &ndash;&gt; 英文域名
+而且,这是在浏览器实现的,你敲入 www.中文.com , 浏览器就转为 www.xn&ndash;fiq228c.com 进行访问,仅此而已!!</p>
 
 <p>那Punycode编码是什么呢? 先看看Python如何调用:
 尝试编码  www.坚果.com</p>
@@ -312,7 +346,7 @@ public class Main {
 <pre><code>'坚果'.decode('gbk').encode('punycode')
 </code></pre>
 
-<p>得到jfs419a,然后合成真正的URL www.xn--jfs419a.com -- 这个域名还没启用的.</p>
+<p>得到jfs419a,然后合成真正的URL www.xn&ndash;jfs419a.com &ndash; 这个域名还没启用的.</p>
 
 <p>这个Punycode还是一个标准呢 <a href="http://rfc-ref.org/RFC-TEXTS/3492/">http://rfc-ref.org/RFC-TEXTS/3492/</a></p>
 
@@ -345,30 +379,13 @@ C. 瞄过源码</p>
 <p><strong>3. 找Bug的方法</strong>
 你马上就开始debug了? No! No! 请把debug放到最后,当成无计可施的最后手段
 System.out.println()才是真正的利器!!
-你马上会反驳,println很耗时间的 -- 是的,但帮你理清思路
+你马上会反驳,println很耗时间的 &ndash; 是的,但帮你理清思路
 通过println,打印变量的值/应该经过的分支,帮你一步步理清思路
 使用Debug往往是最快解决问题的,但也是最容易让你无法找到问题的根源
 良好的Log,是生产环境中必不可少的信息</p>
 
   <div class="more">
     <a href="/270.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/268.html">启用新的域名 wendal.net</a> <span class="date">2011-04-14 11:39:26</span></h3>
-  <p>为了XXXXX
-为了XXXXX
-为了XXXXX</p>
-
-<p>我昨晚在godaddy购买了wendal.net,并指向我的博客,花了72.04元,还不错,呵呵</p>
-
-<p>另外,开始进行sunfarms.net的域名外迁工作,万网已经在审核</p>
-
-<p>呵呵,常出去走走,身体健康哦</p>
-
-  <div class="more">
-    <a href="/268.html" class="btn">read more..</a>
   </div>
 </div>
 

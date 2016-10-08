@@ -95,13 +95,13 @@
 1. 在原版系统可以正常启动的前提下,将/system下的全部文件,拷贝到/data/sysrw
 2. 传输su文件到/data/sysrw/下,使用我最近编译的简单版su,可跳过GUI确认
 3. 修改boot.img,移除system文件夹(否则无法建立通往/system的软链接),对init.rc文件做以下修改:
-..A. 不再挂载system分区 -- 注释掉 mount cramfs mtd@system /system -- 也就是前面加#号
-..B. 不再建立system文件夹 -- 注释掉 mkdir /system
-..C. 修改data分区的挂载方式,使其支持suid -- 挂载语句改为 mount ext3 mtd@userdata /data
-..D. 修改data分区的权限 -- chmod 0770 /data 改为 chmod 0777 /data
-..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su -- 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
-..F. 为了提供更大自由度,修改根分区的权限 -- 注释掉 mount rootfs rootfs / ro remount
-..G. 建立通往/system的软链接 --- 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
+..A. 不再挂载system分区 &ndash; 注释掉 mount cramfs mtd@system /system &ndash; 也就是前面加#号
+..B. 不再建立system文件夹 &ndash; 注释掉 mkdir /system
+..C. 修改data分区的挂载方式,使其支持suid &ndash; 挂载语句改为 mount ext3 mtd@userdata /data
+..D. 修改data分区的权限 &ndash; chmod 0770 /data 改为 chmod 0777 /data
+..E. 修改su文件的权限,在D步骤所修改文件后面添加 chmod 6755 /system/bin/su &ndash; 因为data分区启用了suid,故这个程序可以调用setgid(0)和setuid(0)了
+..F. 为了提供更大自由度,修改根分区的权限 &ndash; 注释掉 mount rootfs rootfs / ro remount
+..G. 建立通往/system的软链接 &mdash; 找到 mkdir /data ,在后面新起一行 symlink /data/sysrw /system</p>
 
 <p><strong>经验教训</strong>
 1. symlink 语法,与ln一样,前面是真实地址,后面是虚拟地址
@@ -150,7 +150,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

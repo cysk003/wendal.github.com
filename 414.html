@@ -89,8 +89,8 @@
 
 <p><strong>之前的实现,按以下思路完成:</strong>
 1. 传入一个路径,通过Files.findFile尝试寻找是否有这个文件
- --2. 路径是文件系统上的文件夹,将立马可以找到具体的File对象,可以直接扫描文件夹但
- --2. 文件存在于jar包,则需要解析出其jar文件的路径,读取jar文件进行扫描
+ &ndash;2. 路径是文件系统上的文件夹,将立马可以找到具体的File对象,可以直接扫描文件夹但
+ &ndash;2. 文件存在于jar包,则需要解析出其jar文件的路径,读取jar文件进行扫描
 3. 如果还没找到,搜索classpath和WEB-INF/lib,遍历里面的文件夹/jar文件</p>
 
 <p>一个突出的问题是,Files.findFile的返回值是File对象,这意味着,如果该路径存在于多个不同的classpath路径或jar中,只有第一个路径会被返回.
@@ -113,17 +113,17 @@
 <p>之前的实现,使用JarFile jar = new JarFile(jarPath)形式,未能正确识别嵌套jar(jarinjar)的读取.</p>
 
 <p><strong>解决Files.findFile导致的问题,则需要完全重写Scans.</strong>
--- 以前的实现,是无状态的,每次扫描都尝试所有可能的方式
--- 新的实现,有状态,记录可以扫描的位置信息,直接查找</p>
+&ndash; 以前的实现,是无状态的,每次扫描都尝试所有可能的方式
+&ndash; 新的实现,有状态,记录可以扫描的位置信息,直接查找</p>
 
 <p><strong>新版的实现思路:</strong>
 1. 初始化Scans类时,记录可以进行扫描的路径
--- 当前文件夹 new File(&ldquo;.&rdquo;)
--- 通过查找META-INF/MANIFEST.MF文件(这是每个标准jar文件必有的文件),得到classpath中所有的jar文件路径
--- 通过环境变量java.class.path遍历classpath中的路径
+&ndash; 当前文件夹 new File(&ldquo;.&rdquo;)
+&ndash; 通过查找META-INF/MANIFEST.MF文件(这是每个标准jar文件必有的文件),得到classpath中所有的jar文件路径
+&ndash; 通过环境变量java.class.path遍历classpath中的路径
 2. 当处于Web环境下,额外调用Scans.init(ServletContext)
--- 得到并遍历WEB-INF/lib文件夹中的jar文件
--- 得到WEB-INF/classes文件夹的路径
+&ndash; 得到并遍历WEB-INF/lib文件夹中的jar文件
+&ndash; 得到WEB-INF/classes文件夹的路径
 3. 以上得到的路径,都封装在ResourceLocation对象List中,分别处理具体路径与具体jar文件的扫描任务
 4. 基于性能的考虑,会对jar文件进行预先索引
 5. 查找将变得非常轻松,因为仅需要 将查询条件传递给各个ResourceLocation对象,并汇总他们的结果</p>
@@ -164,7 +164,7 @@
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>

@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <title>Wendal随笔 Page 19</title>
   
+    <meta name="description" content="在windows上编译memcached v1.4.24 (用cygwin)">
+  
     <meta name="author" content="Wendal Chen">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -80,6 +82,26 @@
         
 
 <div class="post">
+  <h3 class="title"><a href="/256.html">想不到还有这种SSH客户端- FireSSH</a> <span class="date">2011-03-22 18:56:44</span></h3>
+  <p>在oschina中无意中看到的, 在Firefox里面使用ssh!!</p>
+
+<p>简单使用:
+1. 访问<a href="http://firessh.mozdev.org/">FireSSH主页</a>
+2. 安装,并重启Firefox
+3. 在菜单中选择FireSSH,启动,输入ip/帐户/密码,登陆!!</p>
+
+<p>马上就是 SSH的经典黑屏了,哈哈</p>
+
+<p>只有想不到,没有做不到啊&hellip;</p>
+
+<p>回想以前,曾尝试在手机上安装一个ssh客户端, 就为了随时随地访问 客户的服务器排除问题,哈哈</p>
+
+  <div class="more">
+    <a href="/256.html" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/255.html">[已经确认]想不到真的遇到Lua-nginx-module的bug</a> <span class="date">2011-03-17 15:32:15</span></h3>
   <p>难以置信啊, agentzh大牛已经确认是个bug,对应的版本:
 Lua-nginx-module 0.16rc2 + Nginx 0.8.54</p>
@@ -143,8 +165,8 @@ ngx.exec(&quot;/1.html&quot;)
 数字(double), 字符串, 布尔值(true/false)
 函数(function)
 表(相当于HashMap+List,唯一的数据结构)
-用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) -- 对我基本无用处
-协程(thread) -- 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
+用户数据(userdata,C定义的,Lua对其只读,不能直接通过Lua语句修改) &ndash; 对我基本无用处
+协程(thread) &ndash; 其实就是Lua模拟的多线程,与Java的真线程差远了,基本无视之
 nil(空,啥都不是,一般就是标志物)</p>
 
 <p>语法:
@@ -164,7 +186,7 @@ nil(空,啥都不是,一般就是标志物)</p>
 <div class="post">
   <h3 class="title"><a href="/251.html">[误报]难道我遇到lua-nginx-module的一个bug?</a> <span class="date">2011-03-09 22:30:07</span></h3>
   <p>已经确定是我自己的原因
-实在不是很肯定,如果加入特定的--with-cc-opt参数就报错.</p>
+实在不是很肯定,如果加入特定的&ndash;with-cc-opt参数就报错.</p>
 
 <p>环境: Ubuntu 10.04.2 LTS Server</p>
 
@@ -209,7 +231,7 @@ make install
 
 <p>如有更新,我也会及时跟进(前提是官方还未放出)
 <strong>下载:
----&gt; autoproxy-0.4.0+.2011030823.xpi
+&mdash;&gt; autoproxy-0.4.0+.2011030823.xpi
 <a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hY2JhMTZjNjUtODE2ZC00ODE0LThjMjYtZTZmNmNhMDNlOGJl&amp;sort=name&amp;layout=list&amp;num=50">Google Docs 下载</a> , <a href="http://build.sunfarms.net/download/autoproxy-0.4.0+.2011030823.xpi"> 本地下载</a></strong></p>
 
   <div class="more">
@@ -263,15 +285,15 @@ import javax.xml.parsers.ParserConfigurationException;
 <strong>1. 视图插件</strong>
     要求: 实现View接口和ViewMarker接口
     能做什么?
-        -- 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
-        -- Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
+        &ndash; 实现你的视图,例如用Freemaker/Velocity的模板文件替代jsp
+        &ndash; Nutz本身的视图不符合你的口味? 改造一个视图吧!!</p>
 
 <p><strong>2. 适配器插件</strong>
     要求: 实现HttpAdaptor接口
     能做什么?
-        -- 你的请求的格式未被nutz识别? 例如WebService请求
-        -- 请求是加密的? 需要解码才能读取
-        -- 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
+        &ndash; 你的请求的格式未被nutz识别? 例如WebService请求
+        &ndash; 请求是加密的? 需要解码才能读取
+        &ndash; 一个请求包含几种数据格式? 这年头啥需求都有,你懂的</p>
 
   <div class="more">
     <a href="/247.html" class="btn">read more..</a>
@@ -314,34 +336,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
   <div class="more">
     <a href="/245.html" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/244.html">完成对JBE的修正,终于可以用了.</a> <span class="date">2011-02-22 16:08:20</span></h3>
-  <p>先放出下载地址:
-<a href="https://docs.google.com/leaf?id=0B8hUXYDeoy_hNDczMTQ5OWUtYjJlNC00NTE2LWI1MWItODk4NGIwNDUyZjMz&amp;hl=zh_CN">jbe-0.1b-Fixed-By-WendalChen.zip</a></p>
-
-<p>原版下载地址: <a href="http://www.cs.ioc.ee/~ando/jbe/">JBE - Java Bytecode Editor</a></p>
-
-<p>原版存在的问题:
-对方法进行修改后,点击Save Method, 如果存在 invokeinterface 的行, 将无法保存!! 后台报错.</p>
-
-<p>以下是我在压缩包中写的描述:
-This JBE had been modify by Wendal Chen , base on JBE 0.1b</p>
-
-<p>Fix:
-when save method whit &ldquo;invokeinterface&rdquo; , app fail.</p>
-
-<p>File change:</p>
-
-<pre><code>JAsmParser.java line 169~170:
-int arg1 = getMethodConstRef(instrElems, cpg, labels);
-int arg2 = Utility.methodSignatureArgumentTypes(getDescrFromFullMethod(instrElems[1])).length;
-</code></pre>
-
-  <div class="more">
-    <a href="/244.html" class="btn">read more..</a>
   </div>
 </div>
 
